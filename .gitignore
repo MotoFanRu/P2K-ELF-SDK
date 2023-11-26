@@ -1,12 +1,12 @@
-tool/lin/ep1/ADS12_848_Linux/*
-!tool/lin/ep1/ADS12_848_Linux/ReadMe.md
+tool/ep1_lin_ADS12_848/*
+!tool/ep1_lin_ADS12_848/ReadMe.md
 
-tool/win/ep1/ADS12_848_Windows/*
-!tool/win/ep1/ADS12_848_Windows/ReadMe.md
+tool/ep1_win_ADS12_848/*
+!tool/ep1_win_ADS12_848/ReadMe.md
 
-tool/gen/ep2/postlink/*.o
-tool/gen/ep2/postlink/pltentry/*.o
-tool/gen/ep2/postlink/postlink
+tool/ep2_postlink/*.o
+tool/ep2_postlink/pltentry/*.o
+tool/ep2_postlink/postlink
 
-tool/gen/ep2/libgen/*.lib
-tool/gen/ep2/libgen/*.sa
+tool/ep2_libgen/*.lib
+tool/ep2_libgen/*.sa

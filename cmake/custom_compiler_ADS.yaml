@@ -1,0 +1,124 @@
+# Custom ADS 1.2 compiler support scheme for IntelliJ IDEA based IDE like CLion.
+# Covers:
+#  tcc (C language, Thumb)
+#  tcpp (C++ language, Thumb)
+#  armcc (C language, ARM)
+#  armcpp (C++ language, ARM)
+
+compilers:
+
+  - description: Thumb C Compiler, ADS1.2 [Build 848]
+    match-sources: ".*\\.c"
+    match-language: C
+    match-compiler-exe: "(.*/)?tcc(\\.exe)?"
+    code-insight-target-name: arm7tdmi
+    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    defines-text: "
+#define __APCS_INTERWORK 1
+#define __arm 1
+#define __ARMCC_VERSION 120848
+#define __BIG_ENDIAN 1
+#define __CC_ARM 1
+#define __OPTIMISE_LEVEL 2
+#define __OPTIMISE_SPACE 1
+#define __sizeof_int 4
+#define __sizeof_long 4
+#define __sizeof_ptr 4
+#define __SOFTFP__
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __TARGET_ARCH_4T 1
+#define __TARGET_CPU_ARM7TDMI 1
+#define __TARGET_FEATURE_HALFWORD 1
+#define __TARGET_FEATURE_MULTIPLY 1
+#define __TARGET_FEATURE_THUMB 1
+#define __TARGET_FPU_SOFTVFP 1
+#define __thumb 1
+    "
+
+  - description: Thumb C++ Compiler, ADS1.2 [Build 848]
+    match-sources: ".*\\.(cpp|cxx|C)"
+    match-language: CPP
+    match-compiler-exe: "(.*/)?tcpp(\\.exe)?"
+    code-insight-target-name: arm7tdmi
+    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    defines-text: "
+#define __APCS_INTERWORK 1
+#define __arm 1
+#define __ARMCC_VERSION 120848
+#define __BIG_ENDIAN 1
+#define __CC_ARM 1
+#define __cplusplus 1
+#define __OPTIMISE_LEVEL 2
+#define __OPTIMISE_SPACE 1
+#define __sizeof_int 4
+#define __sizeof_long 4
+#define __sizeof_ptr 4
+#define __SOFTFP__ 1
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __TARGET_ARCH_4T 1
+#define __TARGET_CPU_ARM7TDMI 1
+#define __TARGET_FEATURE_HALFWORD 1
+#define __TARGET_FEATURE_MULTIPLY 1
+#define __TARGET_FEATURE_THUMB 1
+#define __TARGET_FPU_SOFTVFP 1
+#define __thumb 1
+    "
+
+  - description: ARM C Compiler, ADS1.2 [Build 848]
+    match-sources: ".*\\.c"
+    match-language: C
+    match-compiler-exe: "(.*/)?armcc(\\.exe)?"
+    code-insight-target-name: arm7tdmi
+    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    defines-text: "
+#define __APCS_INTERWORK 1
+#define __arm 1
+#define __ARMCC_VERSION 120848
+#define __BIG_ENDIAN 1
+#define __CC_ARM 1
+#define __OPTIMISE_LEVEL 2
+#define __OPTIMISE_SPACE 1
+#define __sizeof_int 4
+#define __sizeof_long 4
+#define __sizeof_ptr 4
+#define __SOFTFP__ 1
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __TARGET_ARCH_4T 1
+#define __TARGET_CPU_ARM7TDMI 1
+#define __TARGET_FEATURE_HALFWORD 1
+#define __TARGET_FEATURE_MULTIPLY 1
+#define __TARGET_FEATURE_THUMB 1
+#define __TARGET_FPU_SOFTVFP 1
+    "
+
+  - description: ARM C++ Compiler, ADS1.2 [Build 848]
+    match-sources: ".*\\.(cpp|cxx|C)"
+    match-language: CPP
+    match-compiler-exe: "(.*/)?tcpp(\\.exe)?"
+    code-insight-target-name: arm7tdmi
+    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    defines-text: "
+#define __APCS_INTERWORK 1
+#define __arm 1
+#define __ARMCC_VERSION 120848
+#define __BIG_ENDIAN 1
+#define __CC_ARM 1
+#define __cplusplus 1
+#define __OPTIMISE_LEVEL 2
+#define __OPTIMISE_SPACE 1
+#define __sizeof_int 4
+#define __sizeof_long 4
+#define __sizeof_ptr 4
+#define __SOFTFP__ 1
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __TARGET_ARCH_4T 1
+#define __TARGET_CPU_ARM7TDMI 1
+#define __TARGET_FEATURE_HALFWORD 1
+#define __TARGET_FEATURE_MULTIPLY 1
+#define __TARGET_FEATURE_THUMB 1
+#define __TARGET_FPU_SOFTVFP 1
+    "
