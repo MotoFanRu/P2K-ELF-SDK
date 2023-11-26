@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-genlib.py script by EXL, 26-Nov-2023
+libgen.py script by EXL, 26-Nov-2023
 
 Generate libraries by symdefs files.
 """
@@ -55,7 +55,7 @@ def generate_all_libraries():
 
 
 if __name__ == '__main__':
-	print('genlib.py script by EXL, 26-Nov-2023')
+	print('libgen.py script by EXL, 26-Nov-2023')
 	print('Generate libraries by symdefs files.')
 	print()
 
@@ -65,7 +65,7 @@ if __name__ == '__main__':
 	elif argc == 2:
 		generate_library(*generate_parameters(sys.argv[1]))
 	else:
-		print('Usage:\n\t./genlib.py [PHONE_FIRMWARE]')
+		print('Usage:\n\t./libgen.py [PHONE_FIRMWARE]')
 		print()
-		print('Example:\n\t./genlib.py \n\t./genlib.py E1_R373_G_0E.30.49R')
+		print('Example:\n\t./libgen.py \n\t./libgen.py E1_R373_G_0E.30.49R')
 		print()
