@@ -1,2 +1,3 @@
 *.bat text eol=crlf
 *.sym text eol=crlf
+*.def text eol=crlf

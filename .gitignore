@@ -7,3 +7,6 @@ tool/win/ep1/ADS12_848_Windows/*
 tool/src/ep2/postlink/*.o
 tool/src/ep2/postlink/pltentry/*.o
 tool/src/ep2/postlink/postlink
+
+gen/ep2/libgen/*.lib
+gen/ep2/libgen/*.sa
