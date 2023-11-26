@@ -284,47 +284,27 @@ _thumb_bl:
 	}
 }
 #else
-UINT32 __attribute__((naked)) makeBL(UINT32 from, UINT32 to, char mode)
+UINT32 makeBL(UINT32 from, UINT32 to, char mode)
 {
-	__asm__(
-		"ADD    %[from], 4\n"
-		"SUB    %[to], %[from]\n"
-		"MOV    %[result], %[to]\n"
-		"MOV    %[mode], %%ecx\n"
-		"CMP    %[mode], 'T'\n"
-		"JE     _thumb_bl\n"
+	UINT32 offset = to - (from + 4); // current PC is +4 at least (in thumb)
 
-		// ARM BL generation
-		"SUB    %[result], 0x4\n"
-		"SHR    %[result], 2\n"
-		"BSWAP  %[result]\n"
-		"MOV    %b[result],  0xEB\n"
+	if (mode == 'T') {
+			// THUMB BL generation
+			offset = offset >> 12;
+			offset = ((offset & 0x7) << 8) | 0xF0;
+			offset = (offset << 8) | 0xEB;
+			offset = (offset << 16);
+#ifdef LILENDIAN
+			offset = ((offset & 0xFF) << 24) | ((offset & 0xFF00) << 8) | ((offset & 0xFF0000) >> 8) | ((offset & 0xFF000000) >> 24);
+#endif
+	} else {
+			// ARM BL generation
+			offset = (offset - 4) >> 2;
+			offset = __builtin_bswap32(offset);
+			offset = (offset & 0xFFFFFF00) | 0xEB;
+	}
 
-		"RET    $4\n"
-
-		// THUMB BL generation
-		"_thumb_bl:\n"
-		"SHR    %[to], 12\n"
-		"XCHG   %b[to], %ah\n"
-		"AND    %b[to], 0x7\n"
-		"OR     %b[to], 0xF0\n"
-
-		"SHL    %ax, 4\n"
-		"ROL    %ax, 3\n"
-		"OR     %b[result], 0xF8\n"
-		"SHL    %eax, 16\n"
-
-		"MOV    %ax, %[to]\n"
-
-		"#ifdef LILENDIAN\n"
-		"BSWAP  %eax\n"
-		"ROL    %eax, 16\n"
-		"#endif\n"
-
-		"RET    $4\n"
-		: [result] "=r" (from)
-		: [from] "r" (from), [to] "r" (to), [mode] "c" (mode)
-		);
+	return offset;
 }
 #endif
 
@@ -587,21 +567,14 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 		MOV	immed, eax
 	}
 #else
-	// ROR
-	__asm__ (
-		"MOV eax, %[immed]\n\t"
-		"MOV cl, %[shift]\n\t"
-		"ROR eax, cl\n\t"
-		"MOV %[immed], eax"
-		: [immed] "=r" (immed)
-		: [shift] "r" (shift)
-		: "eax", "cl"
-		);
+	UINT32 eax = immed;
+	UINT8 cl = shift;
+	eax = (eax >> cl) | (eax << (32 - cl));
+	immed = eax;
 #endif
 
 	// calc the offset in the old image
 	return sProps[SIDX_PLT].oldhdr->sh_addr + offset + 12 + (plt->ldr&0x0FFF) + immed;
-	
 }
 
 UINT32 InitStructs()

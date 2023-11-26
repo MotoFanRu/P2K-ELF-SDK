@@ -2,7 +2,8 @@
 
 CXX=g++
 STRIP=strip
-FLAGS=-masm=intel -m32 -O3
+FLAGS=-m32 -O3 
+#FLAGS=-DLILENDIAN
 
 all:
 	$(CXX) $(FLAGS) -c constlib.cpp -o constlib.o
@@ -10,6 +11,7 @@ all:
 	$(CXX) $(FLAGS) -c postlink.cpp -o postlink.o
 	$(CXX) $(FLAGS) constlib.o libgen.o postlink.o -o postlink
 	$(STRIP) -s postlink
+	-mv postlink ../../../lin/ep2/postlink
 
 clean:
 	-rm -f *.o

@@ -117,53 +117,15 @@ __inline UINT16 E16(UINT16 x)
 /* Thanks to ChatGPT-4! */
 
 inline UINT64 E64(UINT64 x) {
-	UINT32 eax, edx;
-	__asm__ __volatile__(
-		"mov %1, %%eax\n"
-		"mov %2, %%edx\n"
-		"xchg %%ah, %%al\n"
-		"rol $0x10, %%eax\n"
-		"xchg %%ah, %%al\n"
-		"xchg %%edx, %%eax\n"
-		"xchg %%ah, %%al\n"
-		"rol $0x10, %%eax\n"
-		"xchg %%ah, %%al\n"
-		: "=a" (eax), "=d" (edx)
-		: "g" (x)
-		: "cc"
-		);
-	return ((UINT64)edx << 32) | eax;
+	return __builtin_bswap64(x);
 }
 
 inline UINT32 E32(UINT32 x) {
-	UINT32 res;
-
-	asm volatile(
-		"mov %[x], %%eax\n"
-		"bswap %%eax\n"
-		"mov %%eax, %[res]\n"
-		: [res] "=r" (res)
-		: [x] "r" (x)
-		: "eax"
-		);
-
-	return res;
+	return __builtin_bswap32(x);
 }
 
 inline UINT16 E16(UINT16 x) {
-	UINT16 res;
-
-	asm volatile(
-		"xor %%eax, %%eax\n"
-		"mov %[x], %%ax\n"
-		"xchg %%ah, %%al\n"
-		"mov %%ax, %[res]\n"
-		: [res] "=r" (res)
-		: [x] "r" (x)
-		: "eax"
-		);
-
-	return res;
+	return __builtin_bswap16(x);
 }
 #endif
 
