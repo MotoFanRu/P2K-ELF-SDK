@@ -32,7 +32,7 @@ typedef struct
 } Elf32_Ehdr;
 
 
-//E_type—This member identifies the object file type.
+//E_typeâ€”This member identifies the object file type.
 #define ET_NONE		0		//No file type
 #define ET_REL		1		//Re-locatable file
 #define ET_EXEC		2		//Executable file
@@ -41,7 +41,7 @@ typedef struct
 #define ET_LOPROC	0xff00	//Processor-specific
 #define ET_HIPROC	0xffff	//Processor-specific
 
-//E_machine—This member’s value specifies the required architecture for an individual file.
+//E_machineâ€”This memberâ€™s value specifies the required architecture for an individual file.
 #define EM_NONE			0	//No machine
 #define EM_M32			1	//AT&T WE 32100
 #define EM_SPARC		2	//SPARC
@@ -53,7 +53,7 @@ typedef struct
 #define EM_MIPS_RS4_BE	10	//MIPS RS4000 Big-Endian
 #define EM_ARM			40	//ARM/Thumb Architecture
 
-//E_version—This member identifies the object file version.
+//E_versionâ€”This member identifies the object file version.
 #define EV_NONE			0	//Invalid version
 #define EV_CURRENT		1	//Current version
 
@@ -109,7 +109,7 @@ typedef struct
 #define DT_RELASZ				8
 #define DT_RELAENT				9
 #define DT_STRSZ					10	//The byte size of the string table section. mandatory
-#define DT_SYMENT				11	//The byte size of an ARM symbol table entry—16. mandatory
+#define DT_SYMENT				11	//The byte size of an ARM symbol table entryâ€”16. mandatory
 #define DT_INIT					12	//These entries are unused by versions 1-2 of the ARM EABI. unused
 #define DT_FINI					13
 #define DT_SONAME				14	//The Index in the string table of the name of this shared object. mandatory
@@ -147,22 +147,22 @@ typedef struct
 
 //ARM relocation types
 #define R_ARM_NONE            0   //Any No relocation. Encodes dependencies between sections.
-#define R_ARM_PC24            1   //ARM B/BL S – P + A
+#define R_ARM_PC24            1   //ARM B/BL S â€“ P + A
 #define R_ARM_ABS32           2   //32-bit word S + A
-#define R_ARM_REL32           3   //32-bit word S – P + A
-#define R_ARM_PC13            4   //ARM LDR r, [pc,…] S – P + A
+#define R_ARM_REL32           3   //32-bit word S â€“ P + A
+#define R_ARM_PC13            4   //ARM LDR r, [pc,â€¦] S â€“ P + A
 #define R_ARM_ABS16           5   //16-bit half-word S + A
 #define R_ARM_ABS12           6   //ARM LDR/STR S + A
 #define R_ARM_THM_ABS5        7   //Thumb LDR/STR S + A
 #define R_ARM_ABS8            8   //8-bit byte S + A
-#define R_ARM_SBREL32         9   //32-bit word S – B + A
-#define R_ARM_THM_PC22        10  //Thumb BL pair S – P+ A
-#define R_ARM_THM_PC8         11  //Thumb LDR r, [pc,…] S – P + A
-#define R_ARM_AMP_VCALL9      12  //AMP VCALL Obsolete—SA-1500 only.
+#define R_ARM_SBREL32         9   //32-bit word S â€“ B + A
+#define R_ARM_THM_PC22        10  //Thumb BL pair S â€“ P+ A
+#define R_ARM_THM_PC8         11  //Thumb LDR r, [pc,â€¦] S â€“ P + A
+#define R_ARM_AMP_VCALL9      12  //AMP VCALL Obsoleteâ€”SA-1500 only.
 #define R_ARM_SWI24           13  //ARM SWI S + A
 #define R_ARM_THM_SWI8        14  //Thumb SWI S + A
-#define R_ARM_XPC25           15  //ARM BLX S – P+ A
-#define R_ARM_THM_XPC22       16  //Thumb BLX pair S – P+ A
+#define R_ARM_XPC25           15  //ARM BLX S â€“ P+ A
+#define R_ARM_THM_XPC22       16  //Thumb BLX pair S â€“ P+ A
 #define R_ARM_COPY            20  //32 bit word Copy symbol at dynamic link time.
 #define R_ARM_GLOB_DAT        21  //32 bit word Create GOT entry.
 #define R_ARM_JUMP_SLOT       22  //32 bit word Create PLT entry.
@@ -171,23 +171,23 @@ typedef struct
 #define R_ARM_GOTPC           25  //32 bit word Insert address of GOT.
 #define R_ARM_GOT32           26  //32 bit word Entry in GOT.
 #define R_ARM_PLT32           27  //ARM BL Entry in PLT.
-#define R_ARM_ALU_PCREL_7_0   32  //ARM ADD/SUB (S – P + A) & 0x000000FF
-#define R_ARM_ALU_PCREL_15_8  33  //ARM ADD/SUB (S – P + A) & 0x0000FF00
-#define R_ARM_ALU_PCREL_23_15 34  //ARM ADD/SUB (S – P + A) & 0x00FF0000
-#define R_ARM_LDR_SBREL_11_0  35  //ARM LDR/STR (S – B + A) & 0x00000FFF
-#define R_ARM_ALU_SBREL_19_12 36  //ARM ADD/SUB (S – B + A) & 0x000FF000
-#define R_ARM_ALU_SBREL_27_20 37  //ARM ADD/SUB (S – B + A) & 0x0FF00000
+#define R_ARM_ALU_PCREL_7_0   32  //ARM ADD/SUB (S â€“ P + A) & 0x000000FF
+#define R_ARM_ALU_PCREL_15_8  33  //ARM ADD/SUB (S â€“ P + A) & 0x0000FF00
+#define R_ARM_ALU_PCREL_23_15 34  //ARM ADD/SUB (S â€“ P + A) & 0x00FF0000
+#define R_ARM_LDR_SBREL_11_0  35  //ARM LDR/STR (S â€“ B + A) & 0x00000FFF
+#define R_ARM_ALU_SBREL_19_12 36  //ARM ADD/SUB (S â€“ B + A) & 0x000FF000
+#define R_ARM_ALU_SBREL_27_20 37  //ARM ADD/SUB (S â€“ B + A) & 0x0FF00000
 #define R_ARM_GNU_VTENTRY     100 //32 bit word Record C++ vtable entry.
 #define R_ARM_GNU_VTINHERIT   101 //32 bit word Record C++ member usage.
-#define R_ARM_THM_PC11        102 //Thumb B S – P + A
-#define R_ARM_THM_PC9         103 //Thumb B<cond> S – P + A
-#define R_ARM_RXPC25          249 //ARM BLX (?S – ?P) + A For calls between program segments.
-#define R_ARM_RSBREL32        250 //Word (?S – ?SB) + A For an offset from SB, the static base.
-#define R_ARM_THM_RPC22       251 //Thumb BL/BLX pair (?S – ?P) + A For calls between program segments.
-#define R_ARM_RREL32          252 //Word (?S – ?P) + A For on offset between two segments.
+#define R_ARM_THM_PC11        102 //Thumb B S â€“ P + A
+#define R_ARM_THM_PC9         103 //Thumb B<cond> S â€“ P + A
+#define R_ARM_RXPC25          249 //ARM BLX (?S â€“ ?P) + A For calls between program segments.
+#define R_ARM_RSBREL32        250 //Word (?S â€“ ?SB) + A For an offset from SB, the static base.
+#define R_ARM_THM_RPC22       251 //Thumb BL/BLX pair (?S â€“ ?P) + A For calls between program segments.
+#define R_ARM_RREL32          252 //Word (?S â€“ ?P) + A For on offset between two segments.
 #define R_ARM_RABS32          253 //Word ?S + A For the address of a location in the target segment.
-#define R_ARM_RPC24           254 //ARM B/BL (?S – ?P) + A For calls between program segments.
-#define R_ARM_RBASE           255 //None None—Identifies the segment being relocated by the following relocation directives.
+#define R_ARM_RPC24           254 //ARM B/BL (?S â€“ ?P) + A For calls between program segments.
+#define R_ARM_RBASE           255 //None Noneâ€”Identifies the segment being relocated by the following relocation directives.
 
 typedef struct 
 {

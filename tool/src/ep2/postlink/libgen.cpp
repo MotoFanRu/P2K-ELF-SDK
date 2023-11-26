@@ -64,7 +64,7 @@ enum
 UINT32	libgenMain( char *symdef, char *constHdr )
 {
 	int				i;
-	// Загружаем def
+	// Р—Р°РіСЂСѓР¶Р°РµРј def
 	i = prepareDef( Config.deffile, &def );
 	if ( !i ) return 1;
 
@@ -354,7 +354,7 @@ UINT32 makeLdrLib()
 
 		for ( i=0; i<cstSymCnt; i++ )
 		{
-			/* именно CONV16, т.к. ID константы UINT16 */
+			/* РёРјРµРЅРЅРѕ CONV16, С‚.Рє. ID РєРѕРЅСЃС‚Р°РЅС‚С‹ UINT16 */
 			CONV16( cstSymTbl[i].st_name );
 			CONV32( cstSymTbl[i].st_value );
 		}
@@ -415,8 +415,8 @@ UINT32	parseFnSymDef( char *path )
 	fnStrIdx = 1;
 	fnStrTbl[0] = '\0';
 
-	// Запоняем symtab
-	// Нулевой символ должен быть NULL
+	// Р—Р°РїРѕРЅСЏРµРј symtab
+	// РќСѓР»РµРІРѕР№ СЃРёРјРІРѕР» РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ NULL
 	memset(&fnSymTbl[0], 0, sizeof(Elf32_Sym));
 	fnSymCnt = 1;
 	j = 0;
@@ -449,7 +449,7 @@ UINT32	parseFnSymDef( char *path )
 	free( buf );
 
 	apiStrIdx = fnStrIdx;
-	// Добавляем функции из API загрузчика
+	// Р”РѕР±Р°РІР»СЏРµРј С„СѓРЅРєС†РёРё РёР· API Р·Р°РіСЂСѓР·С‡РёРєР°
 	for ( i=0; i < LDRAPI_CNT; i++ )
 	//for ( i=0; i<def.count; i++ )
 	{
@@ -489,7 +489,7 @@ UINT32	parseConstSymDef( char *path )
 	cstStrIdx = 0;
 	cstSymCnt = 0;
 
-	// Запоняем symtab
+	// Р—Р°РїРѕРЅСЏРµРј symtab
 	j = 0;
 	for ( i=0; i<nlines; i++ )
 	{
@@ -535,7 +535,7 @@ char* openAndFormat( char* path, UINT32 *nlines, UINT32 *size )
 	fclose(f);
 	buf[sz] = 0;
 
-	// Подсчитаем кол-во строчек
+	// РџРѕРґСЃС‡РёС‚Р°РµРј РєРѕР»-РІРѕ СЃС‚СЂРѕС‡РµРє
 	lineCnt = 0;
 	i = 0;
 	while ( buf[i] != 0 )

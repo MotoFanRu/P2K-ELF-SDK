@@ -27,15 +27,15 @@ char			*path;
 Elf32_Ehdr		*oldHeader, *newHeader;
 Elf32_Phdr		*oldPhdr, *newPhdr;
 
-UINT32			Addr;				// Текущий виртуальный адрес внутри образа эльфа (см. INC_A, INC_OA)
-UINT32			Off;				// Текущее смещение в файле образа эльфа (см. INC_O, INC_OA)
-UINT32			curIdx = 1;			// Хз, уже не помню
-UINT32			externalCnt = 0;	// Кол-во внешних (импортируемых) символов в эльф
-UINT32			internalCnt = 0;	// Кол-во внутренних символов (используются для релокаций)
-UINT32			pltCnt = 0;			// Кол-во полезных (отфильтрован мусор) записей в PLT таблице (и в GOT, соответственно)
-UINT32			extRelCnt = 0;		// Кол-во релокаций, связанных с внешними символами (кол-во записей в REL_PLT)
-UINT32			symLsRelCnt = 0;	// Кол-во безсимвольных релокаций (их много)
-UINT32			extPltCnt = 0;		// Кол-во записей PLT связанных с импортируемыми ф-циями
+UINT32			Addr;				// РўРµРєСѓС‰РёР№ РІРёСЂС‚СѓР°Р»СЊРЅС‹Р№ Р°РґСЂРµСЃ РІРЅСѓС‚СЂРё РѕР±СЂР°Р·Р° СЌР»СЊС„Р° (СЃРј. INC_A, INC_OA)
+UINT32			Off;				// РўРµРєСѓС‰РµРµ СЃРјРµС‰РµРЅРёРµ РІ С„Р°Р№Р»Рµ РѕР±СЂР°Р·Р° СЌР»СЊС„Р° (СЃРј. INC_O, INC_OA)
+UINT32			curIdx = 1;			// РҐР·, СѓР¶Рµ РЅРµ РїРѕРјРЅСЋ
+UINT32			externalCnt = 0;	// РљРѕР»-РІРѕ РІРЅРµС€РЅРёС… (РёРјРїРѕСЂС‚РёСЂСѓРµРјС‹С…) СЃРёРјРІРѕР»РѕРІ РІ СЌР»СЊС„
+UINT32			internalCnt = 0;	// РљРѕР»-РІРѕ РІРЅСѓС‚СЂРµРЅРЅРёС… СЃРёРјРІРѕР»РѕРІ (РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РґР»СЏ СЂРµР»РѕРєР°С†РёР№)
+UINT32			pltCnt = 0;			// РљРѕР»-РІРѕ РїРѕР»РµР·РЅС‹С… (РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅ РјСѓСЃРѕСЂ) Р·Р°РїРёСЃРµР№ РІ PLT С‚Р°Р±Р»РёС†Рµ (Рё РІ GOT, СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ)
+UINT32			extRelCnt = 0;		// РљРѕР»-РІРѕ СЂРµР»РѕРєР°С†РёР№, СЃРІСЏР·Р°РЅРЅС‹С… СЃ РІРЅРµС€РЅРёРјРё СЃРёРјРІРѕР»Р°РјРё (РєРѕР»-РІРѕ Р·Р°РїРёСЃРµР№ РІ REL_PLT)
+UINT32			symLsRelCnt = 0;	// РљРѕР»-РІРѕ Р±РµР·СЃРёРјРІРѕР»СЊРЅС‹С… СЂРµР»РѕРєР°С†РёР№ (РёС… РјРЅРѕРіРѕ)
+UINT32			extPltCnt = 0;		// РљРѕР»-РІРѕ Р·Р°РїРёСЃРµР№ PLT СЃРІСЏР·Р°РЅРЅС‹С… СЃ РёРјРїРѕСЂС‚РёСЂСѓРµРјС‹РјРё С„-С†РёСЏРјРё
 
 CONFIG_T		Config;
 
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	// Read all the file contents
 	FILE		*f = fopen(path, "rb");
 
-	if (f==NULL) return 0; //не должно происходить
+	if (f==NULL) return 0; //РЅРµ РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ
 
 	filesize = getFileSize(f);
 
@@ -360,12 +360,12 @@ UINT32 addSHStrData( char* str )
 // returns the new symbol index
 UINT32 addSymbol(UINT32 oldindex, UINT32 section, BOOL named)
 {
-	UINT32			index = sProps[section].value; // Здесь временно хранится текущее кол-во символов в таблице
+	UINT32			index = sProps[section].value; // Р—РґРµСЃСЊ РІСЂРµРјРµРЅРЅРѕ С…СЂР°РЅРёС‚СЃСЏ С‚РµРєСѓС‰РµРµ РєРѕР»-РІРѕ СЃРёРјРІРѕР»РѕРІ РІ С‚Р°Р±Р»РёС†Рµ
 	UINT32			val;
 	UINT32			i;
 
-	Elf32_Sym		*newsym = (Elf32_Sym*)sProps[section].data;		// Новая таблица символов
-	Elf32_Sym		*oldsym = &((Elf32_Sym*)sProps[SIDX_DYNSYM].oldata)[oldindex];		// Нужный символ в старой таблице
+	Elf32_Sym		*newsym = (Elf32_Sym*)sProps[section].data;		// РќРѕРІР°СЏ С‚Р°Р±Р»РёС†Р° СЃРёРјРІРѕР»РѕРІ
+	Elf32_Sym		*oldsym = &((Elf32_Sym*)sProps[SIDX_DYNSYM].oldata)[oldindex];		// РќСѓР¶РЅС‹Р№ СЃРёРјРІРѕР» РІ СЃС‚Р°СЂРѕР№ С‚Р°Р±Р»РёС†Рµ
 
 	// ToDo: Optional
 	// NULL symbol initialization
@@ -381,7 +381,7 @@ UINT32 addSymbol(UINT32 oldindex, UINT32 section, BOOL named)
 
 	if (oldindex == 0) return 0;
 
-	//Надо проверить, нет ли уже нужного символа в списке
+	//РќР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ, РЅРµС‚ Р»Рё СѓР¶Рµ РЅСѓР¶РЅРѕРіРѕ СЃРёРјРІРѕР»Р° РІ СЃРїРёСЃРєРµ
 	if ( (oldsym->st_value != 0) && (oldsym->st_value != 1) )
 	{
 		val = oldsym->st_value;
@@ -439,7 +439,7 @@ UINT32 Relocate(UINT32 *target, REL_MODE_T	mode)
 	if (mode == RM_PTR_ENDIAN)
 		CONV32(val);
 
-	//Ищем, к какой кодовой секции относится val
+	//РС‰РµРј, Рє РєР°РєРѕР№ РєРѕРґРѕРІРѕР№ СЃРµРєС†РёРё РѕС‚РЅРѕСЃРёС‚СЃСЏ val
 	for (i=SIDX_TEXT; i<=SIDX_BSS; i++)
 	{
 		if (sProps[i].oldata == NULL)
@@ -447,29 +447,29 @@ UINT32 Relocate(UINT32 *target, REL_MODE_T	mode)
 		off = val - sProps[i].oldhdr->sh_addr;
 		if ( (off >= 0) && (off <= sProps[i].oldhdr->sh_size) )
 		{
-			/* Для GCC нужно обрабатывать особый члучай, когда ссылка указывает сразу после
-				данных секции. Возникает такой случай при оптимизации циклов заполнения данных,
-				когда счётчик итераций подменяется счётчиком адресов. */
+			/* Р”Р»СЏ GCC РЅСѓР¶РЅРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РѕСЃРѕР±С‹Р№ С‡Р»СѓС‡Р°Р№, РєРѕРіРґР° СЃСЃС‹Р»РєР° СѓРєР°Р·С‹РІР°РµС‚ СЃСЂР°Р·Сѓ РїРѕСЃР»Рµ
+				РґР°РЅРЅС‹С… СЃРµРєС†РёРё. Р’РѕР·РЅРёРєР°РµС‚ С‚Р°РєРѕР№ СЃР»СѓС‡Р°Р№ РїСЂРё РѕРїС‚РёРјРёР·Р°С†РёРё С†РёРєР»РѕРІ Р·Р°РїРѕР»РЅРµРЅРёСЏ РґР°РЅРЅС‹С…,
+				РєРѕРіРґР° СЃС‡С‘С‚С‡РёРє РёС‚РµСЂР°С†РёР№ РїРѕРґРјРµРЅСЏРµС‚СЃСЏ СЃС‡С‘С‚С‡РёРєРѕРј Р°РґСЂРµСЃРѕРІ. */
 			if ( off == sProps[i].oldhdr->sh_size )
 			{	
-				// Найдём соответствующую секцию
+				// РќР°Р№РґС‘Рј СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ СЃРµРєС†РёСЋ
 				for (j=0; j<PROPS_CNT; j++)
 				{
 					if (sProps[j].oldata == NULL)
 						continue;
 
-					/* Если секция числится среди обрабатываемых и является ALLOC,
-						то символ нельзя приписывать к предыдущей секции */
+					/* Р•СЃР»Рё СЃРµРєС†РёСЏ С‡РёСЃР»РёС‚СЃСЏ СЃСЂРµРґРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹С… Рё СЏРІР»СЏРµС‚СЃСЏ ALLOC,
+						С‚Рѕ СЃРёРјРІРѕР» РЅРµР»СЊР·СЏ РїСЂРёРїРёСЃС‹РІР°С‚СЊ Рє РїСЂРµРґС‹РґСѓС‰РµР№ СЃРµРєС†РёРё */
 					if ( (sProps[j].oldhdr->sh_addr == val) && ((sProps[j].flags & SHF_ALLOC) !=0 ) )
 						break;
-					/* Иначе это означает, что ссылка указывает на нефункциональную секцию, и мы
-						делаем релокацию её относительно секции, за которой она лежит. */
+					/* РРЅР°С‡Рµ СЌС‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЃСЃС‹Р»РєР° СѓРєР°Р·С‹РІР°РµС‚ РЅР° РЅРµС„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅСѓСЋ СЃРµРєС†РёСЋ, Рё РјС‹
+						РґРµР»Р°РµРј СЂРµР»РѕРєР°С†РёСЋ РµС‘ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СЃРµРєС†РёРё, Р·Р° РєРѕС‚РѕСЂРѕР№ РѕРЅР° Р»РµР¶РёС‚. */
 				}
 
 				if (j != PROPS_CNT)
 					continue;
 
-				// Алгоритм не проверен, необходимо отслеживать данный случай
+				// РђР»РіРѕСЂРёС‚Рј РЅРµ РїСЂРѕРІРµСЂРµРЅ, РЅРµРѕР±С…РѕРґРёРјРѕ РѕС‚СЃР»РµР¶РёРІР°С‚СЊ РґР°РЅРЅС‹Р№ СЃР»СѓС‡Р°Р№
 				printf("\tWARNING: Special case for GCC after-section reloc occured at 0x%X\n", val);
 			}
 
@@ -495,7 +495,7 @@ UINT32 Relocate(UINT32 offset)
 	UINT32	off = 0;
 	int i;
 
-	//Ищем, к какой кодовой секции относится val
+	//РС‰РµРј, Рє РєР°РєРѕР№ РєРѕРґРѕРІРѕР№ СЃРµРєС†РёРё РѕС‚РЅРѕСЃРёС‚СЃСЏ val
 	for (i=SIDX_TEXT; i<=SIDX_BSS; i++)
 	{
 		if (sProps[i].oldata == NULL)
@@ -517,7 +517,7 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 	UINT32				immed;
 	UINT8				shift;
 
-	if (plt->bxpc != PLT_BXPC) offset -= 4; // Если нет перехода из thumb, адрес смещается
+	if (plt->bxpc != PLT_BXPC) offset -= 4; // Р•СЃР»Рё РЅРµС‚ РїРµСЂРµС…РѕРґР° РёР· thumb, Р°РґСЂРµСЃ СЃРјРµС‰Р°РµС‚СЃСЏ
 	
 	immed = (plt->add&0x00FF); // immed_8
 	shift = (UINT8)((plt->add&0x0F00)>>8)*2; // shifter
@@ -641,7 +641,7 @@ UINT32 AddCode()
 		sProps[i].data = (void*)&result[Off];
 		sProps[i].idx = curIdx++;
 
-		// секции с данными могут сбить выравнивание
+		// СЃРµРєС†РёРё СЃ РґР°РЅРЅС‹РјРё РјРѕРіСѓС‚ СЃР±РёС‚СЊ РІС‹СЂР°РІРЅРёРІР°РЅРёРµ
 		aligned_size = (sProps[i].oldhdr->sh_size+3)&(~3);
 
 			INC_OA(aligned_size);
@@ -688,14 +688,14 @@ UINT32 CountSymbols()
 	UINT32      		i,j;
 	UINT32				ldroff;
 
-	//Подсчитаем кол-во внешних символов и внутренних с филтрацией по релокациям (для обычных эльфов, см. Notes.txt)
+	//РџРѕРґСЃС‡РёС‚Р°РµРј РєРѕР»-РІРѕ РІРЅРµС€РЅРёС… СЃРёРјРІРѕР»РѕРІ Рё РІРЅСѓС‚СЂРµРЅРЅРёС… СЃ С„РёР»С‚СЂР°С†РёРµР№ РїРѕ СЂРµР»РѕРєР°С†РёСЏРј (РґР»СЏ РѕР±С‹С‡РЅС‹С… СЌР»СЊС„РѕРІ, СЃРј. Notes.txt)
 	 
-	// Всем записям в .plt соответствуют внешние символы, онако могут быть записи, не используемые
-	// в коде (см. Notes.txt, п. Relocations)
-	// Подсчитаем кол-во используемых записей в PLT
+	// Р’СЃРµРј Р·Р°РїРёСЃСЏРј РІ .plt СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚ РІРЅРµС€РЅРёРµ СЃРёРјРІРѕР»С‹, РѕРЅР°РєРѕ РјРѕРіСѓС‚ Р±С‹С‚СЊ Р·Р°РїРёСЃРё, РЅРµ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ
+	// РІ РєРѕРґРµ (СЃРј. Notes.txt, Рї. Relocations)
+	// РџРѕРґСЃС‡РёС‚Р°РµРј РєРѕР»-РІРѕ РёСЃРїРѕР»СЊР·СѓРµРјС‹С… Р·Р°РїРёСЃРµР№ РІ PLT
 	pltCnt = 0; internalCnt = 0; externalCnt = 0; extRelCnt = 0; extPltCnt = 0;
 
-	symtab = (Elf32_Sym*)sProps[SIDX_DYNSYM].oldata; // Старая таблица символов для релокаций (+лишнего куча)
+	symtab = (Elf32_Sym*)sProps[SIDX_DYNSYM].oldata; // РЎС‚Р°СЂР°СЏ С‚Р°Р±Р»РёС†Р° СЃРёРјРІРѕР»РѕРІ РґР»СЏ СЂРµР»РѕРєР°С†РёР№ (+Р»РёС€РЅРµРіРѕ РєСѓС‡Р°)
 	relPLT = (Elf32_Rel*)sProps[SIDX_REL_PLT].oldata;
 	oldata = (UINT32*)sProps[SIDX_PLT].oldata;
 	j = 0;
@@ -745,15 +745,15 @@ UINT32 CountSymbols()
 			{
 				if ( sym->st_value > 1 ) internalCnt++;
 				else externalCnt++;
-				pltCnt++;	// используемый внешний импорт
+				pltCnt++;	// РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РІРЅРµС€РЅРёР№ РёРјРїРѕСЂС‚
 			}
-			else	// неиспользуемый 
+			else	// РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ 
 			{
-				//if (oldplt->bxpc != 0x7847C046) offset -= 4; // Если нет перехода из thumb, адрес смещается
-				// Найдена неиспользуемая запись PLT, и надо пометить соответствующий ей символ
-				// В неиспользуемых 
+				//if (oldplt->bxpc != 0x7847C046) offset -= 4; // Р•СЃР»Рё РЅРµС‚ РїРµСЂРµС…РѕРґР° РёР· thumb, Р°РґСЂРµСЃ СЃРјРµС‰Р°РµС‚СЃСЏ
+				// РќР°Р№РґРµРЅР° РЅРµРёСЃРїРѕР»СЊР·СѓРµРјР°СЏ Р·Р°РїРёСЃСЊ PLT, Рё РЅР°РґРѕ РїРѕРјРµС‚РёС‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ РµР№ СЃРёРјРІРѕР»
+				// Р’ РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹С… 
 
-				sym->st_size = 1; //метка для неиспользуемого импорта в PLT
+				sym->st_size = 1; //РјРµС‚РєР° РґР»СЏ РЅРµРёСЃРїРѕР»СЊР·СѓРµРјРѕРіРѕ РёРјРїРѕСЂС‚Р° РІ PLT
 			}
 
 			j++;
@@ -765,10 +765,10 @@ UINT32 CountSymbols()
 	extRelCnt = extPltCnt = externalCnt;
 
 
-	// Ищем релокации в .rel.dyn, которым соответствуют внешние символы
+	// РС‰РµРј СЂРµР»РѕРєР°С†РёРё РІ .rel.dyn, РєРѕС‚РѕСЂС‹Рј СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚ РІРЅРµС€РЅРёРµ СЃРёРјРІРѕР»С‹
 	relDYN = (Elf32_Rel*)sProps[SIDX_REL_DYN].oldata;
 
-	// REL_DYN может и не быть в простейших эльфах
+	// REL_DYN РјРѕР¶РµС‚ Рё РЅРµ Р±С‹С‚СЊ РІ РїСЂРѕСЃС‚РµР№С€РёС… СЌР»СЊС„Р°С…
 	if ( relDYN != NULL )
  	for (i=0; i<sProps[SIDX_REL_DYN].oldhdr->sh_size / sizeof(Elf32_Rel); i++)
 	{
@@ -784,10 +784,10 @@ UINT32 CountSymbols()
 		printf("CountSymbols: REL_DYN[%i], name= %s, val=%x\n", i, &((char*)sProps[SIDX_DYNSTR].oldata)[sym->st_name], sym->st_value );
 #endif
 
-		// Импортируется ли символ
+		// РРјРїРѕСЂС‚РёСЂСѓРµС‚СЃСЏ Р»Рё СЃРёРјРІРѕР»
 		if ( (sym->st_value == 0) || (sym->st_value == 1) )
 		{
-			// И нет ли его уже в .rel.plt-символах
+			// Р РЅРµС‚ Р»Рё РµРіРѕ СѓР¶Рµ РІ .rel.plt-СЃРёРјРІРѕР»Р°С…
 			if (sym->st_size != 1)
 			{
 				for (j=0; j < sProps[SIDX_REL_PLT].oldhdr->sh_size / sizeof(Elf32_Rel); j++)
@@ -840,9 +840,9 @@ UINT32 BuildPLT()
 		return 1;
 	}
 
-	// newoff - глобальный оффсет для GOT entry
+	// newoff - РіР»РѕР±Р°Р»СЊРЅС‹Р№ РѕС„С„СЃРµС‚ РґР»СЏ GOT entry
 
-	// Инициализация .plt
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .plt
 	sProps[SIDX_PLT].newhdr.sh_addr = Addr;
 	sProps[SIDX_PLT].newhdr.sh_offset = Off;
 
@@ -860,41 +860,41 @@ UINT32 BuildPLT()
 		INC_OA( sProps[SIDX_PLT].newhdr.sh_size );
 
 
-	// Инициализация .got
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .got
 	sProps[SIDX_GOT].newhdr.sh_addr = Addr;
 	sProps[SIDX_GOT].newhdr.sh_offset = Off;
 	sProps[SIDX_GOT].data = (void*)&result[Off];
 	sProps[SIDX_GOT].idx = curIdx++;
 	sProps[SIDX_GOT].newhdr.sh_size = pltCnt * sizeof(UINT32);
 
-		// GOT присутствует в образе, но отсутствует в файле!
+		// GOT РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РІ РѕР±СЂР°Р·Рµ, РЅРѕ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІ С„Р°Р№Р»Рµ!
 		INC_A( sProps[SIDX_GOT].newhdr.sh_size );
 
-		// tim apple: пока засунул в файл. для некоторых локальных записей там хранятся вирт-адреса
-		// потом переделаю через абсолютные релокации (сейчас относительные)
+		// tim apple: РїРѕРєР° Р·Р°СЃСѓРЅСѓР» РІ С„Р°Р№Р». РґР»СЏ РЅРµРєРѕС‚РѕСЂС‹С… Р»РѕРєР°Р»СЊРЅС‹С… Р·Р°РїРёСЃРµР№ С‚Р°Рј С…СЂР°РЅСЏС‚СЃСЏ РІРёСЂС‚-Р°РґСЂРµСЃР°
+		// РїРѕС‚РѕРј РїРµСЂРµРґРµР»Р°СЋ С‡РµСЂРµР· Р°Р±СЃРѕР»СЋС‚РЅС‹Рµ СЂРµР»РѕРєР°С†РёРё (СЃРµР№С‡Р°СЃ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅС‹Рµ)
 		//INC_OA( sProps[SIDX_GOT].newhdr.sh_size ); // !!!
 
-	// Инициализация .bss
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .bss
 	AddBSS();
 
-	// Резервирование .dynamic
+	// Р РµР·РµСЂРІРёСЂРѕРІР°РЅРёРµ .dynamic
 	ReserveDynamicSection();
 
-	// Инициализация .rel.plt
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .rel.plt
 	sProps[SIDX_REL_PLT].newhdr.sh_addr = 0;
 	sProps[SIDX_REL_PLT].newhdr.sh_offset = Off;
 	sProps[SIDX_REL_PLT].data = (void*)&result[Off];
 	sProps[SIDX_REL_PLT].idx = curIdx++;
-	sProps[SIDX_REL_PLT].newhdr.sh_size = extRelCnt * sizeof(Elf32_Rel); // Записям в .rel.plt соответствуют только импорты
+	sProps[SIDX_REL_PLT].newhdr.sh_size = extRelCnt * sizeof(Elf32_Rel); // Р—Р°РїРёСЃСЏРј РІ .rel.plt СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚ С‚РѕР»СЊРєРѕ РёРјРїРѕСЂС‚С‹
 	
 		INC_O( sProps[SIDX_REL_PLT].newhdr.sh_size );
 
-	// Все символы, относящиеся к релокациям в .rel.plt точно будут импортами
+	// Р’СЃРµ СЃРёРјРІРѕР»С‹, РѕС‚РЅРѕСЃСЏС‰РёРµСЃСЏ Рє СЂРµР»РѕРєР°С†РёСЏРј РІ .rel.plt С‚РѕС‡РЅРѕ Р±СѓРґСѓС‚ РёРјРїРѕСЂС‚Р°РјРё
 	sProps[SIDX_IMPORTS].newhdr.sh_addr = 0;
 	sProps[SIDX_IMPORTS].newhdr.sh_offset = Off;
 	sProps[SIDX_IMPORTS].data = (void*)&result[Off];
 	sProps[SIDX_IMPORTS].idx = curIdx++;
-	sProps[SIDX_IMPORTS].newhdr.sh_size = PROP_SZ_UNKNOWN; //Размер прибавляется в addSymbol
+	sProps[SIDX_IMPORTS].newhdr.sh_size = PROP_SZ_UNKNOWN; //Р Р°Р·РјРµСЂ РїСЂРёР±Р°РІР»СЏРµС‚СЃСЏ РІ addSymbol
 
 	symtab = (Elf32_Sym*)sProps[SIDX_DYNSYM].oldata;
 	oldrelPLT = (Elf32_Rel*)sProps[SIDX_REL_PLT].oldata;
@@ -902,8 +902,8 @@ UINT32 BuildPLT()
 
 	newrel = (Elf32_Rel*)sProps[SIDX_REL_PLT].data;
 
-	j = 0; // счетчик используемых PLT
-	g = 0; // счетчик используемых GOT
+	j = 0; // СЃС‡РµС‚С‡РёРє РёСЃРїРѕР»СЊР·СѓРµРјС‹С… PLT
+	g = 0; // СЃС‡РµС‚С‡РёРє РёСЃРїРѕР»СЊР·СѓРµРјС‹С… GOT
 	offset = PLT_INIT_SIZE;
 	while (offset != sProps[SIDX_PLT].oldhdr->sh_size)
 	{
@@ -933,14 +933,14 @@ UINT32 BuildPLT()
 		printf("BuildPLT: REL_PLT[%i], name = %s, val = %x, refs = %d\n", i, &((char*)sProps[SIDX_DYNSTR].oldata)[sym->st_name], sym->st_value, refnum );
 #endif
 
-		// начинаем формировать наш .imports
-		// только используемые 
+		// РЅР°С‡РёРЅР°РµРј С„РѕСЂРјРёСЂРѕРІР°С‚СЊ РЅР°С€ .imports
+		// С‚РѕР»СЊРєРѕ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ 
 		if ( refnum != 0 )
 		{
 			
 			newoff = sProps[SIDX_GOT].newhdr.sh_addr + g*sizeof(UINT32);
 
-			// только импортируемые
+			// С‚РѕР»СЊРєРѕ РёРјРїРѕСЂС‚РёСЂСѓРµРјС‹Рµ
 			if ( sym->st_value == 0 )
 			{
 				newrel->r_offset = newoff;
@@ -949,11 +949,11 @@ UINT32 BuildPLT()
 				newrel++;
 			}
 
-			// оффсет для LDR
+			// РѕС„С„СЃРµС‚ РґР»СЏ LDR
 			newoff -= sProps[SIDX_PLT].newhdr.sh_addr 
 						+ ((UINT8*)newplt - (UINT8*)sProps[SIDX_PLT].data) + 4 + 8; 
-			//+4 - смещение внутри PLT entry
-			//-8 - учёт, что смещение идёт через PC
+			//+4 - СЃРјРµС‰РµРЅРёРµ РІРЅСѓС‚СЂРё PLT entry
+			//-8 - СѓС‡С‘С‚, С‡С‚Рѕ СЃРјРµС‰РµРЅРёРµ РёРґС‘С‚ С‡РµСЂРµР· PC
 			
 
 			assert((newoff<=0xFFF) && (newoff>=0));
@@ -962,10 +962,10 @@ UINT32 BuildPLT()
 			newplt->bxlr = E32(0xE12FFF1C);
 			newplt->ldr =  E32(0xE59FC000 | newoff); //we need to calc got off here!
 
-			//Правим референсы
+			//РџСЂР°РІРёРј СЂРµС„РµСЂРµРЅСЃС‹
 			for (i=0; i<refnum; i++)
 			{
-				/* В reflist содержатся оффсеты внутри старого .text */
+				/* Р’ reflist СЃРѕРґРµСЂР¶Р°С‚СЃСЏ РѕС„С„СЃРµС‚С‹ РІРЅСѓС‚СЂРё СЃС‚Р°СЂРѕРіРѕ .text */
 				ldroff = (UINT32)sProps[SIDX_TEXT].data + reflist[i];
 				#ifdef LILENDIAN
 				UINT32	bl = makeBL( 
@@ -995,10 +995,10 @@ UINT32 BuildPLT()
 	}
 
 
-	// Теперь нужно дополнить внешними символами и релокациями, ранее бывшими в .dynsym, .rel.dyn
+	// РўРµРїРµСЂСЊ РЅСѓР¶РЅРѕ РґРѕРїРѕР»РЅРёС‚СЊ РІРЅРµС€РЅРёРјРё СЃРёРјРІРѕР»Р°РјРё Рё СЂРµР»РѕРєР°С†РёСЏРјРё, СЂР°РЅРµРµ Р±С‹РІС€РёРјРё РІ .dynsym, .rel.dyn
 	oldrelDYN = (Elf32_Rel*)sProps[SIDX_REL_DYN].oldata;
 
-	// REL_DYN может и не быть в простейших эльфах
+	// REL_DYN РјРѕР¶РµС‚ Рё РЅРµ Р±С‹С‚СЊ РІ РїСЂРѕСЃС‚РµР№С€РёС… СЌР»СЊС„Р°С…
 	if ( oldrelDYN != NULL )
 	{
 		for (i=0; i<sProps[SIDX_REL_DYN].oldhdr->sh_size / sizeof(Elf32_Rel); i++)
@@ -1007,7 +1007,7 @@ UINT32 BuildPLT()
 			if (j==0) continue;
 			sym = &symtab[j];
 
-			// Импортируется ли символ
+			// РРјРїРѕСЂС‚РёСЂСѓРµС‚СЃСЏ Р»Рё СЃРёРјРІРѕР»
 			if ( (sym->st_value == 0) || (sym->st_value == 1) )
 			{
 #ifdef _DEBUG
@@ -1026,7 +1026,7 @@ UINT32 BuildPLT()
 	return 1;
 }
 
-// Строит .rel.dyn и .dynsym для внутренних символов
+// РЎС‚СЂРѕРёС‚ .rel.dyn Рё .dynsym РґР»СЏ РІРЅСѓС‚СЂРµРЅРЅРёС… СЃРёРјРІРѕР»РѕРІ
 UINT32 BuildLocalRels()
 {
 	UINT32				i, j, g;
@@ -1043,11 +1043,11 @@ UINT32 BuildLocalRels()
 	
 	//oldrel = (Elf32_Rel*)sProps[SIDX_REL_DYN].oldata;
 
-	// REL_DYN может и не быть в простейших эльфах
+	// REL_DYN РјРѕР¶РµС‚ Рё РЅРµ Р±С‹С‚СЊ РІ РїСЂРѕСЃС‚РµР№С€РёС… СЌР»СЊС„Р°С…
 	//if (oldrel == NULL) return 1;
 	if ( internalCnt+symLsRelCnt == 0 ) return 1;
 
-	// Инициализация .rel.dyn
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .rel.dyn
 	sProps[SIDX_REL_DYN].data = (void*)&result[Off];
 	sProps[SIDX_REL_DYN].idx = curIdx++;
 	sProps[SIDX_REL_DYN].newhdr.sh_offset = Off;
@@ -1056,7 +1056,7 @@ UINT32 BuildLocalRels()
 
 		INC_O((internalCnt+symLsRelCnt)*sizeof(Elf32_Rel));
 		
-	// Инициализация .dynsym
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .dynsym
 	sProps[SIDX_DYNSYM].newhdr.sh_addr = 0;
 	sProps[SIDX_DYNSYM].newhdr.sh_offset = Off;
 	sProps[SIDX_DYNSYM].data = (void*)&result[Off];
@@ -1067,13 +1067,13 @@ UINT32 BuildLocalRels()
 	newrel = (Elf32_Rel*)sProps[SIDX_REL_DYN].data;
 	symtab = (Elf32_Sym*)sProps[SIDX_DYNSYM].oldata;
 
-	// Добавляем безсимвольные релокации, а также локальные неимпортируемые
+	// Р”РѕР±Р°РІР»СЏРµРј Р±РµР·СЃРёРјРІРѕР»СЊРЅС‹Рµ СЂРµР»РѕРєР°С†РёРё, Р° С‚Р°РєР¶Рµ Р»РѕРєР°Р»СЊРЅС‹Рµ РЅРµРёРјРїРѕСЂС‚РёСЂСѓРµРјС‹Рµ
 	if (oldrel != NULL) 
 	for (i=0; i<sProps[SIDX_REL_DYN].oldhdr->sh_size / sizeof(Elf32_Rel); i++, oldrel++)
 	{
 		index = ELF32_R_SYM(oldrel->r_info);
 
-		if (index == 0) // Безсимвольные релокации
+		if (index == 0) // Р‘РµР·СЃРёРјРІРѕР»СЊРЅС‹Рµ СЂРµР»РѕРєР°С†РёРё
 		{
 			newrel->r_info = ELF32_R_INFO( 0, ELF32_R_TYPE(oldrel->r_info) );
 		}
@@ -1085,7 +1085,7 @@ UINT32 BuildLocalRels()
 		printf("BuildLocalRels: RELDYN_SYM[%i], name= %s, val=%x\n", i, &((char*)sProps[SIDX_DYNSTR].oldata)[sym->st_name], sym->st_value );
 #endif
 
-			if ( (sym->st_value != 0) && (sym->st_value != 1) ) // Локальные неимпортируемые
+			if ( (sym->st_value != 0) && (sym->st_value != 1) ) // Р›РѕРєР°Р»СЊРЅС‹Рµ РЅРµРёРјРїРѕСЂС‚РёСЂСѓРµРјС‹Рµ
 			{
 				index = addSymbol(index, SIDX_DYNSYM, FALSE);
 				newrel->r_info = ELF32_R_INFO( index, ELF32_R_TYPE(oldrel->r_info) );
@@ -1109,7 +1109,7 @@ UINT32 BuildLocalRels()
 		newrel++;
  	}
 
-	// релокации для локальных функций у которых создана PLT (хз зачем GCC так делает)
+	// СЂРµР»РѕРєР°С†РёРё РґР»СЏ Р»РѕРєР°Р»СЊРЅС‹С… С„СѓРЅРєС†РёР№ Сѓ РєРѕС‚РѕСЂС‹С… СЃРѕР·РґР°РЅР° PLT (С…Р· Р·Р°С‡РµРј GCC С‚Р°Рє РґРµР»Р°РµС‚)
 	oldata = (UINT32*)sProps[SIDX_PLT].oldata;	
 	relPLT = (Elf32_Rel*)sProps[SIDX_REL_PLT].oldata;
 
@@ -1170,7 +1170,7 @@ UINT32 BuildLocalRels()
 			g, sym->st_value, newoff, ((Elf32_Sym*)sProps[SIDX_DYNSYM].data)[index].st_value );
 #endif
 
-				// в GOT для локальной функции запишем ее вирт-адресс
+				// РІ GOT РґР»СЏ Р»РѕРєР°Р»СЊРЅРѕР№ С„СѓРЅРєС†РёРё Р·Р°РїРёС€РµРј РµРµ РІРёСЂС‚-Р°РґСЂРµСЃСЃ
 				/*newoff = (UINT32)sProps[SIDX_GOT].data + g*sizeof(UINT32);
 				*(UINT32*)newoff = E32(sym->st_value);
 				Relocate( (UINT32*)newoff, RM_PTR_ENDIAN );
@@ -1180,7 +1180,7 @@ UINT32 BuildLocalRels()
 			sProps[SIDX_GOT].oldhdr->sh_addr + j*sizeof(UINT32), sym->st_value, E32(*(UINT32*)newoff) );
 #endif*/
 
-				// и добавим безсимвольную релокацию в этот GOT
+				// Рё РґРѕР±Р°РІРёРј Р±РµР·СЃРёРјРІРѕР»СЊРЅСѓСЋ СЂРµР»РѕРєР°С†РёСЋ РІ СЌС‚РѕС‚ GOT
 				/*newoff = sProps[SIDX_GOT].newhdr.sh_addr + g*sizeof(UINT32);
 				newrel->r_info = ELF32_R_INFO( 0, R_ARM_RELATIVE );
 				newrel->r_offset = newoff;
@@ -1270,7 +1270,7 @@ UINT32 ReserveDynamicSection()
 	char			*str;
 	UINT32			num = STATIC_TAGS_NUM;
 
-	// Инициализация dynamic секции
+	// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ dynamic СЃРµРєС†РёРё
 	sProps[SIDX_DYNAMIC].data = (void*)&result[Off];
 	sProps[SIDX_DYNAMIC].idx = curIdx++;
 	sProps[SIDX_DYNAMIC].newhdr.sh_offset = Off;
@@ -1288,7 +1288,7 @@ UINT32 ReserveDynamicSection()
 	}
 	#endif
 
-	// Подсчитываем NEEDED теги
+	// РџРѕРґСЃС‡РёС‚С‹РІР°РµРј NEEDED С‚РµРіРё
 	for (i=0; i<sProps[SIDX_DYNAMIC].oldhdr->sh_size/sizeof(Elf32_Dyn); i++)
 	{
 		if (dyn->d_tag == DT_NEEDED)
@@ -1307,13 +1307,13 @@ UINT32 ReserveDynamicSection()
 }
 
 
-// Заполнение .dynamic секции
+// Р—Р°РїРѕР»РЅРµРЅРёРµ .dynamic СЃРµРєС†РёРё
 UINT32 BuildDynamicTags()
 {
 	UINT32			i;
 	char			*str;
 
-/*	//инициализация dynamic секции
+/*	//РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ dynamic СЃРµРєС†РёРё
 	sProps[SIDX_DYNAMIC].data = (void*)&result[Off];
 	sProps[SIDX_DYNAMIC].newhdr.sh_offset = Off;
 	sProps[SIDX_DYNAMIC].newhdr.sh_addr   = 0;*/
@@ -1321,7 +1321,7 @@ UINT32 BuildDynamicTags()
 	Elf32_Dyn		*dyn = (Elf32_Dyn*)sProps[SIDX_DYNAMIC].data;
 	Elf32_Dyn		*olddyn = (Elf32_Dyn*)sProps[SIDX_DYNAMIC].oldata;
 
-	// Копируем NEEDED теги
+	// РљРѕРїРёСЂСѓРµРј NEEDED С‚РµРіРё
 	for (i=0; i<sProps[SIDX_DYNAMIC].oldhdr->sh_size/sizeof(Elf32_Dyn); i++)
 	{
 		if (olddyn->d_tag == DT_NEEDED)
@@ -1629,7 +1629,7 @@ UINT32 findInStrTab(char *strtab, UINT32 size, char *str)
 	return (UINT32)-1;
 }
 
-// Строит .dynsym с экспортами по *.def файлу
+// РЎС‚СЂРѕРёС‚ .dynsym СЃ СЌРєСЃРїРѕСЂС‚Р°РјРё РїРѕ *.def С„Р°Р№Р»Сѓ
 UINT32 BuildSharedExports()
 {
 	UINT32			i;
@@ -1641,7 +1641,7 @@ UINT32 BuildSharedExports()
 	if (Config.shared == 0) return 1;
 	if (sProps[SIDX_DYNSYM].data == NULL)
 	{
-			// Инициализация .dynsym
+			// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ .dynsym
 		sProps[SIDX_DYNSYM].newhdr.sh_addr = 0;
 		sProps[SIDX_DYNSYM].newhdr.sh_offset = Off;
 		sProps[SIDX_DYNSYM].data = (void*)&result[Off];
@@ -1649,7 +1649,7 @@ UINT32 BuildSharedExports()
 		sProps[SIDX_DYNSYM].newhdr.sh_size = PROP_SZ_UNKNOWN;
 	}
 
-	// Загружаем def
+	// Р—Р°РіСЂСѓР¶Р°РµРј def
 	i = prepareDef( Config.deffile, &def );
 	if ( !i ) return 2;
 
@@ -1788,7 +1788,7 @@ UINT32	prepareDef( const char * filename, STR_TABLE_T * def )
 	fclose( f );
 
 	count = 0;
-	// Преобразуем в null-terminated строки
+	// РџСЂРµРѕР±СЂР°Р·СѓРµРј РІ null-terminated СЃС‚СЂРѕРєРё
 	for ( i=0; i<size; i++ )
 	{
 		if ( def->strTable[i] == '\n' || def->strTable[i] == '\r' ) 
