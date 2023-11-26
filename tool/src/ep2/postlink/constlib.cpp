@@ -1,6 +1,8 @@
 
 #include "constlib.h"
 
+#include <cstdlib>
+
 char*		constNamesStrTbl;
 int			constNamesStrIdx;
 Ldr_Sym*	constNamesSymTbl;
@@ -50,7 +52,8 @@ char* initConstlib( char *name )
 	fSize = getFileSize(f);
 
 	file = (char*)malloc(fSize*sizeof(char)+2);
-	fread(file, fSize, 1, f);
+	int r = fread(file, fSize, 1, f);
+	if (!r) fprintf(stderr, "Cannot fread!\n");
 	fclose(f);
 	file[fSize] = '\0';
 	file[fSize+1] = 1;
@@ -105,7 +108,7 @@ int parseCHeaderLine( char* buf, int& idx )
 	constNamesSymTbl[constNamesCount].st_value = val;
 	constNamesSymTbl[constNamesCount].st_name = stridx;
 
-	printf("%s %d\n", &constNamesStrTbl[constNamesSymTbl[constNamesCount].st_name], constNamesSymTbl[constNamesCount].st_value );
+	printf("%s %ld\n", &constNamesStrTbl[constNamesSymTbl[constNamesCount].st_name], constNamesSymTbl[constNamesCount].st_value );
 
 	constNamesCount++;
 

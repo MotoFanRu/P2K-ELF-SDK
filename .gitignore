@@ -4,4 +4,6 @@ tool/lin/ep1/ADS12_848_Linux/*
 tool/win/ep1/ADS12_848_Windows/*
 !tool/win/ep1/ADS12_848_Windows/ReadMe.md
 
-tool/src/ep2/postlink/pltentry/pltentry.o
+tool/src/ep2/postlink/*.o
+tool/src/ep2/postlink/pltentry/*.o
+tool/src/ep2/postlink/postlink

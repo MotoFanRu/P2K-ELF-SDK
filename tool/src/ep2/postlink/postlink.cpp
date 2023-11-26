@@ -67,7 +67,12 @@ int main(int argc, char* argv[])
 
 		if(res == -1)
 		{
+#if defined(WIN32)
 			getch();
+#else
+			printf("Press any key to continue...\n");
+			getchar();
+#endif
 			return 0;
 		}
 
@@ -76,7 +81,12 @@ int main(int argc, char* argv[])
 	if (path == NULL)
 	{
 		printf("*ERROR: input file not specified!\n");
+#if defined(WIN32)
 		getch();
+#else
+		printf("Press any key to continue...\n");
+		getchar();
+#endif
 		return 0;
 	}
 
@@ -96,7 +106,8 @@ int main(int argc, char* argv[])
 	file = (char*)malloc(filesize);
 	result = (char*)malloc(filesize);
 
-	fread(file, filesize, 1, f);
+	int r = fread(file, filesize, 1, f);
+	if (!r) fprintf(stderr, "Cannot fread!\n");
 	fclose(f);
 
 		Off = 0;
@@ -230,6 +241,7 @@ UINT32	getFileSize(FILE *f)
 	return sz;
 }
 
+#if defined(WIN32)
 __declspec(naked) UINT32 __fastcall makeBL(UINT32 from, UINT32 to, char mode)
 {
 
@@ -271,6 +283,50 @@ _thumb_bl:
 		RET		4
 	}
 }
+#else
+UINT32 __attribute__((naked)) makeBL(UINT32 from, UINT32 to, char mode)
+{
+	__asm__(
+		"ADD    %[from], 4\n"
+		"SUB    %[to], %[from]\n"
+		"MOV    %[result], %[to]\n"
+		"MOV    %[mode], %%ecx\n"
+		"CMP    %[mode], 'T'\n"
+		"JE     _thumb_bl\n"
+
+		// ARM BL generation
+		"SUB    %[result], 0x4\n"
+		"SHR    %[result], 2\n"
+		"BSWAP  %[result]\n"
+		"MOV    %b[result],  0xEB\n"
+
+		"RET    $4\n"
+
+		// THUMB BL generation
+		"_thumb_bl:\n"
+		"SHR    %[to], 12\n"
+		"XCHG   %b[to], %ah\n"
+		"AND    %b[to], 0x7\n"
+		"OR     %b[to], 0xF0\n"
+
+		"SHL    %ax, 4\n"
+		"ROL    %ax, 3\n"
+		"OR     %b[result], 0xF8\n"
+		"SHL    %eax, 16\n"
+
+		"MOV    %ax, %[to]\n"
+
+		"#ifdef LILENDIAN\n"
+		"BSWAP  %eax\n"
+		"ROL    %eax, 16\n"
+		"#endif\n"
+
+		"RET    $4\n"
+		: [result] "=r" (from)
+		: [from] "r" (from), [to] "r" (to), [mode] "c" (mode)
+		);
+}
+#endif
 
 UINT32 findSectionIdxByName(const char* name, Elf32_Shdr *sectHdrs, char* strtab)
 {
@@ -470,7 +526,7 @@ UINT32 Relocate(UINT32 *target, REL_MODE_T	mode)
 					continue;
 
 				// Алгоритм не проверен, необходимо отслеживать данный случай
-				printf("\tWARNING: Special case for GCC after-section reloc occured at 0x%X\n", val);
+				printf("\tWARNING: Special case for GCC after-section reloc occured at 0x%lX\n", val);
 			}
 
 			off = sProps[i].newhdr.sh_addr + off;
@@ -522,6 +578,7 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 	immed = (plt->add&0x00FF); // immed_8
 	shift = (UINT8)((plt->add&0x0F00)>>8)*2; // shifter
 
+#if defined(WIN32)
 	//ROR
 	__asm {
 		MOV	eax, immed
@@ -529,6 +586,18 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 		ROR eax, cl
 		MOV	immed, eax
 	}
+#else
+	// ROR
+	__asm__ (
+		"MOV eax, %[immed]\n\t"
+		"MOV cl, %[shift]\n\t"
+		"ROR eax, cl\n\t"
+		"MOV %[immed], eax"
+		: [immed] "=r" (immed)
+		: [shift] "r" (shift)
+		: "eax", "cl"
+		);
+#endif
 
 	// calc the offset in the old image
 	return sProps[SIDX_PLT].oldhdr->sh_addr + offset + 12 + (plt->ldr&0x0FFF) + immed;
@@ -1681,7 +1750,7 @@ UINT32 BuildSharedExports()
 
 char* removePath(char *path)
 {
-	size_t		i = strlen(path)-1;
+	unsigned int		i = strlen(path)-1;
 
 	while ( (path[i] != '\\') && (path[i] != '/') && (i != 0) ) i--;
 
@@ -1784,7 +1853,8 @@ UINT32	prepareDef( const char * filename, STR_TABLE_T * def )
 	size = getFileSize( f );
 	def->strTable = (char*)malloc( size+1 );
 	if ( !def->strTable ) return 0;
-	fread( def->strTable, size, 1, f );
+	int r = fread( def->strTable, size, 1, f );
+	if (!r) fprintf(stderr, "Cannot fread!\n");
 	fclose( f );
 
 	count = 0;

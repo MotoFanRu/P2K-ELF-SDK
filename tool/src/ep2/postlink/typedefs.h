@@ -13,6 +13,8 @@
 	#define INT64					ELFINT64
 	#define BOOL					ELFBOOL
 	#define WCHAR					ELFWCHAR
+#else
+	#define __fastcall
 #endif
 
 typedef signed char				INT8;
@@ -73,7 +75,7 @@ typedef UINT32					SU_PORT_T;
 typedef void*					SU_PORT_HANDLE;
 typedef UINT32					AFW_ID_T;
 
-typedef unsigned int			size_t;
+// typedef unsigned int			size_t;
 
 typedef UINT32					HANDLE_T;
 

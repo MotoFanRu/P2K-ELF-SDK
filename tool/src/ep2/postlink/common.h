@@ -8,9 +8,11 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
 #include <assert.h>
+#if defined(WIN32)
+#include <conio.h>
 #include <windows.h>
+#endif
 
 #include "elf.h"
 
@@ -67,6 +69,7 @@ void switchEndian(Elf32_Phdr *hdr);
 void switchEndian(Elf32_Sym *sym);
 void switchEndian(Elf32_Dyn *dyn);
 
+#if defined(WIN32)
 __inline UINT64 E64( UINT64 x )
 {
 	__asm{
@@ -78,7 +81,7 @@ __inline UINT64 E64( UINT64 x )
 		xchg edx, eax
 		xchg ah, al
 		rol eax, 0x10
-		xchg ah,al	
+		xchg ah,al
 	}
 }
 
@@ -109,6 +112,60 @@ __inline UINT16 E16(UINT16 x)
 	}
 	return res;
 }
+#else
+
+/* Thanks to ChatGPT-4! */
+
+inline UINT64 E64(UINT64 x) {
+	UINT32 eax, edx;
+	__asm__ __volatile__(
+		"mov %1, %%eax\n"
+		"mov %2, %%edx\n"
+		"xchg %%ah, %%al\n"
+		"rol $0x10, %%eax\n"
+		"xchg %%ah, %%al\n"
+		"xchg %%edx, %%eax\n"
+		"xchg %%ah, %%al\n"
+		"rol $0x10, %%eax\n"
+		"xchg %%ah, %%al\n"
+		: "=a" (eax), "=d" (edx)
+		: "g" (x)
+		: "cc"
+		);
+	return ((UINT64)edx << 32) | eax;
+}
+
+inline UINT32 E32(UINT32 x) {
+	UINT32 res;
+
+	asm volatile(
+		"mov %[x], %%eax\n"
+		"bswap %%eax\n"
+		"mov %%eax, %[res]\n"
+		: [res] "=r" (res)
+		: [x] "r" (x)
+		: "eax"
+		);
+
+	return res;
+}
+
+inline UINT16 E16(UINT16 x) {
+	UINT16 res;
+
+	asm volatile(
+		"xor %%eax, %%eax\n"
+		"mov %[x], %%ax\n"
+		"xchg %%ah, %%al\n"
+		"mov %%ax, %[res]\n"
+		: [res] "=r" (res)
+		: [x] "r" (x)
+		: "eax"
+		);
+
+	return res;
+}
+#endif
 
 #ifdef LILENDIAN
 

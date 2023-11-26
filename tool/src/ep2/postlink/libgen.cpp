@@ -2,6 +2,8 @@
 #include "libgen.h"
 #include "constlib.h"
 
+#include <cstdlib>
+
 char		*fnStrTbl;
 UINT32		fnStrIdx, apiStrIdx;
 Elf32_Sym	*fnSymTbl;
@@ -424,7 +426,7 @@ UINT32	parseFnSymDef( char *path )
 	{
 		if ( buf[j] == '0' && buf[j+1] == 'x')
 		{
-			sscanf( &buf[j], "%X %c %s", &fnSymTbl[fnSymCnt].st_value, &mode, &fnStrTbl[fnStrIdx] );
+			sscanf( &buf[j], "%lX %c %s", &fnSymTbl[fnSymCnt].st_value, &mode, &fnStrTbl[fnStrIdx] );
 			if (mode == 'T') fnSymTbl[fnSymCnt].st_value++;
 			
 			if ( (mode == 'A') || (mode == 'T') || (mode=='D') )
@@ -495,7 +497,7 @@ UINT32	parseConstSymDef( char *path )
 	{
 		if ( buf[j] == '0' && buf[j+1] == 'x')
 		{
-			sscanf( &buf[j], "%X %c %s", &cstSymTbl[cstSymCnt].st_value, &mode, &cstStrTbl[cstStrIdx] );
+			sscanf( &buf[j], "%lX %c %s", &cstSymTbl[cstSymCnt].st_value, &mode, &cstStrTbl[cstStrIdx] );
 			if (mode == 'C')
 			{
 				cstSymTbl[cstSymCnt].st_name = cstStrIdx;
@@ -531,7 +533,8 @@ char* openAndFormat( char* path, UINT32 *nlines, UINT32 *size )
 
 	sz = getFileSize(f);
 	buf = (char*)malloc(sz+1);
-	fread( buf, sz, 1, f );
+	int r = fread( buf, sz, 1, f );
+	if (!r) fprintf(stderr, "Cannot fread!\n");
 	fclose(f);
 	buf[sz] = 0;
 
