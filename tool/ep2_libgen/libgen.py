@@ -15,8 +15,8 @@ from datetime import date
 
 P2K_ELF_SDK_PATH = os.path.join('..', '..')
 LIBRARIES_PATH = os.path.join(P2K_ELF_SDK_PATH, 'lib')
-POSTLINK_UTILITY_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'win', 'ep2', 'postlink.exe')
-POSTLINK_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'lin', 'ep2', 'postlink')
+POSTLINK_UTILITY_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'postlink.exe')
+POSTLINK_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'postlink')
 POSTLINK_UTILITY = POSTLINK_UTILITY_WINDOWS if sys.platform.startswith('win') else POSTLINK_UTILITY_LINUX
 
 
