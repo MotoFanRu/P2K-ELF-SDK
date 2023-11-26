@@ -114,8 +114,6 @@ __inline UINT16 E16(UINT16 x)
 }
 #else
 
-/* Thanks to ChatGPT-4! */
-
 inline UINT64 E64(UINT64 x) {
 	return __builtin_bswap64(x);
 }

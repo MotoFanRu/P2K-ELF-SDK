@@ -284,6 +284,7 @@ _thumb_bl:
 	}
 }
 #else
+/* Thanks to ChatGPT-4! */
 UINT32 makeBL(UINT32 from, UINT32 to, char mode)
 {
 	UINT32 offset = to - (from + 4); // current PC is +4 at least (in thumb)
