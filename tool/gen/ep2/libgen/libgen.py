@@ -20,10 +20,25 @@ POSTLINK_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'lin', 'ep2', 'p
 POSTLINK_UTILITY = POSTLINK_UTILITY_WINDOWS if sys.platform.startswith('win') else POSTLINK_UTILITY_LINUX
 
 
+def move_libraries(stub_library_path, phone_library_path):
+	sl_f = os.path.join('std.sa')
+	sl_t = os.path.join(stub_library_path, 'std.sa')
+	pl_f = os.path.join('std.lib')
+	pl_t = os.path.join(phone_library_path, 'library.bin')
+	print(f'Moving "{sl_f}" to "{sl_t}".')
+	print()
+	os.replace(sl_f, sl_t)
+	print(f'Moving "{pl_f}" to "{pl_t}".')
+	print()
+	os.replace(pl_f, pl_t)
+
+
 def generate_library(phone, firmware, version):
 	print(f'=> Generate library for {phone}, {firmware}, {version} version:')
 	print()
-	symdef = os.path.join(LIBRARIES_PATH, phone + '_' + firmware, 'library.sym')
+	phone_library_path = os.path.join(LIBRARIES_PATH, phone + '_' + firmware)
+	stub_library_path = os.path.join(P2K_ELF_SDK_PATH, 'ep', 'ep2', 'lib')
+	symdef = os.path.join(phone_library_path, 'library.sym')
 	if os.path.exists(symdef):
 		args = [
 			POSTLINK_UTILITY,
@@ -36,6 +51,7 @@ def generate_library(phone, firmware, version):
 		result = subprocess.run(args).returncode
 		command = ' '.join(args)
 		print(f'Result of "{command}" command is "{result}".')
+		move_libraries(stub_library_path, phone_library_path)
 	else:
 		print(f'File "{symdef}" is not exist!')
 	print()
