@@ -1,7 +1,7 @@
 
     AREA  PLTentry, CODE
     CODE16
-    
+
     BX    PC
     NOP
 
@@ -10,5 +10,5 @@
     LDR   R12, [PC, #0]
     BX    R12
 
-    
+
     END
