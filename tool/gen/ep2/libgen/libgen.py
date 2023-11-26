@@ -25,11 +25,11 @@ def move_libraries(stub_library_path, phone_library_path):
 	sl_t = os.path.join(stub_library_path, 'std.sa')
 	pl_f = os.path.join('std.lib')
 	pl_t = os.path.join(phone_library_path, 'library.bin')
+	print()
 	print(f'Moving "{sl_f}" to "{sl_t}".')
 	print()
 	os.replace(sl_f, sl_t)
 	print(f'Moving "{pl_f}" to "{pl_t}".')
-	print()
 	os.replace(pl_f, pl_t)
 
 
