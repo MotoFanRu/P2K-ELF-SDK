@@ -4,6 +4,8 @@ tool/ep1_lin_ADS12_848/*
 tool/ep1_win_ADS12_848/*
 !tool/ep1_win_ADS12_848/ReadMe.md
 
+tool/ep2_lin_devkitARM/*
+
 tool/ep2_postlink/*.o
 tool/ep2_postlink/pltentry/*.o
 tool/ep2_postlink/postlink

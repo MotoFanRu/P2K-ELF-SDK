@@ -7,7 +7,7 @@
 #include <stdargs.h>
 #include <events.h>
 #include <apps.h>
-#include <ATI.h>
+#include <ati.h>
 
 
 

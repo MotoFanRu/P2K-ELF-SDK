@@ -1,0 +1,4 @@
+; Autorun file for ELF programs, written by EXL.
+;
+; FBrowser by Andy51.
+file://c/Elf/fbrowser.elf
