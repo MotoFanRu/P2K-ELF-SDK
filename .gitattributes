@@ -2,3 +2,5 @@
 *.sym text eol=crlf
 *.def text eol=crlf
 *.run text eol=crlf
+*.asm text eol=crlf
+*.inc text eol=crlf

@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.16)
 ########################################################################################################################
 # Project section: pat
 #
-project(pat LANGUAGES ASM C CXX VERSION "1.0.0")
+project(pat LANGUAGES C CXX VERSION "1.0.0")
 
 if(CMAKE_HOST_WIN32)
 	set(LIB_FIND_PATTERNS "libfind_patterns_win_x86.a")

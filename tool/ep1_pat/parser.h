@@ -49,7 +49,7 @@ extern "C" {
 
 
 PARSER_RESULT_T  parseLine( char *buf, int *index, PARSED_DATA_T *parsed );
-u32 parsePatFile(char *path);
+u32 parsePatFile(const char *path);
 
 #ifdef __cplusplus
 }

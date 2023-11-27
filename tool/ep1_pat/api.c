@@ -3,7 +3,7 @@
 
 BOOL					gCrawlStarted;
 
-void* __stdcall libpatLoadBinary(char *path, u32 *size)
+void* __stdcall libpatLoadBinary(const char *path, u32 *size)
 {
 	FILE	*f;
 
@@ -22,7 +22,8 @@ void* __stdcall libpatLoadBinary(char *path, u32 *size)
 	gBuffer = (u8*)_mm_malloc(gBufLength, LENGTH_ALIGNMENT);
 #endif
 
-	fread(gBuffer, 1, gBufLength, f);
+	int r = fread(gBuffer, 1, gBufLength, f);
+	if (!r) fprintf(stderr, "Read error on %d line in %s function.", __LINE__, __FUNCTION__);
 
 	fclose(f);
 
@@ -106,7 +107,7 @@ void __stdcall libpatGetStats(LIBPAT_LDSTAT *result)
 }
 
 
-BOOL __stdcall libpatLoadPatterns(char *path)
+BOOL __stdcall libpatLoadPatterns(const char *path)
 {
 	if(parsePatFile(path) != PARSE_SUCCESS)
 		return FALSE;
@@ -116,7 +117,7 @@ BOOL __stdcall libpatLoadPatterns(char *path)
 
 
 
-BOOL __stdcall libpatAddPattern(char *pattern)
+BOOL __stdcall libpatAddPattern(const char *pattern)
 {
 	PARSER_RESULT_T		result;
 	PARSED_DATA_T		pdata;
@@ -131,7 +132,7 @@ BOOL __stdcall libpatAddPattern(char *pattern)
 	tmpbuf[len++] = '\n';
 	tmpbuf[len] = '\0';
 
-	result = parseLine( tmpbuf, &index, &pdata );
+	result = parseLine( tmpbuf, (int *) &index, &pdata );
 
 	if(result != PARSE_DONE)
 		return FALSE;
@@ -143,7 +144,7 @@ BOOL __stdcall libpatAddPattern(char *pattern)
 
 
 
-void __stdcall libpatSaveSymfile(char *path)
+void __stdcall libpatSaveSymfile(const char *path)
 {
 	FILE		*f;
 	int			i;
@@ -157,10 +158,10 @@ void __stdcall libpatSaveSymfile(char *path)
 	for(i=0; i<gPatCount; i++)
 	{
 		if(gPatterns[i].flags)
-			sprintf(buf, "0x%.8X %c %s\r\n", gPatterns[i].value, gPatterns[i].mode, gPatterns[i].name);
+			sprintf(buf, "0x%.8lX %c %s\r\n", gPatterns[i].value, gPatterns[i].mode, gPatterns[i].name);
 		else {
-			sprintf(buf, "%s not found!\r\n", gPatterns[i].name);
-			fprintf(stderr, "Warning! Function \"%s\" not found!\r\n", gPatterns[i].name);
+			sprintf(buf, "NOT_FOUND: %s\r\n", gPatterns[i].name);
+			fprintf(stderr, "Warning! Function \"%s %c\" not found!\r\n", gPatterns[i].name, gPatterns[i].mode);
 		}
 
 		fwrite(buf, strlen(buf), 1, f);
@@ -177,7 +178,7 @@ void __stdcall libpatSetOffset(u32 off)
 }
 
 
-u32* __stdcall libpatFindPattern(char *pattern, u32 *count)
+u32* __stdcall libpatFindPattern(const char *pattern, u32 *count)
 {
 	PARSER_RESULT_T		presult;
 	PARSED_DATA_T		pdata;
@@ -204,7 +205,7 @@ u32* __stdcall libpatFindPattern(char *pattern, u32 *count)
 	tmpbuf[len++] = '\n';
 	tmpbuf[len] = '\0';
 
-	presult = parseLine( tmpbuf, &index, &pdata );
+	presult = parseLine( tmpbuf, (int *) &index, &pdata );
 
 	if(presult != PARSE_DONE)
 		return NULL;
@@ -244,7 +245,7 @@ u32* __stdcall libpatFindPattern(char *pattern, u32 *count)
 }
 
 
-u32 __stdcall libpatFindPatternSingle(char *pattern)
+u32 __stdcall libpatFindPatternSingle(const char *pattern)
 {
 	u32			*result;
 	u32			count;

@@ -64,7 +64,7 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 #if defined(WIN32)
 	printf("%d/%d, %.2f%%", count, stat.patcount, count*100/(float)stat.patcount);
 #else
-	fprintf(stderr, "%d/%d, %.2f%%, %s\n", count, stat.patcount, count*100/(float)stat.patcount, buf);
+	fprintf(stderr, "%ld/%ld, %.2f%%, %s\n", count, stat.patcount, count*100/(float)stat.patcount, buf);
 #endif
 }
 
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
 
 	libpatGetStats(&stat);
 
-	printf("Patterns count: %d\nAverage pattern length: %f\nMax pattern length: %d\n16-byte length pattern count: %d (%d%% of total)\r\n", stat.patcount, stat.avglen, stat.maxlen, stat.len16cnt, stat.len16cnt*100/stat.patcount);
+	printf("Patterns count: %ld\nAverage pattern length: %f\nMax pattern length: %ld\n16-byte length pattern count: %ld (%ld%% of total)\r\n", stat.patcount, stat.avglen, stat.maxlen, stat.len16cnt, stat.len16cnt*100/stat.patcount);
 
 	libpatSetCallback(callback);
 
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 
 	libpatSaveSymfile("functions.sym");
 
-	printf("\r\n\r\nFinished! matches = %d\r\n\r\n", match);
+	printf("\r\n\r\nFinished! matches = %ld\r\n\r\n", match);
 
 	/*
 	list = libpatFindPattern("DRM_GetCurrentLanguage T 4A??230056D21C0120012A00D10047702900D0FC48??68007800", &match);

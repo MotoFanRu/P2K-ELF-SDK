@@ -21,7 +21,7 @@ u32	utilGetFileSize(FILE *f)
 }
 
 
-u32 parsePatFile(char *path)
+u32 parsePatFile(const char *path)
 {
 	PARSED_DATA_T		pdata;
 	FILE				*f;
@@ -76,7 +76,7 @@ u32 parsePatFile(char *path)
 	return PARSE_SUCCESS;
 }
 
-BOOL isInSet(char c, char *set)
+BOOL isInSet(char c, const char *set)
 {
 	if(set == NULL)
 		return FALSE;
@@ -92,7 +92,7 @@ BOOL isInSet(char c, char *set)
 	return FALSE;
 }
 
-void WaitForSet(char *set, char *buf, int &index)
+void WaitForSet(const char *set, const char *buf, int &index)
 {
 	while( !isInSet(buf[index], set) )
 		index++;
