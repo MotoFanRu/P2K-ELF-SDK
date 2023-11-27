@@ -69,7 +69,7 @@ void switchEndian(Elf32_Phdr *hdr);
 void switchEndian(Elf32_Sym *sym);
 void switchEndian(Elf32_Dyn *dyn);
 
-#if defined(WIN32)
+#if defined(INLINE_INTEL_MSVC_ASSEMBLER_CODE)
 __inline UINT64 E64( UINT64 x )
 {
 	__asm{
@@ -113,17 +113,47 @@ __inline UINT16 E16(UINT16 x)
 	return res;
 }
 #else
-
-inline UINT64 E64(UINT64 x) {
-	return __builtin_bswap64(x);
+static inline UINT64 E64(UINT64 val) {
+#if defined(__GNUC__) || defined(__clang__)
+	return __builtin_bswap64(val);
+#elif defined(_MSC_VER)
+	return _byteswap_uint64(val);
+#else
+	// Fallback for other compilers
+	return ((val & 0xFF00000000000000ull) >> 56) |
+		   ((val & 0x00FF000000000000ull) >> 40) |
+		   ((val & 0x0000FF0000000000ull) >> 24) |
+		   ((val & 0x000000FF00000000ull) >>  8) |
+		   ((val & 0x00000000FF000000ull) <<  8) |
+		   ((val & 0x0000000000FF0000ull) << 24) |
+		   ((val & 0x000000000000FF00ull) << 40) |
+		   ((val & 0x00000000000000FFull) << 56);
+#endif
 }
 
-inline UINT32 E32(UINT32 x) {
-	return __builtin_bswap32(x);
+static inline UINT32 E32(UINT32 val) {
+#if defined(__GNUC__) || defined(__clang__)
+	return __builtin_bswap32(val);
+#elif defined(_MSC_VER)
+	return _byteswap_ulong(val);
+#else
+	// Fallback for other compilers
+	return ((val & 0xFF000000) >> 24) |
+		   ((val & 0x00FF0000) >>  8) |
+		   ((val & 0x0000FF00) <<  8) |
+		   ((val & 0x000000FF) << 24);
+#endif
 }
 
-inline UINT16 E16(UINT16 x) {
-	return __builtin_bswap16(x);
+static inline UINT16 E16(UINT16 val) {
+#if defined(__GNUC__) || defined(__clang__)
+	return __builtin_bswap16(val);
+#elif defined(_MSC_VER)
+	return _byteswap_ushort(val);
+#else
+	// Fallback for other compilers
+	return (val >> 8) | (val << 8);
+#endif
 }
 #endif
 

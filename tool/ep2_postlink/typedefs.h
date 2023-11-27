@@ -14,7 +14,7 @@
 	#define BOOL					ELFBOOL
 	#define WCHAR					ELFWCHAR
 #else
-	#define __fastcall
+	#define __fastcall __attribute__((fastcall))
 #endif
 
 typedef signed char				INT8;

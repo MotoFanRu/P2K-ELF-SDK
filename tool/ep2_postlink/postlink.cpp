@@ -67,12 +67,6 @@ int main(int argc, char* argv[])
 
 		if(res == -1)
 		{
-#if defined(WIN32)
-			getch();
-#else
-			printf("Press any key to continue...\n");
-			getchar();
-#endif
 			return 0;
 		}
 
@@ -81,12 +75,6 @@ int main(int argc, char* argv[])
 	if (path == NULL)
 	{
 		printf("*ERROR: input file not specified!\n");
-#if defined(WIN32)
-		getch();
-#else
-		printf("Press any key to continue...\n");
-		getchar();
-#endif
 		return 0;
 	}
 
@@ -241,7 +229,7 @@ UINT32	getFileSize(FILE *f)
 	return sz;
 }
 
-#if defined(WIN32)
+#if defined(INLINE_INTEL_MSVC_ASSEMBLER_CODE)
 __declspec(naked) UINT32 __fastcall makeBL(UINT32 from, UINT32 to, char mode)
 {
 
@@ -285,27 +273,36 @@ _thumb_bl:
 }
 #else
 /* Thanks to ChatGPT-4! */
-UINT32 makeBL(UINT32 from, UINT32 to, char mode)
-{
-	UINT32 offset = to - (from + 4); // current PC is +4 at least (in thumb)
+UINT32 makeBL(UINT32 from, UINT32 to, char mode) {
+	// Calculate the signed offset in bytes between the 'to' and 'from' addresses
+	INT32 offset = to - (from + 4);
+	UINT32 bl_instruction = 0;
 
 	if (mode == 'T') {
-			// THUMB BL generation
-			offset = offset >> 12;
-			offset = ((offset & 0x7) << 8) | 0xF0;
-			offset = (offset << 8) | 0xEB;
-			offset = (offset << 16);
-#ifdef LILENDIAN
-			offset = ((offset & 0xFF) << 24) | ((offset & 0xFF00) << 8) | ((offset & 0xFF0000) >> 8) | ((offset & 0xFF000000) >> 24);
-#endif
+			// The offset for Thumb instructions is signed and has to be halfword-aligned, so we shift it right by 1
+			// (effectively dividing by 2 because the Thumb instruction set uses halfword offsets).
+			offset >>= 1;
+
+			// Thumb BL instructions are encoded in two halfwords
+			UINT16 high = 0xF000 | ((offset >> 11) & 0x7FF);
+			UINT16 low = 0xF800 | (offset & 0x7FF);
+
+			// The Thumb BL instruction correctly ordered as little-endian
+			bl_instruction = (UINT32) high << 16 | low;
 	} else {
-			// ARM BL generation
-			offset = (offset - 4) >> 2;
-			offset = __builtin_bswap32(offset);
-			offset = (offset & 0xFFFFFF00) | 0xEB;
+			// ARM mode BL instruction
+			// Divide by 4 because the offset is in words, not bytes
+			offset >>= 2;
+			offset -= 1;
+			// Construct the BL instruction with the condition code for always (0xE)
+			bl_instruction = 0xEB000000 | (offset & 0x00FFFFFF);
 	}
 
-	return offset;
+#ifndef LILENDIAN
+	bl_instruction = E32(bl_instruction);
+#endif
+
+	return bl_instruction;
 }
 #endif
 
@@ -353,9 +350,9 @@ UINT32 findRefs(UINT32 addr, UINT32 *refs)
 		{
 			from = sProps[SIDX_TEXT].oldhdr->sh_offset + i;
 			bl = makeBL(from, addr, 'T');
-			
 			//printf("findRefs: BL, from = x%X, code = x%X\n", from, E32(code));
 			code = *(UINT32*)((UINT8*)sProps[SIDX_TEXT].oldata+i);
+			//printf("from=0x%08X, addr=0x%08X bl=0x%08X code=0x%08X\n", from, addr, bl, E32(code));
 			if (code == bl)
 			{
 				//printf("findRefs: find, i=x%X, j=%d\n",i,j+1);
@@ -559,7 +556,7 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 	immed = (plt->add&0x00FF); // immed_8
 	shift = (UINT8)((plt->add&0x0F00)>>8)*2; // shifter
 
-#if defined(WIN32)
+#if defined(INLINE_INTEL_MSVC_ASSEMBLER_CODE)
 	//ROR
 	__asm {
 		MOV	eax, immed
@@ -568,10 +565,7 @@ UINT32 getPLTReference(PLT_ENTRY_OLD_T *plt, UINT32 offset)
 		MOV	immed, eax
 	}
 #else
-	UINT32 eax = immed;
-	UINT8 cl = shift;
-	eax = (eax >> cl) | (eax << (32 - cl));
-	immed = eax;
+	immed = (immed >> shift) | (immed << (32 - shift));
 #endif
 
 	// calc the offset in the old image
