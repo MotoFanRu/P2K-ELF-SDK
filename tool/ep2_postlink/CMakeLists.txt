@@ -15,7 +15,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 # It's buggy somewhere in the original code.
 #add_definitions("-DLILENDIAN")
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -O2")
 
 set(SOURCE_FILES
 	constlib.cpp
