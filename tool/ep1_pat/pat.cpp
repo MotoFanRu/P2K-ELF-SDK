@@ -77,7 +77,7 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 void printHelp()
 {
 	printf(
-		"pat v1.1 by Andy51, EXL 2010-2023\r\n\r\n"
+		"pat v1.1 by Andy51, EXL, (c) 2010-2023\r\n\r\n"
 		"Usage:\r\n\tpat [-ram-trans|-no-ram-trans] <CG1.smg> <functions.pat> [<CG1 offset>]\r\n\r\n"
 		"Example:\r\n\tpat -ram-trans E1_R373_G_0E.30.49R.smg functions.pat 0x10080000\r\n"
 		"\tpat -no-ram-trans L7_R4513_G_08.B7.ACR_RB.smg functions.pat 0x10092000\r\n"
@@ -108,11 +108,14 @@ int main(int argc, char* argv[])
 	{
 		cgoff = strtol(argv[4], NULL, 16);
 		
+		/*
+		 * Allow zero addresses!
 		if(cgoff == 0)
 		{
 			printHelp();
 			return 0;
 		}
+		*/
 
 		libpatSetOffset(cgoff);
 	}

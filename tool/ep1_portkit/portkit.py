@@ -10,11 +10,45 @@ import os
 import sys
 import subprocess
 
+REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
+DO_NOT_CLEAN_THESE_FILES = [ 'lte2_irom.sym' ]
 
 P2K_ELF_SDK_PATH = os.path.join('..', '..')
 PAT_UTILITY_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat.exe')
 PAT_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat')
 PAT_UTILITY = PAT_UTILITY_WINDOWS if sys.platform.startswith('win') else PAT_UTILITY_LINUX
+
+
+def clean_files(directory, files):
+	for file in files:
+		if file not in DO_NOT_CLEAN_THESE_FILES:
+			os.remove(os.path.join(directory, file))
+
+
+def generate_register_symbol_file(cg1_path, func, sym, name):
+	create_register_pattern(func, sym, name + '.pat')
+	pat_path = os.path.join('libgen', name + '.pat')
+	find_functions_from_patterns(cg1_path, pat_path, '-no-ram-trans', '0x00000000', name + '.sym')
+	clean_files('libgen', [name + '.pat'])
+
+
+def create_register_pattern(func, sym, name):
+	address = find_register_function_address(func, sym)[2:]
+	with open(os.path.join('libgen', name), 'w') as output:
+		print(f'Will write "Register D {address}" to "{name}" file!')
+		output.write(f'Register D {address}\r\n')
+
+
+def find_register_function_address(func, sym):
+	with open(os.path.join('libgen', sym), 'r') as input:
+		for line in input.read().splitlines():
+			line = line.strip()
+			if len(line) != 0 and not line.startswith('#'):
+				address, mode, name = line.split(' ')
+				if name == func:
+					address_int = int(address, 16) + 1
+					return f'0x{address_int:08X}'
+
 
 def validate_sym_file(sym):
 	syms = { }
@@ -23,7 +57,6 @@ def validate_sym_file(sym):
 		for line in input.read().splitlines():
 			line = line.strip()
 			if len(line) != 0 and not line.startswith('#'):
-				print(line)
 				address, mode, name = line.split(' ')
 				if not syms.get(name, None):
 					syms[name] = address
@@ -50,9 +83,7 @@ def create_general_function_sym_file(files, clean_flag, name):
 				output.write(input.read())
 				output.write('\r\n\r\n\r\n')
 	if clean_flag:
-		for file in files:
-			if file != 'lte2_irom.sym':
-				os.remove(os.path.join('libgen', file))
+		clean_files('libgen', files)
 
 
 def determine_platfrom(base_address):
@@ -73,6 +104,7 @@ def move_file(f, t):
 
 
 def find_functions_from_patterns(cg1_path, pat_path, ram_trans_flag, base_address, output):
+	result = 1
 	if os.path.exists(cg1_path) and os.path.exists(pat_path):
 		args = [
 			PAT_UTILITY,
@@ -107,7 +139,7 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 
 	print(f'file_size={file_size}\noffset={offset_hex}\naddress={address_hex}')
 
-	sym = 'functions.sym'
+	sym = 'all_functions.sym'
 	output_file = 'general.sym'
 
 	# Find SoC functions from patterns.
@@ -138,7 +170,10 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 	print(f'One big sym file validated, result={res}')
 	if not res:
 		return False
-	print()
+
+	# Find register address.
+	generate_register_symbol_file(cg1_path, REGISTER_FUNCTION_INJECTION, sym, 'register')
+
 
 
 if __name__ == '__main__':
