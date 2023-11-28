@@ -10,30 +10,127 @@ import os
 import sys
 import subprocess
 
+
 REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
 DO_NOT_CLEAN_THESE_FILES = [ 'lte2_irom.sym' ]
+ELFPACK1_OBJS = 'obj_new' # obj_old
 
 P2K_ELF_SDK_PATH = os.path.join('..', '..')
+
 PAT_UTILITY_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat.exe')
 PAT_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat')
 PAT_UTILITY = PAT_UTILITY_WINDOWS if sys.platform.startswith('win') else PAT_UTILITY_LINUX
 
+TCC_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_win_ADS', 'bin', 'tcc.exe')
+TCC_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'tcc')
+TCC_COMPILER = TCC_COMPILER_WINDOWS if sys.platform.startswith('win') else TCC_COMPILER_LINUX
+
+ARMLINK_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_win_ADS', 'bin', 'armlink.exe')
+ARMLINK_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'armlink')
+ARMLINK_COMPILER = ARMLINK_COMPILER_WINDOWS if sys.platform.startswith('win') else ARMLINK_COMPILER_LINUX
+
+FROMLINK_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_win_ADS', 'bin', 'fromelf.exe')
+FROMLINK_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'fromelf')
+FROMLINK_COMPILER = FROMLINK_COMPILER_WINDOWS if sys.platform.startswith('win') else FROMLINK_COMPILER_LINUX
+
+
+def generate_binary_image_from_elf(name):
+	result = 1
+	elf = os.path.join(ELFPACK1_OBJS, name + '.elf')
+	bin = os.path.join(ELFPACK1_OBJS, name + '.bin')
+	if os.path.exists(elf):
+		args = [
+			FROMLINK_COMPILER,
+			elf,
+			'-bin',
+			'-output',
+			bin
+		]
+		print()
+		result = subprocess.run(args).returncode
+		command = ' '.join(args)
+		print(f'Result of "{command}" command is "{result}".')
+		print()
+	else:
+		print(f'Error! "{elf}" file is not exist!')
+	return result == 0
+
+
+def link_elfpack(files, name, start_address, all_syms):
+	result = 1
+
+	for obj in files:
+		if not os.path.exists(os.path.join(ELFPACK1_OBJS, obj)):
+			print(f'Error: Object file "{obj}" is missed!')
+			return False
+
+	args = []
+	args.append(ARMLINK_COMPILER)
+	args.append('-ro-base')
+	args.append(start_address)
+	args.append('-symdefs')
+	args.append(os.path.join(ELFPACK1_OBJS, name + '.sym'))
+	for obj in files:
+		args.append(os.path.join(ELFPACK1_OBJS, obj))
+	args.append(os.path.join('libgen', all_syms))
+	args.append('-o')
+	args.append(os.path.join(ELFPACK1_OBJS, name + '.elf'))
+
+	print()
+	result = subprocess.run(args).returncode
+	command = ' '.join(args)
+	print(f'Result of "{command}" command is "{result}".')
+	print()
+
+	return result == 0
+
+
+
+def compile_system_information_obj(name):
+	result = 1
+	source = os.path.join(ELFPACK1_OBJS, name)
+	output = os.path.join(ELFPACK1_OBJS, name.replace('.c', '.o'))
+	sdk = os.path.join(P2K_ELF_SDK_PATH, 'ep', 'sdk')
+	if os.path.exists(source):
+		args = [
+			TCC_COMPILER,
+			'-I' + sdk,
+			'-c',
+			'-bigend',
+			'-apcs',
+			'/interwork',
+			source,
+			'-o',
+			output
+		]
+		print()
+		result = subprocess.run(args).returncode
+		command = ' '.join(args)
+		print(f'Result of "{command}" command is "{result}".')
+		print()
+	else:
+		print(f'Error! "{source}" file is not exist!')
+	return result == 0
+
 
 def generate_system_information_header(cg1_path, base_address, name):
 	info = []
-	segs_1 = os.path.basename(cg1_path).replace('.smg', '').replace('.bin', '').split('_')
-	segs_2 = os.path.basename(cg1_path).replace('.smg', '').replace('.bin', '').split('.')
+	basename = os.path.basename(cg1_path).replace('.smg', '').replace('.bin', '')
+	segs_1 = basename.split('_')
+	segs_2 = basename.split('.')
 	platform = determine_platfrom(base_address);
 	if platform == 'LTE1':
 		platform = 'LTE'
 
+	major_fw = basename.replace(segs_1[0] + '_', '').replace('.' + segs_2[-1], '')
+
 	info.append(('n_phone', segs_1[0]))
 	info.append(('n_platform', platform))
-	info.append(('n_majorfw', segs_1[1]))
+	info.append(('n_majorfw', major_fw))
 	info.append(('n_minorfw', segs_2[-1]))
 
 	print()
-	with open(os.path.join('elfpack1', name), 'w') as output:
+	with open(os.path.join(ELFPACK1_OBJS, name), 'w') as output:
 		for name, value in info:
 			template = f'const char {name}[]\t=\t"{value}";'
 			print(template)
@@ -102,6 +199,8 @@ def create_general_function_sym_file(files, clean_flag, name):
 	with open(os.path.join('libgen', name), 'w') as output:
 		for file in files:
 			with open(os.path.join('libgen', file), 'r') as input:
+				output.write('#<SYMDEFS>#symdef-file\r\n')
+				output.write('# SYMDEFS ADS HEADER\r\n\r\n')
 				output.write(f'# {file}\r\n')
 				output.write(input.read())
 				output.write('\r\n\r\n\r\n')
@@ -197,8 +296,14 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 	# Generate register address.
 	generate_register_symbol_file(cg1_path, REGISTER_FUNCTION_INJECTION, sym, 'register')
 
-	# Generate system information C-header.
+	# Generate system information C-header and compile it.
 	generate_system_information_header(cg1_path, base_address, 'SysInfo.c')
+	compile_system_information_obj('SysInfo.c')
+
+	# Build ElfPack.
+	link_elfpack(['AutoRun.o', 'ElfLoader.o', 'ElfLoaderApp.o', 'LibC.o', 'SysInfo.o'], 'ElfPack', address_hex, sym)
+	generate_binary_image_from_elf('ElfPack')
+
 
 if __name__ == '__main__':
 	print('portkit.py script by EXL, 27-Nov-2023')
