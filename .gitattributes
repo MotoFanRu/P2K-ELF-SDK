@@ -4,3 +4,4 @@
 *.run text eol=crlf
 *.asm text eol=crlf
 *.inc text eol=crlf
+*.pat text eol=crlf

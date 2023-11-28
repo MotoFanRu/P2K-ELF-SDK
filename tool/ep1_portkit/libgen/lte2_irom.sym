@@ -1,0 +1,6 @@
+0x000011DC A __rt_memcpy
+0x00001294 A __rt_memcpy_w
+0x00001138 A __rt_memclr
+0x00001728 T strlen
+0x000016AC T strcpy
+0x000015CC T strcat
