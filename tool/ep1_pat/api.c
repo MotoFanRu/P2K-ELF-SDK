@@ -162,7 +162,7 @@ void __stdcall libpatSaveSymfile(const char *path)
 		if(gPatterns[i].flags)
 			sprintf(buf, "0x%.8lX %c %s\r\n", gPatterns[i].value, gPatterns[i].mode, gPatterns[i].name);
 		else {
-			sprintf(buf, "# NOT_FOUND: %s %c\r\n", gPatterns[i].name, gPatterns[i].mode);
+			sprintf(buf, "# NOT_FOUND: %c %s\r\n", gPatterns[i].mode, gPatterns[i].name);
 			fprintf(stderr, "Warning! Function \"%s %c\" not found!\r\n", gPatterns[i].name, gPatterns[i].mode);
 		}
 

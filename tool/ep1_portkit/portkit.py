@@ -16,6 +16,31 @@ PAT_UTILITY_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat.exe')
 PAT_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat')
 PAT_UTILITY = PAT_UTILITY_WINDOWS if sys.platform.startswith('win') else PAT_UTILITY_LINUX
 
+def validate_sym_file(sym):
+	syms = { }
+	missed = [ ]
+	with open(os.path.join('libgen', sym), 'r') as input:
+		for line in input.read().splitlines():
+			line = line.strip()
+			if len(line) != 0 and not line.startswith('#'):
+				print(line)
+				address, mode, name = line.split(' ')
+				if not syms.get(name, None):
+					syms[name] = address
+				else:
+					first_address = syms[name]
+					print(f'Warning! Dublicates:\r\n\r\n\t{first_address}:{name}\r\n\t{address}:{name}')
+					return False
+			elif line.startswith('# NOT_FOUND: '):
+				mode, name = line.replace('# NOT_FOUND: ', '').split(' ')
+				missed.append((name, mode))
+	print()
+	for name, mode in missed:
+		if not syms.get(name, None):
+			print(f'Warning! Missed: {mode} {name}')
+	print()
+	return True
+
 
 def create_general_function_sym_file(files, clean_flag, name):
 	with open(os.path.join('libgen', name), 'w') as output:
@@ -26,7 +51,8 @@ def create_general_function_sym_file(files, clean_flag, name):
 				output.write('\r\n\r\n\r\n')
 	if clean_flag:
 		for file in files:
-			os.remove(os.path.join('libgen', file))
+			if file != 'lte2_irom.sym':
+				os.remove(os.path.join('libgen', file))
 
 
 def determine_platfrom(base_address):
@@ -67,7 +93,7 @@ def find_functions_from_patterns(cg1_path, pat_path, ram_trans_flag, base_addres
 			print(f'Cannot read "{cg1_path}" file!')
 		else:
 			print(f'Cannot read "{pat_path}" file!')
-	return result
+	return result == 0
 
 
 def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
@@ -102,12 +128,17 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 	find_functions_from_patterns(cg1_path, pat_path, ram_trans_flag, base_address, output_file)
 
 	# Combine all into one big sym file.
-
 	if platform == 'LTE1':
 		create_general_function_sym_file(['general.sym', 'lte1.sym'], True, sym)
 	elif platform == 'LTE2':
 		create_general_function_sym_file(['general.sym', 'lte2.sym', 'lte2_irom.sym'], True, sym)
 
+	# Validate one big sym file.
+	res = validate_sym_file(sym)
+	print(f'One big sym file validated, result={res}')
+	if not res:
+		return False
+	print()
 
 
 if __name__ == '__main__':
