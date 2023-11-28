@@ -12,7 +12,7 @@ compilers:
     match-language: C
     match-compiler-exe: "(.*/)?tcc(\\.exe)?"
     code-insight-target-name: arm7tdmi
-    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    include-dirs: [ "${compiler-exe-dir}/../../../../ep/sdk", "${compiler-exe-dir}/../../../../ep/ep1/inc" ]
     defines-text: "
 #define __APCS_INTERWORK 1
 #define __arm 1
@@ -41,7 +41,7 @@ compilers:
     match-language: CPP
     match-compiler-exe: "(.*/)?tcpp(\\.exe)?"
     code-insight-target-name: arm7tdmi
-    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    include-dirs: [ "${compiler-exe-dir}/../../../../ep/sdk", "${compiler-exe-dir}/../../../../ep/ep1/inc" ]
     defines-text: "
 #define __APCS_INTERWORK 1
 #define __arm 1
@@ -71,7 +71,7 @@ compilers:
     match-language: C
     match-compiler-exe: "(.*/)?armcc(\\.exe)?"
     code-insight-target-name: arm7tdmi
-    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    include-dirs: [ "${compiler-exe-dir}/../../../../ep/sdk", "${compiler-exe-dir}/../../../../ep/ep1/inc" ]
     defines-text: "
 #define __APCS_INTERWORK 1
 #define __arm 1
@@ -99,7 +99,7 @@ compilers:
     match-language: CPP
     match-compiler-exe: "(.*/)?tcpp(\\.exe)?"
     code-insight-target-name: arm7tdmi
-    include-dirs: [ "${compiler-exe-dir}/../../../ep/sdk", "${compiler-exe-dir}/../../../ep/ep1/inc" ]
+    include-dirs: [ "${compiler-exe-dir}/../../../../ep/sdk", "${compiler-exe-dir}/../../../../ep/ep1/inc" ]
     defines-text: "
 #define __APCS_INTERWORK 1
 #define __arm 1

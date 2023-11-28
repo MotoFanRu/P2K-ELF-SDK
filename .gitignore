@@ -1,14 +1,11 @@
-tool/ep1_lin_ADS12_848/*
-!tool/ep1_lin_ADS12_848/ReadMe.md
+tool/compiler/ep1_lin_ADS/*
+!tool/compiler/ep1_lin_ADS/ReadMe.md
 
-tool/ep1_win_ADS12_848/*
-!tool/ep1_win_ADS12_848/ReadMe.md
+tool/compiler/ep1_win_ADS/*
+!tool/compiler/ep1_win_ADS/ReadMe.md
 
-tool/ep2_lin_devkitARM/*
+tool/compiler/ep2_lin_devkitARM/*
+tool/compiler/ep2_lin_devkitARM/ReadMe.md
 
-tool/ep2_postlink/*.o
-tool/ep2_postlink/pltentry/*.o
-tool/ep2_postlink/postlink
-
-tool/ep2_libgen/*.lib
-tool/ep2_libgen/*.sa
+tool/compiler/ep2_win_devkitARM/*
+tool/compiler/ep2_win_devkitARM/ReadMe.md

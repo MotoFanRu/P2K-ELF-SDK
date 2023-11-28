@@ -1,5 +1,5 @@
-ADS12_848_Linux
-===============
+ADS for Linux
+=============
 
 ## Download
 

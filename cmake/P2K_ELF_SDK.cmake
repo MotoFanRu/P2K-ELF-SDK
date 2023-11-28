@@ -1,12 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-if(NOT ELFPACK)
-	set(ELFPACK "EP1")
-endif()
-
-if(NOT CPU_MODE)
-	set(CPU_MODE "thumb")
-endif()
+set(ELFPACK "EP1" CACHE STRING "Default value for ELFPACK" FORCE)
+set(CPU_MODE "thumb" CACHE STRING "Default value for CPU_MODE" FORCE)
 
 set(P2K_TOOLCHAIN_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
 
