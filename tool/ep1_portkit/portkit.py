@@ -19,6 +19,29 @@ PAT_UTILITY_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'pat')
 PAT_UTILITY = PAT_UTILITY_WINDOWS if sys.platform.startswith('win') else PAT_UTILITY_LINUX
 
 
+def generate_system_information_header(cg1_path, base_address, name):
+	info = []
+	segs_1 = os.path.basename(cg1_path).replace('.smg', '').replace('.bin', '').split('_')
+	segs_2 = os.path.basename(cg1_path).replace('.smg', '').replace('.bin', '').split('.')
+	platform = determine_platfrom(base_address);
+	if platform == 'LTE1':
+		platform = 'LTE'
+
+	info.append(('n_phone', segs_1[0]))
+	info.append(('n_platform', platform))
+	info.append(('n_majorfw', segs_1[1]))
+	info.append(('n_minorfw', segs_2[-1]))
+
+	print()
+	with open(os.path.join('elfpack1', name), 'w') as output:
+		for name, value in info:
+			template = f'const char {name}[]\t=\t"{value}";'
+			print(template)
+			output.write(template)
+			output.write('\r\n')
+	print()
+
+
 def clean_files(directory, files):
 	for file in files:
 		if file not in DO_NOT_CLEAN_THESE_FILES:
@@ -171,10 +194,11 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 	if not res:
 		return False
 
-	# Find register address.
+	# Generate register address.
 	generate_register_symbol_file(cg1_path, REGISTER_FUNCTION_INJECTION, sym, 'register')
 
-
+	# Generate system information C-header.
+	generate_system_information_header(cg1_path, base_address, 'SysInfo.c')
 
 if __name__ == '__main__':
 	print('portkit.py script by EXL, 27-Nov-2023')
