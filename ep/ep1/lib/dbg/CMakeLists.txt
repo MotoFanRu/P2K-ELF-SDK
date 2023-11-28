@@ -3,10 +3,9 @@
 #
 cmake_minimum_required(VERSION 3.16)
 
-set(ELFPACK "EP1" CACHE STRING "Default value for ELFPACK" FORCE)
-set(CPU_MODE "thumb" CACHE STRING "Default value for CPU_MODE" FORCE)
-
-set(CMAKE_TOOLCHAIN_FILE "../../../../cmake/P2K_ELF_SDK.cmake")
+set(ELFPACK "EP1" CACHE STRING "Default value for ELFPACK")
+set(CPU_MODE "thumb" CACHE STRING "Default value for CPU_MODE")
+include("../../../../cmake/P2K_ELF_SDK.cmake")
 
 ########################################################################################################################
 # Project section: dbg
