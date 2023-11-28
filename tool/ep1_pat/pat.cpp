@@ -42,8 +42,13 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 	static BOOL		first = TRUE;
 	static short	x, y;
 	int i = 0;
+	int size = 0;
 
-	strncpy(buf, curPat->name, 78);
+	const char *mode = &curPat->mode;
+
+	strncpy(buf, mode, 1);
+	strncpy(buf + 1, " ", 1);
+	strncpy(buf + 2, curPat->name, 76);
 
 	for(i=strlen(buf); i<80; i++)
 	{
@@ -62,17 +67,22 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 	gotoxy(x, y);
 
 #if defined(WIN32)
-	printf("%d/%d, %.2f%%", count, stat.patcount, count*100/(float)stat.patcount);
+	printf("%03d/%03d, %06.2f%%", count, stat.patcount, count*100/(float)stat.patcount);
 #else
-	fprintf(stderr, "%ld/%ld, %.2f%%, %s\n", count, stat.patcount, count*100/(float)stat.patcount, buf);
+	fprintf(stderr, "%06.2f%% | %03ld/%03ld | %s\n", count*100/(float)stat.patcount, count, stat.patcount, buf);
 #endif
 }
 
 
 void printHelp()
 {
-	printf(	"pat v1.1 by Andy51, 2010\r\n\r\n"
-			"Usage: pat <CG1.smg> <functions.pat> [<CG1 offset>]\r\n");
+	printf(
+		"pat v1.1 by Andy51, EXL 2010-2023\r\n\r\n"
+		"Usage:\r\n\tpat [-ram-trans|-no-ram-trans] <CG1.smg> <functions.pat> [<CG1 offset>]\r\n\r\n"
+		"Example:\r\n\tpat -ram-trans E1_R373_G_0E.30.49R.smg functions.pat 0x10080000\r\n"
+		"\tpat -no-ram-trans L7_R4513_G_08.B7.ACR_RB.smg functions.pat 0x10092000\r\n"
+		"\tpat -no-ram-trans V3i_R4441D_G_08.01.03R.smg functions.pat 0x100A0000\r\n\r\n"
+	);
 }
 
 
@@ -82,20 +92,21 @@ int main(int argc, char* argv[])
 	u32			*list;
 	u32			i;
 	u32			cgoff;
+	BOOL		ram_trans = FALSE;
 
 #if !defined(WIN32)
 	libpatInit();
 #endif
 
-	if((argc != 3) && (argc != 4))
+	if((argc != 4) && (argc != 5))
 	{
 		printHelp();
 		return 0;
 	}
 
-	if(argc == 4)
+	if(argc == 5)
 	{
-		cgoff = strtol(argv[3], NULL, 16);
+		cgoff = strtol(argv[4], NULL, 16);
 		
 		if(cgoff == 0)
 		{
@@ -106,15 +117,24 @@ int main(int argc, char* argv[])
 		libpatSetOffset(cgoff);
 	}
 
-	if(libpatLoadBinary(argv[1], NULL) == NULL)
+	if(!strncmp(argv[1], "-ram-trans", strlen("-ram-trans")))
 	{
-		printf("ERROR: Binary file not found: %s\r\n", argv[1]);
+		ram_trans = TRUE;
+	}
+	if(!strncmp(argv[1], "-no-ram-trans", strlen("-no-ram-trans")))
+	{
+		ram_trans = FALSE;
+	}
+
+	if(libpatLoadBinary(argv[2], NULL) == NULL)
+	{
+		printf("ERROR: Binary file not found: %s\r\n", argv[2]);
 		return 0;
 	}
 
-	if(libpatLoadPatterns(argv[2]) == FALSE)
+	if(libpatLoadPatterns(argv[3]) == FALSE)
 	{
-		printf("ERROR: Invalid patterns file: %s\r\n", argv[2]);
+		printf("ERROR: Invalid patterns file: %s\r\n", argv[3]);
 		return 0;
 	}
 
@@ -124,7 +144,7 @@ int main(int argc, char* argv[])
 
 	libpatSetCallback(callback);
 
-	libpatEnableRamTrans(TRUE);
+	libpatEnableRamTrans(ram_trans);
 
 	match = libpatFindAllPatterns();
 

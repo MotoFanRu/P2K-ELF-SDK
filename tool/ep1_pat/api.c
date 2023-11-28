@@ -155,12 +155,14 @@ void __stdcall libpatSaveSymfile(const char *path)
     strcpy(buf, "#<SYMDEFS>#symdef-file\r\n");
 	fwrite(buf, strlen(buf), 1, f);
 
+	fprintf(stderr, "\r\n");
+
 	for(i=0; i<gPatCount; i++)
 	{
 		if(gPatterns[i].flags)
 			sprintf(buf, "0x%.8lX %c %s\r\n", gPatterns[i].value, gPatterns[i].mode, gPatterns[i].name);
 		else {
-			sprintf(buf, "NOT_FOUND: %s\r\n", gPatterns[i].name);
+			sprintf(buf, "# NOT_FOUND: %s %c\r\n", gPatterns[i].name, gPatterns[i].mode);
 			fprintf(stderr, "Warning! Function \"%s %c\" not found!\r\n", gPatterns[i].name, gPatterns[i].mode);
 		}
 
