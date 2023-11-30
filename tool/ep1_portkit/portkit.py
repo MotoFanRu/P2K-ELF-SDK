@@ -51,8 +51,103 @@ FROMLINK_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', '
 FROMLINK_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'fromelf')
 FROMLINK_COMPILER = FROMLINK_COMPILER_WINDOWS if sys.platform.startswith('win') else FROMLINK_COMPILER_LINUX
 
+ARMASM_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_win_ADS', 'bin', 'armasm.exe')
+ARMASM_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'armasm')
+ARMASM_COMPILER = ARMASM_COMPILER_WINDOWS if sys.platform.startswith('win') else ARMASM_COMPILER_LINUX
 
-def genereate_register_patch(firmware, author, description, file_name):
+ARMAR_COMPILER_WINDOWS = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_win_ADS', 'bin', 'armar.exe')
+ARMAR_COMPILER_LINUX = os.path.join(P2K_ELF_SDK_PATH, 'tool', 'compiler', 'ep1_lin_ADS', 'bin', 'armar')
+ARMAR_COMPILER = ARMAR_COMPILER_WINDOWS if sys.platform.startswith('win') else ARMAR_COMPILER_LINUX
+
+
+def compile_sdk_library(library_name):
+	s = os.path.join(LIBGEN_DIR, 'lib.asm')
+	o = os.path.join(LIBGEN_DIR, library_name + '.o')
+	a = os.path.join(LIBGEN_DIR, library_name + '.a')
+
+	if os.path.exists(s):
+		args = [
+			ARMASM_COMPILER,
+			'-16',
+			'-bigend',
+			'-apcs',
+			'/interwork',
+			s,
+			'-o',
+			o
+		]
+		print()
+		result = subprocess.run(args).returncode
+		command = ' '.join(args)
+		print(f'Result of "{command}" command is "{result}".')
+		print()
+	else:
+		print(f'Error! "{s}" file is not exist!')
+
+	if os.path.exists(o):
+		args = [
+			ARMAR_COMPILER,
+			'--create',
+			'-cr',
+			a,
+			o
+		]
+		print()
+		result = subprocess.run(args).returncode
+		command = ' '.join(args)
+		print(f'Result of "{command}" command is "{result}".')
+		print()
+	else:
+		print(f'Error! "{s}" file is not exist!')
+
+
+
+def generate_library_sources(lib_sym):
+	s = os.path.join(LIBGEN_DIR, lib_sym)
+	if os.path.exists(s):
+		args = [
+			'python',
+			os.path.join(LIBGEN_DIR, 'libgen.py'),
+			os.path.join(LIBGEN_DIR, lib_sym)
+		]
+		print()
+		result = subprocess.run(args).returncode
+		command = ' '.join(args)
+		print(f'Result of "{command}" command is "{result}".')
+		print()
+
+		if result == 0:
+			move_file(os.path.join('lib.bin'), os.path.join('lib.bin'))
+			move_file(os.path.join('lib.asm'), os.path.join('lib.asm'))
+
+	else:
+		print(f'Error! "{s}" file is not exist!')
+
+
+def generate_functions_sym(all_functions_sym, elfpack_sym, lib_sym, skip_names, to_names):
+	i_1 = os.path.join(LIBGEN_DIR, all_functions_sym)
+	i_2 = os.path.join(ELFPACK1_OBJS_DIR, elfpack_sym)
+	o_1 = os.path.join(LIBGEN_DIR, lib_sym)
+	with open(i_1, 'r') as in1, open(i_2, 'r') as in2, open(o_1, 'w') as output:
+		output.write('#<SYMDEFS>#symdef-file\r\n')
+		output.write('# SYMDEFS ADS HEADER\r\n\r\n')
+		for line in in1.read().splitlines():
+			line = line.strip()
+			if len(line) != 0 and not line.startswith('#'):
+				address, mode, name = line.split(' ')
+				if name not in skip_names:
+					output.write(line + '\r\n')
+		output.write('\r\n\r\n')
+		for line in in2.read().splitlines():
+			line = line.strip()
+			if len(line) != 0 and not line.startswith('#'):
+				address, mode, name = line.split(' ')
+				for add in to_names:
+					if name.find(add) != -1:
+						output.write(line + '\r\n')
+
+
+def generate_register_patch(firmware, author, description, file_name):
 	elfpack_sym = os.path.join(ELFPACK1_OBJS_DIR, 'ElfPack.sym')
 	register_sym = os.path.join(LIBGEN_DIR, 'register.sym')
 	fpa = os.path.join(ELFPACK1_OBJS_DIR, file_name)
@@ -193,7 +288,7 @@ def generate_system_information_header(cg1_path, base_address, name):
 
 def clean_files(directory, files):
 	for file in files:
-		if file not in DO_NOT_CLEAN_THESE_FILES:
+		if file not in DO_NOT_CLEAN_THESE_FILES and os.path.exists(file):
 			os.remove(os.path.join(directory, file))
 
 
@@ -249,10 +344,10 @@ def validate_sym_file(sym):
 
 def create_general_function_sym_file(files, clean_flag, name):
 	with open(os.path.join(LIBGEN_DIR, name), 'w') as output:
+		output.write('#<SYMDEFS>#symdef-file\r\n')
+		output.write('# SYMDEFS ADS HEADER\r\n\r\n')
 		for file in files:
 			with open(os.path.join(LIBGEN_DIR, file), 'r') as input:
-				output.write('#<SYMDEFS>#symdef-file\r\n')
-				output.write('# SYMDEFS ADS HEADER\r\n\r\n')
 				output.write(f'# {file}\r\n')
 				output.write(input.read())
 				output.write('\r\n\r\n\r\n')
@@ -358,10 +453,17 @@ def start_portkit_routines(ram_trans_flag, base_address, patterns, cg1):
 
 	# Generate ElfPack patches for Flash & Backup 3.
 	bin2fpa(firmware, 'Andy51', 'ElfPack v1.0', address_hex, binary)
-	genereate_register_patch(firmware, 'Andy51', 'Register ElfPack v1.0', 'Register.fpa')
+	generate_register_patch(firmware, 'Andy51', 'Register ElfPack v1.0', 'Register.fpa')
 
-	# Clean garbage.
-	clean_files('', CLEAN_THESE_FILES)
+	generate_functions_sym(
+		sym, 'ElfPack.sym', 'Lib.sym',
+		['APP_SyncML_MainRegister', 'APP_CALC_MainRegister', '_region_table'],
+		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
+	)
+
+	generate_library_sources('Lib.sym')
+	compile_sdk_library('libstd')
+
 
 if __name__ == '__main__':
 	print('portkit.py script by EXL, 27-Nov-2023')
@@ -370,6 +472,9 @@ if __name__ == '__main__':
 
 	argc = len(sys.argv)
 	if argc == 5:
+		# Clean garbage.
+		clean_files('', CLEAN_THESE_FILES)
+
 		start_portkit_routines(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 	else:
 		print('Usage:\n\t./portkit.py [RAM_TRANS] [BASE_ADDRESS] [function.pat] [CG1]')

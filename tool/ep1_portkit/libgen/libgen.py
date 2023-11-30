@@ -139,5 +139,5 @@ if __name__ == '__main__':
 	else:
 		print('Usage:\n\t./libgen.py [SYM_FILE]')
 		print()
-		print('Example:\n\t./libgen.py \n\t./libgen.py SYM_FILE')
+		print('Example:\n\t./libgen.py Lib.sym')
 		print()
