@@ -1,23 +1,29 @@
-tool/compiler/ep1_lin_ADS/*
-!tool/compiler/ep1_lin_ADS/ReadMe.md
+#tool/compiler/ep1_lin_ADS/*
+#!tool/compiler/ep1_lin_ADS/ReadMe.md
 
-tool/compiler/ep1_win_ADS/*
-!tool/compiler/ep1_win_ADS/ReadMe.md
+#tool/compiler/ep1_win_ADS/*
+#!tool/compiler/ep1_win_ADS/ReadMe.md
 
-tool/compiler/ep2_lin_devkitARM/*
-tool/compiler/ep2_lin_devkitARM/ReadMe.md
+#tool/compiler/ep2_lin_devkitARM/*
+#tool/compiler/ep2_lin_devkitARM/ReadMe.md
 
-tool/compiler/ep2_win_devkitARM/*
-tool/compiler/ep2_win_devkitARM/ReadMe.md
+#tool/compiler/ep2_win_devkitARM/*
+#tool/compiler/ep2_win_devkitARM/ReadMe.md
 
-tool/ep1_portkit/*.smg
+#tool/ep1_portkit/*.smg
 
-tool/ep1_portkit/libgen/all_functions.sym
-tool/ep1_portkit/libgen/register.sym
+#tool/ep1_portkit/libgen/all_functions.sym
+#tool/ep1_portkit/libgen/register.sym
 
-tool/ep1_portkit/obj_new/ElfPack.*
-tool/ep1_portkit/obj_old/ElfPack.*
-tool/ep1_portkit/obj_new/SysInfo.*
-tool/ep1_portkit/obj_old/SysInfo.*
+#tool/ep1_portkit/obj_new/ElfPack.*
+#tool/ep1_portkit/obj_old/ElfPack.*
+#tool/ep1_portkit/obj_new/SysInfo.*
+#tool/ep1_portkit/obj_old/SysInfo.*
 
-tool/ep_bin2fpa/__pycache__
+#tool/ep_bin2fpa/__pycache__
+
+tool_
+tool/.idea
+tool/.venv
+tool/forge/__pycache__
+tool/forge_test/__pycache__
