@@ -2,6 +2,8 @@
 
 from .const import *
 
+from .file import delete_all_files_in_directory
+
 from .firmware import parse_phone_firmware
 from .firmware import get_file_size
 from .firmware import determine_soc

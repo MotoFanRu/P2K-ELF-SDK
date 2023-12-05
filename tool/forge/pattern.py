@@ -13,10 +13,11 @@ def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ra
 			'-ram-trans' if ram_trans else '-no-ram-trans',
 			str(cgs_p),
 			str(pat_p),
+			str(out_p),
 			f'0x{base_address:08X}'
 		]
 		result = invoke_external_command(args)
 		if result == 0:
-			move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
+			# move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
 			return True
 	return False

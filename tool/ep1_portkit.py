@@ -12,21 +12,7 @@ from forge import arrange16
 from forge import determine_soc
 from forge import P2K_DIR_EP1_FUNC
 from forge import find_functions_from_patterns
-
-
-def delete_all_files_in_output(args: Namespace) -> None:
-	output_directory = args.output
-	objects = output_directory.iterdir()
-	files_to_clean = []
-	for obj in objects:
-		if obj.is_file():
-			files_to_clean.append(obj)
-	if len(files_to_clean) > 0:
-		logging.info(f'Clean all files in "{output_directory}" directory.')
-		for file_path in files_to_clean:
-			if file_path.is_file():
-				logging.info(f'Delete "{file_path}" file.')
-				file_path.unlink()
+from forge import delete_all_files_in_directory
 
 
 ########################################################################################################################
@@ -135,20 +121,17 @@ def start_working(args: Namespace) -> None:
 		logging.warning(f'Unknown SoC platform, will skip generating platform syms file.')
 
 
-
-
-
 def main() -> None:
 	args = parse_arguments()
 
 	logging.basicConfig(
 		level=logging.DEBUG if args.verbose else logging.INFO,
-		format='%(asctime)s - %(name)s:%(levelname)s: %(message)s',
+		format='%(asctime)s %(levelname)s: %(message)s',
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)
 
 	if args.clean:
-		delete_all_files_in_output(args)
+		delete_all_files_in_directory(args.output)
 
 	start_working(args)
 
