@@ -1,5 +1,8 @@
 # forge/firmware.py
 
+from pathlib import Path
+
+
 def parse_phone_firmware(phone_firmware_filename: str) -> list[str]:
 	phone_firmware = []
 	segments_a = phone_firmware_filename.split('_')  # First split string by '_'.
@@ -19,3 +22,22 @@ def parse_phone_firmware(phone_firmware_filename: str) -> list[str]:
 	phone_firmware.append(firmware_name)
 
 	return phone_firmware
+
+
+def get_file_size(path: Path) -> int:
+	if path.is_file() and path.exists():
+		size = path.stat().st_size
+		if 0x400000 < size < 0x4000000:  # Between 4...64 MiB.
+			return size
+	raise ValueError(f'something wrong with "{path}" file size.')
+
+
+def determine_soc(start_firmware_address: int) -> str:
+	if start_firmware_address == 0x10080000:
+		return 'LTE'
+	elif start_firmware_address == 0x10092000:
+		return 'LTE2'
+	elif start_firmware_address == 0x100A0000:
+		return 'LTE2'
+	else:
+		return 'Unknown'

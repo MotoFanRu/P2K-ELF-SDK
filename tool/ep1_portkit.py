@@ -6,7 +6,12 @@ import sys
 from argparse import Namespace
 from pathlib import Path
 from forge import parse_phone_firmware
+from forge import get_file_size
 from forge import hex2int
+from forge import arrange16
+from forge import determine_soc
+from forge import P2K_DIR_EP1_FUNC
+from forge import find_functions_from_patterns
 
 
 def delete_all_files_in_output(args: Namespace) -> None:
@@ -47,14 +52,14 @@ def arg_type_dir(dirname: str) -> Path:
 	path = Path(dirname)
 	if not path.exists():
 		path.mkdir()
-	if not path.is_dir():
+	if not path.exists() or not path.is_dir():
 		raise argparse.ArgumentTypeError(f'{dirname} is not directory')
 	return path
 
 
 def arg_type_file(filename: str) -> Path:
 	path = Path(filename)
-	if not path.is_file():
+	if not path.is_file() and not path.exists():
 		raise argparse.ArgumentTypeError(f'{filename} not found')
 	return path
 
@@ -99,6 +104,40 @@ def parse_arguments() -> Namespace:
 #                                                                                                                      #
 ########################################################################################################################
 
+def start_working(args: Namespace) -> None:
+	logging.info(f'Start working with arguments:')
+	logging.info(f'\tverbose={args.verbose}')
+	logging.info(f'\tclean={args.clean}')
+
+	output = args.output
+	patterns = args.patterns
+	firmware = args.firmware
+	start = args.start
+	ram_trans = args.ram_trans
+	address = args.start + arrange16(get_file_size(args.firmware))  # Start + Offset.
+	soc = determine_soc(args.start)
+
+	logging.info(f'Values:')
+	logging.info(f'\tram_trans={ram_trans}')
+	logging.info(f'\tstart=0x{start:08X}')
+	logging.info(f'\tpatterns={patterns}')
+	logging.info(f'\tfirmware={firmware}')
+	logging.info(f'\toutput={output}')
+	logging.info(f'\taddress=0x{address:08X}')
+	logging.info(f'\tsoc={soc}')
+
+	platform_sym_file = output / 'platform.sym'
+	if soc == 'LTE':
+		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte1.pat', firmware, start, False, platform_sym_file)
+	elif soc == 'LTE2':
+		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte2.pat', firmware, start, False, platform_sym_file)
+	else:
+		logging.warning(f'Unknown SoC platform, will skip generating platform syms file.')
+
+
+
+
+
 def main() -> None:
 	args = parse_arguments()
 
@@ -107,17 +146,11 @@ def main() -> None:
 		format='%(asctime)s - %(name)s:%(levelname)s: %(message)s',
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)
-	logging.info(f'Start working with arguments:')
-	logging.info(f'\tverbose={args.verbose}')
-	logging.info(f'\tclean={args.clean}')
-	logging.info(f'\tram_trans={args.ram_trans}')
-	logging.info(f'\tstart=0x{args.start:08X}')
-	logging.info(f'\tpatterns={args.patterns}')
-	logging.info(f'\tfirmware={args.firmware}')
-	logging.info(f'\toutput={args.output}')
 
 	if args.clean:
 		delete_all_files_in_output(args)
+
+	start_working(args)
 
 
 if __name__ == '__main__':

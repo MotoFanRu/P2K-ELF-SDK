@@ -2,6 +2,7 @@
 
 import unittest
 from forge import hex2int
+from forge import arrange16
 
 
 class TestHexer(unittest.TestCase):
@@ -29,3 +30,16 @@ class TestHexer(unittest.TestCase):
 	def helper_test_hex2_int(self, hex_value):
 		with self.assertRaises(ValueError) as context:
 			hex2int(hex_value)
+
+	def test_arrange16(self):
+		self.assertEqual(f'0x{arrange16(0x10080000):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080001):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080002):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080004):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080008):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080009):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x1008000A):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x1008000C):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x1008000F):08X}', '0x10080010')
+		self.assertEqual(f'0x{arrange16(0x10080010):08X}', '0x10080020')
+		self.assertEqual(f'0x{arrange16(0x100800FF):08X}', '0x10080100')

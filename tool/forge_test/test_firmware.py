@@ -2,6 +2,7 @@
 
 import unittest
 from forge import parse_phone_firmware
+from forge import determine_soc
 
 
 class TestFirmware(unittest.TestCase):
@@ -29,3 +30,9 @@ class TestFirmware(unittest.TestCase):
 	def helper_test_parse_phone_firmware(self, firmware_filename):
 		with self.assertRaises(ValueError) as context:
 			parse_phone_firmware(firmware_filename)
+
+	def test_determine_soc(self):
+		self.assertEqual(determine_soc(0x10080000), 'LTE')
+		self.assertEqual(determine_soc(0x10092000), 'LTE2')
+		self.assertEqual(determine_soc(0x100A0000), 'LTE2')
+		self.assertEqual(determine_soc(0x18500000), 'Unknown')

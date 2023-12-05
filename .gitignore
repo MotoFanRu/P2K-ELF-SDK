@@ -29,3 +29,4 @@ tool/forge/__pycache__
 tool/forge_test/__pycache__
 tool/*.smg
 tool/*.bin
+tool/ep1_build

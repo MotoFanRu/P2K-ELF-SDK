@@ -9,3 +9,7 @@ def hex2int(hex_value: str) -> int:
 		return int(hex_value, 16)
 	except ValueError:
 		raise ValueError(f'value "{hex_value}" is not a valid hexadecimal value')
+
+
+def arrange16(value: int) -> int:
+	return (value & -16) + 16
