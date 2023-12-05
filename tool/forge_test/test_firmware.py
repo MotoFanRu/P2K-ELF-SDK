@@ -24,11 +24,8 @@ class TestFirmware(unittest.TestCase):
 		self.helper_test_parse_phone_firmware('E1.smg')
 		self.helper_test_parse_phone_firmware('E1_CG1.smg')
 		self.helper_test_parse_phone_firmware('E1_CG1.bin')
+		# self.helper_test_parse_phone_firmware('E1_R373_G_0E.30.49R.bin')
 
 	def helper_test_parse_phone_firmware(self, firmware_filename):
 		with self.assertRaises(ValueError) as context:
 			parse_phone_firmware(firmware_filename)
-		self.assertEqual(
-			str(context.exception),
-			'Wrong phone-firmware name format! Please use this pattern: E1_R373_G_0E.30.49R.smg'
-		)

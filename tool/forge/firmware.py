@@ -10,7 +10,7 @@ def parse_phone_firmware(phone_firmware_filename: str) -> list[str]:
 	extension_ok = (extension == 'smg') or (extension == 'bin')
 
 	if not (segments_a_ok and segments_b_ok and extension_ok):
-		raise ValueError('Wrong phone-firmware name format! Please use this pattern: E1_R373_G_0E.30.49R.smg')
+		raise ValueError('wrong phone-firmware name format! Please use this pattern: E1_R373_G_0E.30.49R.smg')
 
 	phone_name = segments_a[0]  # First segment of first split will be a phone name.
 	firmware_name = phone_firmware_filename.replace(f'{phone_name}_', '').replace(f'.{extension}', '')
