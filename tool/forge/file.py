@@ -20,3 +20,4 @@ def delete_all_files_in_directory(directory: Path) -> None:
 			if file_path.is_file():
 				logging.info(f'\tDelete "{file_path}" file.')
 				file_path.unlink()
+		logging.info(f'')

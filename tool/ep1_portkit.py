@@ -94,6 +94,7 @@ def start_working(args: Namespace) -> None:
 	logging.info(f'Start working with arguments:')
 	logging.info(f'\tverbose={args.verbose}')
 	logging.info(f'\tclean={args.clean}')
+	logging.info(f'')
 
 	output = args.output
 	patterns = args.patterns
@@ -111,14 +112,20 @@ def start_working(args: Namespace) -> None:
 	logging.info(f'\toutput={output}')
 	logging.info(f'\taddress=0x{address:08X}')
 	logging.info(f'\tsoc={soc}')
+	logging.info(f'')
 
 	platform_sym_file = output / 'platform.sym'
+	function_sym_file = output / 'function.sym'
+	combined_sym_file = output / 'combined.sym'
 	if soc == 'LTE':
 		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte1.pat', firmware, start, False, platform_sym_file)
 	elif soc == 'LTE2':
 		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte2.pat', firmware, start, False, platform_sym_file)
 	else:
+		function_sym_file = combined_sym_file
 		logging.warning(f'Unknown SoC platform, will skip generating platform syms file.')
+
+	find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
 
 
 def main() -> None:
