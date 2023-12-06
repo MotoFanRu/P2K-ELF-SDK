@@ -13,6 +13,28 @@ from forge import determine_soc
 from forge import P2K_DIR_EP1_FUNC
 from forge import find_functions_from_patterns
 from forge import delete_all_files_in_directory
+from forge import create_combined_sym_file
+from forge import validate_sym_file
+from forge import get_function_address_from_sym_file
+from forge import append_pattern_to_file
+
+REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
+
+########################################################################################################################
+#                                                                                                                      #
+#                                                                                                                      #
+#                                                                                                                      #
+########################################################################################################################
+
+
+def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, out_dir: Path) -> bool:
+	pat = out_dir / 'register.pat'
+	sym = out_dir / 'register.sym'
+	address = get_function_address_from_sym_file(combined_sym, register_func)
+	if address != 0x00000000:
+		append_pattern_to_file(pat, 'Register', 'D', f'{address:08X}')
+		find_functions_from_patterns(pat, cgs_path, 0x00000000, False, sym)
+	return False
 
 
 ########################################################################################################################
@@ -90,7 +112,7 @@ def parse_arguments() -> Namespace:
 #                                                                                                                      #
 ########################################################################################################################
 
-def start_working(args: Namespace) -> None:
+def start_working(args: Namespace) -> bool:
 	logging.info(f'Start working with arguments:')
 	logging.info(f'\tverbose={args.verbose}')
 	logging.info(f'\tclean={args.clean}')
@@ -117,6 +139,9 @@ def start_working(args: Namespace) -> None:
 	platform_sym_file = output / 'platform.sym'
 	function_sym_file = output / 'function.sym'
 	combined_sym_file = output / 'combined.sym'
+	lte2_irom_sym_file = P2K_DIR_EP1_FUNC / 'lte2_irom.sym'
+
+	# Find SoC related functions from patterns.
 	if soc == 'LTE':
 		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte1.pat', firmware, start, False, platform_sym_file)
 	elif soc == 'LTE2':
@@ -125,7 +150,25 @@ def start_working(args: Namespace) -> None:
 		function_sym_file = combined_sym_file
 		logging.warning(f'Unknown SoC platform, will skip generating platform syms file.')
 
+	# Find general functions from patterns.
 	find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
+
+	# Combine all functions into one sym file.
+	if soc == 'LTE':
+		create_combined_sym_file([function_sym_file, platform_sym_file], combined_sym_file)
+	elif soc == 'LTE2':
+		create_combined_sym_file([function_sym_file, platform_sym_file, lte2_irom_sym_file], combined_sym_file)
+
+	# Validate combined sym file.
+	if not validate_sym_file(combined_sym_file):
+		return False
+	else:
+		logging.info(f'The "{combined_sym_file}" sym file is validated.')
+
+	# Generate register sym file.
+	generate_register_symbol_file(combined_sym_file, firmware, REGISTER_FUNCTION_INJECTION, output)
+
+	return True
 
 
 def main() -> None:

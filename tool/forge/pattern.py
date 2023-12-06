@@ -1,9 +1,10 @@
 # forge/pattern.py
 
+import logging
+from pathlib import Path
 from .const import *
 from .invoke import invoke_external_command
 from .file import move_file
-from pathlib import Path
 
 
 def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ram_trans: bool, out_p: Path) -> bool:
@@ -21,3 +22,9 @@ def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ra
 			# move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
 			return True
 	return False
+
+
+def append_pattern_to_file(pat_p: Path, name: str, mode: str, pattern: str) -> None:
+	with pat_p.open(mode='a', newline='\r\n') as f_o:
+		logging.info(f'Will write "{name} {mode} {pattern}" to "{pat_p}" pattern file')
+		f_o.write(f'{name} {mode} {pattern}')

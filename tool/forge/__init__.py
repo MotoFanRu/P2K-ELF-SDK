@@ -12,3 +12,8 @@ from .hexer import hex2int
 from .hexer import arrange16
 
 from .pattern import find_functions_from_patterns
+from .pattern import append_pattern_to_file
+
+from .sym import create_combined_sym_file
+from .sym import validate_sym_file
+from .sym import get_function_address_from_sym_file
