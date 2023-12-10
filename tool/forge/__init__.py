@@ -2,9 +2,12 @@
 
 from .const import *
 
+from .compiler import generate_source_with_const_chars
+
 from .file import delete_all_files_in_directory
 
 from .firmware import parse_phone_firmware
+from .firmware import parse_minor_major_firmware
 from .firmware import get_file_size
 from .firmware import determine_soc
 

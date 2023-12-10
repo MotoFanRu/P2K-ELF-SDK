@@ -3,8 +3,15 @@
 from pathlib import Path
 
 
-def parse_phone_firmware(phone_firmware_filename: str) -> list[str]:
-	phone_firmware = []
+def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:
+	segments_1 = firmware.split('_')
+	segments_2 = firmware.split('.')
+	fw_major = firmware.replace('.' + segments_2[-1], '')
+	fw_minor = segments_2[-1]
+	return fw_major, fw_minor
+
+
+def parse_phone_firmware(phone_firmware_filename: str) -> tuple[str, str]:
 	segments_a = phone_firmware_filename.split('_')  # First split string by '_'.
 	segments_b = phone_firmware_filename.split('.')  # Second split string by '.'.
 	segments_a_ok = len(segments_a) > 2              # At least 3 segments in segments_a.
@@ -18,10 +25,7 @@ def parse_phone_firmware(phone_firmware_filename: str) -> list[str]:
 	phone_name = segments_a[0]  # First segment of first split will be a phone name.
 	firmware_name = phone_firmware_filename.replace(f'{phone_name}_', '').replace(f'.{extension}', '')
 
-	phone_firmware.append(phone_name)
-	phone_firmware.append(firmware_name)
-
-	return phone_firmware
+	return phone_name, firmware_name
 
 
 def get_file_size(path: Path) -> int:
