@@ -3,22 +3,9 @@
 import argparse
 import logging
 import sys
+import forge
 from argparse import Namespace
 from pathlib import Path
-from forge import generate_source_with_const_chars
-from forge import parse_phone_firmware
-from forge import parse_minor_major_firmware
-from forge import get_file_size
-from forge import hex2int
-from forge import arrange16
-from forge import determine_soc
-from forge import P2K_DIR_EP1_FUNC
-from forge import find_functions_from_patterns
-from forge import delete_all_files_in_directory
-from forge import create_combined_sym_file
-from forge import validate_sym_file
-from forge import get_function_address_from_sym_file
-from forge import append_pattern_to_file
 
 REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
 
@@ -31,22 +18,22 @@ REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
 
 def generate_system_information_source(phone_firmware: str, soc: str, source_file: Path) -> bool:
 	system_info = {}
-	phone, firmware = parse_phone_firmware(phone_firmware)
-	major, minor = parse_minor_major_firmware(firmware)
+	phone, firmware = forge.parse_phone_firmware(phone_firmware)
+	major, minor = forge.parse_minor_major_firmware(firmware)
 	system_info['n_phone'] = phone
 	system_info['n_platform'] = soc
 	system_info['n_majorfw'] = major
 	system_info['n_minorfw'] = minor
-	return generate_source_with_const_chars(source_file, system_info)
+	return forge.generate_source_with_const_chars(source_file, system_info)
 
 
 def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, out_dir: Path) -> bool:
 	pat = out_dir / 'register.pat'
 	sym = out_dir / 'register.sym'
-	address = get_function_address_from_sym_file(combined_sym, register_func)
+	address = forge.get_function_address_from_sym_file(combined_sym, register_func)
 	if address != 0x00000000:
-		append_pattern_to_file(pat, 'Register', 'D', f'{address:08X}')
-		find_functions_from_patterns(pat, cgs_path, 0x00000000, False, sym)
+		forge.append_pattern_to_file(pat, 'Register', 'D', forge.int2hex(address))
+		forge.find_functions_from_patterns(pat, cgs_path, 0x00000000, False, sym)
 	return False
 
 
@@ -64,7 +51,7 @@ class ArgsParser(argparse.ArgumentParser):
 
 def arg_type_fw(firmware_filename: str) -> Path:
 	try:
-		parse_phone_firmware(firmware_filename)
+		forge.parse_phone_firmware(firmware_filename)
 		return arg_type_file(firmware_filename)
 	except ValueError as value_error:
 		raise argparse.ArgumentTypeError(value_error)
@@ -88,7 +75,7 @@ def arg_type_file(filename: str) -> Path:
 
 def arg_type_hex(hex_value: str) -> int:
 	try:
-		return hex2int(hex_value)
+		return forge.hex2int(hex_value)
 	except ValueError as value_error:
 		raise argparse.ArgumentTypeError(value_error)
 
@@ -138,8 +125,8 @@ def start_portkit_work(args: Namespace) -> bool:
 	firmware_name = args.firmware.name
 	start = args.start
 	ram_trans = args.ram_trans
-	address = args.start + arrange16(get_file_size(args.firmware))  # Start + Offset.
-	soc = determine_soc(args.start)
+	address = args.start + forge.arrange16(forge.get_file_size(args.firmware))  # Start + Offset.
+	soc = forge.determine_soc(args.start)
 
 	logging.info(f'Values:')
 	logging.info(f'\tram_trans={ram_trans}')
@@ -155,29 +142,32 @@ def start_portkit_work(args: Namespace) -> bool:
 	platform_sym_file = output / 'platform.sym'
 	function_sym_file = output / 'function.sym'
 	combined_sym_file = output / 'combined.sym'
-	lte2_irom_sym_file = P2K_DIR_EP1_FUNC / 'lte2_irom.sym'
-	system_info_file = output / 'SysInfo.c'
+	lte1_patterns_file = forge.P2K_DIR_EP1_FUNC / 'lte1.pat'
+	lte2_patterns_file = forge.P2K_DIR_EP1_FUNC / 'lte2.pat'
+	lte2_irom_sym_file = forge.P2K_DIR_EP1_FUNC / 'lte2_irom.sym'
+	system_info_file_c = output / 'SysInfo.c'
+	system_info_file_o = output / 'SysInfo.o'
 
 	logging.info(f'Find SoC related functions from patterns')
 	if soc == 'LTE':
-		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte1.pat', firmware, start, False, platform_sym_file)
+		forge.find_functions_from_patterns(lte1_patterns_file, firmware, start, False, platform_sym_file)
 	elif soc == 'LTE2':
-		find_functions_from_patterns(P2K_DIR_EP1_FUNC / 'lte2.pat', firmware, start, False, platform_sym_file)
+		forge.find_functions_from_patterns(lte2_patterns_file, firmware, start, False, platform_sym_file)
 	else:
 		function_sym_file = combined_sym_file
 		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file')
 
 	logging.info(f'Find general functions from patterns')
-	find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
+	forge.find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
 
 	logging.info(f'Combine all functions into one symbols file')
 	if soc == 'LTE':
-		create_combined_sym_file([function_sym_file, platform_sym_file], combined_sym_file)
+		forge.create_combined_sym_file([function_sym_file, platform_sym_file], combined_sym_file)
 	elif soc == 'LTE2':
-		create_combined_sym_file([function_sym_file, platform_sym_file, lte2_irom_sym_file], combined_sym_file)
+		forge.create_combined_sym_file([function_sym_file, platform_sym_file, lte2_irom_sym_file], combined_sym_file)
 
 	logging.info(f'Validate combined symbols file')
-	if not validate_sym_file(combined_sym_file):
+	if not forge.validate_sym_file(combined_sym_file):
 		return False
 	else:
 		logging.info(f'The "{combined_sym_file}" sym file is validated')
@@ -186,7 +176,25 @@ def start_portkit_work(args: Namespace) -> bool:
 	generate_register_symbol_file(combined_sym_file, firmware, REGISTER_FUNCTION_INJECTION, output)
 
 	logging.info(f'Generate system information C-source file')
-	generate_system_information_source(firmware_name, soc, system_info_file)
+	generate_system_information_source(firmware_name, soc, system_info_file_c)
+
+	logging.info(f'Compiling system C-source files')
+	forge.compile_c_ep1_ads_tcc(system_info_file_c, system_info_file_o)
+
+	logging.info(f'Linking object files to binary')
+	p_o = [
+		forge.P2K_DIR_EP1_OBJS / 'AutoRun.o',
+		forge.P2K_DIR_EP1_OBJS / 'ElfLoader.o',
+		forge.P2K_DIR_EP1_OBJS / 'ElfLoaderApp.o',
+		forge.P2K_DIR_EP1_OBJS / 'LibC.o',
+		system_info_file_o,
+		combined_sym_file
+	]
+	p_e = output / 'ElfPack.elf'
+	p_b = output / 'ElfPack.bin'
+	p_s = output / 'ElfPack.sym'
+	forge.link_o_ep1_ads_armlink(p_o, p_e, address, p_s)
+	forge.bin_elf_ep1_ads_fromelf(p_e, p_b)
 
 	return True
 
@@ -201,7 +209,7 @@ def main() -> None:
 	)
 
 	if args.clean:
-		delete_all_files_in_directory(args.output)
+		forge.delete_all_files_in_directory(args.output)
 
 	start_portkit_work(args)
 

@@ -5,6 +5,7 @@ from pathlib import Path
 from .const import *
 from .invoke import invoke_external_command
 from .file import move_file
+from .hexer import int2hex
 
 
 def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ram_trans: bool, out_p: Path) -> bool:
@@ -15,7 +16,7 @@ def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ra
 			str(cgs_p),
 			str(pat_p),
 			str(out_p),
-			f'0x{base_address:08X}'
+			int2hex(base_address)
 		]
 		result = invoke_external_command(args)
 		if result == 0:

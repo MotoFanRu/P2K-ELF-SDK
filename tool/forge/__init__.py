@@ -3,6 +3,9 @@
 from .const import *
 
 from .compiler import generate_source_with_const_chars
+from .compiler import compile_c_ep1_ads_tcc
+from .compiler import link_o_ep1_ads_armlink
+from .compiler import bin_elf_ep1_ads_fromelf
 
 from .file import delete_all_files_in_directory
 
@@ -12,6 +15,7 @@ from .firmware import get_file_size
 from .firmware import determine_soc
 
 from .hexer import hex2int
+from .hexer import int2hex
 from .hexer import arrange16
 
 from .pattern import find_functions_from_patterns

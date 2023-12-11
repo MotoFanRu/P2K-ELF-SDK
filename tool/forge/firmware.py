@@ -4,10 +4,9 @@ from pathlib import Path
 
 
 def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:
-	segments_1 = firmware.split('_')
-	segments_2 = firmware.split('.')
-	fw_major = firmware.replace('.' + segments_2[-1], '')
-	fw_minor = segments_2[-1]
+	segments = firmware.split('.')
+	fw_major = firmware.replace('.' + segments[-1], '')
+	fw_minor = segments[-1]
 	return fw_major, fw_minor
 
 
