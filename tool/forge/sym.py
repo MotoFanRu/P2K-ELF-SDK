@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from .const import *
+from .const import ADS_SYM_FILE_HEADER
 
 
 def create_combined_sym_file(files: list[Path], out_p: Path) -> None:

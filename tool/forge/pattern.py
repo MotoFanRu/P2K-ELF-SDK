@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from .const import *
+from .const import P2K_TOOL_PAT
 from .invoke import invoke_external_command
 from .file import move_file
 from .hexer import int2hex

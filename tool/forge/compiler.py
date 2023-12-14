@@ -2,7 +2,10 @@
 
 import logging
 from pathlib import Path
-from .const import *
+from .const import P2K_DIR_EP_SDK
+from .const import P2K_EP1_ADS_TCC
+from .const import P2K_EP1_ADS_ARMLINK
+from .const import P2K_EP1_ADS_FROMELF
 from .invoke import invoke_external_command
 from .hexer import int2hex
 
