@@ -4,9 +4,11 @@ import logging
 from pathlib import Path
 
 from .const import P2K_TOOL_PAT
+from .const import P2K_DIR_TOOL
 from .file import move_file
 from .hexer import int2hex
 from .invoke import invoke_external_command
+from .invoke import invoke_external_command_res
 
 
 def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ram_trans: bool, out_p: Path) -> bool:
@@ -19,10 +21,11 @@ def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ra
 			str(out_p),
 			int2hex(base_address)
 		]
-		result = invoke_external_command(args)
-		if result == 0:
-			# move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
-			return True
+		return invoke_external_command_res(args)
+		# result = invoke_external_command(args)
+		# if result == 0:
+		# 	move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
+		# 	return True
 	return False
 
 

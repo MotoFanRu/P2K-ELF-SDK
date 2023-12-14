@@ -7,8 +7,10 @@ from .const import P2K_DIR_EP_SDK
 from .const import P2K_EP1_ADS_TCC
 from .const import P2K_EP1_ADS_ARMLINK
 from .const import P2K_EP1_ADS_FROMELF
+from .const import P2K_EP1_ADS_ARMASM
+from .const import P2K_EP1_ADS_ARMAR
 from .hexer import int2hex
-from .invoke import invoke_external_command
+from .invoke import invoke_external_command_res
 
 
 def generate_source_with_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
@@ -43,9 +45,45 @@ def compile_c_ep1_ads_tcc(p_in: Path, p_out: Path, custom_flags: list[str] | Non
 			'-o',
 			str(p_out)
 		]
-		result = invoke_external_command(args)
-		if result == 0:
-			return True
+		return invoke_external_command_res(args)
+	return False
+
+
+def assembly_asm_ep1_ads_armasm(p_in: Path, p_out: Path, custom_flags: list[str] | None = None) -> bool:
+	if custom_flags is None:
+		custom_flags = []
+	if p_in.is_file() and p_in.exists():
+		logging.info(f'Assembling "{p_in}" to "{p_out}"...')
+		args = [
+			str(P2K_EP1_ADS_ARMASM),
+			'-16',
+			'-bigend',
+			'-apcs',
+			'/interwork',
+			*custom_flags,
+			str(p_in),
+			'-o',
+			str(p_out)
+		]
+		return invoke_external_command_res(args)
+	return False
+
+
+def packing_static_lib_ep1_ads_armar(p_in: list[Path], p_out: Path, custom_flags: list[str] | None = None) -> bool:
+	if custom_flags is None:
+		custom_flags = []
+	if len(p_in) > 0:
+		logging.info(f'Packing "{p_out}"...')
+		args = [
+			str(P2K_EP1_ADS_ARMAR),
+			*custom_flags,
+			'--create',
+			'-cr',
+			str(p_out)
+		]
+		for obj in p_in:
+			args.append(str(obj))
+		return invoke_external_command_res(args)
 	return False
 
 
@@ -73,7 +111,7 @@ def link_o_ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, 
 		args.append(str(p))
 	args.append('-o')
 	args.append(str(p_o))
-	return True if (invoke_external_command(args) == 0) else False
+	return invoke_external_command_res(args)
 
 
 def bin_elf_ep1_ads_fromelf(p_in: Path, p_out: Path) -> bool:
@@ -85,7 +123,5 @@ def bin_elf_ep1_ads_fromelf(p_in: Path, p_out: Path) -> bool:
 			'-output',
 			str(p_out)
 		]
-		result = invoke_external_command(args)
-		if result == 0:
-			return True
+		return invoke_external_command_res(args)
 	return False

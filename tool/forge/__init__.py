@@ -11,6 +11,8 @@ from .compiler import generate_source_with_const_chars
 from .compiler import compile_c_ep1_ads_tcc
 from .compiler import link_o_ep1_ads_armlink
 from .compiler import bin_elf_ep1_ads_fromelf
+from .compiler import assembly_asm_ep1_ads_armasm
+from .compiler import packing_static_lib_ep1_ads_armar
 
 from .file import delete_all_files_in_directory
 
@@ -23,6 +25,10 @@ from .hexer import hex2int
 from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import arrange16
+
+from .libgen import libgen_ep1_fill_library_model
+from .libgen import libgen_ep1_create_assembler_source
+from .libgen import libgen_ep1_create_library
 
 from .patcher import generate_fpa
 from .patcher import bin2fpa

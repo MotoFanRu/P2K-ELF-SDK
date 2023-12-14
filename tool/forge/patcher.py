@@ -22,11 +22,10 @@ def generate_fpa(firmware: str, author: str, description: str, address: str, hex
 		return False
 
 
-def bin2fpa(firmware: str, autor: str, description: str, address: int, binary: Path) -> bool:
+def bin2fpa(firmware: str, autor: str, description: str, address: int, binary: Path, fpa: Path) -> bool:
 	if binary.is_file() and binary.exists():
 		bin_str = str(binary)
 		if '.bin' in bin_str:
-			fpa = Path(bin_str.replace('.bin', '.fpa'))
 			with binary.open(mode='rb') as f_i:
 				hex_data = f_i.read().hex().upper()
 				return generate_fpa(firmware, autor, description, int2hex_r(address), hex_data, fpa)
