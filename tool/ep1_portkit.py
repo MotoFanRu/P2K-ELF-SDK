@@ -5,9 +5,12 @@ import logging
 import sys
 from argparse import Namespace
 from pathlib import Path
+
 import forge
 
 REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
+REGISTER_FUNCTION = 'Register'
+AUTORUN_FUNCTION = 'AutorunMain'
 
 
 ########################################################################################################################
@@ -15,6 +18,18 @@ REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
 #                                                                                                                      #
 #                                                                                                                      #
 ########################################################################################################################
+
+def generate_register_patch(fw: str, author: str, desc: str, p_elf_sym: Path, p_reg_sym: Path, p_patch: Path) -> bool:
+	if p_elf_sym.is_file() and p_elf_sym.exists() and p_reg_sym.is_file() and p_reg_sym.exists():
+		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_elf_sym, AUTORUN_FUNCTION) + 1)  # Thumb
+		reg_address = forge.int2hex_r(forge.get_function_address_from_sym_file(p_reg_sym, REGISTER_FUNCTION))
+
+		forge.generate_fpa(fw, author, desc, reg_address, hex_data, p_patch)
+		return True
+	else:
+		logging.error(f'Cannot open symbol files: "{p_elf_sym}" and "{p_reg_sym}".')
+	return False
+
 
 def generate_system_information_source(phone_firmware: str, soc: str, source_file: Path) -> bool:
 	system_info = {}
@@ -32,7 +47,7 @@ def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_f
 	sym = out_dir / 'register.sym'
 	address = forge.get_function_address_from_sym_file(combined_sym, register_func)
 	if address != 0x00000000:
-		forge.append_pattern_to_file(pat, 'Register', 'D', forge.int2hex(address))
+		forge.append_pattern_to_file(pat, 'Register', 'D', forge.int2hex_r(address))
 		forge.find_functions_from_patterns(pat, cgs_path, 0x00000000, False, sym)
 	return False
 
@@ -78,40 +93,40 @@ def start_portkit_work(args: Namespace) -> bool:
 	system_info_file_c = output / 'SysInfo.c'
 	system_info_file_o = output / 'SysInfo.o'
 
-	logging.info(f'Find SoC related functions from patterns')
+	logging.info(f'Find SoC related functions from patterns.')
 	if soc == 'LTE':
 		forge.find_functions_from_patterns(lte1_patterns_file, firmware, start, False, platform_sym_file)
 	elif soc == 'LTE2':
 		forge.find_functions_from_patterns(lte2_patterns_file, firmware, start, False, platform_sym_file)
 	else:
 		function_sym_file = combined_sym_file
-		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file')
+		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file.')
 
-	logging.info(f'Find general functions from patterns')
+	logging.info(f'Find general functions from patterns.')
 	forge.find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
 
-	logging.info(f'Combine all functions into one symbols file')
+	logging.info(f'Combine all functions into one symbols file.')
 	if soc == 'LTE':
 		forge.create_combined_sym_file([function_sym_file, platform_sym_file], combined_sym_file)
 	elif soc == 'LTE2':
 		forge.create_combined_sym_file([function_sym_file, platform_sym_file, lte2_irom_sym_file], combined_sym_file)
 
-	logging.info(f'Validate combined symbols file')
+	logging.info(f'Validate combined symbols file.')
 	if not forge.validate_sym_file(combined_sym_file):
 		return False
 	else:
-		logging.info(f'The "{combined_sym_file}" sym file is validated')
+		logging.info(f'The "{combined_sym_file}" sym file is validated.')
 
-	logging.info(f'Generate register symbols file')
+	logging.info(f'Generate register symbols file.')
 	generate_register_symbol_file(combined_sym_file, firmware, REGISTER_FUNCTION_INJECTION, output)
 
-	logging.info(f'Generate system information C-source file')
+	logging.info(f'Generate system information C-source file.')
 	generate_system_information_source(firmware_name, soc, system_info_file_c)
 
-	logging.info(f'Compiling system C-source files')
+	logging.info(f'Compiling system C-source files.')
 	forge.compile_c_ep1_ads_tcc(system_info_file_c, system_info_file_o)
 
-	logging.info(f'Linking object files to binary')
+	logging.info(f'Linking object files to binary.')
 	p_o = [
 		forge.P2K_DIR_EP1_OBJS / 'AutoRun.o',
 		forge.P2K_DIR_EP1_OBJS / 'ElfLoader.o',
@@ -126,6 +141,13 @@ def start_portkit_work(args: Namespace) -> bool:
 	forge.link_o_ep1_ads_armlink(p_o, p_e, address, p_s)
 	forge.bin_elf_ep1_ads_fromelf(p_e, p_b)
 
+	logging.info(f'Create Flash & Backup 3 patches.')
+	phone, fw = forge.parse_phone_firmware(firmware_name)
+	forge.bin2fpa(fw, 'Andy51', 'ElfPack v1.0', address, p_b)
+	p_r = output / 'register.sym'
+	p_f = output / 'Register.fpa'
+	generate_register_patch(fw, 'Andy51', 'Register ElfPack v1.0', p_s, p_r, p_f)
+
 	return True
 
 
@@ -139,37 +161,6 @@ class ArgsParser(argparse.ArgumentParser):
 	def error(self, message: str) -> None:
 		self.print_help(sys.stderr)
 		self.exit(2, f'{self.prog}: error: {message}\n')
-
-
-def arg_type_fw(firmware_filename: str) -> Path:
-	try:
-		forge.parse_phone_firmware(firmware_filename)
-		return arg_type_file(firmware_filename)
-	except ValueError as value_error:
-		raise argparse.ArgumentTypeError(value_error)
-
-
-def arg_type_dir(dirname: str) -> Path:
-	path = Path(dirname)
-	if not path.exists():
-		path.mkdir()
-	if not path.exists() or not path.is_dir():
-		raise argparse.ArgumentTypeError(f'{dirname} is not directory')
-	return path
-
-
-def arg_type_file(filename: str) -> Path:
-	path = Path(filename)
-	if not path.is_file() and not path.exists():
-		raise argparse.ArgumentTypeError(f'{filename} not found')
-	return path
-
-
-def arg_type_hex(hex_value: str) -> int:
-	try:
-		return forge.hex2int(hex_value)
-	except ValueError as value_error:
-		raise argparse.ArgumentTypeError(value_error)
 
 
 def parse_arguments() -> Namespace:
@@ -191,10 +182,10 @@ def parse_arguments() -> Namespace:
 	parser_args = ArgsParser(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
-	parser_args.add_argument('-s', '--start', required=True, type=arg_type_hex, metavar='OFFSET', help=hlp['s'])
-	parser_args.add_argument('-p', '--patterns', required=True, type=arg_type_file, metavar='FILE.pat', help=hlp['p'])
-	parser_args.add_argument('-f', '--firmware', required=True, type=arg_type_fw, metavar='FILE.smg', help=hlp['f'])
-	parser_args.add_argument('-o', '--output', required=True, type=arg_type_dir, metavar='DIRECTORY', help=hlp['o'])
+	parser_args.add_argument('-s', '--start', required=True, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
+	parser_args.add_argument('-p', '--patterns', required=True, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
+	parser_args.add_argument('-f', '--firmware', required=True, type=forge.at_fw, metavar='FILE.smg', help=hlp['f'])
+	parser_args.add_argument('-o', '--output', required=True, type=forge.at_dir, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_args()
 

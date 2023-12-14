@@ -12,6 +12,6 @@ def invoke_external_command(arguments: list[str]) -> int:
 
 	result = subprocess.run(arguments).returncode
 
-	logging.info(f'Result of "{command}" is "{result}"')
+	logging.info(f'Result of "{command}" is "{result}".')
 
 	return result

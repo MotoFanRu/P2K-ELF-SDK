@@ -2,3 +2,4 @@
 
 from .test_firmware import TestFirmware
 from .test_hexer import TestHexer
+from .test_sym import TestSym

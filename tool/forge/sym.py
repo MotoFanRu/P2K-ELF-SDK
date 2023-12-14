@@ -2,7 +2,23 @@
 
 import logging
 from pathlib import Path
+
 from .const import ADS_SYM_FILE_HEADER
+from .hexer import hex2int
+
+
+def split_and_validate_line(line: str) -> tuple[str | None, str | None, str | None]:
+	try:
+		line = line.strip()
+		if len(line) != 0 and not line.startswith('#'):
+			address, mode, name = line.split(' ')
+			address_int = hex2int(address)
+			if mode == 'A' or mode == 'T' or mode == 'D' or mode == 'C':
+				if len(name) >= 1:
+					return address, mode, name
+	except ValueError as error:
+		logging.debug(f'Parse error: "{error}".')
+	return None, None, None
 
 
 def create_combined_sym_file(files: list[Path], out_p: Path) -> None:
@@ -26,15 +42,16 @@ def validate_sym_file(in_p: Path) -> bool:
 			if (index == 0) and line != ADS_SYM_FILE_HEADER:
 				return False
 			if len(line) != 0 and not line.startswith('#'):
-				address, mode, name = line.split(' ')
-				if not symbols.get(name, None):
-					symbols[name] = address
-				else:
-					first_address = symbols[name]
-					logging.error(f'Error! Duplicate SYM values:')
-					logging.error(f'\t{first_address} {mode} {name}')
-					logging.error(f'\t{address} {mode} {name}')
-					return False
+				address, mode, name = split_and_validate_line(line)
+				if name is not None:
+					if not symbols.get(name, None):
+						symbols[name] = address
+					else:
+						first_address = symbols[name]
+						logging.error(f'Error! Duplicate SYM values:')
+						logging.error(f'\t{first_address} {mode} {name}')
+						logging.error(f'\t{address} {mode} {name}')
+						return False
 			elif line.startswith('# NOT_FOUND: '):
 				mode, name = line.replace('# NOT_FOUND: ', '').split(' ')
 				logging.debug(line)
@@ -51,9 +68,7 @@ def validate_sym_file(in_p: Path) -> bool:
 def get_function_address_from_sym_file(in_p: Path, func: str) -> int:
 	with in_p.open(mode='r') as f_i:
 		for line in f_i.read().splitlines():
-			line = line.strip()
-			if len(line) != 0 and not line.startswith('#'):
-				address, mode, name = line.split(' ')
-				if name == func:
-					return (int(address, 16) + 1) if mode == 'T' else (int(address, 16) + 1)
+			address, mode, name = split_and_validate_line(line)
+			if name == func:
+				return (int(address, 16) + 1) if mode == 'T' else (int(address, 16) + 1)
 	return 0x00000000

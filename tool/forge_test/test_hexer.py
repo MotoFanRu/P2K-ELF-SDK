@@ -1,8 +1,10 @@
 # forge_test/test_hexer.py
 
 import unittest
+
 from forge import hex2int
 from forge import int2hex
+from forge import int2hex_r
 from forge import arrange16
 
 
@@ -51,3 +53,10 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(int2hex(15), '0x0000000F')
 		self.assertEqual(int2hex(16), '0x00000010')
 		self.assertEqual(int2hex(4294967295), '0xFFFFFFFF')
+
+	def test_int2hex_r(self):
+		self.assertEqual(int2hex_r(0), '00000000')
+		self.assertEqual(int2hex_r(5), '00000005')
+		self.assertEqual(int2hex_r(15), '0000000F')
+		self.assertEqual(int2hex_r(16), '00000010')
+		self.assertEqual(int2hex_r(4294967295), 'FFFFFFFF')

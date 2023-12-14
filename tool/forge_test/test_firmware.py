@@ -1,6 +1,7 @@
 # forge_test/test_firmware.py
 
 import unittest
+
 from forge import determine_soc
 from forge import parse_phone_firmware
 from forge import parse_minor_major_firmware

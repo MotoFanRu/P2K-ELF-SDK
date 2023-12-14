@@ -2,12 +2,13 @@
 
 import logging
 from pathlib import Path
+
 from .const import P2K_DIR_EP_SDK
 from .const import P2K_EP1_ADS_TCC
 from .const import P2K_EP1_ADS_ARMLINK
 from .const import P2K_EP1_ADS_FROMELF
-from .invoke import invoke_external_command
 from .hexer import int2hex
+from .invoke import invoke_external_command
 
 
 def generate_source_with_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
@@ -52,13 +53,13 @@ def link_o_ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, 
 	sym_files_counter = 0
 	for p in p_i:
 		if not p.is_file() or not p.exists():
-			logging.error(f'File {p} is not exist')
+			logging.error(f'File {p} is not exist.')
 			return False
 		if p.name.endswith('.sym'):
 			sym_files_counter += 1
 
 	if sym_files_counter > 1:
-		logging.error(f'Too many *.sym files')
+		logging.error(f'Too many *.sym files for linking.')
 		return False
 
 	args = [str(P2K_EP1_ADS_ARMLINK)]

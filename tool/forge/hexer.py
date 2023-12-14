@@ -15,5 +15,9 @@ def int2hex(int_value: int) -> str:
 	return f'0x{int_value:08X}'
 
 
+def int2hex_r(int_value: int) -> str:
+	return f'{int_value:08X}'
+
+
 def arrange16(value: int) -> int:
 	return (value & -16) + 16

@@ -2,10 +2,11 @@
 
 import logging
 from pathlib import Path
+
 from .const import P2K_TOOL_PAT
-from .invoke import invoke_external_command
 from .file import move_file
 from .hexer import int2hex
+from .invoke import invoke_external_command
 
 
 def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ram_trans: bool, out_p: Path) -> bool:
@@ -27,5 +28,5 @@ def find_functions_from_patterns(pat_p: Path, cgs_p: Path, base_address: int, ra
 
 def append_pattern_to_file(pat_p: Path, name: str, mode: str, pattern: str) -> None:
 	with pat_p.open(mode='a', newline='\r\n') as f_o:
-		logging.info(f'Will write "{name} {mode} {pattern}" to "{pat_p}" pattern file')
+		logging.info(f'Will write "{name} {mode} {pattern}" to "{pat_p}" pattern file.')
 		f_o.write(f'{name} {mode} {pattern}')
