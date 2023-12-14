@@ -4,6 +4,7 @@ import argparse
 import logging
 import sys
 from argparse import Namespace
+from datetime import datetime
 from pathlib import Path
 
 import forge
@@ -160,7 +161,7 @@ def start_portkit_work(args: Namespace) -> bool:
 	generate_register_patch(fw, 'Andy51', 'Register ElfPack v1.0', p_s, p_r, p_f)
 
 	logging.info(f'Creating ElfPack v1.0 library for Phone.')
-	p_l = output / 'Library.sym'
+	p_l = output / 'Lib.sym'
 	p_a = output / 'Lib.asm'
 	p_p = output / 'elfloader.lib'
 	generate_lib_sym(
@@ -184,8 +185,10 @@ def start_portkit_work(args: Namespace) -> bool:
 	logging.info(f'Important files:')
 	logging.info(f'\t{p_t}\t-\tCompiled library for SDK.')
 	logging.info(f'\t{p_p}\t-\tCompiled library for phone.')
+	logging.info(f'\t{p_l}\t-\tGenerated library entities list.')
 	logging.info(f'\t{p_c}\t-\tGenerated ElfPack v1.0 patch for Flash & Backup 3.')
 	logging.info(f'\t{p_f}\t-\tGenerated ElfPack v1.0 register patch for Flash & Backup 3.')
+	logging.info(f'')
 
 	return True
 
@@ -225,6 +228,7 @@ def parse_arguments() -> Namespace:
 
 
 def main() -> None:
+	start_time = datetime.now()
 	args = parse_arguments()
 
 	logging.basicConfig(
@@ -237,6 +241,9 @@ def main() -> None:
 		forge.delete_all_files_in_directory(args.output)
 
 	start_portkit_work(args)
+
+	time_elapsed = forge.format_timedelta(datetime.now() - start_time)
+	logging.info(f'Time elapsed: "{time_elapsed}".')
 
 
 if __name__ == '__main__':

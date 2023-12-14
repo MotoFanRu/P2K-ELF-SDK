@@ -40,3 +40,5 @@ from .sym import create_combined_sym_file
 from .sym import split_and_validate_line
 from .sym import validate_sym_file
 from .sym import get_function_address_from_sym_file
+
+from .util import format_timedelta
