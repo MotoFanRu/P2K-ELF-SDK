@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-import argparse
-import logging
+"""
+PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
+
 import sys
-from argparse import Namespace
-from datetime import datetime
-from pathlib import Path
+import logging
+import argparse
 
 import forge
 
-REGISTER_FUNCTION_INJECTION = 'APP_SyncML_MainRegister'
-REGISTER_FUNCTION = 'Register'
-AUTORUN_FUNCTION = 'AutorunMain'
+from pathlib import Path
+from datetime import datetime
+from argparse import Namespace
+
+FUNC_INJECTION = 'APP_SyncML_MainRegister'
+FUNC_REGISTER = 'Register'
+FUNC_AUTORUN = 'AutorunMain'
 
 
-#  Generators.
+# Various generators.
 def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str], patterns_add: list[str]) -> bool:
 	if p_i_f.is_file() and p_i_f.exists() and p_i_e.is_file() and p_i_e.exists():
 		with (p_i_f.open(mode='r') as i_f, p_i_e.open(mode='r') as i_s, p_o_l.open(mode='w', newline='\r\n') as o_l):
@@ -37,8 +47,8 @@ def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str
 
 def generate_register_patch(fw: str, author: str, desc: str, p_elf_sym: Path, p_reg_sym: Path, p_patch: Path) -> bool:
 	if p_elf_sym.is_file() and p_elf_sym.exists() and p_reg_sym.is_file() and p_reg_sym.exists():
-		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_elf_sym, AUTORUN_FUNCTION) + 1)  # Thumb
-		reg_address = forge.int2hex_r(forge.get_function_address_from_sym_file(p_reg_sym, REGISTER_FUNCTION))
+		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_elf_sym, FUNC_AUTORUN) + 1)  # Thumb
+		reg_address = forge.int2hex_r(forge.get_function_address_from_sym_file(p_reg_sym, FUNC_REGISTER))
 
 		forge.generate_fpa(fw, author, desc, reg_address, hex_data, p_patch)
 		return True
@@ -47,9 +57,8 @@ def generate_register_patch(fw: str, author: str, desc: str, p_elf_sym: Path, p_
 	return False
 
 
-def generate_system_information_source(phone_firmware: str, soc: str, source_file: Path) -> bool:
+def generate_system_information_source(phone: str, firmware: str, soc: str, source_file: Path) -> bool:
 	system_info = {}
-	phone, firmware = forge.parse_phone_firmware(phone_firmware)
 	major, minor = forge.parse_minor_major_firmware(firmware)
 	system_info['n_phone'] = phone
 	system_info['n_platform'] = soc
@@ -58,9 +67,7 @@ def generate_system_information_source(phone_firmware: str, soc: str, source_fil
 	return forge.generate_source_with_const_chars(source_file, system_info)
 
 
-def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, out_dir: Path) -> bool:
-	pat = out_dir / 'register.pat'
-	sym = out_dir / 'register.sym'
+def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, pat: Path, sym: Path) -> bool:
 	address = forge.get_function_address_from_sym_file(combined_sym, register_func)
 	if address != 0x00000000:
 		forge.append_pattern_to_file(pat, 'Register', 'D', forge.int2hex_r(address))
@@ -68,132 +75,147 @@ def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_f
 	return False
 
 
-#  Portkit working flow.
-def start_portkit_work(args: Namespace) -> bool:
-	logging.info(f'Start working with arguments:')
-	logging.info(f'\tverbose={args.verbose}')
-	logging.info(f'\tclean={args.clean}')
+# PortKit working flow.
+def start_port_kit_work(args: Namespace) -> bool:
+	logging.info(f'Start building ElfPack v1.0 for Motorola P2K.')
 	logging.info(f'')
 
-	output = args.output
-	patterns = args.patterns
-	firmware = args.firmware
-	firmware_name = args.firmware.name
-	start = args.start
-	ram_trans = args.ram_trans
-	address = args.start + forge.arrange16(forge.get_file_size(args.firmware))  # Start + Offset.
-	soc = forge.determine_soc(args.start)
+	arg_verbose = args.verbose
+	arg_clean = args.clean
+	arg_output = args.output
+	arg_patterns = args.patterns
+	arg_firmware = args.firmware
+	arg_start = args.start
+	arg_ram_trans = args.ram_trans
+	arg_fw_name = arg_firmware.name
+	arg_address = arg_start + forge.arrange16(forge.get_file_size(arg_firmware))  # Start + Offset.
+	arg_soc = forge.determine_soc(arg_start)
+	arg_phone, arg_fw = forge.parse_phone_firmware(arg_fw_name)
 
 	logging.info(f'Values:')
-	logging.info(f'\tram_trans={ram_trans}')
-	logging.info(f'\tstart=0x{start:08X}')
-	logging.info(f'\tpatterns={patterns}')
-	logging.info(f'\tfirmware={firmware}')
-	logging.info(f'\tfirmware_name={firmware_name}')
-	logging.info(f'\toutput={output}')
-	logging.info(f'\taddress=0x{address:08X}')
-	logging.info(f'\tsoc={soc}')
+	logging.info(f'\targ_verbose={arg_verbose}')
+	logging.info(f'\targ_clean={arg_clean}')
+	logging.info(f'\targ_output={arg_output}')
+	logging.info(f'\targ_patterns={arg_patterns}')
+	logging.info(f'\targ_firmware={arg_firmware}')
+	logging.info(f'\targ_start=0x{arg_start:08X} {arg_start}')
+	logging.info(f'\targ_ram_trans={arg_ram_trans}')
+	logging.info(f'\targ_fw_name={arg_fw_name}')
+	logging.info(f'\targ_address=0x{arg_address:08X} {arg_address}')
+	logging.info(f'\targ_soc={arg_soc}')
+	logging.info(f'\targ_phone={arg_phone}')
+	logging.info(f'\targ_fw={arg_fw}')
 	logging.info(f'')
 
-	platform_sym_file = output / 'platform.sym'
-	function_sym_file = output / 'functions.sym'
-	combined_sym_file = output / 'combined.sym'
-	lte1_patterns_file = forge.P2K_DIR_EP1_FUNC / 'lte1.pat'
-	lte2_patterns_file = forge.P2K_DIR_EP1_FUNC / 'lte2.pat'
-	lte2_irom_sym_file = forge.P2K_DIR_EP1_FUNC / 'lte2_irom.sym'
-	system_info_file_c = output / 'SysInfo.c'
-	system_info_file_o = output / 'SysInfo.o'
-
 	logging.info(f'Finding SoC related functions from patterns.')
-	if soc == 'LTE':
-		forge.find_functions_from_patterns(lte1_patterns_file, firmware, start, False, platform_sym_file)
-	elif soc == 'LTE2':
-		forge.find_functions_from_patterns(lte2_patterns_file, firmware, start, False, platform_sym_file)
+	val_lte1_pat = forge.P2K_DIR_EP1_FUNC / 'LTE.pat'
+	val_lte2_pat = forge.P2K_DIR_EP1_FUNC / 'LTE2.pat'
+	val_lte2_irom_sym = forge.P2K_DIR_EP1_FUNC / 'LTE2_IROM.sym'
+	val_platform_sym = arg_output / 'Platform.sym'
+	val_functions_sym = arg_output / 'Functions.sym'
+	val_combined_sym = arg_output / 'Combined.sym'
+	if arg_soc == 'LTE':
+		forge.find_functions_from_patterns(val_lte1_pat, arg_firmware, arg_start, False, val_platform_sym)
+	elif arg_soc == 'LTE2':
+		forge.find_functions_from_patterns(val_lte2_pat, arg_firmware, arg_start, False, val_platform_sym)
 	else:
-		function_sym_file = combined_sym_file
+		val_functions_sym = val_combined_sym
 		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file.')
+	logging.info(f'')
 
 	logging.info(f'Finding general functions from patterns.')
-	forge.find_functions_from_patterns(patterns, firmware, start, ram_trans, function_sym_file)
+	forge.find_functions_from_patterns(arg_patterns, arg_firmware, arg_start, arg_ram_trans, val_functions_sym)
+	logging.info(f'')
 
 	logging.info(f'Combining all functions into one symbols file.')
-	if soc == 'LTE':
-		forge.create_combined_sym_file([function_sym_file, platform_sym_file], combined_sym_file)
-	elif soc == 'LTE2':
-		forge.create_combined_sym_file([function_sym_file, platform_sym_file, lte2_irom_sym_file], combined_sym_file)
+	if arg_soc == 'LTE':
+		forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
+	elif arg_soc == 'LTE2':
+		forge.create_combined_sym_file([val_functions_sym, val_combined_sym, val_lte2_irom_sym], val_combined_sym)
+	logging.info(f'')
 
 	logging.info(f'Validating combined symbols file.')
-	if not forge.validate_sym_file(combined_sym_file):
+	if not forge.validate_sym_file(val_combined_sym):
 		return False
 	else:
-		logging.info(f'The "{combined_sym_file}" sym file is validated.')
+		logging.info(f'The "{val_combined_sym}" sym file is validated.')
+	logging.info(f'')
 
 	logging.info(f'Generating register symbols file.')
-	generate_register_symbol_file(combined_sym_file, firmware, REGISTER_FUNCTION_INJECTION, output)
+	val_register_pat = arg_output / 'Register.pat'
+	val_register_sym = arg_output / 'Register.sym'
+	generate_register_symbol_file(val_combined_sym, arg_firmware, FUNC_INJECTION, val_register_pat, val_register_sym)
+	logging.info(f'')
 
 	logging.info(f'Generating system information C-source file.')
-	generate_system_information_source(firmware_name, soc, system_info_file_c)
+	val_system_info_c = arg_output / 'SysInfo.c'
+	val_system_info_o = arg_output / 'SysInfo.o'
+	generate_system_information_source(arg_phone, arg_fw, arg_soc, val_system_info_c)
+	logging.info(f'')
 
 	logging.info(f'Compiling system C-source files.')
-	forge.compile_c_ep1_ads_tcc(system_info_file_c, system_info_file_o)
+	forge.compile_c_ep1_ads_tcc(val_system_info_c, val_system_info_o)
+	logging.info(f'')
 
 	logging.info(f'Linking object files to binary.')
-	p_o = [
+	val_link_objects = [
 		forge.P2K_DIR_EP1_OBJS / 'AutoRun.o',
 		forge.P2K_DIR_EP1_OBJS / 'ElfLoader.o',
 		forge.P2K_DIR_EP1_OBJS / 'ElfLoaderApp.o',
 		forge.P2K_DIR_EP1_OBJS / 'LibC.o',
-		system_info_file_o,
-		combined_sym_file
+		val_system_info_o,
+		val_combined_sym
 	]
-	p_e = output / 'ElfPack.elf'
-	p_b = output / 'ElfPack.bin'
-	p_s = output / 'ElfPack.sym'
-	forge.link_o_ep1_ads_armlink(p_o, p_e, address, p_s)
-	forge.bin_elf_ep1_ads_fromelf(p_e, p_b)
+	val_elfpack_elf = arg_output / 'ElfPack.elf'
+	val_elfpack_bin = arg_output / 'ElfPack.bin'
+	val_elfpack_sym = arg_output / 'ElfPack.sym'
+	forge.link_o_ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym)
+	forge.bin_elf_ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
+	logging.info(f'')
 
 	logging.info(f'Creating Flash & Backup 3 patches.')
-	p_r = output / 'register.sym'
-	p_f = output / 'Register.fpa'
-	p_c = output / 'ElfPack.fpa'
-	phone, fw = forge.parse_phone_firmware(firmware_name)
-	forge.bin2fpa(fw, 'Andy51', 'ElfPack v1.0', address, p_b, p_c)
-	generate_register_patch(fw, 'Andy51', 'Register ElfPack v1.0', p_s, p_r, p_f)
+	val_register_fpa = arg_output / 'Register.fpa'
+	val_elfpack_fpa = arg_output / 'ElfPack.fpa'
+	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_address, val_elfpack_bin, val_elfpack_fpa)
+	generate_register_patch(arg_fw, 'Andy51', 'ElfPack v1.0 Regs', val_elfpack_sym, val_register_sym, val_register_fpa)
+	logging.info(f'')
 
 	logging.info(f'Creating ElfPack v1.0 library for Phone.')
-	p_l = output / 'Lib.sym'
-	p_a = output / 'Lib.asm'
-	p_p = output / 'elfloader.lib'
+	val_library_sym = arg_output / 'Lib.sym'
+	val_library_asm = arg_output / 'Lib.asm'
+	val_elfloader_lib = arg_output / 'elfloader.lib'
 	generate_lib_sym(
-		combined_sym_file, p_s, p_l,
-		[REGISTER_FUNCTION_INJECTION, 'APP_CALC_MainRegister', '_region_table'],
+		val_combined_sym, val_elfpack_sym, val_library_sym,
+		[FUNC_INJECTION, 'APP_CALC_MainRegister', '_region_table'],
 		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
 	)
 	library_model = []
-	functions = forge.libgen_ep1_fill_library_model(p_l, library_model)
-	forge.libgen_ep1_create_assembler_source(p_a, library_model)
-	forge.libgen_ep1_create_library(p_p, library_model, functions)
+	functions = forge.libgen_ep1_fill_library_model(val_library_sym, library_model)
+	forge.libgen_ep1_create_assembler_source(val_library_asm, library_model)
+	forge.libgen_ep1_create_library(val_elfloader_lib, library_model, functions)
+	logging.info(f'')
 
 	logging.info(f'Compiling ElfPack v1.0 library for SDK.')
-	p_d = output / 'Lib.o'
-	p_t = output / 'libstd.a'
-	forge.assembly_asm_ep1_ads_armasm(p_a, p_d)
-	forge.packing_static_lib_ep1_ads_armar([p_d], p_t)
+	val_library_obj = arg_output / 'Lib.o'
+	val_libstd_static_lib = arg_output / 'libstd.a'
+	forge.assembly_asm_ep1_ads_armasm(val_library_asm, val_library_obj)
+	forge.packing_static_lib_ep1_ads_armar([val_library_obj], val_libstd_static_lib)
+	logging.info(f'')
 
-	logging.info(f'ElfPack v1.0 report.')
+	logging.info(f'ElfPack v1.0 building report.')
 	logging.info(f'')
 	logging.info(f'Important files:')
-	logging.info(f'\t{p_t}\t-\tCompiled library for SDK.')
-	logging.info(f'\t{p_p}\t-\tCompiled library for phone.')
-	logging.info(f'\t{p_l}\t-\tGenerated library entities list.')
-	logging.info(f'\t{p_c}\t-\tGenerated ElfPack v1.0 patch for Flash & Backup 3.')
-	logging.info(f'\t{p_f}\t-\tGenerated ElfPack v1.0 register patch for Flash & Backup 3.')
+	logging.info(f'\t{val_libstd_static_lib}\t-\tCompiled library for SDK.')
+	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for phone.')
+	logging.info(f'\t{val_library_sym}\t-\tGenerated library entities list.')
+	logging.info(f'\t{val_elfpack_fpa}\t-\tGenerated ElfPack v1.0 patch for Flash & Backup 3.')
+	logging.info(f'\t{val_register_fpa}\t-\tGenerated ElfPack v1.0 register patch for Flash & Backup 3.')
 	logging.info(f'')
 
 	return True
 
 
-#  Arguments parsing routines.
+# Arguments parsing routines.
 class ArgsParser(argparse.ArgumentParser):
 	def error(self, message: str) -> None:
 		self.print_help(sys.stderr)
@@ -240,7 +262,7 @@ def main() -> None:
 	if args.clean:
 		forge.delete_all_files_in_directory(args.output)
 
-	start_portkit_work(args)
+	start_port_kit_work(args)
 
 	time_elapsed = forge.format_timedelta(datetime.now() - start_time)
 	logging.info(f'Time elapsed: "{time_elapsed}".')

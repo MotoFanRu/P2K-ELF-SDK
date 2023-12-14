@@ -1,10 +1,20 @@
 # forge/arg.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
 
 import argparse
+
 from pathlib import Path
 
-from .firmware import parse_phone_firmware
 from .hexer import hex2int
+from .firmware import parse_phone_firmware
 
 
 def at_fw(firmware_filename: str) -> Path:

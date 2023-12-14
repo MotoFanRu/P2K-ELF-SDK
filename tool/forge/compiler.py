@@ -1,15 +1,25 @@
 # forge/compiler.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
 
 import logging
+
 from pathlib import Path
 
+from .hexer import int2hex
 from .const import P2K_DIR_EP_SDK
 from .const import P2K_EP1_ADS_TCC
 from .const import P2K_EP1_ADS_ARMLINK
 from .const import P2K_EP1_ADS_FROMELF
 from .const import P2K_EP1_ADS_ARMASM
 from .const import P2K_EP1_ADS_ARMAR
-from .hexer import int2hex
 from .invoke import invoke_external_command_res
 
 

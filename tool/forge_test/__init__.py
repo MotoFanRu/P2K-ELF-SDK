@@ -1,4 +1,13 @@
 # forge_test/__init__.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
 
 from .test_firmware import TestFirmware
 from .test_hexer import TestHexer

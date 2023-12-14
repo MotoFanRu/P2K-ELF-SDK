@@ -1,10 +1,20 @@
 # forge/sym.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
 
 import logging
+
 from pathlib import Path
 
-from .const import ADS_SYM_FILE_HEADER
 from .hexer import hex2int
+from .const import ADS_SYM_FILE_HEADER
 
 
 def split_and_validate_line(line: str) -> tuple[str | None, str | None, str | None]:
@@ -12,7 +22,7 @@ def split_and_validate_line(line: str) -> tuple[str | None, str | None, str | No
 		line = line.strip()
 		if len(line) != 0 and not line.startswith('#'):
 			address, mode, name = line.split(' ')
-			address_int = hex2int(address)
+			hex2int(address)
 			if mode == 'A' or mode == 'T' or mode == 'D' or mode == 'C':
 				if len(name) >= 1:
 					return address, mode, name

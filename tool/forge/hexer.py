@@ -1,4 +1,14 @@
 # forge/hexer.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
+
 
 def hex2int(hex_value: str) -> int:
 	if not hex_value.startswith('0x'):

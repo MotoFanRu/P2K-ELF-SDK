@@ -1,12 +1,22 @@
 # forge/pattern.py
+# -*- coding: utf-8 -*-
+
+"""
+A special "Forge" python library for the P2K ELF SDK toolchain.
+
+Python: 3.10+
+License: MIT
+Authors: EXL, MotoFan.Ru developers
+"""
 
 import logging
+
 from pathlib import Path
 
+from .hexer import int2hex
+from .file import move_file
 from .const import P2K_TOOL_PAT
 from .const import P2K_DIR_TOOL
-from .file import move_file
-from .hexer import int2hex
 from .invoke import invoke_external_command
 from .invoke import invoke_external_command_res
 
