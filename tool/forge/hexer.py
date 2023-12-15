@@ -32,3 +32,13 @@ def int2hex_r(int_value: int) -> str:
 
 def arrange16(value: int) -> int:
 	return (value & -16) + 16
+
+
+def is_hex_string(hex_string: str) -> bool:
+	hex_digits = set('0123456789abcdefABCDEF')
+	return all(char in hex_digits for char in hex_string)
+
+
+def normalize_hex_string(hex_string: str) -> str | None:
+	hex_string = hex_string.strip().upper()
+	return hex_string if is_hex_string(hex_string) else None

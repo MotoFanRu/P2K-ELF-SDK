@@ -16,6 +16,8 @@ from forge import hex2int
 from forge import int2hex
 from forge import int2hex_r
 from forge import arrange16
+from forge import is_hex_string
+from forge import normalize_hex_string
 
 
 class TestHexer(unittest.TestCase):
@@ -70,3 +72,25 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(int2hex_r(15), '0000000F')
 		self.assertEqual(int2hex_r(16), '00000010')
 		self.assertEqual(int2hex_r(4294967295), 'FFFFFFFF')
+
+	def test_is_hex_string(self):
+		self.assertTrue(is_hex_string('0'))
+		self.assertTrue(is_hex_string('9'))
+		self.assertTrue(is_hex_string('A'))
+		self.assertTrue(is_hex_string('a'))
+		self.assertTrue(is_hex_string('F'))
+		self.assertTrue(is_hex_string('f'))
+		self.assertTrue(is_hex_string('0123456789abcdefABCDEF'))
+		self.assertFalse(is_hex_string('G'))
+		self.assertFalse(is_hex_string('g'))
+		self.assertFalse(is_hex_string(' '))
+		self.assertFalse(is_hex_string('0123456789abcdefABCDEFG'))
+
+	def test_normalize_hex_string(self):
+		self.assertEqual(normalize_hex_string('0123456789abcdefABCDEF'), '0123456789ABCDEFABCDEF')
+		self.assertEqual(normalize_hex_string(' 0123456789abcdefABCDEF'), '0123456789ABCDEFABCDEF')
+		self.assertEqual(normalize_hex_string(' 0123456789abcdefABCDEF'), '0123456789ABCDEFABCDEF')
+		self.assertEqual(normalize_hex_string(' 0123456789abcdefABCDEF '), '0123456789ABCDEFABCDEF')
+		self.assertEqual(normalize_hex_string(' 0123456789abcdefABCDEF '), '0123456789ABCDEFABCDEF')
+		self.assertEqual(normalize_hex_string('0123456789ab cdefABCDEF'), None)
+		self.assertEqual(normalize_hex_string('0123456789abGcdefABCDEF'), None)

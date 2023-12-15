@@ -14,6 +14,9 @@ from .arg import at_fw
 from .arg import at_dir
 from .arg import at_file
 from .arg import at_hex
+from .arg import at_fpa
+from .arg import at_fpac
+from .arg import at_hds
 
 from .const import *
 
@@ -35,6 +38,8 @@ from .hexer import hex2int
 from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import arrange16
+from .hexer import is_hex_string
+from .hexer import normalize_hex_string
 
 from .libgen import libgen_ep1_fill_library_model
 from .libgen import libgen_ep1_create_assembler_source

@@ -174,7 +174,7 @@ def start_port_kit_work(args: Namespace) -> bool:
 	forge.bin_elf_ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	logging.info(f'')
 
-	logging.info(f'Creating Flash & Backup 3 patches.')
+	logging.info(f'Creating Flash&Backup 3 patches.')
 	val_register_fpa = arg_output / 'Register.fpa'
 	val_elfpack_fpa = arg_output / 'ElfPack.fpa'
 	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_address, val_elfpack_bin, val_elfpack_fpa)
@@ -209,8 +209,8 @@ def start_port_kit_work(args: Namespace) -> bool:
 	logging.info(f'\t{val_libstd_static_lib}\t-\tCompiled library for SDK.')
 	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for phone.')
 	logging.info(f'\t{val_library_sym}\t-\tGenerated library entities list.')
-	logging.info(f'\t{val_elfpack_fpa}\t-\tGenerated ElfPack v1.0 patch for Flash & Backup 3.')
-	logging.info(f'\t{val_register_fpa}\t-\tGenerated ElfPack v1.0 register patch for Flash & Backup 3.')
+	logging.info(f'\t{val_elfpack_fpa}\t-\tGenerated ElfPack v1.0 patch for Flash&Backup 3.')
+	logging.info(f'\t{val_register_fpa}\t-\tGenerated ElfPack v1.0 register patch for Flash&Backup 3.')
 	logging.info(f'')
 
 	return True
@@ -225,7 +225,7 @@ class ArgsParser(argparse.ArgumentParser):
 
 def parse_arguments() -> Namespace:
 	hlp = {
-		'd': 'ElfPack v1.0 PortKit Tool by EXL, 05-Dec-2023',
+		'd': 'ElfPack v1.0 PortKit Tool by EXL, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
 		's': 'start address of CG0+CG1 firmware',
@@ -237,7 +237,7 @@ def parse_arguments() -> Namespace:
 	epl = """examples:
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1_func/General.pat -f E1_R373_G_0E.30.49R.smg -o ep1_build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1_func/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o ep1_build
-	python ep1_portkit.py -c -r -v -s 0x100A0000 -p ep1_func/General.pat -f V3i_R4441D_G_08.01.03R.smg -o ep1_build
+	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1_func/General.pat -f V3i_R4441D_G_08.01.03R.smg -o ep1_build
 	"""
 	parser_args = ArgsParser(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])

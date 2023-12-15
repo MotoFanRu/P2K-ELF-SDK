@@ -15,6 +15,7 @@ import argparse
 from pathlib import Path
 
 from .hexer import hex2int
+from .hexer import normalize_hex_string
 from .firmware import parse_phone_firmware
 
 
@@ -42,8 +43,30 @@ def at_file(filename: str) -> Path:
 	return path
 
 
+def at_fpa(filename: str) -> Path:
+	path = Path(filename)
+	if not path.name.endswith('.fpa'):
+		raise argparse.ArgumentTypeError(f'{filename} is not *.fpa patch')
+	return path
+
+
+# Check is *.fpa file exists.
+def at_fpac(filename: str) -> Path:
+	at_fpa(filename)
+	at_file(filename)
+	return Path(filename)
+
+
 def at_hex(hex_value: str) -> int:
 	try:
 		return hex2int(hex_value)
 	except ValueError as value_error:
 		raise argparse.ArgumentTypeError(value_error)
+
+
+# HEX DATA STRING, e.g. '0123456789ABCDEF'.
+def at_hds(hds: str) -> str:
+	hex_data_string = normalize_hex_string(hds)
+	if hex_data_string is None:
+		raise argparse.ArgumentTypeError(f'wrong hex data string')
+	return hex_data_string
