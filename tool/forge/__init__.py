@@ -45,8 +45,8 @@ from .libgen import libgen_ep1_fill_library_model
 from .libgen import libgen_ep1_create_assembler_source
 from .libgen import libgen_ep1_create_library
 
-from .patcher import generate_fpa
 from .patcher import bin2fpa
+from .patcher import hex2fpa
 
 from .pattern import find_functions_from_patterns
 from .pattern import append_pattern_to_file

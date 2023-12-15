@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Utility for generating Flash&Backup 3 patches in the *.fpa format.
+A patcher utility for Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
@@ -24,15 +24,30 @@ from argparse import Namespace
 class Mode(Enum):
 	MODE_HEX = 0
 	MODE_BIN = 1
-	MODE_CONVERT = 2
-	MODE_UNITE = 3
+	MODE_WRITE = 2
+	MODE_CONVERT = 3
+	MODE_UNITE = 4
 
 
 # Various generators.
 
 # PortKit working flow.
-def start_fpa_work(mode: Mode, args: Namespace) -> bool:
-	logging.info(f'Start FPA patcher utility, mode: {mode.name}.')
+def start_patcher_work(mode: Mode, args: Namespace) -> bool:
+	logging.info(f'Start patcher utility, mode: {mode.name}.')
+	if mode == Mode.MODE_BIN or mode == Mode.MODE_HEX:
+		undo = None
+		if mode == Mode.MODE_BIN:
+			return forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output)
+		else:
+			pass
+	elif mode == Mode.MODE_WRITE:
+		pass
+	elif mode == Mode.MODE_CONVERT:
+		pass
+	elif mode == Mode.MODE_UNITE:
+		pass
+	else:
+		logging.error(f'Unknown mode: {mode.name}')
 	return True
 
 
@@ -57,33 +72,40 @@ class ArgsParser(argparse.ArgumentParser):
 
 	def parse_check_arguments(self) -> tuple[Mode, Namespace]:
 		args = self.parse_args()
-		check_mode_fpa_hex = self.check_arguments(
+		check_mode_hex = self.check_arguments(
 			args,
-			['bin', 'convert', 'uni'],
+			['bin', 'convert', 'uni', 'write'],
 			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose']
 		)
-		check_mode_fpa_bin = self.check_arguments(
+		check_mode_bin = self.check_arguments(
 			args,
-			['hex', 'convert', 'uni'],
+			['hex', 'convert', 'uni', 'write'],
 			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose']
 		)
-		check_mode_fpa_convert = self.check_arguments(
+		check_mode_write = self.check_arguments(
 			args,
-			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'uni'],
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'uni'],
+			['undo', 'write', 'verbose']
+		)
+		check_mode_convert = self.check_arguments(
+			args,
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'uni'],
 			['output', 'convert', 'verbose']
 		)
-		check_mode_fpa_unite = self.check_arguments(
+		check_mode_unite = self.check_arguments(
 			args,
-			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'convert'],
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'convert'],
 			['output', 'uni', 'verbose']
 		)
-		if check_mode_fpa_hex:
+		if check_mode_hex:
 			return Mode.MODE_HEX, args
-		elif check_mode_fpa_bin:
+		elif check_mode_bin:
 			return Mode.MODE_BIN, args
-		elif check_mode_fpa_convert:
+		elif check_mode_convert:
 			return Mode.MODE_CONVERT, args
-		elif check_mode_fpa_unite:
+		elif check_mode_write:
+			return Mode.MODE_WRITE, args
+		elif check_mode_unite:
 			if len(args.uni) > 1:
 				return Mode.MODE_UNITE, args
 			else:
@@ -94,7 +116,7 @@ class ArgsParser(argparse.ArgumentParser):
 
 def parse_arguments() -> tuple[Mode, Namespace]:
 	hlp = {
-		'h': 'Utility for generating Flash&Backup 3 patches in the *.fpa format, 15-Dec-2023',
+		'h': 'A patcher utility for Motorola phones on P2K platform, 15-Dec-2023',
 		'o': 'output resulting file',
 		'f': 'firmware tuple string, e.g. "R373_G_0E.30.49R"',
 		'a': 'author name or nickname, e.g. "EXL"',
@@ -103,20 +125,22 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'x': 'hex data string which will be written to offset, e.g. "0123456789ABCDEF"',
 		'b': 'binary file which will be written to offset, e.g. "ElfPack.bin"',
 		'u': 'generate UNDOs patch information, CG1.smg is needed, e.g. "E1_R373_G_0E.30.49R.smg"',
-		'c': 'convert *.fpa patch to binary code',
-		'i': 'combine all fpa patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
+		'w': 'apply and write patch to the firmware file',
+		'c': 'convert FPA-patch to binary code',
+		'i': 'combine all FPA-patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
 		'v': 'verbose output'
 	}
 	epl = """examples:
-	python fpa.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x10080000 -b ElfPack.bin -o Result.fpa
-	python fpa.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "0123456789ABCDEF" -o Result.fpa
-	python fpa.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x10080000 -b ElfPack.bin -u CG1.smg -o Result.fpa
-	python fpa.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
-	python fpa.py -c ElfPack.fpa -o Result.bin
-	python fpa.py -i ElfPack.fpa Register.fpa -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x10080000 -b ElfPack.bin -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "0123456789ABCDEF" -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -b File.bin -u CG1.smg -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
+	python patcher.py -w Result.fpa -u CG1.smg
+	python patcher.py -c ElfPack.fpa -o Result.bin
+	python patcher.py -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
 	parser_args = ArgsParser(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser_args.add_argument('-o', '--output', required=False, type=forge.at_fpa, metavar='FILE', help=hlp['o'])
+	parser_args.add_argument('-o', '--output', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['o'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=str, metavar='FIRMWARE', help=hlp['f'])
 	parser_args.add_argument('-a', '--author', required=False, type=str, metavar='AUTHOR', help=hlp['a'])
 	parser_args.add_argument('-d', '--desc', required=False, type=str, metavar='DESCRIPTION', help=hlp['d'])
@@ -124,6 +148,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	parser_args.add_argument('-x', '--hex', required=False, type=forge.at_hds, metavar='HEX_DATA_STR', help=hlp['x'])
 	parser_args.add_argument('-b', '--bin', required=False, type=forge.at_file, metavar='BINARY_FILE', help=hlp['b'])
 	parser_args.add_argument('-u', '--undo', required=False, type=forge.at_file, metavar='FIRMWARE_FILE', help=hlp['u'])
+	parser_args.add_argument('-w', '--write', required=False, type=forge.at_fpac, metavar='FPA', help=hlp['w'])
 	parser_args.add_argument('-c', '--convert', required=False, type=forge.at_fpac, metavar='FPA', help=hlp['c'])
 	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpac, metavar='FPA', help=hlp['i'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
@@ -139,7 +164,7 @@ def main() -> None:
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)
 
-	start_fpa_work(mode, args)
+	start_patcher_work(mode, args)
 
 
 if __name__ == '__main__':

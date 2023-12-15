@@ -81,5 +81,5 @@ def get_function_address_from_sym_file(in_p: Path, func: str) -> int:
 		for line in f_i.read().splitlines():
 			address, mode, name = split_and_validate_line(line)
 			if name == func:
-				return (int(address, 16) + 1) if mode == 'T' else (int(address, 16) + 1)
+				return (int(address, 16) + 1) if mode == 'T' else int(address, 16)
 	return 0x00000000

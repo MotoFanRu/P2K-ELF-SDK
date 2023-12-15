@@ -46,15 +46,15 @@ def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str
 	return False
 
 
-def generate_register_patch(fw: str, author: str, desc: str, p_elf_sym: Path, p_reg_sym: Path, p_patch: Path) -> bool:
-	if p_elf_sym.is_file() and p_elf_sym.exists() and p_reg_sym.is_file() and p_reg_sym.exists():
-		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_elf_sym, FUNC_AUTORUN) + 1)  # Thumb
-		reg_address = forge.int2hex_r(forge.get_function_address_from_sym_file(p_reg_sym, FUNC_REGISTER))
+def generate_register_patch(fw: str, author: str, desc: str, p_e: Path, p_r: Path, p_p: Path, cg: Path) -> bool:
+	if p_e.is_file() and p_e.exists() and p_r.is_file() and p_r.exists():
+		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN) + 1)  # Thumb
+		reg_address = forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER)
 
-		forge.generate_fpa(fw, author, desc, reg_address, hex_data, p_patch)
+		forge.hex2fpa(fw, author, desc, reg_address, hex_data, p_p, cg)
 		return True
 	else:
-		logging.error(f'Cannot open symbol files: "{p_elf_sym}" and "{p_reg_sym}".')
+		logging.error(f'Cannot open symbol files: "{p_e}" and "{p_r}".')
 	return False
 
 
@@ -178,7 +178,10 @@ def start_port_kit_work(args: Namespace) -> bool:
 	val_register_fpa = arg_output / 'Register.fpa'
 	val_elfpack_fpa = arg_output / 'ElfPack.fpa'
 	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_address, val_elfpack_bin, val_elfpack_fpa)
-	generate_register_patch(arg_fw, 'Andy51', 'ElfPack v1.0 Regs', val_elfpack_sym, val_register_sym, val_register_fpa)
+	generate_register_patch(
+		arg_fw, 'Andy51', 'ElfPack v1.0 Register',
+		val_elfpack_sym, val_register_sym, val_register_fpa, arg_firmware
+	)
 	logging.info(f'')
 
 	logging.info(f'Creating ElfPack v1.0 library for Phone.')
