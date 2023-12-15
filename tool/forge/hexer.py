@@ -22,6 +22,17 @@ def hex2int(hex_value: str) -> int:
 		raise ValueError(f'value "{hex_value}" is not a valid hexadecimal value')
 
 
+def hex2int_r(hex_value: str) -> int:
+	if hex_value.startswith('0x'):
+		raise ValueError(f'value "{hex_value}" starts with a "0x" prefix')
+	if len(hex_value) != 8:
+		raise ValueError(f'value "{hex_value}" should be in the "8" format like "12345678" hex digit')
+	try:
+		return int(hex_value, 16)
+	except ValueError:
+		raise ValueError(f'value "{hex_value}" is not a valid hexadecimal value')
+
+
 def int2hex(int_value: int) -> str:
 	return f'0x{int_value:08X}'
 
@@ -42,3 +53,16 @@ def is_hex_string(hex_string: str) -> bool:
 def normalize_hex_string(hex_string: str) -> str | None:
 	hex_string = hex_string.strip().upper()
 	return hex_string if is_hex_string(hex_string) else None
+
+
+def normalize_hex_address(hex_address: str, raw: bool) -> str | None:
+	hex_address = hex_address.strip().upper()
+	if len(hex_address) <= 8:
+		try:
+			value = int(hex_address, 16)
+			if raw:
+				return int2hex_r(value)
+			return int2hex(value)
+		except ValueError:
+			raise ValueError(f'value "{hex_address}" is not a valid hexadecimal value')
+	return None

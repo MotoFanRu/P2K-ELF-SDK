@@ -43,18 +43,16 @@ def at_file(filename: str) -> Path:
 	return path
 
 
+def at_path(filename: str) -> Path:
+	return Path(filename)
+
+
 def at_fpa(filename: str) -> Path:
+	at_file(filename)
 	path = Path(filename)
 	if not path.name.endswith('.fpa'):
 		raise argparse.ArgumentTypeError(f'{filename} is not *.fpa patch')
 	return path
-
-
-# Check is *.fpa file exists.
-def at_fpac(filename: str) -> Path:
-	at_fpa(filename)
-	at_file(filename)
-	return Path(filename)
 
 
 def at_hex(hex_value: str) -> int:

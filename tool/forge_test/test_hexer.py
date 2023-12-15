@@ -14,10 +14,12 @@ import unittest
 
 from forge import hex2int
 from forge import int2hex
+from forge import hex2int_r
 from forge import int2hex_r
 from forge import arrange16
 from forge import is_hex_string
 from forge import normalize_hex_string
+from forge import normalize_hex_address
 
 
 class TestHexer(unittest.TestCase):
@@ -45,6 +47,31 @@ class TestHexer(unittest.TestCase):
 	def helper_test_hex2int(self, hex_value):
 		with self.assertRaises(ValueError) as context:
 			hex2int(hex_value)
+
+	def test_hex2int_r(self):
+		self.assertEqual(hex2int_r('00000000'), 0)
+		self.assertEqual(hex2int_r('00000001'), 1)
+		self.assertEqual(hex2int_r('10080000'), 268959744)
+		self.assertEqual(hex2int_r('FFFFFFFF'), 4294967295)
+
+		self.helper_test_hex2int_r('0')
+		self.helper_test_hex2int_r('1')
+		self.helper_test_hex2int_r('10')
+		self.helper_test_hex2int_r('100')
+		self.helper_test_hex2int_r('1000')
+		self.helper_test_hex2int_r('10000')
+		self.helper_test_hex2int_r('100000')
+		self.helper_test_hex2int_r('1000000')
+		# self.helper_test_hex2int_r('10000000')
+		self.helper_test_hex2int_r('0')
+		self.helper_test_hex2int_r('1')
+		self.helper_test_hex2int_r('0001')
+		self.helper_test_hex2int_r('1000')
+		self.helper_test_hex2int_r('G00D')
+
+	def helper_test_hex2int_r(self, hex_value):
+		with self.assertRaises(ValueError) as context:
+			hex2int_r(hex_value)
 
 	def test_arrange16(self):
 		self.assertEqual(int2hex(arrange16(0x10080000)), '0x10080010')
@@ -94,3 +121,11 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(normalize_hex_string(' 0123456789abcdefABCDEF '), '0123456789ABCDEFABCDEF')
 		self.assertEqual(normalize_hex_string('0123456789ab cdefABCDEF'), None)
 		self.assertEqual(normalize_hex_string('0123456789abGcdefABCDEF'), None)
+
+	def test_normalize_hex_address(self):
+		self.assertEqual(normalize_hex_address('10', True), '00000010')
+		self.assertEqual(normalize_hex_address('10', False), '0x00000010')
+		self.assertEqual(normalize_hex_address('10A', True), '0000010A')
+		self.assertEqual(normalize_hex_address('10A', False), '0x0000010A')
+		self.assertEqual(normalize_hex_address('0123456789abcdefABCDEF', True), None)
+		self.assertEqual(normalize_hex_address('0123456789abcdefABCDEF', False), None)

@@ -15,7 +15,7 @@ from .arg import at_dir
 from .arg import at_file
 from .arg import at_hex
 from .arg import at_fpa
-from .arg import at_fpac
+from .arg import at_path
 from .arg import at_hds
 
 from .const import *
@@ -35,11 +35,13 @@ from .firmware import get_file_size
 from .firmware import determine_soc
 
 from .hexer import hex2int
+from .hexer import hex2int_r
 from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import arrange16
 from .hexer import is_hex_string
 from .hexer import normalize_hex_string
+from .hexer import normalize_hex_address
 
 from .libgen import libgen_ep1_fill_library_model
 from .libgen import libgen_ep1_create_assembler_source
@@ -47,6 +49,9 @@ from .libgen import libgen_ep1_create_library
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa
+from .patcher import fpa2bin
+from .patcher import unite_fpa_patches
+from .patcher import apply_fpa_patch
 
 from .pattern import find_functions_from_patterns
 from .pattern import append_pattern_to_file

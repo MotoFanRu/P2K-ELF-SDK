@@ -87,9 +87,10 @@ def start_port_kit_work(args: Namespace) -> bool:
 	arg_patterns = args.patterns
 	arg_firmware = args.firmware
 	arg_start = args.start
+	arg_offset = forge.arrange16(forge.get_file_size(arg_firmware))
+	arg_address = arg_start + arg_offset  # Start + Offset.
 	arg_ram_trans = args.ram_trans
 	arg_fw_name = arg_firmware.name
-	arg_address = arg_start + forge.arrange16(forge.get_file_size(arg_firmware))  # Start + Offset.
 	arg_soc = forge.determine_soc(arg_start)
 	arg_phone, arg_fw = forge.parse_phone_firmware(arg_fw_name)
 
@@ -100,9 +101,10 @@ def start_port_kit_work(args: Namespace) -> bool:
 	logging.info(f'\targ_patterns={arg_patterns}')
 	logging.info(f'\targ_firmware={arg_firmware}')
 	logging.info(f'\targ_start=0x{arg_start:08X} {arg_start}')
+	logging.info(f'\targ_address=0x{arg_address:08X} {arg_address}')
+	logging.info(f'\targ_offset=0x{arg_offset:08X} {arg_offset}')
 	logging.info(f'\targ_ram_trans={arg_ram_trans}')
 	logging.info(f'\targ_fw_name={arg_fw_name}')
-	logging.info(f'\targ_address=0x{arg_address:08X} {arg_address}')
 	logging.info(f'\targ_soc={arg_soc}')
 	logging.info(f'\targ_phone={arg_phone}')
 	logging.info(f'\targ_fw={arg_fw}')
@@ -177,10 +179,15 @@ def start_port_kit_work(args: Namespace) -> bool:
 	logging.info(f'Creating Flash&Backup 3 patches.')
 	val_register_fpa = arg_output / 'Register.fpa'
 	val_elfpack_fpa = arg_output / 'ElfPack.fpa'
-	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_address, val_elfpack_bin, val_elfpack_fpa)
+	val_result_fpa = arg_output / 'Result.fpa'
+	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_offset, val_elfpack_bin, val_elfpack_fpa)
 	generate_register_patch(
 		arg_fw, 'Andy51', 'ElfPack v1.0 Register',
 		val_elfpack_sym, val_register_sym, val_register_fpa, arg_firmware
+	)
+	forge.unite_fpa_patches(
+		arg_fw, 'Andy51', 'Combined ElfPack v1.0 patch',
+		[val_register_fpa, val_elfpack_fpa], val_result_fpa
 	)
 	logging.info(f'')
 
@@ -209,11 +216,12 @@ def start_port_kit_work(args: Namespace) -> bool:
 	logging.info(f'ElfPack v1.0 building report.')
 	logging.info(f'')
 	logging.info(f'Important files:')
+	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for {arg_phone}.')
+	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v1.0 combined patch for Flash&Backup 3.')
+	logging.info(f'')
+	logging.info(f'Developer files:')
 	logging.info(f'\t{val_libstd_static_lib}\t-\tCompiled library for SDK.')
-	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for phone.')
 	logging.info(f'\t{val_library_sym}\t-\tGenerated library entities list.')
-	logging.info(f'\t{val_elfpack_fpa}\t-\tGenerated ElfPack v1.0 patch for Flash&Backup 3.')
-	logging.info(f'\t{val_register_fpa}\t-\tGenerated ElfPack v1.0 register patch for Flash&Backup 3.')
 	logging.info(f'')
 
 	return True

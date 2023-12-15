@@ -34,18 +34,16 @@ class Mode(Enum):
 # PortKit working flow.
 def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	logging.info(f'Start patcher utility, mode: {mode.name}.')
-	if mode == Mode.MODE_BIN or mode == Mode.MODE_HEX:
-		undo = None
-		if mode == Mode.MODE_BIN:
-			return forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output)
-		else:
-			pass
+	if mode == Mode.MODE_BIN:
+		return forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output, args.undo)
+	elif mode == Mode.MODE_HEX:
+		return forge.hex2fpa(args.firmware, args.author, args.desc, args.start, args.hex, args.output, args.undo)
 	elif mode == Mode.MODE_WRITE:
-		pass
+		return forge.apply_fpa_patch(args.undo, args.write, True, True)
 	elif mode == Mode.MODE_CONVERT:
-		pass
+		return forge.fpa2bin(args.convert, args.output)
 	elif mode == Mode.MODE_UNITE:
-		pass
+		return forge.unite_fpa_patches(args.firmware, args.author, args.desc, args.uni, args.output)
 	else:
 		logging.error(f'Unknown mode: {mode.name}')
 	return True
@@ -94,8 +92,8 @@ class ArgsParser(argparse.ArgumentParser):
 		)
 		check_mode_unite = self.check_arguments(
 			args,
-			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'convert'],
-			['output', 'uni', 'verbose']
+			['start', 'hex', 'bin', 'undo', 'write', 'convert'],
+			['firmware', 'author', 'desc', 'output', 'uni', 'verbose']
 		)
 		if check_mode_hex:
 			return Mode.MODE_HEX, args
@@ -121,7 +119,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'f': 'firmware tuple string, e.g. "R373_G_0E.30.49R"',
 		'a': 'author name or nickname, e.g. "EXL"',
 		'd': 'simple patch description',
-		's': 'start offset address, e.g. "0x10080000"',
+		's': 'start offset address in file, e.g. "0x00080000"',
 		'x': 'hex data string which will be written to offset, e.g. "0123456789ABCDEF"',
 		'b': 'binary file which will be written to offset, e.g. "ElfPack.bin"',
 		'u': 'generate UNDOs patch information, CG1.smg is needed, e.g. "E1_R373_G_0E.30.49R.smg"',
@@ -131,16 +129,16 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'v': 'verbose output'
 	}
 	epl = """examples:
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x10080000 -b ElfPack.bin -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "0123456789ABCDEF" -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -b File.bin -u CG1.smg -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x10080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
 	python patcher.py -w Result.fpa -u CG1.smg
 	python patcher.py -c ElfPack.fpa -o Result.bin
-	python patcher.py -i ElfPack.fpa Register.fpa -o Result.fpa
+	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
 	parser_args = ArgsParser(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser_args.add_argument('-o', '--output', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['o'])
+	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=str, metavar='FIRMWARE', help=hlp['f'])
 	parser_args.add_argument('-a', '--author', required=False, type=str, metavar='AUTHOR', help=hlp['a'])
 	parser_args.add_argument('-d', '--desc', required=False, type=str, metavar='DESCRIPTION', help=hlp['d'])
@@ -148,9 +146,9 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	parser_args.add_argument('-x', '--hex', required=False, type=forge.at_hds, metavar='HEX_DATA_STR', help=hlp['x'])
 	parser_args.add_argument('-b', '--bin', required=False, type=forge.at_file, metavar='BINARY_FILE', help=hlp['b'])
 	parser_args.add_argument('-u', '--undo', required=False, type=forge.at_file, metavar='FIRMWARE_FILE', help=hlp['u'])
-	parser_args.add_argument('-w', '--write', required=False, type=forge.at_fpac, metavar='FPA', help=hlp['w'])
-	parser_args.add_argument('-c', '--convert', required=False, type=forge.at_fpac, metavar='FPA', help=hlp['c'])
-	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpac, metavar='FPA', help=hlp['i'])
+	parser_args.add_argument('-w', '--write', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['w'])
+	parser_args.add_argument('-c', '--convert', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['c'])
+	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpa, metavar='FPA', help=hlp['i'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
