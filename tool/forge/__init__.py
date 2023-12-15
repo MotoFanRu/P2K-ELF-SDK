@@ -62,3 +62,4 @@ from .sym import validate_sym_file
 from .sym import get_function_address_from_sym_file
 
 from .util import format_timedelta
+from .util import chop_string_to_16_symbols

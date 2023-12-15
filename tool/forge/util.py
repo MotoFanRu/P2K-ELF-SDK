@@ -21,3 +21,11 @@ def format_timedelta(td: timedelta) -> str:
 	milliseconds = td.microseconds // 1000  # Convert microseconds to milliseconds
 
 	return f'{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}'
+
+
+def chop_string_to_16_symbols(res: str) -> str:
+	length = len(res)
+	if length <= 16:
+		return res + (' ' * (13 - length)) + '...'[:16]
+	else:
+		return res[:13] + '...'

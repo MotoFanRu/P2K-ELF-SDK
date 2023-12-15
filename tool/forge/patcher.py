@@ -30,7 +30,10 @@ class CsConfigParser(configparser.ConfigParser):
 
 
 def patch_size_of_hex_str(hex_str: str) -> int:
-	return int(len(hex_str) / 2)
+	length = len(hex_str)
+	if length % 2 == 0:
+		return int(len(hex_str) / 2)
+	raise ValueError(f'Wrong and odd size of patch.')
 
 
 def check_if_address_beyond_file_size(address: int, file_size: int, patch_size: int) -> bool:
@@ -99,16 +102,14 @@ def bin2fpa(fw: str, author: str, desc: str, addr: int, binary: Path, fpa: Path,
 
 def hex2fpa(fw: str, author: str, desc: str, addr: int, hex_data: str, fpa: Path, undo: Path | None = None) -> bool:
 	patch_size: int = patch_size_of_hex_str(hex_data)
-	if patch_size % 2 == 0:
-		patch_dict: dict[str, str] = {int2hex_r(addr): hex_data}
-		if undo is not None:
-			undo_dict: dict[str, str] = {int2hex_r(addr): undo_data(addr, hex_data, undo)}
-			if undo_dict.get(int2hex_r(addr)) is not None:
-				return generate_fpa(fw, author, desc, patch_dict, fpa, undo_dict)
-		return generate_fpa(fw, author, desc, patch_dict, fpa)
-	else:
-		logging.error(f'Patch size "{patch_size}" must be even.')
-	return False
+	if patch_size % 2 != 0:
+		logging.warning(f'Patch size "{int2hex(patch_size)} {patch_size}" is not even.')
+	patch_dict: dict[str, str] = {int2hex_r(addr): hex_data}
+	if undo is not None:
+		undo_dict: dict[str, str] = {int2hex_r(addr): undo_data(addr, hex_data, undo)}
+		if undo_dict.get(int2hex_r(addr)) is not None:
+			return generate_fpa(fw, author, desc, patch_dict, fpa, undo_dict)
+	return generate_fpa(fw, author, desc, patch_dict, fpa)
 
 
 def get_fpa_patch_values(config: CsConfigParser, section: str, is_code: bool = False) -> dict[str, str] | None:
@@ -130,8 +131,9 @@ def fpa2bin(fpa: Path, binary: Path) -> bool:
 		config.read(fpa)
 		values = get_fpa_patch_values(config, 'Patch_Code', True)
 		if values is not None:
-			for address, value in values:
+			for address, value in values.items():
 				binary_chunk = binary.with_stem(f'{binary.stem}_{address}')
+				logging.info(f'Writing "{binary_chunk}" binary file.')
 				with binary_chunk.open(mode='wb') as f_o:
 					f_o.write(bytes.fromhex(value))
 			return True

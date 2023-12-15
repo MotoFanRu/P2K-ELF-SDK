@@ -29,22 +29,54 @@ class Mode(Enum):
 	MODE_UNITE = 4
 
 
+# Helpers.
+def dump_output_patch(fpa: Path) -> None:
+	if fpa and fpa.is_file() and fpa.exists():
+		with fpa.open(mode='r') as f_i:
+			for line in f_i.readlines():
+				logging.debug(f'{line.strip()}')
+
+
+def is_undo_here(undo: Path) -> bool:
+	if undo and undo.is_file() and undo.exists():
+		logging.info(f'Undo patch source "{undo}" activated.')
+		return True
+	logging.info(f'Undo patch source deactivated.')
+	return False
+
+
+def log(result: bool) -> bool:
+	logging.info(f'Done.' if result else f'Fail.')
+	return result
+
+
 # PortKit working flow.
 def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	logging.info(f'Start patcher utility, mode: {mode.name}.')
 	if mode == Mode.MODE_BIN:
-		return forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output, args.undo)
+		is_undo_here(args.undo)
+		logging.info(f'Will insert "{args.bin}" to "{forge.int2hex(args.start)}"...')
+		logging.info(f'Patch "{args.output}" will be generated.')
+		return log(forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output, args.undo))
 	elif mode == Mode.MODE_HEX:
-		return forge.hex2fpa(args.firmware, args.author, args.desc, args.start, args.hex, args.output, args.undo)
+		is_undo_here(args.undo)
+		logging.info(f'Will insert "{forge.chop_string_to_16_symbols(args.hex)}" to "{forge.int2hex(args.start)}"...')
+		logging.info(f'Patch "{args.output}" will be generated.')
+		return log(forge.hex2fpa(args.firmware, args.author, args.desc, args.start, args.hex, args.output, args.undo))
 	elif mode == Mode.MODE_WRITE:
-		return forge.apply_fpa_patch(args.undo, args.write, True, True)
+		is_undo_here(args.undo)
+		logging.info(f'Will write "{args.write}" to "{args.undo}"...')
+		return log(forge.apply_fpa_patch(args.undo, args.write, True, True))
 	elif mode == Mode.MODE_CONVERT:
-		return forge.fpa2bin(args.convert, args.output)
+		logging.info(f'Will convert "{args.convert}" to "{args.output}"...')
+		return log(forge.fpa2bin(args.convert, args.output))
 	elif mode == Mode.MODE_UNITE:
-		return forge.unite_fpa_patches(args.firmware, args.author, args.desc, args.uni, args.output)
+		for name in args.uni:
+			logging.info(f'Will unite "{name}" to "{args.output}"...')
+		return log(forge.unite_fpa_patches(args.firmware, args.author, args.desc, args.uni, args.output))
 	else:
 		logging.error(f'Unknown mode: {mode.name}')
-	return True
+	return False
 
 
 # Arguments parsing routines.
@@ -161,6 +193,9 @@ def main() -> None:
 	)
 
 	start_patcher_work(mode, args)
+	if (mode == Mode.MODE_BIN) or (mode == Mode.MODE_HEX) or (mode == Mode.MODE_UNITE):
+		logging.debug(f'')
+		dump_output_patch(args.output)
 
 
 if __name__ == '__main__':
