@@ -6,7 +6,8 @@ PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
-Authors: EXL, MotoFan.Ru developers
+Authors: EXL, MotoFan.Ru
+Date: 15-Dec-2023
 """
 
 import sys
@@ -234,9 +235,9 @@ def parse_arguments() -> Namespace:
 		'v': 'verbose output'
 	}
 	epl = """examples:
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1_func/general.pat -f E1_R373_G_0E.30.49R.smg -o ep1_build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1_func/general.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o ep1_build
-	python ep1_portkit.py -c -r -v -s 0x100A0000 -p ep1_func/general.pat -f V3i_R4441D_G_08.01.03R.smg -o ep1_build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1_func/General.pat -f E1_R373_G_0E.30.49R.smg -o ep1_build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1_func/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o ep1_build
+	python ep1_portkit.py -c -r -v -s 0x100A0000 -p ep1_func/General.pat -f V3i_R4441D_G_08.01.03R.smg -o ep1_build
 	"""
 	parser_args = ArgsParser(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
