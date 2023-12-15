@@ -29,8 +29,6 @@ class Mode(Enum):
 	MODE_UNITE = 4
 
 
-# Various generators.
-
 # PortKit working flow.
 def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	logging.info(f'Start patcher utility, mode: {mode.name}.')
@@ -129,13 +127,13 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'v': 'verbose output'
 	}
 	epl = """examples:
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
-	python patcher.py -w Result.fpa -u CG1.smg
-	python patcher.py -c ElfPack.fpa -o Result.bin
-	python patcher.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
+	python patch.py -w Result.fpa -u CG1.smg
+	python patch.py -c ElfPack.fpa -o Result.bin
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
 	parser_args = ArgsParser(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])

@@ -180,7 +180,7 @@ def start_port_kit_work(args: Namespace) -> bool:
 	val_register_fpa = arg_output / 'Register.fpa'
 	val_elfpack_fpa = arg_output / 'ElfPack.fpa'
 	val_result_fpa = arg_output / 'Result.fpa'
-	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_offset, val_elfpack_bin, val_elfpack_fpa)
+	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_offset, val_elfpack_bin, val_elfpack_fpa, arg_firmware)
 	generate_register_patch(
 		arg_fw, 'Andy51', 'ElfPack v1.0 Register',
 		val_elfpack_sym, val_register_sym, val_register_fpa, arg_firmware

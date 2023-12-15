@@ -71,10 +71,12 @@ def undo_data(addr: int, hex_data: str, undo: Path) -> str | None:
 		if undo.name.endswith('.bin') or undo.name.endswith('.smg'):
 			with undo.open(mode='rb') as f_i:
 				patch_size: int = patch_size_of_hex_str(hex_data)
-				if not check_if_address_beyond_file_size(addr, undo.stat().st_size, patch_size):
+				if check_if_address_beyond_file_size(addr, undo.stat().st_size, patch_size):
 					f_i.seek(addr)
 					undo_str = f_i.read(patch_size).hex().upper()
-					return undo_str
+				else:
+					undo_str = 'FF' * patch_size
+				return undo_str
 		else:
 			logging.error(f'Check binary "*.bin" or "*.smg" undo source file extension.')
 	else:
@@ -167,9 +169,11 @@ def unite_fpa_patches(fw: str, author: str, desc: str, patches: list[Path], resu
 	if len(united_code_list) > 0:
 		united_code_dict = unite_dicts_to_one(*united_code_list)
 		united_undo_dict = unite_dicts_to_one(*united_undo_list)
-		united_code_sorted_dict = {key: united_code_dict[key] for key in sorted(united_code_dict)}
-		united_undo_sorted_dict = {key: united_undo_dict[key] for key in sorted(united_undo_dict)}
-		return generate_fpa(fw, author, desc, united_code_sorted_dict, result, united_undo_sorted_dict)
+		if united_code_dict is not None:
+			united_code_dict = {key: united_code_dict[key] for key in sorted(united_code_dict)}
+		if united_undo_dict is not None:
+			united_undo_dict = {key: united_undo_dict[key] for key in sorted(united_undo_dict)}
+		return generate_fpa(fw, author, desc, united_code_dict, result, united_undo_dict)
 	return False
 
 
