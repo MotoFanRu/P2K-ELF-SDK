@@ -1,4 +1,4 @@
-# forge/file.py
+# forge/files.py
 # -*- coding: utf-8 -*-
 
 """
@@ -19,16 +19,16 @@ def move_file(from_p: Path, to_path: Path) -> Path:
 	return from_p.replace(to_path)
 
 
-def delete_all_files_in_directory(directory: Path) -> None:
-	objects = directory.iterdir()
-	files_to_clean = []
-	for obj in objects:
-		if obj.is_file():
-			files_to_clean.append(obj)
+def delete_all_files_in_directory(directory: Path) -> bool:
+	files_to_clean: list[Path] = []
+	for object_path in directory.iterdir():
+		if object_path.is_file():
+			files_to_clean.append(object_path)
 	if len(files_to_clean) > 0:
 		logging.info(f'Clean all files in "{directory}" directory.')
 		for file_path in files_to_clean:
-			if file_path.is_file():
-				logging.info(f'\tDelete "{file_path}" file.')
-				file_path.unlink()
+			logging.info(f'\tDelete "{file_path}" file.')
+			file_path.unlink()
 		logging.info(f'')
+		return True
+	return False

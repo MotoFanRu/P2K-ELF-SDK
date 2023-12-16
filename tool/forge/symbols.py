@@ -1,4 +1,4 @@
-# forge/sym.py
+# forge/symbols.py
 # -*- coding: utf-8 -*-
 
 """
@@ -14,13 +14,14 @@ import logging
 
 from pathlib import Path
 
+from .types import Symbol
 from .hexer import hex2int
-from .const import ADS_SYM_FILE_HEADER
+from .constants import ADS_SYM_FILE_HEADER
 
 
-def split_and_validate_line(line: str) -> tuple[str | None, str | None, str | None]:
+def split_and_validate_line(line: str) -> Symbol:
 	try:
-		line = line.strip()
+		line: str = line.strip()
 		if len(line) != 0 and not line.startswith('#'):
 			address, mode, name = line.split(' ')
 			hex2int(address)
@@ -44,12 +45,12 @@ def create_combined_sym_file(files: list[Path], out_p: Path) -> None:
 
 
 def validate_sym_file(in_p: Path) -> bool:
-	symbols = {}
-	missed = []
-	index = 0
+	symbols: dict[str, str] = {}
+	missed: list[tuple[str, str]] = []
+	index: int = 0
 	with in_p.open(mode='r') as f_i:
 		for line in f_i.read().splitlines():
-			line = line.strip()
+			line: str = line.strip()
 			if (index == 0) and line != ADS_SYM_FILE_HEADER:
 				return False
 			if len(line) != 0 and not line.startswith('#'):
@@ -58,7 +59,7 @@ def validate_sym_file(in_p: Path) -> bool:
 					if not symbols.get(name, None):
 						symbols[name] = address
 					else:
-						first_address = symbols[name]
+						first_address: str = symbols[name]
 						logging.error(f'Error! Duplicate SYM values:')
 						logging.error(f'\t{first_address} {mode} {name}')
 						logging.error(f'\t{address} {mode} {name}')

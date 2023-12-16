@@ -1,4 +1,4 @@
-# forge/arg.py
+# forge/arguments.py
 # -*- coding: utf-8 -*-
 
 """
@@ -11,12 +11,14 @@ Date: 15-Dec-2023
 """
 
 import argparse
+import logging
 
 from pathlib import Path
 
 from .hexer import hex2int
 from .hexer import normalize_hex_string
 from .firmware import parse_phone_firmware
+from .utilities import chop_string_to_16_symbols
 
 
 def at_fw(firmware_filename: str) -> Path:
@@ -28,17 +30,21 @@ def at_fw(firmware_filename: str) -> Path:
 
 
 def at_dir(dirname: str) -> Path:
-	path = Path(dirname)
+	path: Path = Path(dirname)
 	if not path.exists():
-		path.mkdir()
-	if not path.exists() or not path.is_dir():
+		try:
+			path.mkdir()
+			logging.debug(f'Directory "{dirname}" was successfully created.')
+		except OSError as error:
+			logging.error(f'Cannot create "{dirname}" directory: {error}')
+	if not path.is_dir():
 		raise argparse.ArgumentTypeError(f'{dirname} is not directory')
 	return path
 
 
 def at_file(filename: str) -> Path:
-	path = Path(filename)
-	if not path.is_file() and not path.exists():
+	path: Path = Path(filename)
+	if not path.is_file():
 		raise argparse.ArgumentTypeError(f'{filename} not found')
 	return path
 
@@ -49,7 +55,7 @@ def at_path(filename: str) -> Path:
 
 def at_fpa(filename: str) -> Path:
 	at_file(filename)
-	path = Path(filename)
+	path: Path = Path(filename)
 	if not path.name.endswith('.fpa'):
 		raise argparse.ArgumentTypeError(f'{filename} is not *.fpa patch')
 	return path
@@ -64,7 +70,7 @@ def at_hex(hex_value: str) -> int:
 
 # HEX DATA STRING, e.g. '0123456789ABCDEF'.
 def at_hds(hds: str) -> str:
-	hex_data_string = normalize_hex_string(hds)
+	hex_data_string: str = normalize_hex_string(hds)
 	if hex_data_string is None:
-		raise argparse.ArgumentTypeError(f'wrong hex data string')
+		raise argparse.ArgumentTypeError(f'wrong hex data string: {chop_string_to_16_symbols(hds)}')
 	return hex_data_string

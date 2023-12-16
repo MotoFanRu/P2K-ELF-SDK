@@ -15,12 +15,13 @@ import logging
 from pathlib import Path
 
 from .hexer import int2hex
-from .sym import split_and_validate_line
+from .symbols import split_and_validate_line
+from .types import LibraryModel
 
 
-def libgen_ep1_fill_library_model(p_sym_lib: Path, model: list[tuple[str | None, str | None, str | None]]) -> str:
-	entries = ''
-	if p_sym_lib.is_file() and p_sym_lib.exists():
+def ep1_libgen_model(p_sym_lib: Path, model: LibraryModel) -> str | None:
+	entries: str = ''
+	if p_sym_lib.is_file():
 		with p_sym_lib.open(mode='r') as f_i:
 			for line in f_i.read().splitlines():
 				address, mode, name = split_and_validate_line(line)
@@ -28,30 +29,33 @@ def libgen_ep1_fill_library_model(p_sym_lib: Path, model: list[tuple[str | None,
 					entries += ' ' + name
 					model.append((address, mode, name))
 		entries += ' '
+	else:
+		logging.error(f'Cannot open "{p_sym_lib} file to read."')
+		return None
 	return entries
 
 
-def libgen_ep1_create_library(p_bin_lib: Path, model: list[tuple[str | None, str | None, str | None]], f: str) -> bool:
-	entry_count = len(model)
+def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> bool:
+	entry_count: int = len(model)
 	if entry_count > 0:
 		with p_bin_lib.open(mode='wb') as f_o:
 			f_o.write(entry_count.to_bytes(4, byteorder='big'))
 
 			for address, mode, name in model:
-				offset = f.find(' ' + name + ' ')
+				offset: int = functions.find(' ' + name + ' ')
 				if offset != -1:
-					address = int(address, 16)
+					address_int: int = int(address, 16)
 					if mode == 'T':
-						address += 0x00000001
+						address_int += 0x00000001
 					elif mode == 'D':
-						address += 0x30000000
+						address_int += 0x30000000
 					f_o.write(offset.to_bytes(4, byteorder='big'))
-					f_o.write(address.to_bytes(4, byteorder='big'))
+					f_o.write(address_int.to_bytes(4, byteorder='big'))
 				else:
-					logging.error(f'Function "{address} {mode} {name}" not found in the library model.')
+					logging.error(f'Function "{address_int} {mode} {name}" not found in the library model.')
 
-			for func in f.split(' '):
-				func = func.strip()
+			for func in functions.split(' '):
+				func: str = func.strip()
 				if len(func) > 0:
 					f_o.write(func.encode('utf-8'))
 					f_o.write(0x00.to_bytes(1, byteorder='little'))
@@ -62,10 +66,10 @@ def libgen_ep1_create_library(p_bin_lib: Path, model: list[tuple[str | None, str
 	return False
 
 
-def libgen_ep1_create_assembler_source(p_asm_src: Path, model: list[tuple[str | None, str | None, str | None]]) -> bool:
-	offset_start = 0x10080000
+def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
+	offset_start: int = 0x10080000
 
-	header = """
+	header: str = """
 	AREA Lib, CODE, READONLY
 	ALIGN 4
 
@@ -85,7 +89,7 @@ def libgen_ep1_create_assembler_source(p_asm_src: Path, model: list[tuple[str | 
 
 """
 
-	function_section = """
+	function_section: str = """
 	AREA |f.{0}|, CODE, READONLY
 	CODE16
 {0}
@@ -97,16 +101,16 @@ def libgen_ep1_create_assembler_source(p_asm_src: Path, model: list[tuple[str | 
 	LTORG
 """
 
-	data_section = """
+	data_section: str = """
 	AREA |a.{0}|, DATA, READONLY
 {0}
 	DCD    {1}
 """
 
-	exports = []
-	header = header.replace('\n', '', 1)
+	exports: list[str] = []
+	header: str = header.replace('\n', '', 1)
 	offset_start += 1
-	entry_count = len(model)
+	entry_count: int = len(model)
 	if entry_count > 0:
 		with p_asm_src.open(mode='w', newline='\r\n') as f_o:
 			f_o.write(header)

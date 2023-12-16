@@ -15,7 +15,7 @@ def hex2int(hex_value: str) -> int:
 	if not hex_value.startswith('0x'):
 		raise ValueError(f'value "{hex_value}" should starts with a "0x" prefix')
 	if len(hex_value) != (8 + 2):  # 0x12345678
-		raise ValueError(f'value "{hex_value}" should be in the "8 + 2" format like "0x12345678" hex digit')
+		raise ValueError(f'value "{hex_value}" should be in the "8 + 2" format like "0x000012FF" hex digit')
 	try:
 		return int(hex_value, 16)
 	except ValueError:
@@ -24,9 +24,9 @@ def hex2int(hex_value: str) -> int:
 
 def hex2int_r(hex_value: str) -> int:
 	if hex_value.startswith('0x'):
-		raise ValueError(f'value "{hex_value}" starts with a "0x" prefix')
+		raise ValueError(f'value "{hex_value}" should starts with no "0x" prefix')
 	if len(hex_value) != 8:
-		raise ValueError(f'value "{hex_value}" should be in the "8" format like "12345678" hex digit')
+		raise ValueError(f'value "{hex_value}" should be in the "8" format like "000012FF" hex digit')
 	try:
 		return int(hex_value, 16)
 	except ValueError:
@@ -42,27 +42,24 @@ def int2hex_r(int_value: int) -> str:
 
 
 def arrange16(value: int) -> int:
-	return (value & -16) + 16
+	return (value & (-16)) + 16
 
 
 def is_hex_string(hex_string: str) -> bool:
-	hex_digits = set('0123456789abcdefABCDEF')
+	hex_digits: set[str] = set('0123456789abcdefABCDEF')
 	return all(char in hex_digits for char in hex_string)
 
 
 def normalize_hex_string(hex_string: str) -> str | None:
-	hex_string = hex_string.strip().upper()
+	hex_string: str = hex_string.strip().upper()
 	return hex_string if is_hex_string(hex_string) else None
 
 
 def normalize_hex_address(hex_address: str, raw: bool) -> str | None:
-	hex_address = hex_address.strip().upper()
+	hex_address: str = hex_address.strip().upper()
 	if len(hex_address) <= 8:
-		try:
-			value = int(hex_address, 16)
-			if raw:
-				return int2hex_r(value)
-			return int2hex(value)
-		except ValueError:
-			raise ValueError(f'value "{hex_address}" is not a valid hexadecimal value')
+		value: int = int(hex_address, 16)
+		if raw:
+			return int2hex_r(value)
+		return int2hex(value)
 	return None
