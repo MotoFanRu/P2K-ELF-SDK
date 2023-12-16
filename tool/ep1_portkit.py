@@ -29,7 +29,7 @@ FUNC_AUTORUN = 'AutorunMain'
 
 # Various generators.
 def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str], patterns_add: list[str]) -> bool:
-	if p_i_f.is_file() and p_i_e.is_file():
+	if forge.check_files_if_exists([p_i_f, p_i_e]):
 		with (p_i_f.open(mode='r') as i_f, p_i_e.open(mode='r') as i_s, p_o_l.open(mode='w', newline='\r\n') as o_l):
 			o_l.write(f'{forge.ADS_SYM_FILE_HEADER}\n')
 			o_l.write(f'# SYMDEFS ADS HEADER\n\n')
@@ -45,24 +45,16 @@ def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str
 						if name.find(add) != -1:
 							o_l.write(f'{line}\n')
 			return True
-	else:
-		if not p_i_f.is_file():
-			logging.error(f'Symbol functions file {p_i_f} is not exist or not a file.')
-		if not p_i_e.is_file():
-			logging.error(f'Symbol ElfPack file {p_i_e} is not exist or not a file.')
 	return False
 
 
 def generate_register_patch(fw: str, author: str, desc: str, p_e: Path, p_r: Path, p_p: Path, cg: Path) -> bool:
-	if p_e.is_file() and p_r.is_file():
+	if forge.check_files_if_exists([p_e, p_r]):
 		hex_data: str = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN) + 1)  # Thumb
 		reg_address: int = forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER)
 
 		forge.hex2fpa(fw, author, desc, reg_address, hex_data, p_p, cg)
 		return True
-	else:
-
-		logging.error(f'Cannot open symbol files: "{p_e}" and "{p_r}".')
 	return False
 
 
@@ -73,14 +65,14 @@ def generate_system_information_source(phone: str, firmware: str, soc: str, sour
 	system_info['n_platform'] = soc
 	system_info['n_majorfw'] = major
 	system_info['n_minorfw'] = minor
-	return forge.generate_source_with_const_chars(source_file, system_info)
+	return forge.gen_src_const_chars(source_file, system_info)
 
 
 def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, pat: Path, sym: Path) -> bool:
 	address = forge.get_function_address_from_sym_file(combined_sym, register_func)
 	if address != 0x00000000:
-		forge.append_pattern_to_file(pat, 'Register', 'D', forge.int2hex_r(address))
-		forge.find_functions_from_patterns(pat, cgs_path, 0x00000000, False, sym)
+		forge.pat_append(pat, 'Register', 'D', forge.int2hex_r(address))
+		forge.pat_find(pat, cgs_path, 0x00000000, False, sym)
 	return False
 
 
@@ -126,16 +118,16 @@ def start_port_kit_work(args: Namespace) -> bool:
 	val_functions_sym = arg_output / 'Functions.sym'
 	val_combined_sym = arg_output / 'Combined.sym'
 	if arg_soc == 'LTE':
-		forge.find_functions_from_patterns(val_lte1_pat, arg_firmware, arg_start, False, val_platform_sym)
+		forge.pat_find(val_lte1_pat, arg_firmware, arg_start, False, val_platform_sym)
 	elif arg_soc == 'LTE2':
-		forge.find_functions_from_patterns(val_lte2_pat, arg_firmware, arg_start, False, val_platform_sym)
+		forge.pat_find(val_lte2_pat, arg_firmware, arg_start, False, val_platform_sym)
 	else:
 		val_functions_sym = val_combined_sym
 		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file.')
 	logging.info(f'')
 
 	logging.info(f'Finding general functions from patterns.')
-	forge.find_functions_from_patterns(arg_patterns, arg_firmware, arg_start, arg_ram_trans, val_functions_sym)
+	forge.pat_find(arg_patterns, arg_firmware, arg_start, arg_ram_trans, val_functions_sym)
 	logging.info(f'')
 
 	logging.info(f'Combining all functions into one symbols file.')
@@ -165,7 +157,7 @@ def start_port_kit_work(args: Namespace) -> bool:
 	logging.info(f'')
 
 	logging.info(f'Compiling system C-source files.')
-	forge.compile_c_ep1_ads_tcc(val_system_info_c, val_system_info_o)
+	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o)
 	logging.info(f'')
 
 	logging.info(f'Linking object files to binary.')
@@ -180,8 +172,8 @@ def start_port_kit_work(args: Namespace) -> bool:
 	val_elfpack_elf = arg_output / 'ElfPack.elf'
 	val_elfpack_bin = arg_output / 'ElfPack.bin'
 	val_elfpack_sym = arg_output / 'ElfPack.sym'
-	forge.link_o_ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym)
-	forge.bin_elf_ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
+	forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym)
+	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	logging.info(f'')
 
 	logging.info(f'Creating Flash&Backup 3 patches.')
@@ -209,16 +201,16 @@ def start_port_kit_work(args: Namespace) -> bool:
 		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
 	)
 	library_model = []
-	functions = forge.libgen_ep1_fill_library_model(val_library_sym, library_model)
-	forge.libgen_ep1_create_assembler_source(val_library_asm, library_model)
-	forge.libgen_ep1_create_library(val_elfloader_lib, library_model, functions)
+	functions = forge.ep1_libgen_model(val_library_sym, library_model)
+	forge.ep1_libgen_asm(val_library_asm, library_model)
+	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions)
 	logging.info(f'')
 
 	logging.info(f'Compiling ElfPack v1.0 library for SDK.')
 	val_library_obj = arg_output / 'Lib.o'
 	val_libstd_static_lib = arg_output / 'libstd.a'
-	forge.assembly_asm_ep1_ads_armasm(val_library_asm, val_library_obj)
-	forge.packing_static_lib_ep1_ads_armar([val_library_obj], val_libstd_static_lib)
+	forge.ep1_ads_armasm(val_library_asm, val_library_obj)
+	forge.ep1_ads_armar([val_library_obj], val_libstd_static_lib)
 	logging.info(f'')
 
 	logging.info(f'ElfPack v1.0 building report.')

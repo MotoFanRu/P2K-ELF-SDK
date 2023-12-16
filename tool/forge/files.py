@@ -36,8 +36,11 @@ def delete_all_files_in_directory(directory: Path) -> bool:
 
 def check_files_if_exists(p_files: list[Path]) -> bool:
 	for file_path in p_files:
-		if not file_path.is_file():
-			logging.error(f'File "{file_path}" is not exist or not a file.')
+		if file_path is not None:
+			if not file_path.is_file():
+				logging.error(f'File "{file_path}" is not exist or not a file.')
+				return False
+		else:
 			return False
 	return True
 

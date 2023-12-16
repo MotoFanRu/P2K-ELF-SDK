@@ -31,14 +31,14 @@ class Mode(Enum):
 
 # Helpers.
 def dump_output_patch(fpa: Path) -> None:
-	if fpa and fpa.is_file() and fpa.exists():
+	if forge.check_files_if_exists([fpa]):
 		with fpa.open(mode='r') as f_i:
 			for line in f_i.readlines():
 				logging.debug(f'{line.strip()}')
 
 
 def is_undo_here(undo: Path) -> bool:
-	if undo and undo.is_file() and undo.exists():
+	if forge.check_files_if_exists([undo]):
 		logging.info(f'Undo patch source "{undo}" activated.')
 		return True
 	logging.info(f'Undo patch source deactivated.')
@@ -60,7 +60,7 @@ def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 		return log(forge.bin2fpa(args.firmware, args.author, args.desc, args.start, args.bin, args.output, args.undo))
 	elif mode == Mode.MODE_HEX:
 		is_undo_here(args.undo)
-		logging.info(f'Will insert "{forge.chop_string_to_16_symbols(args.hex)}" to "{forge.int2hex(args.start)}"...')
+		logging.info(f'Will insert "{forge.chop_str(args.hex)}" to "{forge.int2hex(args.start)}"...')
 		logging.info(f'Patch "{args.output}" will be generated.')
 		return log(forge.hex2fpa(args.firmware, args.author, args.desc, args.start, args.hex, args.output, args.undo))
 	elif mode == Mode.MODE_WRITE:
