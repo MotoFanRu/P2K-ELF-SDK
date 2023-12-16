@@ -66,7 +66,7 @@ def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	elif mode == Mode.MODE_WRITE:
 		is_undo_here(args.undo)
 		logging.info(f'Will write "{args.write}" to "{args.undo}"...')
-		return log(forge.apply_fpa_patch(args.undo, args.write, True, True))
+		return log(forge.apply_fpa_patch(args.undo, args.write, not args.no_backup, args.validate))
 	elif mode == Mode.MODE_CONVERT:
 		logging.info(f'Will convert "{args.convert}" to "{args.output}"...')
 		return log(forge.fpa2bin(args.convert, args.output))
@@ -103,27 +103,27 @@ class Args(argparse.ArgumentParser):
 		check_mode_hex: bool = self.check_arguments(
 			args,
 			['bin', 'convert', 'uni', 'write'],
-			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose']
+			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_bin: bool = self.check_arguments(
 			args,
 			['hex', 'convert', 'uni', 'write'],
-			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose']
+			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_write: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'uni'],
-			['undo', 'write', 'verbose']
+			['undo', 'write', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_convert: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'uni'],
-			['output', 'convert', 'verbose']
+			['output', 'convert', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_unite: bool = self.check_arguments(
 			args,
 			['start', 'hex', 'bin', 'undo', 'write', 'convert'],
-			['firmware', 'author', 'desc', 'output', 'uni', 'verbose']
+			['firmware', 'author', 'desc', 'output', 'uni', 'verbose', 'no_backup', 'validate']
 		)
 		if check_mode_hex:
 			return Mode.MODE_HEX, args
@@ -156,6 +156,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'w': 'apply and write patch to the firmware file',
 		'c': 'convert FPA-patch to binary code',
 		'i': 'combine all FPA-patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
+		'l': 'validate patches if undo data and source is present',
+		'n': 'do not backup firmware file before patching',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -163,7 +165,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
-	python patch.py -w Result.fpa -u CG1.smg
+	python patch.py -w Result.fpa -u CG1.smg -l
+	python patch.py -w Result.fpa -u CG1.smg -l -n
 	python patch.py -c ElfPack.fpa -o Result.bin
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
@@ -179,6 +182,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	parser_args.add_argument('-w', '--write', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['w'])
 	parser_args.add_argument('-c', '--convert', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['c'])
 	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpa, metavar='FPA', help=hlp['i'])
+	parser_args.add_argument('-l', '--validate', required=False, action='store_true', help=hlp['l'])
+	parser_args.add_argument('-n', '--no-backup', required=False, action='store_true', help=hlp['n'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

@@ -104,9 +104,13 @@ def hex2fpa(fw: str, author: str, desc: str, addr: int, hex_data: str, fpa: Path
 	patch_size: int = patch_size_of_hex_str(hex_data)
 	if patch_size % 2 != 0:
 		logging.warning(f'Patch size "{int2hex(patch_size)} {patch_size}" is not even.')
-	patch_dict: PatchDict = {int2hex_r(addr): hex_data}
+	hex_patch: str = hex_data[:(patch_size * 2)]  # Truncate patch size.
+	new_size: int = patch_size_of_hex_str(hex_patch)
+	if patch_size != new_size:
+		logging.warning(f'Patch was truncated from "{patch_size}" to "{new_size}".')
+	patch_dict: PatchDict = {int2hex_r(addr): hex_patch}
 	if undo is not None:
-		undo_dict: PatchDict = {int2hex_r(addr): undo_data(addr, hex_data, undo)}
+		undo_dict: PatchDict = {int2hex_r(addr): undo_data(addr, hex_patch, undo)}
 		if undo_dict.get(int2hex_r(addr)) is not None:
 			return generate_fpa(fw, author, desc, patch_dict, fpa, undo_dict)
 	return generate_fpa(fw, author, desc, patch_dict, fpa)
