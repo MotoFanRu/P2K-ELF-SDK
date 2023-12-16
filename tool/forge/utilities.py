@@ -10,7 +10,12 @@ Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
 """
 
+import logging
+
+from pathlib import Path
 from datetime import timedelta
+
+from .filesystem import check_files_if_exists
 
 
 def format_timedelta(td: timedelta) -> str:
@@ -29,3 +34,19 @@ def chop_str(res: str, chop: int = 24, arrange: bool = False) -> str:
 		return (res + (' ' * ((chop - 3) - length)) + '...')[:chop] if arrange else res
 	else:
 		return res[:(chop - 3)] + '...'
+
+
+def log_result(result: bool) -> bool:
+	logging.info(f'Done.' if result else f'Fail.')
+	return result
+
+
+def dump_text_file_to_debug_log(text_file: Path, strip_lines: bool = True) -> None:
+	if check_files_if_exists([text_file]):
+		with text_file.open(mode='r') as f_i:
+			for line in f_i.readlines():
+				if strip_lines:
+					line = line.strip()
+				else:
+					line = line.replace('\n', '')
+				logging.debug(f'{line}')

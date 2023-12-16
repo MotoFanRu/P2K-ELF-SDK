@@ -29,7 +29,7 @@ def parse_phone_firmware(phone_firmware_filename: str) -> tuple[str, str]:
 	segments_a_ok: bool = len(segments_a) > 2                         # At least 3 segments in segments_a.
 	segments_b_ok: bool = len(segments_b) > 2                         # At least 3 segments in segments_b.
 	extension: str = segments_b[-1]                                   # Please use *.smg or *.bin extensions.
-	extension_ok: bool = check_files_extensions([Path(phone_firmware_filename)], ['bin', 'smg'])
+	extension_ok: bool = check_files_extensions([Path(phone_firmware_filename)], ['bin', 'smg'], False)
 
 	if not (segments_a_ok and segments_b_ok and extension_ok):
 		raise ValueError('wrong phone-firmware name format! Please use this pattern: E1_R373_G_0E.30.49R.smg')

@@ -10,6 +10,7 @@ Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
 """
 
+from .test_filesystem import TestFileSystem
 from .test_firmware import TestFirmware
 from .test_hexer import TestHexer
 from .test_symbols import TestSymbols

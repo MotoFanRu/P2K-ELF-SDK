@@ -77,7 +77,7 @@ def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_f
 
 
 # PortKit working flow.
-def start_portkit_work(args: Namespace) -> bool:
+def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'Start building ElfPack v1.0 for Motorola P2K.')
 	logging.info(f'')
 
@@ -279,7 +279,7 @@ def main() -> None:
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)
 
-	start_portkit_work(args)
+	start_ep1_portkit_work(args)
 
 	time_elapsed: str = forge.format_timedelta(datetime.now() - start_time)
 	logging.info(f'Time elapsed: "{time_elapsed}".')

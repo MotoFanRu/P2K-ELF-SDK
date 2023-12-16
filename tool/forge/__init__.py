@@ -17,6 +17,7 @@ from .arguments import at_hex
 from .arguments import at_fpa
 from .arguments import at_path
 from .arguments import at_hds
+from .arguments import at_sym
 
 from .constants import *
 
@@ -31,6 +32,10 @@ from .filesystem import delete_all_files_in_directory
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 from .filesystem import check_directories_if_exists
+from .filesystem import create_temporary_file_with_extension
+from .filesystem import get_temporary_directory_path
+from .filesystem import normalize_extension
+from .filesystem import delete_file
 
 from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware
@@ -68,3 +73,5 @@ from .types import LibraryModel
 
 from .utilities import format_timedelta
 from .utilities import chop_str
+from .utilities import log_result
+from .utilities import dump_text_file_to_debug_log
