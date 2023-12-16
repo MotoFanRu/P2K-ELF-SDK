@@ -45,7 +45,7 @@ class TestHexer(unittest.TestCase):
 		self.helper_test_hex2int('G00D')
 
 	def helper_test_hex2int(self, hex_value):
-		with self.assertRaises(ValueError) as context:
+		with self.assertRaises(ValueError):
 			hex2int(hex_value)
 
 	def test_hex2int_r(self):
@@ -70,7 +70,7 @@ class TestHexer(unittest.TestCase):
 		self.helper_test_hex2int_r('G00D')
 
 	def helper_test_hex2int_r(self, hex_value):
-		with self.assertRaises(ValueError) as context:
+		with self.assertRaises(ValueError):
 			hex2int_r(hex_value)
 
 	def test_arrange16(self):

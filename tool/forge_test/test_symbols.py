@@ -1,4 +1,4 @@
-# forge_test/test_sym.py
+# forge_test/test_symbols.py
 # -*- coding: utf-8 -*-
 
 """
@@ -15,7 +15,7 @@ import unittest
 from forge import split_and_validate_line
 
 
-class TestSym(unittest.TestCase):
+class TestSymbols(unittest.TestCase):
 	def test_split_and_validate_line(self):
 		self.assertEqual(split_and_validate_line('0x10C1ACCC T memcpy'), ('0x10C1ACCC', 'T', 'memcpy'))
 		self.assertEqual(split_and_validate_line('0x10C1ACCC A memcpy'), ('0x10C1ACCC', 'A', 'memcpy'))

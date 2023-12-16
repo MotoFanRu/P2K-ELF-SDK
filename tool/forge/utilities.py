@@ -23,9 +23,9 @@ def format_timedelta(td: timedelta) -> str:
 	return f'{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}'
 
 
-def chop_str(res: str, chop: int) -> str:
+def chop_str(res: str, chop: int = 24, arrange: bool = False) -> str:
 	length: int = len(res)
 	if length <= chop:
-		return (res + (' ' * ((chop - 3) - length)) + '...')[:chop]
+		return (res + (' ' * ((chop - 3) - length)) + '...')[:chop] if arrange else res
 	else:
 		return res[:(chop - 3)] + '...'

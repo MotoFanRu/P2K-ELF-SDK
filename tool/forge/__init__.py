@@ -62,4 +62,4 @@ from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
 
 from .utilities import format_timedelta
-from .utilities import chop_string_to_16_symbols
+from .utilities import chop_str

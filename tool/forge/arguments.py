@@ -18,7 +18,7 @@ from pathlib import Path
 from .hexer import hex2int
 from .hexer import normalize_hex_string
 from .firmware import parse_phone_firmware
-from .utilities import chop_string_to_16_symbols
+from .utilities import chop_str
 
 
 def at_fw(firmware_filename: str) -> Path:
@@ -72,5 +72,5 @@ def at_hex(hex_value: str) -> int:
 def at_hds(hds: str) -> str:
 	hex_data_string: str = normalize_hex_string(hds)
 	if hex_data_string is None:
-		raise argparse.ArgumentTypeError(f'wrong hex data string: {chop_string_to_16_symbols(hds)}')
+		raise argparse.ArgumentTypeError(f'wrong hex data string: {chop_str(hds, 32)}')
 	return hex_data_string

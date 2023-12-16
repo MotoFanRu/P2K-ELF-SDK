@@ -12,5 +12,5 @@ Date: 15-Dec-2023
 
 from .test_firmware import TestFirmware
 from .test_hexer import TestHexer
-from .test_sym import TestSym
-from .test_util import TestUtil
+from .test_symbols import TestSymbols
+from .test_utilities import TestUtilities
