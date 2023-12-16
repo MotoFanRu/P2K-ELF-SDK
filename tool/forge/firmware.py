@@ -12,8 +12,8 @@ Date: 15-Dec-2023
 
 from pathlib import Path
 
-from .files import check_files_if_exists
-from .files import check_files_extensions
+from .filesystem import check_files_if_exists
+from .filesystem import check_files_extensions
 
 
 def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:

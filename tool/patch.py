@@ -22,11 +22,11 @@ from argparse import Namespace
 
 
 class Mode(Enum):
-	MODE_HEX = 0
-	MODE_BIN = 1
-	MODE_WRITE = 2
-	MODE_CONVERT = 3
-	MODE_UNITE = 4
+	MODE_HEX: int = 0
+	MODE_BIN: int = 1
+	MODE_WRITE: int = 2
+	MODE_CONVERT: int = 3
+	MODE_UNITE: int = 4
 
 
 # Helpers.
@@ -80,47 +80,47 @@ def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 
 
 # Arguments parsing routines.
-class ArgsParser(argparse.ArgumentParser):
+class Args(argparse.ArgumentParser):
 	def error(self, message: str) -> None:
 		self.print_help(sys.stderr)
 		self.exit(2, f'{self.prog}: error: {message}\n')
 
 	@staticmethod
 	def check_arguments(args: Namespace, empty_args: list[str], non_empty_args: list[str]) -> bool:
-		items = vars(args)
-		empty = 0
+		items: dict[str, str] = vars(args)
+		empty: int = 0
 		for k in empty_args:
 			if items[k] is None:
 				empty += 1
-		non_empty = 0
+		non_empty: int = 0
 		for k in non_empty_args:
 			if items[k] is not None:
 				non_empty += 1
 		return (len(empty_args) == empty) and (len(non_empty_args) == non_empty)
 
 	def parse_check_arguments(self) -> tuple[Mode, Namespace]:
-		args = self.parse_args()
-		check_mode_hex = self.check_arguments(
+		args: Namespace = self.parse_args()
+		check_mode_hex: bool = self.check_arguments(
 			args,
 			['bin', 'convert', 'uni', 'write'],
 			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose']
 		)
-		check_mode_bin = self.check_arguments(
+		check_mode_bin: bool = self.check_arguments(
 			args,
 			['hex', 'convert', 'uni', 'write'],
 			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose']
 		)
-		check_mode_write = self.check_arguments(
+		check_mode_write: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'uni'],
 			['undo', 'write', 'verbose']
 		)
-		check_mode_convert = self.check_arguments(
+		check_mode_convert: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'uni'],
 			['output', 'convert', 'verbose']
 		)
-		check_mode_unite = self.check_arguments(
+		check_mode_unite: bool = self.check_arguments(
 			args,
 			['start', 'hex', 'bin', 'undo', 'write', 'convert'],
 			['firmware', 'author', 'desc', 'output', 'uni', 'verbose']
@@ -143,7 +143,7 @@ class ArgsParser(argparse.ArgumentParser):
 
 
 def parse_arguments() -> tuple[Mode, Namespace]:
-	hlp = {
+	hlp: dict[str, str] = {
 		'h': 'A patcher utility for Motorola phones on P2K platform, 15-Dec-2023',
 		'o': 'output resulting file',
 		'f': 'firmware tuple string, e.g. "R373_G_0E.30.49R"',
@@ -158,7 +158,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'i': 'combine all FPA-patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
 		'v': 'verbose output'
 	}
-	epl = """examples:
+	epl: str = """examples:
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
@@ -167,7 +167,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	python patch.py -c ElfPack.fpa -o Result.bin
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
-	parser_args = ArgsParser(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
+	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=str, metavar='FIRMWARE', help=hlp['f'])
 	parser_args.add_argument('-a', '--author', required=False, type=str, metavar='AUTHOR', help=hlp['a'])

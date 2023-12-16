@@ -1,4 +1,4 @@
-# forge/files.py
+# forge/filesystem.py
 # -*- coding: utf-8 -*-
 
 """
@@ -32,6 +32,17 @@ def delete_all_files_in_directory(directory: Path) -> bool:
 		logging.info(f'')
 		return True
 	return False
+
+
+def check_directories_if_exists(p_dirs: list[Path]) -> bool:
+	for dir_path in p_dirs:
+		if dir_path is not None:
+			if not dir_path.is_dir():
+				logging.error(f'Directory "{dir_path}" is not exist or not a directory.')
+				return False
+		else:
+			return False
+	return True
 
 
 def check_files_if_exists(p_files: list[Path]) -> bool:

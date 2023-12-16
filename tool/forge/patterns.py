@@ -15,7 +15,7 @@ import logging
 from pathlib import Path
 
 from .hexer import int2hex
-from .files import move_file
+from .filesystem import move_file
 from .constants import P2K_TOOL_PAT
 from .constants import P2K_DIR_TOOL
 from .invoker import invoke_external_command_res

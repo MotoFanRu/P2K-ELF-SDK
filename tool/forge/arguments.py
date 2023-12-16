@@ -18,8 +18,8 @@ from pathlib import Path
 from .hexer import hex2int
 from .utilities import chop_str
 from .hexer import normalize_hex_string
-from .files import check_files_if_exists
-from .files import check_files_extensions
+from .filesystem import check_files_if_exists
+from .filesystem import check_files_extensions
 from .firmware import parse_phone_firmware
 
 
@@ -36,7 +36,7 @@ def at_dir(dirname: str) -> Path:
 	if not path.exists():
 		try:
 			path.mkdir()
-			logging.debug(f'Directory "{dirname}" was successfully created.')
+			logging.info(f'Directory "{dirname}" was successfully created.')
 		except OSError as error:
 			logging.error(f'Cannot create "{dirname}" directory: {error}')
 	if not path.is_dir():

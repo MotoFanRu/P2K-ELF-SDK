@@ -23,7 +23,7 @@ from .constants import P2K_EP1_ADS_ARMASM
 from .constants import P2K_EP1_ADS_ARMAR
 from .invoker import invoke_external_command_res
 from .invoker import invoke_custom_arguments
-from .files import check_files_if_exists
+from .filesystem import check_files_if_exists
 
 
 def gen_src_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:

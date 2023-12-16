@@ -16,7 +16,7 @@ from pathlib import Path
 
 from .hexer import int2hex
 from .types import LibraryModel
-from .files import check_files_if_exists
+from .filesystem import check_files_if_exists
 from .symbols import split_and_validate_line
 
 

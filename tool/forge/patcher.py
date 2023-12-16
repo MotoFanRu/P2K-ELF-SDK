@@ -23,8 +23,8 @@ from .hexer import arrange16
 from .types import PatchDict
 from .types import PatchDictNone
 from .hexer import normalize_hex_address
-from .files import check_files_if_exists
-from .files import check_files_extensions
+from .filesystem import check_files_if_exists
+from .filesystem import check_files_extensions
 
 
 # Case-sensitive config parser.
