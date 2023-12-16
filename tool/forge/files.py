@@ -32,3 +32,25 @@ def delete_all_files_in_directory(directory: Path) -> bool:
 		logging.info(f'')
 		return True
 	return False
+
+
+def check_files_if_exists(p_files: list[Path]) -> bool:
+	for file_path in p_files:
+		if not file_path.is_file():
+			logging.error(f'File "{file_path}" is not exist or not a file.')
+			return False
+	return True
+
+
+def check_files_extensions(p_files: list[Path], extensions: list[str]) -> bool:
+	checked_files: dict[Path, bool] = {}
+	for file_path in p_files:
+		checked_files[file_path] = False
+		for extension in extensions:
+			if file_path.name.endswith('.' + extension):
+				checked_files[file_path] = True
+	for file_path, checked in checked_files.items():
+		if not checked:
+			logging.error(f'File "{file_path}" does not have "[{extensions}]" extensions.')
+			return False
+	return True

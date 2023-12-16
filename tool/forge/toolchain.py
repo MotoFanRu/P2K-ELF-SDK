@@ -23,6 +23,7 @@ from .constants import P2K_EP1_ADS_ARMASM
 from .constants import P2K_EP1_ADS_ARMAR
 from .invoker import invoke_external_command_res
 from .invoker import invoke_custom_arguments
+from .files import check_files_if_exists
 
 
 def gen_src_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
@@ -34,7 +35,7 @@ def gen_src_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
 				logging.debug(template)
 				f_o.write(template)
 				f_o.write('\n')
-		return header_file.is_file()
+		return check_files_if_exists([header_file])
 	except OSError as error:
 		logging.error(f'Cannot write into "{header_file}", error: {error}')
 		return False

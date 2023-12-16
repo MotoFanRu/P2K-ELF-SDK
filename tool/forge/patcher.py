@@ -20,9 +20,11 @@ from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import hex2int_r
 from .hexer import arrange16
-from .hexer import normalize_hex_address
 from .types import PatchDict
 from .types import PatchDictNone
+from .hexer import normalize_hex_address
+from .files import check_files_if_exists
+from .files import check_files_extensions
 
 
 # Case-sensitive config parser.
@@ -78,33 +80,23 @@ def generate_fpa(fw: str, author: str, desc: str, patterns: PatchDict, fpa: Path
 
 
 def undo_data(addr: int, hex_data: str, undo: Path) -> str | None:
-	if undo.is_file():
-		if undo.name.endswith('.bin') or undo.name.endswith('.smg'):
-			with undo.open(mode='rb') as f_i:
-				patch_size: int = patch_size_of_hex_str(hex_data)
-				if check_if_address_beyond_file_size(addr, undo.stat().st_size, patch_size):
-					f_i.seek(addr)
-					undo_str: str = f_i.read(patch_size).hex().upper()
-				else:
-					undo_str: str = 'FF' * patch_size
-				return undo_str
-		else:
-			logging.error(f'Check binary "*.bin" or "*.smg" undo source file extension.')
-	else:
-		logging.error(f'Undo source file {undo} is not exist or not a file.')
+	if check_files_if_exists([undo]) and check_files_extensions([undo], ['bin', 'smg']):
+		with undo.open(mode='rb') as f_i:
+			patch_size: int = patch_size_of_hex_str(hex_data)
+			if check_if_address_beyond_file_size(addr, undo.stat().st_size, patch_size):
+				f_i.seek(addr)
+				undo_str: str = f_i.read(patch_size).hex().upper()
+			else:
+				undo_str: str = 'FF' * patch_size
+			return undo_str
 	return None
 
 
 def bin2fpa(fw: str, author: str, desc: str, addr: int, binary: Path, fpa: Path, undo: Path | None = None) -> bool:
-	if binary.is_file():
-		if binary.name.endswith('.bin'):
-			with binary.open(mode='rb') as f_i:
-				hex_str: str = f_i.read().hex().upper()
-				return hex2fpa(fw, author, desc, addr, hex_str, fpa, undo)
-		else:
-			logging.error(f'Check binary "*.bin" file extension.')
-	else:
-		logging.error(f'Binary file {binary} is not exist or not a file.')
+	if check_files_if_exists([binary]) and check_files_extensions([binary], ['bin']):
+		with binary.open(mode='rb') as f_i:
+			hex_str: str = f_i.read().hex().upper()
+			return hex2fpa(fw, author, desc, addr, hex_str, fpa, undo)
 	return False
 
 
@@ -134,7 +126,7 @@ def get_fpa_patch_values(config: CsConfigParser, section: str, is_code: bool = F
 
 
 def fpa2bin(fpa: Path, binary: Path) -> bool:
-	if binary.name.endswith('.bin'):
+	if check_files_extensions([binary], ['bin']):
 		config: CsConfigParser = CsConfigParser()
 		config.read(fpa)
 		values: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
@@ -145,8 +137,6 @@ def fpa2bin(fpa: Path, binary: Path) -> bool:
 				with binary_chunk_path.open(mode='wb') as f_o:
 					f_o.write(bytes.fromhex(value))
 			return True
-	else:
-		logging.error(f'Check binary "*.bin" file extension in "{binary}" path.')
 	return False
 
 
@@ -188,58 +178,49 @@ def unite_fpa_patches(fw: str, author: str, desc: str, patches: list[Path], resu
 
 
 def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -> bool:
-	if firmware.is_file() and fpa.is_file():
-		if firmware.name.endswith('.bin') or firmware.name.endswith('.smg'):
-			if fpa.name.endswith('.fpa'):
-				config: CsConfigParser = CsConfigParser()
-				config.read(fpa)
-				file_size: int = firmware.stat().st_size
-				if validating:
-					undo_patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Undo', True)
-					if undo_patches is not None:
-						with firmware.open(mode='rb') as f_i:
-							for address, value in undo_patches.items():
-								p_addr: int = hex2int_r(address)
-								p_size: int = patch_size_of_hex_str(value)
-								undo: str = value.upper()
-								if check_if_address_beyond_file_size(p_addr, file_size, p_size):
-									f_i.seek(hex2int_r(address))
-									hex_data: str = f_i.read(patch_size_of_hex_str(value)).hex().upper()
-								else:
-									hex_data: str = 'FF' * p_size
-								if hex_data == undo:
-									logging.info(f'Patch "{address}" is validated.')
-								else:
-									logging.info(f'Patch "{address}" not valid with undo values {hex_data}=={undo}.')
-									return False
-				patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
-				if patches is not None:
-					if backup:
-						backup_file: Path = firmware.with_stem(f'{firmware.stem}_backup')
-						logging.info(f'Create backup file from "{firmware}" to "{backup_file}".')
-						shutil.copy(firmware, backup_file)
-					with firmware.open(mode='r+b') as f_o:
-						for address, value in patches.items():
-							p_addr: int = hex2int_r(address)
-							p_size: int = patch_size_of_hex_str(value)
-							if check_if_address_beyond_file_size(p_addr, file_size, p_size):
-								f_o.seek(p_addr)
-								f_o.write(bytes.fromhex(value))
-							else:
-								f_o.seek(file_size)
-								p_pad: int = (arrange16(file_size) - file_size) + arrange16(p_size)
-								logging.info(f'Add some extra space "{int2hex(p_pad)}" to "{firmware} {file_size}".')
-								f_o.write(b'\xFF' * p_pad)
-								f_o.seek(p_addr)
-								f_o.write(bytes.fromhex(value))
-					return True
-			else:
-				logging.error(f'Check patch "*.fpa" file extension.')
-		else:
-			logging.error(f'Check firmware binary "*.bin" or "*.smg" file extension.')
-	else:
-		if not firmware.is_file():
-			logging.error(f'Firmware file {firmware} is not exist or not a file.')
-		if not fpa.is_file():
-			logging.error(f'Patch file {fpa} is not exist or not a file.')
+	files_here: bool = check_files_if_exists([firmware, fpa])
+	extensions_ok: bool = check_files_extensions([firmware], ['bin', 'smg']) and check_files_extensions([fpa], ['fpa'])
+	if files_here and extensions_ok:
+		config: CsConfigParser = CsConfigParser()
+		config.read(fpa)
+		file_size: int = firmware.stat().st_size
+		if validating:
+			undo_patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Undo', True)
+			if undo_patches is not None:
+				with firmware.open(mode='rb') as f_i:
+					for address, value in undo_patches.items():
+						p_addr: int = hex2int_r(address)
+						p_size: int = patch_size_of_hex_str(value)
+						undo: str = value.upper()
+						if check_if_address_beyond_file_size(p_addr, file_size, p_size):
+							f_i.seek(hex2int_r(address))
+							hex_data: str = f_i.read(patch_size_of_hex_str(value)).hex().upper()
+						else:
+							hex_data: str = 'FF' * p_size
+						if hex_data == undo:
+							logging.info(f'Patch "{address}" is validated.')
+						else:
+							logging.info(f'Patch "{address}" not valid with undo values {hex_data}=={undo}.')
+							return False
+		patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
+		if patches is not None:
+			if backup:
+				backup_file: Path = firmware.with_stem(f'{firmware.stem}_backup')
+				logging.info(f'Create backup file from "{firmware}" to "{backup_file}".')
+				shutil.copy(firmware, backup_file)
+			with firmware.open(mode='r+b') as f_o:
+				for address, value in patches.items():
+					p_addr: int = hex2int_r(address)
+					p_size: int = patch_size_of_hex_str(value)
+					if check_if_address_beyond_file_size(p_addr, file_size, p_size):
+						f_o.seek(p_addr)
+						f_o.write(bytes.fromhex(value))
+					else:
+						f_o.seek(file_size)
+						p_pad: int = (arrange16(file_size) - file_size) + arrange16(p_size)
+						logging.info(f'Add some extra space "{int2hex(p_pad)}" to "{firmware} {file_size}".')
+						f_o.write(b'\xFF' * p_pad)
+						f_o.seek(p_addr)
+						f_o.write(bytes.fromhex(value))
+			return True
 	return False

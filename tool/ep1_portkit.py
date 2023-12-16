@@ -20,6 +20,8 @@ from pathlib import Path
 from datetime import datetime
 from argparse import Namespace
 
+
+# Constants.
 FUNC_INJECTION = 'APP_SyncML_MainRegister'
 FUNC_REGISTER = 'Register'
 FUNC_AUTORUN = 'AutorunMain'
@@ -27,7 +29,7 @@ FUNC_AUTORUN = 'AutorunMain'
 
 # Various generators.
 def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str], patterns_add: list[str]) -> bool:
-	if p_i_f.is_file() and p_i_f.exists() and p_i_e.is_file() and p_i_e.exists():
+	if p_i_f.is_file() and p_i_e.is_file():
 		with (p_i_f.open(mode='r') as i_f, p_i_e.open(mode='r') as i_s, p_o_l.open(mode='w', newline='\r\n') as o_l):
 			o_l.write(f'{forge.ADS_SYM_FILE_HEADER}\n')
 			o_l.write(f'# SYMDEFS ADS HEADER\n\n')
@@ -43,17 +45,23 @@ def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str
 						if name.find(add) != -1:
 							o_l.write(f'{line}\n')
 			return True
+	else:
+		if not p_i_f.is_file():
+			logging.error(f'Symbol functions file {p_i_f} is not exist or not a file.')
+		if not p_i_e.is_file():
+			logging.error(f'Symbol ElfPack file {p_i_e} is not exist or not a file.')
 	return False
 
 
 def generate_register_patch(fw: str, author: str, desc: str, p_e: Path, p_r: Path, p_p: Path, cg: Path) -> bool:
-	if p_e.is_file() and p_e.exists() and p_r.is_file() and p_r.exists():
-		hex_data = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN) + 1)  # Thumb
-		reg_address = forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER)
+	if p_e.is_file() and p_r.is_file():
+		hex_data: str = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN) + 1)  # Thumb
+		reg_address: int = forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER)
 
 		forge.hex2fpa(fw, author, desc, reg_address, hex_data, p_p, cg)
 		return True
 	else:
+
 		logging.error(f'Cannot open symbol files: "{p_e}" and "{p_r}".')
 	return False
 

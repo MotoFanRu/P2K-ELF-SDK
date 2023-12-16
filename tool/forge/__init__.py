@@ -28,6 +28,8 @@ from .toolchain import ep1_ads_armasm
 from .toolchain import ep1_ads_armar
 
 from .files import delete_all_files_in_directory
+from .files import check_files_if_exists
+from .files import check_files_extensions
 
 from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware

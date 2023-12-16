@@ -12,6 +12,9 @@ Date: 15-Dec-2023
 
 from pathlib import Path
 
+from .files import check_files_if_exists
+from .files import check_files_extensions
+
 
 def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:
 	segments: list[str] = firmware.split('.')
@@ -26,7 +29,7 @@ def parse_phone_firmware(phone_firmware_filename: str) -> tuple[str, str]:
 	segments_a_ok: bool = len(segments_a) > 2                         # At least 3 segments in segments_a.
 	segments_b_ok: bool = len(segments_b) > 2                         # At least 3 segments in segments_b.
 	extension: str = segments_b[-1]                                   # Please use *.smg or *.bin extensions.
-	extension_ok: bool = (extension == 'smg') or (extension == 'bin')
+	extension_ok: bool = check_files_extensions([Path(phone_firmware_filename)], ['bin', 'smg'])
 
 	if not (segments_a_ok and segments_b_ok and extension_ok):
 		raise ValueError('wrong phone-firmware name format! Please use this pattern: E1_R373_G_0E.30.49R.smg')
@@ -38,7 +41,7 @@ def parse_phone_firmware(phone_firmware_filename: str) -> tuple[str, str]:
 
 
 def get_file_size(path: Path) -> int:
-	if path.is_file():
+	if check_files_if_exists([path]):
 		size: int = path.stat().st_size
 		if 0x100000 < size < 0x4000000:  # Between 1...64 MiB.
 			return size

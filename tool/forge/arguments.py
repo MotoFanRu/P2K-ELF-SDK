@@ -16,9 +16,11 @@ import logging
 from pathlib import Path
 
 from .hexer import hex2int
-from .hexer import normalize_hex_string
-from .firmware import parse_phone_firmware
 from .utilities import chop_str
+from .hexer import normalize_hex_string
+from .files import check_files_if_exists
+from .files import check_files_extensions
+from .firmware import parse_phone_firmware
 
 
 def at_fw(firmware_filename: str) -> Path:
@@ -44,7 +46,7 @@ def at_dir(dirname: str) -> Path:
 
 def at_file(filename: str) -> Path:
 	path: Path = Path(filename)
-	if not path.is_file():
+	if not check_files_if_exists([path]):
 		raise argparse.ArgumentTypeError(f'{filename} not found')
 	return path
 
@@ -55,8 +57,9 @@ def at_path(filename: str) -> Path:
 
 def at_fpa(filename: str) -> Path:
 	at_file(filename)
+
 	path: Path = Path(filename)
-	if not path.name.endswith('.fpa'):
+	if not check_files_extensions([path], ['fpa']):
 		raise argparse.ArgumentTypeError(f'{filename} is not *.fpa patch')
 	return path
 

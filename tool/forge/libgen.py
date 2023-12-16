@@ -15,13 +15,14 @@ import logging
 from pathlib import Path
 
 from .hexer import int2hex
-from .symbols import split_and_validate_line
 from .types import LibraryModel
+from .files import check_files_if_exists
+from .symbols import split_and_validate_line
 
 
 def ep1_libgen_model(p_sym_lib: Path, model: LibraryModel) -> str | None:
-	entries: str = ''
-	if p_sym_lib.is_file():
+	if check_files_if_exists([p_sym_lib]):
+		entries: str = ''
 		with p_sym_lib.open(mode='r') as f_i:
 			for line in f_i.read().splitlines():
 				address, mode, name = split_and_validate_line(line)
@@ -29,10 +30,8 @@ def ep1_libgen_model(p_sym_lib: Path, model: LibraryModel) -> str | None:
 					entries += ' ' + name
 					model.append((address, mode, name))
 		entries += ' '
-	else:
-		logging.error(f'Cannot open "{p_sym_lib} file to read."')
-		return None
-	return entries
+		return entries
+	return None
 
 
 def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> bool:

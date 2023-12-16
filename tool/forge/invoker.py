@@ -15,6 +15,8 @@ import subprocess
 
 from pathlib import Path
 
+from .files import check_files_if_exists
+
 
 def invoke_external_system_command(arguments: list[str]) -> int:
 	command: str = ' '.join(arguments)
@@ -39,8 +41,6 @@ def invoke_custom_arguments(custom_flags: list[str] | None = None) -> list[str]:
 
 
 def invoke_external_command_res(p_in: list[Path], arguments: list[str]) -> bool:
-	for file_path in p_in:
-		if not file_path.is_file():
-			logging.error(f'File "{file_path}" is not exist or not a file.')
-			return False
-	return invoke_external_system_command(arguments) == 0
+	if check_files_if_exists(p_in):
+		return invoke_external_system_command(arguments) == 0
+	return False
