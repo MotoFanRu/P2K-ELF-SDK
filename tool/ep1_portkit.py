@@ -208,8 +208,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 		[FUNC_INJECTION, 'APP_CALC_MainRegister', '_region_table'],
 		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
 	)
-	library_model: forge.LibraryModel = []
-	functions: str = forge.ep1_libgen_model(val_library_sym, library_model)
+	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
 	forge.ep1_libgen_asm(val_library_asm, library_model)
 	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions)
 	logging.info(f'')

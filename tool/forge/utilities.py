@@ -13,9 +13,15 @@ Date: 15-Dec-2023
 import logging
 
 from pathlib import Path
+from datetime import datetime
 from datetime import timedelta
 
 from .filesystem import check_files_if_exists
+
+
+def get_current_datetime_formatted() -> str:
+	dt_now = datetime.now()
+	return dt_now.strftime('%d-%b-%Y %H:%M:%S')
 
 
 def format_timedelta(td: timedelta) -> str:
@@ -53,8 +59,12 @@ def dump_text_file_to_debug_log(text_file: Path, strip_lines: bool = True) -> No
 
 
 def set_logging_configuration(verbose: bool) -> None:
+	log_format: str = '%(asctime)s %(levelname)s: %(message)s'
+	if verbose:
+		log_format = '%(asctime)s %(levelname)s [%(funcName)s]: %(message)s'
+
 	logging.basicConfig(
 		level=logging.DEBUG if verbose else logging.INFO,
-		format='%(asctime)s %(levelname)s: %(message)s',
+		format=log_format,
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)

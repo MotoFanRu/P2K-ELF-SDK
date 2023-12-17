@@ -17,7 +17,6 @@ from .arguments import at_hex
 from .arguments import at_fpa
 from .arguments import at_path
 from .arguments import at_hds
-from .arguments import at_sym
 
 from .constants import *
 
@@ -51,9 +50,11 @@ from .hexer import is_hex_string
 from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
 
+from .libgen import LibrarySort
 from .libgen import ep1_libgen_asm
 from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library
+from .libgen import ep1_libgen_symbols
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa
@@ -68,6 +69,7 @@ from .symbols import create_combined_sym_file
 from .symbols import split_and_validate_line
 from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
+from .symbols import dump_library_model_to_sym_file
 
 from .types import LibraryModel
 
@@ -76,3 +78,4 @@ from .utilities import chop_str
 from .utilities import log_result
 from .utilities import dump_text_file_to_debug_log
 from .utilities import set_logging_configuration
+from .utilities import get_current_datetime_formatted

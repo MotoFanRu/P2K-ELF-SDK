@@ -63,14 +63,6 @@ def at_fpa(filename: str) -> Path:
 	return path
 
 
-def at_sym(filename: str) -> Path:
-	at_file(filename)
-	path: Path = Path(filename)
-	if not check_files_extensions([path], ['sym']):
-		raise argparse.ArgumentTypeError(f'{filename} is not *.sym symbols file')
-	return path
-
-
 def at_hex(hex_value: str) -> int:
 	try:
 		return hex2int(hex_value)
