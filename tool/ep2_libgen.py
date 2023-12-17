@@ -28,49 +28,11 @@ class Mode(Enum):
 
 
 # Helpers.
-def sym2obj(library_model: forge.LibraryModel, p_i: Path, p_o: Path) -> bool:
-	temp_asm_file = forge.get_temporary_directory_path() / 'Lib.asm'
-	logging.info(f'Will create "{temp_asm_file}" assembly listing from "{p_i}" symbols file.')
-	if forge.log_result(forge.ep1_libgen_asm(temp_asm_file, library_model)):
-		logging.info(f'Will create "{p_o}" object library from "{temp_asm_file}" assembly listing.')
-		result = forge.log_result(forge.ep1_ads_armasm(temp_asm_file, p_o))
-		forge.delete_file(temp_asm_file)
-		return result
-	return False
-
-
-def sym2lib(library_model: forge.LibraryModel, p_i: Path, p_o: Path) -> bool:
-	temp_object_library_file = forge.get_temporary_directory_path() / 'Lib.o'
-	if sym2obj(library_model, p_i, temp_object_library_file):
-		logging.info(f'Will create "{p_o}" static library from "{temp_object_library_file}" object file.')
-		result = forge.ep1_ads_armar([temp_object_library_file], p_o)
-		forge.delete_file(temp_object_library_file)
-		return result
-	return False
 
 
 # LibGen working flow.
 def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
-	logging.info(f'Start ElfPack v1.0 LibGen utility, mode: {mode.name}.')
-
-	if mode == Mode.SYMBOLS_LISTING:
-		logging.info(f'Will create "{args.output}" symbols file from "{args.source}" library.')
-		return forge.log_result(forge.ep1_libgen_symbols(args.source, args.output, sort))
-	else:
-		functions, library_model = forge.ep1_libgen_model(args.source, sort)
-
-		if mode == Mode.PHONE_LIBRARY:
-			logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
-			return forge.log_result(forge.ep1_libgen_library(args.output, library_model, functions))
-		elif mode == Mode.ASSEMBLER_LISTING:
-			logging.info(f'Will create "{args.output}" assembly listing from "{args.source}" symbols file.')
-			return forge.log_result(forge.ep1_libgen_asm(args.output, library_model))
-		elif mode == Mode.OBJECT_LIBRARY:
-			return sym2obj(library_model, args.source, args.output)
-		elif mode == Mode.STATIC_LIBRARY:
-			return sym2lib(library_model, args.source, args.output)
-		else:
-			logging.error(f'Unknown mode: {mode.name}')
+	logging.info(f'Start ElfPack v2.0 LibGen utility, mode: {mode.name}.')
 
 	return False
 
@@ -96,15 +58,11 @@ class Args(argparse.ArgumentParser):
 		s: Path = args.source
 		o: Path = args.output
 		sort: forge.LibrarySort = self.determine_sort_mode(args)
-		if forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['lib'], False):
+		if args.all:
+			return Mode.REGENERATOR, sort, args
+		if forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['bin'], False):
 			return Mode.PHONE_LIBRARY, sort, args
-		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['asm'], False):
-			return Mode.ASSEMBLER_LISTING, sort, args
-		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['o'], False):
-			return Mode.OBJECT_LIBRARY, sort, args
-		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['a'], False):
-			return Mode.STATIC_LIBRARY, sort, args
-		elif forge.check_files_extensions([s], ['lib'], False) and forge.check_files_extensions([o], ['sym'], False):
+		elif forge.check_files_extensions([s], ['bin'], False) and forge.check_files_extensions([o], ['sym'], False):
 			return Mode.SYMBOLS_LISTING, sort, args
 		else:
 			self.error('unknown --output mode, check output file extension')
@@ -118,7 +76,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
-		'a': 'regenerate all libraries by symbols files in library directory',
+		'a': 're-generate all libraries by symbol files in library directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
