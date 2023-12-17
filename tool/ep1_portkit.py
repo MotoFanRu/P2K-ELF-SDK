@@ -253,9 +253,9 @@ def parse_arguments() -> Namespace:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/General.pat -f E1_R373_G_0E.30.49R.smg -o ep1_build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o ep1_build
-	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/General.pat -f V3i_R4441D_G_08.01.03R.smg -o ep1_build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/General.pat -f E1_R373_G_0E.30.49R.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o build
+	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/General.pat -f V3i_R4441D_G_08.01.03R.smg -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])

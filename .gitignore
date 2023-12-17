@@ -5,7 +5,7 @@ tool/forge/__pycache__
 tool/forge_test/__pycache__
 tool/*.smg
 tool/*.bin
-tool/ep1_build
+tool/build
 tool/compiler/ep1_lin_ADS/*
 !tool/compiler/ep1_lin_ADS/ReadMe.md
 tool/compiler/ep1_win_ADS/*
