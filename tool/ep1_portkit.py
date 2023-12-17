@@ -119,9 +119,9 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'')
 
 	logging.info(f'Finding SoC related functions from patterns.')
-	val_lte1_pat: Path = forge.P2K_DIR_EP1_TOOL / 'LTE.pat'
-	val_lte2_pat: Path = forge.P2K_DIR_EP1_TOOL / 'LTE2.pat'
-	val_lte2_irom_sym: Path = forge.P2K_DIR_EP1_TOOL / 'LTE2_IROM.sym'
+	val_lte1_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE.pat'
+	val_lte2_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE2.pat'
+	val_lte2_irom_sym: Path = forge.P2K_DIR_EP1_SYM / 'LTE2_IROM.sym'
 	val_platform_sym: Path = arg_output / 'Platform.sym'
 	val_functions_sym: Path = arg_output / 'Functions.sym'
 	val_combined_sym: Path = arg_output / 'Combined.sym'
@@ -170,10 +170,10 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 
 	logging.info(f'Linking object files to binary.')
 	val_link_objects: list[Path] = [
-		forge.P2K_DIR_EP1_OBJS / 'AutoRun.o',
-		forge.P2K_DIR_EP1_OBJS / 'ElfLoader.o',
-		forge.P2K_DIR_EP1_OBJS / 'ElfLoaderApp.o',
-		forge.P2K_DIR_EP1_OBJS / 'LibC.o',
+		forge.P2K_DIR_EP1_OBJ / 'AutoRun.o',
+		forge.P2K_DIR_EP1_OBJ / 'ElfLoader.o',
+		forge.P2K_DIR_EP1_OBJ / 'ElfLoaderApp.o',
+		forge.P2K_DIR_EP1_OBJ / 'LibC.o',
 		val_system_info_o,
 		val_combined_sym
 	]
@@ -253,9 +253,9 @@ def parse_arguments() -> Namespace:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/General.pat -f E1_R373_G_0E.30.49R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o build
-	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/General.pat -f V3i_R4441D_G_08.01.03R.smg -o build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f E1_R373_G_0E.30.49R.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f L7_R4513_G_08.B7.ACR_RB.smg -o build
+	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f V3i_R4441D_G_08.01.03R.smg -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])

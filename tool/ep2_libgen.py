@@ -23,10 +23,8 @@ from argparse import Namespace
 
 class Mode(Enum):
 	PHONE_LIBRARY: int = 0
-	ASSEMBLER_LISTING: int = 1
-	OBJECT_LIBRARY: int = 2
-	STATIC_LIBRARY: int = 3
-	SYMBOLS_LISTING: int = 4
+	SYMBOLS_LISTING: int = 1
+	REGENERATOR: int = 2
 
 
 # Helpers.

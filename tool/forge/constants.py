@@ -30,9 +30,12 @@ P2K_DIR_TOOL: Path = P2K_TOOLCHAIN_ROOT / 'tool'
 P2K_DIR_COMPILER: Path = P2K_DIR_TOOL / 'compiler'
 P2K_DIR_EP1_ADS: Path = P2K_DIR_COMPILER / ('ep1_win_ADS' if is_win() else 'ep1_lin_ADS')
 P2K_DIR_EP1_ADS_BIN: Path = P2K_DIR_EP1_ADS / 'bin'
-P2K_DIR_EP1_TOOL: Path = P2K_DIR_TOOL / 'ep1'
-P2K_DIR_EP1_OBJS: Path = P2K_DIR_EP1_TOOL / 'obj'
-P2K_DIR_EP1_OBJS_OLD: Path = P2K_DIR_EP1_OBJS / 'old'
+P2K_DIR_EP1: Path = P2K_DIR_TOOL / 'ep1'
+P2K_DIR_EP1_PAT: Path = P2K_DIR_EP1 / 'pat'
+P2K_DIR_EP1_OBJ: Path = P2K_DIR_EP1 / 'obj'
+P2K_DIR_EP1_SRC: Path = P2K_DIR_EP1 / 'src'
+P2K_DIR_EP1_SYM: Path = P2K_DIR_EP1 / 'sym'
+P2K_DIR_EP1_OBJ_OLD: Path = P2K_DIR_EP1_OBJ / 'old'
 
 P2K_TOOL_PAT: Path = P2K_DIR_TOOL / e_app('pat')
 P2K_EP1_ADS_TCC: Path = P2K_DIR_EP1_ADS_BIN / e_app('tcc')
