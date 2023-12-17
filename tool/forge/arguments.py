@@ -23,7 +23,16 @@ from .filesystem import check_files_extensions
 from .firmware import parse_phone_firmware
 
 
-def at_fw(firmware_filename: str) -> Path:
+# Phone Firmware, e.g. 'E1_R373_G_0E.30.49R'.
+def at_pfw(phone_firmware_tuple: str) -> tuple[str, str]:
+	try:
+		return parse_phone_firmware(phone_firmware_tuple + '.smg')
+	except ValueError as value_error:
+		raise argparse.ArgumentTypeError(value_error)
+
+
+# File Firmware, e.g. 'E1_R373_G_0E.30.49R.smg'.
+def at_ffw(firmware_filename: str) -> Path:
 	try:
 		parse_phone_firmware(firmware_filename)
 		return at_file(firmware_filename)

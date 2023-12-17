@@ -19,11 +19,11 @@ from forge import chop_str
 
 
 class TestUtilities(unittest.TestCase):
-	def test_format_timedelta(self):
+	def test_format_timedelta(self) -> None:
 		now = datetime.now()
 		self.assertEqual(len(format_timedelta(datetime.now() - now)), len('00:00:00.000'))
 
-	def test_chop_string_to_16_symbols(self):
+	def test_chop_string_to_16_symbols(self) -> None:
 		self.assertEqual(chop_str('0123456789ABCDEF0'), '0123456789ABCDEF0')
 		self.assertEqual(chop_str('0123456789ABCDEF0', 16), '0123456789ABC...')
 		self.assertEqual(chop_str('012345678901234567890123456789'), '012345678901234567890...')

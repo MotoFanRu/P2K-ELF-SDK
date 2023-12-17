@@ -38,6 +38,8 @@ P2K_DIR_EP1_SYM: Path = P2K_DIR_EP1 / 'sym'
 P2K_DIR_EP1_OBJ_OLD: Path = P2K_DIR_EP1_OBJ / 'old'
 
 P2K_TOOL_PAT: Path = P2K_DIR_TOOL / e_app('pat')
+P2K_TOOL_POSTLINK: Path = P2K_DIR_TOOL / e_app('postlink')
+
 P2K_EP1_ADS_TCC: Path = P2K_DIR_EP1_ADS_BIN / e_app('tcc')
 P2K_EP1_ADS_TCPP: Path = P2K_DIR_EP1_ADS_BIN / e_app('tcpp')
 P2K_EP1_ADS_ARMCC: Path = P2K_DIR_EP1_ADS_BIN / e_app('armcc')

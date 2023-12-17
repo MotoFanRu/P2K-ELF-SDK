@@ -55,17 +55,23 @@ class Args(argparse.ArgumentParser):
 
 	def parse_check_arguments(self) -> tuple[Mode, forge.LibrarySort, Namespace]:
 		args: Namespace = self.parse_args()
-		s: Path = args.source
-		o: Path = args.output
 		sort: forge.LibrarySort = self.determine_sort_mode(args)
 		if args.all:
 			return Mode.REGENERATOR, sort, args
+		s: Path = args.source
+		o: Path = args.output
+		pfw: tuple[str, str] = args.phone_fw
+		if s is None:
+			self.error('source argument is empty')
+		if o is None:
+			self.error('output argument is empty')
 		if forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['bin'], False):
+			if pfw is None:
+				self.error('phone_fw argument is empty')
 			return Mode.PHONE_LIBRARY, sort, args
 		elif forge.check_files_extensions([s], ['bin'], False) and forge.check_files_extensions([o], ['sym'], False):
 			return Mode.SYMBOLS_LISTING, sort, args
-		else:
-			self.error('unknown --output mode, check output file extension')
+		self.error('all arguments are empty')
 
 
 def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
@@ -80,8 +86,8 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	python ep2_libgen.py -s library.sym -o library.bin
-	python ep2_libgen.py -sn -s library.sym -o library.bin
+	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
+	python ep2_libgen.py -sn -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
 
 	python ep2_libgen.py -s library.bin -o library.sym
 	python ep2_libgen.py -sn -s library.bin -o library.sym
@@ -93,6 +99,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-s', '--source', required=False, type=forge.at_file, metavar='INPUT', help=hlp['s'])
 	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
 	parser_args.add_argument('-sa', '--sort-address', required=False, action='store_true', help=hlp['sa'])
+	parser_args.add_argument('-pf', '--phone-fw', required=False, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['s'])
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
 	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])

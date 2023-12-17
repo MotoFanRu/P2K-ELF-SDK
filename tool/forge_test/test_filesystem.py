@@ -16,7 +16,7 @@ from forge import normalize_extension
 
 
 class TestFileSystem(unittest.TestCase):
-	def test_normalize_extension(self):
+	def test_normalize_extension(self) -> None:
 		self.assertEqual(normalize_extension(' '), '. ')  # ???
 		self.assertEqual(normalize_extension('ext'), '.ext')
 		self.assertEqual(normalize_extension('.ext'), '.ext')

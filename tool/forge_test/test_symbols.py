@@ -16,7 +16,7 @@ from forge import split_and_validate_line
 
 
 class TestSymbols(unittest.TestCase):
-	def test_split_and_validate_line(self):
+	def test_split_and_validate_line(self) -> None:
 		self.assertEqual(split_and_validate_line('0x10C1ACCC T memcpy'), ('0x10C1ACCC', 'T', 'memcpy'))
 		self.assertEqual(split_and_validate_line('0x10C1ACCC A memcpy'), ('0x10C1ACCC', 'A', 'memcpy'))
 		self.assertEqual(split_and_validate_line('0x10C1ACCC C memcpy'), ('0x10C1ACCC', 'C', 'memcpy'))
