@@ -50,3 +50,11 @@ def dump_text_file_to_debug_log(text_file: Path, strip_lines: bool = True) -> No
 				else:
 					line = line.replace('\n', '')
 				logging.debug(f'{line}')
+
+
+def set_logging_configuration(verbose: bool) -> None:
+	logging.basicConfig(
+		level=logging.DEBUG if verbose else logging.INFO,
+		format='%(asctime)s %(levelname)s: %(message)s',
+		datefmt='%d-%b-%Y %H:%M:%S'
+	)

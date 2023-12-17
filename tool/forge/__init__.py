@@ -75,3 +75,4 @@ from .utilities import format_timedelta
 from .utilities import chop_str
 from .utilities import log_result
 from .utilities import dump_text_file_to_debug_log
+from .utilities import set_logging_configuration

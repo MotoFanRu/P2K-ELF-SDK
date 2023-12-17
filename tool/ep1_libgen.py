@@ -116,11 +116,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 def main() -> None:
 	mode, args = parse_arguments()
 
-	logging.basicConfig(
-		level=logging.DEBUG if args.verbose else logging.INFO,
-		format='%(asctime)s %(levelname)s: %(message)s',
-		datefmt='%d-%b-%Y %H:%M:%S'
-	)
+	forge.set_logging_configuration(args.verbose)
 
 	start_ep1_libgen_work(mode, args)
 	if mode == Mode.ASSEMBLER_LISTING:
