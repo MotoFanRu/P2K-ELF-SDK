@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A libgen utility for ElfPack v1.0 and Motorola phones on P2K platform.
+A libgen utility for ElfPack v2.0 and Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
@@ -52,7 +52,7 @@ def sym2lib(library_model: forge.LibraryModel, p_i: Path, p_o: Path) -> bool:
 
 
 # LibGen working flow.
-def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
+def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
 	logging.info(f'Start ElfPack v1.0 LibGen utility, mode: {mode.name}.')
 
 	if mode == Mode.SYMBOLS_LISTING:
@@ -116,31 +116,30 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	hlp: dict[str, str] = {
 		'h': 'A libgen utility for ElfPack v1.0 and Motorola phones on P2K platform, 15-Dec-2023',
 		's': 'source input library or symbols file',
-		'o': 'output resulting file with "*.lib", "*.a", ".asm", "*.o", and "*.sym" extensions',
+		'o': 'output resulting file with "*.bin", "*.sa", and "*.sym" extensions',
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
+		'a': 'regenerate all libraries by symbols files in library directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	python ep1_libgen.py -s Lib.sym -o elfloader.lib
-	python ep1_libgen.py -sn -s Lib.sym -o elfloader.lib
+	python ep2_libgen.py -s library.sym -o library.bin
+	python ep2_libgen.py -sn -s library.sym -o library.bin
 
-	python ep1_libgen.py -s Lib.sym -o libstd.a
-	python ep1_libgen.py -sn -s Lib.sym -o libstd.a
+	python ep2_libgen.py -s library.bin -o library.sym
+	python ep2_libgen.py -sn -s library.bin -o library.sym
 
-	python ep1_libgen.py -s elfloader.lib -o Lib.sym
-	python ep1_libgen.py -sn -s elfloader.lib -o Lib.sym
-
-	python ep1_libgen.py -s Lib.sym -o Lib.asm
-	python ep1_libgen.py -s Lib.sym -o Lib.o
+	python ep2_libgen.py -a
+	python ep2_libgen.py -sn -a
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])
-	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
+	parser_args.add_argument('-s', '--source', required=False, type=forge.at_file, metavar='INPUT', help=hlp['s'])
+	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
 	parser_args.add_argument('-sa', '--sort-address', required=False, action='store_true', help=hlp['sa'])
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
+	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
@@ -150,10 +149,7 @@ def main() -> None:
 
 	forge.set_logging_configuration(args.verbose)
 
-	start_ep1_libgen_work(mode, sort, args)
-	if mode == Mode.ASSEMBLER_LISTING:
-		logging.debug(f'')
-		forge.dump_text_file_to_debug_log(args.output, strip_lines=False)
+	start_ep2_libgen_work(mode, sort, args)
 
 
 if __name__ == '__main__':
