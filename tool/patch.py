@@ -152,12 +152,16 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	}
 	epl: str = """examples:
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
-	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
+
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
+
 	python patch.py -w Result.fpa -u CG1.smg -l
 	python patch.py -w Result.fpa -u CG1.smg -l -n
+
 	python patch.py -c ElfPack.fpa -o Result.bin
+
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)

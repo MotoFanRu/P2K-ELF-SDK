@@ -53,5 +53,6 @@ P2K_EP1_ADS_FROMELF: Path = P2K_DIR_EP1_ADS_BIN / e_app('fromelf')
 
 P2K_SDK_CONSTS_H: Path = P2K_DIR_EP_SDK / 'consts.h'
 P2K_EP2_API_DEF: Path = P2K_DIR_EP2_DEF / 'ElfLoaderAPI.def'
+P2K_EP2_NMS_DEF: Path = P2K_DIR_EP2_DEF / 'EntriesNames.def'
 
 ADS_SYM_FILE_HEADER: str = '#<SYMDEFS>#symdef-file'

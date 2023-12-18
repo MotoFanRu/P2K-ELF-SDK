@@ -25,7 +25,8 @@ class Mode(Enum):
 	PHONE_LIBRARY: int = 0
 	SDK_STUB_LIBRARY: int = 1
 	SYMBOLS_LISTING: int = 2
-	REGENERATOR: int = 3
+	NAME_DEFINES: int = 3
+	REGENERATOR: int = 4
 
 
 # Helpers.
@@ -38,6 +39,9 @@ def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 		logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
 		phone, firmware = args.phone_fw
 		return forge.log_result(forge.ep2_libgen_library(args.source, sort, firmware, args.output))
+	elif mode == Mode.SYMBOLS_LISTING:
+		logging.info(f'Will create "{args.output}" symbols file "{args.source}" library.')
+		return forge.log_result(forge.ep2_libgen_symbols(args.source, args.output, sort, not args.no_resolve_names))
 	return False
 
 
@@ -62,6 +66,8 @@ class Args(argparse.ArgumentParser):
 		sort: forge.LibrarySort = self.determine_sort_mode(args)
 		if args.all:
 			return Mode.REGENERATOR, sort, args
+		if args.defines is not None:
+			return Mode.NAME_DEFINES, sort, args
 		s: Path = args.source
 		o: Path = args.output
 		pfw: tuple[str, str] = args.phone_fw
@@ -89,21 +95,28 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'h': 'A libgen utility for ElfPack v1.0 and Motorola phones on P2K platform, 15-Dec-2023',
 		's': 'source input library or symbols file',
 		'o': 'output resulting file with "*.bin", "*.sa", and "*.sym" extensions',
+		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
+		'rn': 'do not resolve names',
+		'd': 'generate library defines file for resolve "D" (DATA) and "C" (CONST) names',
 		'a': 're-generate all libraries by symbol files in library directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
 	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
 	python ep2_libgen.py -sn -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
-	
+
 	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.sa
 	python ep2_libgen.py -sn -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.sa
 
 	python ep2_libgen.py -s library.bin -o library.sym
 	python ep2_libgen.py -sn -s library.bin -o library.sym
+	python ep2_libgen.py -sn -rn -s library.bin -o library.sym
+
+	python ep2_libgen.py -d names.def
+	python ep2_libgen.py -sn -d names.def
 
 	python ep2_libgen.py -a
 	python ep2_libgen.py -sn -a
@@ -111,10 +124,12 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=False, type=forge.at_file, metavar='INPUT', help=hlp['s'])
 	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
-	parser_args.add_argument('-pf', '--phone-fw', required=False, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['s'])
+	parser_args.add_argument('-pf', '--phone-fw', required=False, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
 	parser_args.add_argument('-sa', '--sort-address', required=False, action='store_true', help=hlp['sa'])
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
+	parser_args.add_argument('-rn', '--no-resolve-names', required=False, action='store_true', help=hlp['rn'])
+	parser_args.add_argument('-d', '--defines', required=False, type=forge.at_path, metavar='DEFINES', help=hlp['d'])
 	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()

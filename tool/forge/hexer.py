@@ -11,11 +11,11 @@ Date: 15-Dec-2023
 """
 
 
-def hex2int(hex_value: str) -> int:
+def hex2int(hex_value: str, size: int = 8) -> int:
 	if not hex_value.startswith('0x'):
 		raise ValueError(f'value "{hex_value}" should starts with a "0x" prefix')
-	if len(hex_value) != (8 + 2):  # 0x12345678
-		raise ValueError(f'value "{hex_value}" should be in the "8 + 2" format like "0x000012FF" hex digit')
+	if len(hex_value) != (size + 2):
+		raise ValueError(f'value "{hex_value}" should be in the "{size} + 2" format like "0x000012FF" hex digit')
 	try:
 		return int(hex_value, 16)
 	except ValueError:
@@ -33,8 +33,8 @@ def hex2int_r(hex_value: str) -> int:
 		raise ValueError(f'value "{hex_value}" is not a valid hexadecimal value')
 
 
-def int2hex(int_value: int) -> str:
-	return f'0x{int_value:08X}'
+def int2hex(int_value: int, size: int = 8) -> str:
+	return f'0x{int_value:0{size}X}'
 
 
 def int2hex_r(int_value: int) -> str:

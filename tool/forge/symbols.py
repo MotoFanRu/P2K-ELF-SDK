@@ -121,7 +121,7 @@ def dump_sym_file_to_library_model(in_p: Path) -> LibraryModel | None:
 		with in_p.open(mode='r') as f_i:
 			for line in f_i.read().splitlines():
 				address, mode, name = split_and_validate_line(line)
-				if (name is not None) and (mode is not None) and (name is not None):
+				if (address is not None) and (mode is not None) and (name is not None):
 					model.append((address, mode, name))
 			return model
 	except OSError as error:

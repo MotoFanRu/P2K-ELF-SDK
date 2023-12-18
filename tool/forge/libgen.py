@@ -17,11 +17,14 @@ from pathlib import Path
 from datetime import datetime
 
 from .constants import P2K_DIR_TOOL
-from .constants import P2K_TOOL_POSTLINK
-from .constants import P2K_SDK_CONSTS_H
+from .constants import P2K_EP2_NMS_DEF
 from .constants import P2K_EP2_API_DEF
+from .constants import P2K_SDK_CONSTS_H
+from .constants import P2K_TOOL_POSTLINK
 from .hexer import int2hex
+from .hexer import hex2int
 from .types import LibraryModel
+from .types import NamesDefs
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 from .filesystem import get_temporary_directory_path
@@ -29,8 +32,9 @@ from .filesystem import move_file
 from .filesystem import compare_paths
 from .filesystem import delete_file
 from .symbols import validate_sym_file
-from .symbols import dump_library_model_to_sym_file
+from .symbols import split_and_validate_line
 from .symbols import dump_sym_file_to_library_model
+from .symbols import dump_library_model_to_sym_file
 from .invoker import invoke_external_command_res
 
 
@@ -265,4 +269,180 @@ def ep2_libgen_library(p_sym: Path, sort: LibrarySort, firmware: str, p_out: Pat
 			if not compare_paths(sdk_stub_sa_library, p_out):
 				delete_file(sdk_stub_sa_library, False)
 			return result
+	return False
+
+
+def ep2_libgen_header(p_lib: Path) -> tuple[dict[str, any], int] | None:
+	if check_files_if_exists([p_lib]) and check_files_extensions([p_lib], ['bin']):
+		header: dict[str, any] = {}
+		magic: int = 0x7F4C4942
+		with p_lib.open(mode='rb') as f_i:
+			header['magic'] = int2hex(int.from_bytes(f_i.read(4), byteorder='big'))      # sizeof(uint32_t)
+			header['version'] = f_i.read(1 * 8).decode('ascii')                          # sizeof(char) * 8
+			header['firmware'] = f_i.read(1 * 24).decode('ascii')                        # sizeof(char) * 24
+			header['symCnt'] = int.from_bytes(f_i.read(4), byteorder='big')              # sizeof(uint32_t)
+			header['strTabSz'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
+			header['strTabOff'] = int.from_bytes(f_i.read(4), byteorder='big')           # sizeof(uint32_t)
+			header['constCnt'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
+			header['constOff'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
+
+			logging.info(f'Library Header:')
+			for k, v in header.items():
+				logging.info(f'\t{k}={v}')
+
+			lib_magic: int = hex2int(header.get('magic'))
+			if lib_magic != magic:
+				logging.error(f'Library magic "{int2hex(lib_magic)}" should be "{magic}".')
+			else:
+				return header, f_i.tell()
+	return None
+
+
+def ep2_libgen_names_defines(a_mode: str) -> NamesDefs | None:
+	names_def: Path = P2K_EP2_NMS_DEF
+	if check_files_if_exists([names_def]) and check_files_extensions([names_def], ['def']):
+		list_names_def: NamesDefs = {}
+		with names_def.open(mode='r') as f_i:
+			for line in f_i.read().splitlines():
+				addr, mode, name = split_and_validate_line(line)
+				if (addr is not None) and (mode is not None) and (name is not None):
+					if mode == a_mode:
+						list_names_def[name] = addr
+			if len(list_names_def) > 0:
+				return list_names_def
+	return None
+
+
+def ep2_libgen_entries(list_ia: list[tuple[int, int]], list_na: list[str], resolve_names: bool) -> LibraryModel | None:
+	len_ia: int = len(list_ia)
+	len_na: int = len(list_na)
+	if len_ia == len_na:
+		names: NamesDefs = {}
+		chunk_model: LibraryModel = []
+		if resolve_names:
+			names = ep2_libgen_names_defines('D')
+		for i in range(0, len_ia, 1):
+			address: int = list_ia[i][1]
+			mode: str = 'A'
+			name: str = list_na[i]
+			if address % 2 != 0:
+				mode = 'T'
+				address -= 1
+			if resolve_names:
+				for data_name, data_address in names.items():
+					if name == data_name:
+						mode = 'D'
+						break
+			chunk_model.append((int2hex(address), mode, name))
+		return chunk_model
+	return None
+
+
+def ep2_libgen_const_entries(list_ci: list[int], list_cv: list[int], resolve_names: bool) -> LibraryModel | None:
+	len_ci: int = len(list_ci)
+	len_cv: int = len(list_cv)
+	if len_ci == len_cv:
+		names: NamesDefs = {}
+		chunk_model: LibraryModel = []
+		if resolve_names:
+			names = ep2_libgen_names_defines('C')
+		for i in range(0, len_ci, 1):
+			c_index: int = list_ci[i]
+			c_value: int = list_cv[i]
+			name: str = 'WARNING_WARNING_WARNING_UNKNOWN_CONST_NAME_INDEX_'
+			if resolve_names:
+				for const_name, const_index in names.items():
+					if hex2int(const_index, 4) == c_index:
+						name = const_name
+						break
+			else:
+				name += int2hex(c_index, 4)
+			chunk_model.append((int2hex(c_value), 'C', name))
+		return chunk_model
+	return None
+
+
+def ep2_libgen_combine_model_chunks(list_models: list[LibraryModel]) -> LibraryModel | None:
+	if len(list_models) > 0:
+		model: LibraryModel = []
+		for model_in_list in list_models:
+			for entry in model_in_list:
+				model.append(entry)
+		return model
+	return None
+
+
+def ep2_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, resolve_names: bool) -> bool:
+	if check_files_if_exists([p_lib]) and check_files_extensions([p_lib], ['bin']):
+		header, header_offset = ep2_libgen_header(p_lib)
+		if header is not None:
+			with p_lib.open(mode='rb') as f_i:
+				entries_index_address: list[tuple[int, int]] = []
+				entries_name: list[str] = []
+				entries_const_index: list[int] = []
+				entries_const_value: list[int] = []
+
+				f_i.seek(header_offset)
+
+				# Indexes and addresses.
+				for i in range(header_offset, header['strTabOff'], 4 * 2):
+					index: int = int.from_bytes(f_i.read(4), 'big')
+					address: int = int.from_bytes(f_i.read(4), 'big')
+					logging.debug(f'Library entry index and address: "{int2hex(index)} {int2hex(address)}".')
+					entries_index_address.append((index, address))
+				logging.info(f'Found {len(entries_index_address)} indexes and addresses.')
+
+				# Entries names.
+				name_entry: str = ''
+				name_count: int = 0
+				for i in range(header['strTabOff'], header['constOff'], 1):
+					ch = f_i.read(1)
+					if ch != b'\x00':
+						name_entry += ch.decode('ascii')
+					else:
+						name_entry = name_entry.strip()
+						logging.debug(f'Library entry name "{name_entry}".')
+						entries_name.append(name_entry)
+						name_count += 1
+						name_entry = ''
+				logging.info(f'Found {len(entries_name)} names.')
+
+				# Validation #1.
+				sc_1: int = header.get('symCnt')
+				sc_2: int = len(entries_index_address)
+				sc_3: int = len(entries_name)
+				sc_4: int = name_count
+				if not (sc_1 == sc_2 == sc_3 == sc_4):
+					logging.error(f'Wrong size of index/address/name arrays: "{sc_1}", "{sc_2}", "{sc_3}", "{sc_4}".')
+					return False
+
+				# Constants.
+				for i in range(0, header.get('constCnt'), 1):
+					index: int = int.from_bytes(f_i.read(2), 'big')  # sizeof(uint16_t)
+					logging.debug(f'Library const index "{int2hex(index)}".')
+					entries_const_index.append(index)
+				logging.info(f'Found {len(entries_const_index)} const indexes.')
+				for i in range(0, header.get('constCnt'), 1):
+					value: int = int.from_bytes(f_i.read(4), 'big')  # sizeof(uint32_t)
+					logging.debug(f'Library const value "{int2hex(value)}".')
+					entries_const_value.append(value)
+				logging.info(f'Found {len(entries_const_value)} const values.')
+
+				# Validation #2.
+				sc_6: int = header.get('constCnt')
+				sc_7: int = len(entries_const_index)
+				sc_8: int = len(entries_const_value)
+				if not (sc_6 == sc_7 == sc_8):
+					logging.error(f'Wrong size of const_index/const_values arrays: "{sc_6}", "{sc_7}", "{sc_8}".')
+					return False
+
+				# Resolve real entries names and sort model.
+				chk_n: LibraryModel = ep2_libgen_entries(entries_index_address, entries_name, resolve_names)
+				chk_c: LibraryModel = ep2_libgen_const_entries(entries_const_index, entries_const_value, resolve_names)
+				model: LibraryModel = ep2_libgen_combine_model_chunks([chk_n, chk_c])
+				model = ep2_libgen_model_sort(model, sort)
+
+				# Save model to symbols file.
+				if dump_library_model_to_sym_file(model, p_sym):
+					return validate_sym_file(p_sym)
 	return False

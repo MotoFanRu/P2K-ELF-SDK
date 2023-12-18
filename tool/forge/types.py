@@ -17,3 +17,4 @@ PatchDict: TypeAlias = dict[str, str]
 PatchDictNone: TypeAlias = dict[str, str] | None
 Symbol: TypeAlias = tuple[str | None, str | None, str | None]
 LibraryModel: TypeAlias = list[tuple[str, str, str]]
+NamesDefs: TypeAlias = dict[str, str]

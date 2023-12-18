@@ -28,6 +28,7 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(hex2int('0x00000001'), 1)
 		self.assertEqual(hex2int('0x10080000'), 268959744)
 		self.assertEqual(hex2int('0xFFFFFFFF'), 4294967295)
+		self.assertEqual(hex2int('0x1008', 4), 4104)
 
 		self.helper_test_hex2int('0x0')
 		self.helper_test_hex2int('0x1')
@@ -43,10 +44,11 @@ class TestHexer(unittest.TestCase):
 		self.helper_test_hex2int('0001')
 		self.helper_test_hex2int('1000')
 		self.helper_test_hex2int('G00D')
+		# self.helper_test_hex2int('0x1000', 4)
 
-	def helper_test_hex2int(self, hex_value: str) -> None:
+	def helper_test_hex2int(self, hex_value: str, size: int = 8) -> None:
 		with self.assertRaises(ValueError):
-			hex2int(hex_value)
+			hex2int(hex_value, size)
 
 	def test_hex2int_r(self) -> None:
 		self.assertEqual(hex2int_r('00000000'), 0)
@@ -92,6 +94,11 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(int2hex(15), '0x0000000F')
 		self.assertEqual(int2hex(16), '0x00000010')
 		self.assertEqual(int2hex(4294967295), '0xFFFFFFFF')
+		self.assertEqual(int2hex(0, 4), '0x0000')
+		self.assertEqual(int2hex(5, 4), '0x0005')
+		self.assertEqual(int2hex(15, 4), '0x000F')
+		self.assertEqual(int2hex(16, 4), '0x0010')
+		self.assertEqual(int2hex(4294967295, 4), '0xFFFFFFFF')
 
 	def test_int2hex_r(self) -> None:
 		self.assertEqual(int2hex_r(0), '00000000')
