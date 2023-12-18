@@ -56,6 +56,7 @@ from .libgen import ep1_libgen_asm
 from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library
 from .libgen import ep1_libgen_symbols
+from .libgen import ep2_libgen_library
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa

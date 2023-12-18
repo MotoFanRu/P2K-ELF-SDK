@@ -14,13 +14,24 @@ import logging
 
 from enum import Enum
 from pathlib import Path
+from datetime import datetime
 
+from .constants import P2K_DIR_TOOL
+from .constants import P2K_TOOL_POSTLINK
+from .constants import P2K_SDK_CONSTS_H
+from .constants import P2K_EP2_API_DEF
 from .hexer import int2hex
 from .types import LibraryModel
 from .filesystem import check_files_if_exists
-from .symbols import split_and_validate_line
+from .filesystem import check_files_extensions
+from .filesystem import get_temporary_directory_path
+from .filesystem import move_file
+from .filesystem import compare_paths
+from .filesystem import delete_file
 from .symbols import validate_sym_file
 from .symbols import dump_library_model_to_sym_file
+from .symbols import dump_sym_file_to_library_model
+from .invoker import invoke_external_command_res
 
 
 class LibrarySort(Enum):
@@ -48,19 +59,15 @@ def ep1_libgen_model_sort(model: LibraryModel, sort: LibrarySort) -> LibraryMode
 
 def ep1_libgen_model(p_sym_lib: Path, sort: LibrarySort) -> tuple[str, LibraryModel] | None:
 	if check_files_if_exists([p_sym_lib]):
-		model: LibraryModel = []
-		with p_sym_lib.open(mode='r') as f_i:
-			for line in f_i.read().splitlines():
-				address, mode, name = split_and_validate_line(line)
-				if (name is not None) and (mode is not None) and (name is not None):
-					model.append((address, mode, name))
-		entries: str = ''
-		model = ep1_libgen_model_sort(model, sort)
-		for address, mode, name in model:
-			logging.debug(f'{name} {mode} {address}')
-			entries += ' ' + name
-		entries += ' '
-		return entries, model
+		model: LibraryModel = dump_sym_file_to_library_model(p_sym_lib)
+		if model is not None:
+			model = ep1_libgen_model_sort(model, sort)
+			entries: str = ''
+			for address, mode, name in model:
+				logging.debug(f'{name} {mode} {address}')
+				entries += ' ' + name
+			entries += ' '
+			return entries, model
 	return None
 
 
@@ -192,4 +199,70 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort) -> bool:
 					logging.error(f'Cannot create symbols "{p_sym}" file.')
 			else:
 				logging.error(f'Library is invalid, "cnt={cnt}", "len_e={len_e}", "len_n={len_n}" are not equal.')
+	return False
+
+
+def ep2_libgen_model_sort(model: LibraryModel, sort: LibrarySort) -> LibraryModel:
+	if sort != LibrarySort.NONE:
+		first_modes: set[str] = {'C'}
+
+		def custom_sorting_function(entry: tuple[str, str, str]) -> tuple[int, str]:
+			address, mode, name = entry
+			priority: int = 0 if mode in first_modes else 1
+			return priority, entry[sort.value].lower()
+
+		return sorted(model, key=custom_sorting_function)
+	return model
+
+
+def ep2_libgen_model(p_sym_lib: Path, sort: LibrarySort) -> LibraryModel | None:
+	if check_files_if_exists([p_sym_lib]):
+		model: LibraryModel = dump_sym_file_to_library_model(p_sym_lib)
+		model = ep2_libgen_model_sort(model, sort)
+		return model
+	return None
+
+
+def ep2_libgen_version() -> str:
+	# TODO: What is '1' in the end?
+	return datetime.now().strftime('%d%m%y') + '1'
+
+
+def ep2_libgen_library(p_sym: Path, sort: LibrarySort, firmware: str, p_out: Path) -> bool:
+	is_library_sa: bool = check_files_extensions([p_out], ['sa'], False)
+	is_library_bin: bool = check_files_extensions([p_out], ['bin'], False)
+	if (not is_library_sa) and (not is_library_bin):
+		logging.error(f'Unknown library type "{p_out}", should be "*.sa" or "*.bin" extension.')
+		return False
+
+	if check_files_if_exists([p_sym, P2K_SDK_CONSTS_H, P2K_EP2_API_DEF, P2K_TOOL_POSTLINK]):
+		model: LibraryModel = ep2_libgen_model(p_sym, sort)
+		if model is not None:
+			result: bool = False
+			sorted_sym_file: Path = get_temporary_directory_path() / 'Sorted.sym'
+			phone_bin_library: Path = P2K_DIR_TOOL / 'std.lib'
+			sdk_stub_sa_library: Path = P2K_DIR_TOOL / 'std.sa'
+			if dump_library_model_to_sym_file(model, sorted_sym_file):
+				if validate_sym_file(sorted_sym_file):
+					args: list[str] = [
+						str(P2K_TOOL_POSTLINK),
+						'-stdlib', str(sorted_sym_file),
+						'-def', str(P2K_EP2_API_DEF),
+						'-fw', firmware,
+						'-v', ep2_libgen_version(),
+						'-header', str(P2K_SDK_CONSTS_H)
+					]
+					result = invoke_external_command_res([sorted_sym_file], args)
+					if result and check_files_if_exists([phone_bin_library, sdk_stub_sa_library]):
+						if is_library_bin:
+							move_file(phone_bin_library, p_out, False)
+						else:
+							move_file(sdk_stub_sa_library, p_out, False)
+					else:
+						logging.error(f'Cannot create "{phone_bin_library}" and "{sdk_stub_sa_library}" libraries.')
+			delete_file(sorted_sym_file, False)
+			delete_file(phone_bin_library, False)
+			if not compare_paths(sdk_stub_sa_library, p_out):
+				delete_file(sdk_stub_sa_library, False)
+			return result
 	return False

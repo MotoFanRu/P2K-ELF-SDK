@@ -16,8 +16,21 @@ import tempfile
 from pathlib import Path
 
 
-def move_file(from_p: Path, to_path: Path) -> Path:
-	return from_p.replace(to_path)
+def compare_paths(p_1: Path, p_2: Path) -> bool:
+	return p_1.resolve() == p_2.resolve()
+
+
+def move_file(from_p: Path, to_path: Path, log_output: bool = True) -> bool:
+	if check_files_if_exists([from_p]):
+		if log_output:
+			logging.info(f'File "{from_p}" was moved to "{to_path}" file.')
+		try:
+			from_p.replace(to_path)
+			return True
+		except OSError as error:
+			logging.error(f'Cannot move "{from_p}" file to "{to_path}" file, error: {error}')
+	logging.error(f'Cannot move "{from_p}" file to "{to_path}" file.')
+	return False
 
 
 def delete_all_files_in_directory(directory: Path) -> bool:
@@ -52,11 +65,12 @@ def check_directories_if_exists(p_dirs: list[Path]) -> bool:
 	return True
 
 
-def check_files_if_exists(p_files: list[Path]) -> bool:
+def check_files_if_exists(p_files: list[Path], log_output: bool = True) -> bool:
 	for file_path in p_files:
 		if file_path is not None:
 			if not file_path.is_file():
-				logging.error(f'File "{file_path}" is not exist or not a file.')
+				if log_output:
+					logging.error(f'File "{file_path}" is not exist or not a file.')
 				return False
 		else:
 			return False
@@ -88,11 +102,12 @@ def create_temporary_file_with_extension(extension: str) -> Path:
 		return Path(temp_file.name)
 
 
-def delete_file(file_path: Path) -> bool:
-	if check_files_if_exists([file_path]):
+def delete_file(file_path: Path, log_output: bool = True) -> bool:
+	if check_files_if_exists([file_path], log_output):
 		try:
 			file_path.unlink()
-			logging.info(f'File "{file_path}" was deleted.')
+			if log_output:
+				logging.info(f'File "{file_path}" was deleted.')
 			return True
 		except OSError as error:
 			logging.error(f'Cannot delete "{file_path}", error: {error}')

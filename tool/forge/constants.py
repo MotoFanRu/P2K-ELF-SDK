@@ -36,6 +36,8 @@ P2K_DIR_EP1_OBJ: Path = P2K_DIR_EP1 / 'obj'
 P2K_DIR_EP1_SRC: Path = P2K_DIR_EP1 / 'src'
 P2K_DIR_EP1_SYM: Path = P2K_DIR_EP1 / 'sym'
 P2K_DIR_EP1_OBJ_OLD: Path = P2K_DIR_EP1_OBJ / 'old'
+P2K_DIR_EP2: Path = P2K_DIR_TOOL / 'ep2'
+P2K_DIR_EP2_DEF: Path = P2K_DIR_EP2 / 'def'
 
 P2K_TOOL_PAT: Path = P2K_DIR_TOOL / e_app('pat')
 P2K_TOOL_POSTLINK: Path = P2K_DIR_TOOL / e_app('postlink')
@@ -48,5 +50,8 @@ P2K_EP1_ADS_ARMAR: Path = P2K_DIR_EP1_ADS_BIN / e_app('armar')
 P2K_EP1_ADS_ARMASM: Path = P2K_DIR_EP1_ADS_BIN / e_app('armasm')
 P2K_EP1_ADS_ARMLINK: Path = P2K_DIR_EP1_ADS_BIN / e_app('armlink')
 P2K_EP1_ADS_FROMELF: Path = P2K_DIR_EP1_ADS_BIN / e_app('fromelf')
+
+P2K_SDK_CONSTS_H: Path = P2K_DIR_EP_SDK / 'consts.h'
+P2K_EP2_API_DEF: Path = P2K_DIR_EP2_DEF / 'ElfLoaderAPI.def'
 
 ADS_SYM_FILE_HEADER: str = '#<SYMDEFS>#symdef-file'
