@@ -354,7 +354,6 @@
 0x10B483C4 A flushWallpaperOnScreen
 0x1229BD28 D theWallpaper
 0x1205E9E8 D Class_dal
-0x1218C680 D display_source_buffer
 0x10CBCA72 T u_utoa
 0x108B1364 A u_atol
 0x10ABE728 T suSleep

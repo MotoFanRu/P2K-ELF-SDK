@@ -53,7 +53,7 @@ def create_combined_sym_file(files: list[Path], out_p: Path) -> None:
 
 
 def validate_sym_file(in_p: Path) -> bool:
-	symbols: dict[str, str] = {}
+	symbols: dict[str, tuple[str, str]] = {}
 	missed: list[tuple[str, str]] = []
 	index: int = 0
 	with in_p.open(mode='r') as f_i:
@@ -66,13 +66,18 @@ def validate_sym_file(in_p: Path) -> bool:
 				address, mode, name = split_and_validate_line(line)
 				if name is not None:
 					if not symbols.get(name, None):
-						symbols[name] = address
+						symbols[name] = address, mode
 					else:
-						first_address: str = symbols[name]
-						logging.error(f'Duplicate SYM values:')
-						logging.error(f'\t{first_address} {mode} {name}')
-						logging.error(f'\t{address} {mode} {name}')
-						return False
+						first_address, first_mode = symbols[name]
+						if (first_mode == 'C') ^ (mode == 'C'):  # XOR here, CONSTS names may be same as other names.
+							logging.warning(f'Duplicate SYM values:')
+							logging.warning(f'\t{first_address} {first_mode} {name}')
+							logging.warning(f'\t{address} {mode} {name}')
+						else:
+							logging.error(f'Duplicate SYM values:')
+							logging.error(f'\t{first_address} {first_mode} {name}')
+							logging.error(f'\t{address} {mode} {name}')
+							return False
 			elif line.startswith('# NOT_FOUND: '):
 				mode, name = line.replace('# NOT_FOUND: ', '').split(' ')
 				logging.debug(line)

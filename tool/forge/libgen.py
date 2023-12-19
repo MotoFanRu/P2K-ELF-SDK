@@ -459,7 +459,7 @@ def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
 			bin_file: Path = directory / 'library.bin'
 			if check_files_if_exists([sym_file], False):
 				logging.info(f'Will create "{bin_file}" library from "{sym_file}" symbols file.')
-				phone, firmware = parse_phone_firmware(directory.name)
+				phone, firmware = parse_phone_firmware(directory.name, False)
 				if not ep2_libgen_library(sym_file, sort, firmware, bin_file):
 					return False
 		return True
