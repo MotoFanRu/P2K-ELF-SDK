@@ -1,3 +1,4 @@
+#<SYMDEFS>#symdef-file
 #This file generated with ELFPack Library Editor (by kadukmm)
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10

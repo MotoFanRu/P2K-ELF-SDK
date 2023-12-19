@@ -1,3 +1,4 @@
+#<SYMDEFS>#symdef-file
 #<SYMDEFS># EP 2.0, L9, R452J_G_08.22.05R
 
 0x10231F90 A DAL_GetCacheSize

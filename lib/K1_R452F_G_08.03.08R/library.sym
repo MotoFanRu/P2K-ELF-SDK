@@ -1,3 +1,4 @@
+#<SYMDEFS>#symdef-file
 #<SYMDEFS># EP 2.0, K1, R452F_G_08.03.08R
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv

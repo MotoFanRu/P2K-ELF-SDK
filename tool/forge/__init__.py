@@ -58,6 +58,7 @@ from .libgen import ep1_libgen_library
 from .libgen import ep1_libgen_symbols
 from .libgen import ep2_libgen_library
 from .libgen import ep2_libgen_symbols
+from .libgen import ep2_libgen_generate_names_defines
 from .libgen import ep2_libgen_regenerator
 
 from .patcher import bin2fpa

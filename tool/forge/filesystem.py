@@ -54,7 +54,7 @@ def delete_all_files_in_directory(directory: Path) -> bool:
 			for file_path in files_to_clean:
 				logging.info(f'\tDelete "{file_path}" file.')
 				file_path.unlink()
-			logging.info(f'')
+			logging.info(f'All files were deleted.')
 			return True
 	return False
 

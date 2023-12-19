@@ -48,6 +48,11 @@ class LibrarySort(Enum):
 	NONE: int = 3
 
 
+def libgen_version() -> str:
+	# TODO: What is '1' in the end?
+	return datetime.now().strftime('%d%m%y') + '1'
+
+
 def ep1_normalize_address(address: int) -> tuple[str, int]:
 	if address > 0x30000000:
 		return 'D', (address - 0x30000000)
@@ -179,7 +184,7 @@ def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
 	return False
 
 
-def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort) -> bool:
+def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, phone: str, fw: str) -> bool:
 	if check_files_if_exists([p_lib]):
 		with (p_lib.open(mode='rb') as f_i):
 			cnt: int = int.from_bytes(f_i.read(4), byteorder='big')
@@ -200,7 +205,7 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort) -> bool:
 					mode, address = ep1_normalize_address(ent[i][1])  # Second is address.
 					model.append((int2hex(address), mode, ent_names[i]))
 				model = ep1_libgen_model_sort(model, sort)
-				if dump_library_model_to_sym_file(model, p_sym):
+				if dump_library_model_to_sym_file(model, p_sym, phone, fw, 'EP1', libgen_version()):
 					return validate_sym_file(p_sym)
 				else:
 					logging.error(f'Cannot create symbols "{p_sym}" file.')
@@ -230,12 +235,7 @@ def ep2_libgen_model(p_sym_lib: Path, sort: LibrarySort) -> LibraryModel | None:
 	return None
 
 
-def ep2_libgen_version() -> str:
-	# TODO: What is '1' in the end?
-	return datetime.now().strftime('%d%m%y') + '1'
-
-
-def ep2_libgen_library(p_sym: Path, sort: LibrarySort, firmware: str, p_out: Path) -> bool:
+def ep2_libgen_library(p_sym: Path, sort: LibrarySort, phone: str, firmware: str, p_out: Path) -> bool:
 	is_library_sa: bool = check_files_extensions([p_out], ['sa'], False)
 	is_library_bin: bool = check_files_extensions([p_out], ['bin'], False)
 	if (not is_library_sa) and (not is_library_bin):
@@ -249,14 +249,15 @@ def ep2_libgen_library(p_sym: Path, sort: LibrarySort, firmware: str, p_out: Pat
 			sorted_sym_file: Path = get_temporary_directory_path() / 'Sorted.sym'
 			phone_bin_library: Path = P2K_DIR_TOOL / 'std.lib'
 			sdk_stub_sa_library: Path = P2K_DIR_TOOL / 'std.sa'
-			if dump_library_model_to_sym_file(model, sorted_sym_file):
+			version: str = libgen_version()
+			if dump_library_model_to_sym_file(model, sorted_sym_file, phone, firmware, 'EP2', version):
 				if validate_sym_file(sorted_sym_file):
 					args: list[str] = [
 						str(P2K_TOOL_POSTLINK),
 						'-stdlib', str(sorted_sym_file),
 						'-def', str(P2K_EP2_API_DEF),
 						'-fw', firmware,
-						'-v', ep2_libgen_version(),
+						'-v', version,
 						'-header', str(P2K_SDK_CONSTS_H)
 					]
 					result = invoke_external_command_res([sorted_sym_file], args)
@@ -375,7 +376,7 @@ def ep2_libgen_combine_model_chunks(list_models: list[LibraryModel]) -> LibraryM
 	return None
 
 
-def ep2_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, resolve_names: bool) -> bool:
+def ep2_libgen_symbols(p_lib: Path, p_sym: Path, phone: str, sort: LibrarySort, resolve_names: bool) -> bool:
 	if check_files_if_exists([p_lib]) and check_files_extensions([p_lib], ['bin']):
 		header, header_offset = ep2_libgen_header(p_lib)
 		if header is not None:
@@ -446,8 +447,35 @@ def ep2_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, resolve_name
 				model = ep2_libgen_model_sort(model, sort)
 
 				# Save model to symbols file.
-				if dump_library_model_to_sym_file(model, p_sym):
+				if dump_library_model_to_sym_file(model, p_sym, phone, header['firmware'], 'EP2', header['version']):
 					return validate_sym_file(p_sym)
+	return False
+
+
+def ep2_libgen_check_library_model_from_sym_file(p_sym: Path) -> LibraryModel | None:
+	if check_files_if_exists([p_sym]) and validate_sym_file(p_sym):
+		logging.debug(f'Will parse "{p_sym}" to library model.')
+		return dump_sym_file_to_library_model(p_sym)
+	return None
+
+
+def ep2_libgen_generate_names_defines(sort: LibrarySort, out_p: Path) -> bool:
+	if check_files_extensions([out_p], ['def']):
+		library_models: list[LibraryModel] = []
+		directories: list[Path] = get_all_directories_in_directory(P2K_DIR_LIB, True)
+		if directories is not None:
+			for directory in directories:
+				ep1_sym_file: Path = directory / 'elfloader.sym'
+				ep2_sym_file: Path = directory / 'library.sym'
+				ep1_model: LibraryModel = dump_sym_file_to_library_model(ep1_sym_file, True)
+				if ep1_model is not None:
+					logging.debug(f'Will add "{ep1_sym_file}" to library models list.')
+					library_models.append(ep1_model)
+				ep2_model: LibraryModel = dump_sym_file_to_library_model(ep2_sym_file, True)
+				if ep2_model is not None:
+					logging.debug(f'Will add "{ep2_sym_file}" to library models list.')
+					library_models.append(ep2_model)
+
 	return False
 
 

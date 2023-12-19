@@ -1,3 +1,4 @@
+#<SYMDEFS>#symdef-file
 #<SYMDEFS># EP 2.0, V600, TRIPLETS_G_0B.09.72R
 0x000FBF70 T __16__rt_sdiv
 0x000FDC78 T __16__rt_sdiv10
