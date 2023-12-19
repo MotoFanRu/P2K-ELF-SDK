@@ -143,7 +143,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	if arg_soc == 'LTE':
 		forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
 	elif arg_soc == 'LTE2':
-		forge.create_combined_sym_file([val_functions_sym, val_combined_sym, val_lte2_irom_sym], val_combined_sym)
+		forge.create_combined_sym_file([val_functions_sym, val_platform_sym, val_lte2_irom_sym], val_combined_sym)
 	logging.info(f'')
 
 	logging.info(f'Validating combined symbols file.')

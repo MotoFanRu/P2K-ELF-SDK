@@ -24,11 +24,10 @@ def invoke_external_system_command(arguments: list[str]) -> int:
 
 	logging.info(f'Will execute external system command:')
 	logging.info(f'{command}')
+	logging.info(f'')
 
 	result: int = subprocess.run(arguments).returncode
 
-	logging.info(f'Executed command:')
-	logging.info(f'{command}')
 	logging.info(f'Result:')
 	logging.info(f'{result}')
 

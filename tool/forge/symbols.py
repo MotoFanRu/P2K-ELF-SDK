@@ -89,7 +89,7 @@ def validate_sym_file(in_p: Path) -> bool:
 	logging.info(f'Checking missing symbols in "{in_p}" file.')
 	for name, mode in missed:
 		if not symbols.get(name, None):
-			logging.warning(f'Warning! Missed: {mode} {name}')
+			logging.warning(f'Missed: {mode} {name}')
 	return True
 
 
