@@ -25,6 +25,7 @@ def e_app(executable_name: str) -> str:
 
 P2K_TOOLCHAIN_ROOT: Path = Path('..')
 
+P2K_DIR_LIB: Path = P2K_TOOLCHAIN_ROOT / 'lib'
 P2K_DIR_EP_SDK: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'sdk'
 P2K_DIR_TOOL: Path = P2K_TOOLCHAIN_ROOT / 'tool'
 P2K_DIR_COMPILER: Path = P2K_DIR_TOOL / 'compiler'

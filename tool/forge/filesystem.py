@@ -33,18 +33,29 @@ def move_file(from_p: Path, to_path: Path, log_output: bool = True) -> bool:
 	return False
 
 
+def get_all_directories_in_directory(directory: Path, sort: bool = False) -> list[Path] | None:
+	if check_directories_if_exists([directory]):
+		directories: list[Path] = []
+		for object_path in directory.iterdir():
+			if object_path.is_dir():
+				directories.append(object_path)
+		return sorted(directories) if sort else directories
+	return None
+
+
 def delete_all_files_in_directory(directory: Path) -> bool:
-	files_to_clean: list[Path] = []
-	for object_path in directory.iterdir():
-		if object_path.is_file():
-			files_to_clean.append(object_path)
-	if len(files_to_clean) > 0:
-		logging.info(f'Clean all files in "{directory}" directory.')
-		for file_path in files_to_clean:
-			logging.info(f'\tDelete "{file_path}" file.')
-			file_path.unlink()
-		logging.info(f'')
-		return True
+	if check_directories_if_exists([directory]):
+		files_to_clean: list[Path] = []
+		for object_path in directory.iterdir():
+			if object_path.is_file():
+				files_to_clean.append(object_path)
+		if len(files_to_clean) > 0:
+			logging.info(f'Clean all files in "{directory}" directory.')
+			for file_path in files_to_clean:
+				logging.info(f'\tDelete "{file_path}" file.')
+				file_path.unlink()
+			logging.info(f'')
+			return True
 	return False
 
 

@@ -29,12 +29,9 @@ class Mode(Enum):
 	REGENERATOR: int = 4
 
 
-# Helpers.
-
-
 # LibGen working flow.
 def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
-	logging.info(f'Start ElfPack v2.0 LibGen utility, mode: {mode.name}.')
+	logging.info(f'Start ElfPack v2.0 LibGen utility, mode: "{mode.name}", sort: "{sort.name}".')
 	if (mode == Mode.PHONE_LIBRARY) or (mode == Mode.SDK_STUB_LIBRARY):
 		logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
 		phone, firmware = args.phone_fw
@@ -42,6 +39,9 @@ def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 	elif mode == Mode.SYMBOLS_LISTING:
 		logging.info(f'Will create "{args.output}" symbols file "{args.source}" library.')
 		return forge.log_result(forge.ep2_libgen_symbols(args.source, args.output, sort, not args.no_resolve_names))
+	elif mode == Mode.REGENERATOR:
+		logging.info(f'Will regenerate all libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
+		return forge.log_result(forge.ep2_libgen_regenerator(sort))
 	return False
 
 

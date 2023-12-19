@@ -16,6 +16,7 @@ from enum import Enum
 from pathlib import Path
 from datetime import datetime
 
+from .constants import P2K_DIR_LIB
 from .constants import P2K_DIR_TOOL
 from .constants import P2K_EP2_NMS_DEF
 from .constants import P2K_EP2_API_DEF
@@ -27,10 +28,12 @@ from .types import LibraryModel
 from .types import NamesDefs
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
+from .filesystem import get_all_directories_in_directory
 from .filesystem import get_temporary_directory_path
 from .filesystem import move_file
 from .filesystem import compare_paths
 from .filesystem import delete_file
+from .firmware import parse_phone_firmware
 from .symbols import validate_sym_file
 from .symbols import split_and_validate_line
 from .symbols import dump_sym_file_to_library_model
@@ -445,4 +448,19 @@ def ep2_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, resolve_name
 				# Save model to symbols file.
 				if dump_library_model_to_sym_file(model, p_sym):
 					return validate_sym_file(p_sym)
+	return False
+
+
+def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
+	directories: list[Path] = get_all_directories_in_directory(P2K_DIR_LIB, True)
+	if directories is not None:
+		for directory in directories:
+			sym_file: Path = directory / 'library.sym'
+			bin_file: Path = directory / 'library.bin'
+			if check_files_if_exists([sym_file], False):
+				logging.info(f'Will create "{bin_file}" library from "{sym_file}" symbols file.')
+				phone, firmware = parse_phone_firmware(directory.name)
+				if not ep2_libgen_library(sym_file, sort, firmware, bin_file):
+					return False
+		return True
 	return False
