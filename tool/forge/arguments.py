@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-A special "Forge" python library for the P2K ELF SDK toolchain.
+The "Forge" python library for the P2K ELF SDK toolchain.
 
 Python: 3.10+
 License: MIT
 Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
+Version: 1.0
 """
 
 import argparse

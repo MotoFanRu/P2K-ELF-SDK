@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-A patcher utility for Motorola phones on P2K platform.
+A Patcher Utility for Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
 Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
+Version: 1.0
 """
 
 import sys
@@ -134,7 +135,7 @@ class Args(argparse.ArgumentParser):
 
 def parse_arguments() -> tuple[Mode, Namespace]:
 	hlp: dict[str, str] = {
-		'h': 'A patcher utility for Motorola phones on P2K platform, 15-Dec-2023',
+		'h': 'A Patcher Utility for Motorola phones on P2K platform, 15-Dec-2023',
 		'o': 'output resulting file',
 		'f': 'firmware tuple string, e.g. "R373_G_0E.30.49R"',
 		'a': 'author name or nickname, e.g. "EXL"',

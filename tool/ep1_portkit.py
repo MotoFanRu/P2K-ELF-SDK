@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform.
+A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
 Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
+Version: 1.0
 """
 
 import sys
@@ -243,7 +244,7 @@ class Args(argparse.ArgumentParser):
 
 def parse_arguments() -> Namespace:
 	hlp: dict[str, str] = {
-		'd': 'ElfPack v1.0 PortKit Tool by EXL, 15-Dec-2023',
+		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
 		's': 'start address of CG0+CG1 firmware',

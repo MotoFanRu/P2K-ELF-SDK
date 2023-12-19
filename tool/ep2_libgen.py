@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-A libgen utility for ElfPack v2.0 and Motorola phones on P2K platform.
+A Library Generator utility for ElfPack v2.0 and Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
 Authors: EXL, MotoFan.Ru
 Date: 15-Dec-2023
+Version: 1.0
 """
 
 import sys
@@ -98,7 +99,7 @@ class Args(argparse.ArgumentParser):
 
 def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	hlp: dict[str, str] = {
-		'h': 'A libgen utility for ElfPack v1.0 and Motorola phones on P2K platform, 15-Dec-2023',
+		'h': 'A Library Generator utility for ElfPack v2.0 and Motorola phones on P2K platform, 15-Dec-2023',
 		's': 'source input library or symbols file',
 		'o': 'output resulting file with "*.bin", "*.sa", and "*.sym" extensions',
 		'p': 'phone model, e.g. "E1"',
