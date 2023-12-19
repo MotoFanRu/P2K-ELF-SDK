@@ -38,6 +38,7 @@ from .symbols import validate_sym_file
 from .symbols import split_and_validate_line
 from .symbols import dump_sym_file_to_library_model
 from .symbols import dump_library_model_to_sym_file
+from .symbols import parse_sdk_const_header_to_list
 from .invoker import invoke_external_command_res
 
 
@@ -461,7 +462,9 @@ def ep2_libgen_check_library_model_from_sym_file(p_sym: Path) -> LibraryModel | 
 
 def ep2_libgen_generate_names_defines(sort: LibrarySort, out_p: Path) -> bool:
 	if check_files_extensions([out_p], ['def']):
-		library_models: list[LibraryModel] = []
+		library_models: list[tuple[Path, LibraryModel]] = []
+		unique_data_names: set[str] = set()
+		const_names: list[tuple[Path, str]] = []
 		directories: list[Path] = get_all_directories_in_directory(P2K_DIR_LIB, True)
 		if directories is not None:
 			for directory in directories:
@@ -469,13 +472,51 @@ def ep2_libgen_generate_names_defines(sort: LibrarySort, out_p: Path) -> bool:
 				ep2_sym_file: Path = directory / 'library.sym'
 				ep1_model: LibraryModel = dump_sym_file_to_library_model(ep1_sym_file, True)
 				if ep1_model is not None:
-					logging.debug(f'Will add "{ep1_sym_file}" to library models list.')
-					library_models.append(ep1_model)
+					logging.info(f'Will add "{ep1_sym_file}" to library models list.')
+					library_models.append((ep1_sym_file, ep1_model))
 				ep2_model: LibraryModel = dump_sym_file_to_library_model(ep2_sym_file, True)
 				if ep2_model is not None:
-					logging.debug(f'Will add "{ep2_sym_file}" to library models list.')
-					library_models.append(ep2_model)
+					logging.info(f'Will add "{ep2_sym_file}" to library models list.')
+					library_models.append((ep2_sym_file, ep2_model))
+		for path, model in library_models:
+			for address, mode, name in model:
+				if mode == 'C':
+					const_names.append((path, name))
+				elif mode == 'D':
+					unique_data_names.add(name)
 
+		names_def_model: LibraryModel = []
+		for data_name in unique_data_names:
+			names_def_model.append(('0xFFFFFFFF', 'D', data_name))
+
+		const_header_names_indexes: list[tuple[str, str]] = parse_sdk_const_header_to_list(P2K_SDK_CONSTS_H)
+		# Validation.
+		for path, name in const_names:
+			contains: bool = False
+			for const_name, const_index in const_header_names_indexes:
+				if const_name.strip() == name.strip():
+					contains = True
+					break
+			if not contains:
+				logging.error(f'Unknown const value: "{name}" in "{path}" symbols file')
+				return False
+
+		for const_name, const_index in const_header_names_indexes:
+			const_name: str = const_name.strip()
+			const_index: str = int2hex(hex2int(const_index, 4))
+			names_def_model.append((const_index, 'C', const_name))
+
+		names_def_model = ep2_libgen_model_sort(names_def_model, sort)
+		if names_def_model is not None:
+			try:
+				with out_p.open(mode='w', newline='\r\n') as f_o:
+					for addr, mode, name in names_def_model:
+						line: str = f'{addr} {mode} {name}'
+						f_o.write(line + '\n')
+						logging.debug(line)
+					return True
+			except OSError as error:
+				logging.error(f'Cannot write "{out_p}" names defines file, error: {error}')
 	return False
 
 
@@ -488,7 +529,7 @@ def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
 			if check_files_if_exists([sym_file], False):
 				logging.info(f'Will create "{bin_file}" library from "{sym_file}" symbols file.')
 				phone, firmware = parse_phone_firmware(directory.name, False)
-				if not ep2_libgen_library(sym_file, sort, firmware, bin_file):
+				if not ep2_libgen_library(sym_file, sort, phone, firmware, bin_file):
 					return False
 		return True
 	return False

@@ -19,6 +19,7 @@ from .hexer import hex2int
 from .types import LibraryModel
 from .constants import ADS_SYM_FILE_HEADER
 from .filesystem import check_files_if_exists
+from .filesystem import check_files_extensions
 from .utilities import get_current_datetime_formatted
 
 
@@ -71,11 +72,11 @@ def validate_sym_file(in_p: Path) -> bool:
 					else:
 						first_address, first_mode = symbols[name]
 						if (first_mode == 'C') ^ (mode == 'C'):  # XOR here, CONSTS names may be same as other names.
-							logging.warning(f'Duplicate SYM values:')
+							logging.warning(f'Duplicate SYM values in "{in_p}" symbols file:')
 							logging.warning(f'\t{first_address} {first_mode} {name}')
 							logging.warning(f'\t{address} {mode} {name}')
 						else:
-							logging.error(f'Duplicate SYM values:')
+							logging.error(f'Duplicate SYM values in "{in_p}" symbols file:')
 							logging.error(f'\t{first_address} {first_mode} {name}')
 							logging.error(f'\t{address} {mode} {name}')
 							return False
@@ -84,11 +85,10 @@ def validate_sym_file(in_p: Path) -> bool:
 				logging.debug(line)
 				missed.append((name, mode))
 			index += 1
-	logging.info(f'Check missing symbols.')
+	logging.info(f'Checking missing symbols in "{in_p}" file.')
 	for name, mode in missed:
 		if not symbols.get(name, None):
 			logging.warning(f'Warning! Missed: {mode} {name}')
-	logging.info(f'Checked.')
 	return True
 
 
@@ -141,4 +141,49 @@ def dump_sym_file_to_library_model(in_p: Path, validate: bool = False) -> Librar
 			return model
 	except OSError as error:
 		logging.error(f'Cannot parse "{in_p}" symbols file: {error}')
+	return None
+
+
+def remove_comments_in_header_line(line: str) -> str:
+	comment_offset: int = line.find('//')
+	return line[:comment_offset].rstrip() if (comment_offset != -1) else line
+
+
+def parse_sdk_const_header_to_list(in_p: Path) -> list[tuple[str, str]] | None:
+	if check_files_if_exists([in_p]) and check_files_extensions([in_p], ['h']):
+		list_const_defines: list[tuple[str, str]] = []
+		with in_p.open(mode='r') as f_i:
+			for line in f_i.read().splitlines():
+				line = line.strip()
+				if line.startswith('#define'):
+					line = remove_comments_in_header_line(line)
+					try:
+						define, name, index = line.split()
+						logging.debug(f'Good parse "{line}".')
+						list_const_defines.append((name, index))
+					except ValueError:
+						logging.debug(f'Fail parse "{line}".')
+
+		# Validation.
+		set_seen_name: set[str] = set()
+		set_seen_index: set[str] = set()
+		list_name_duplicates: list[str] = []
+		list_index_duplicates: list[str] = []
+		for name, index in list_const_defines:
+			if name in set_seen_name:
+				list_name_duplicates.append(name)
+			else:
+				set_seen_name.add(name)
+			if index in set_seen_index:
+				list_index_duplicates.append(index)
+			else:
+				set_seen_index.add(index)
+		if len(list_name_duplicates) > 0:
+			logging.error(f'Duplicate names found: "{list_name_duplicates}".')
+			return None
+		if len(list_index_duplicates) > 0:
+			logging.error(f'Duplicate indexes found: "{list_name_duplicates}".')
+			return None
+
+		return list_const_defines
 	return None
