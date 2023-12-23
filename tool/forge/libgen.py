@@ -81,7 +81,8 @@ def ep1_libgen_model(p_sym_lib: Path, sort: LibrarySort) -> tuple[str, LibraryMo
 				logging.debug(f'{name} {mode} {address}')
 				entries += ' ' + name
 			entries += ' '
-			return entries, model
+			if len(model) > 0 and len(entries.strip()) > 0:
+				return entries, model
 	return None
 
 

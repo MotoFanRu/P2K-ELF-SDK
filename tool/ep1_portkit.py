@@ -69,11 +69,13 @@ def generate_system_information_source(phone: str, firmware: str, soc: str, sour
 	return forge.gen_src_const_chars(source_file, system_info)
 
 
-def generate_register_symbol_file(combined_sym: Path, cgs_path: Path, register_func: str, pat: Path, sym: Path) -> bool:
+def generate_register_sym(combined_sym: Path, cgs_path: Path, register_func: str, pat: Path, sym: Path) -> bool:
 	address: int = forge.get_function_address_from_sym_file(combined_sym, register_func)
 	if address != 0x00000000:
 		forge.pat_append(pat, 'Register', 'D', forge.int2hex_r(address))
 		forge.pat_find(pat, cgs_path, 0x00000000, False, sym)
+		if forge.ep1_libgen_model(sym, forge.LibrarySort.NAME) is not None:
+			return True
 	return False
 
 
@@ -156,7 +158,9 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'Generating register symbols file.')
 	val_register_pat: Path = arg_output / 'Register.pat'
 	val_register_sym: Path = arg_output / 'Register.sym'
-	generate_register_symbol_file(val_combined_sym, arg_firmware, FUNC_INJECTION, val_register_pat, val_register_sym)
+	if not generate_register_sym(val_combined_sym, arg_firmware, FUNC_INJECTION, val_register_pat, val_register_sym):
+		logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
+		return False
 	logging.info(f'')
 
 	logging.info(f'Generating system information C-source file.')
@@ -181,7 +185,9 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	val_elfpack_elf: Path = arg_output / 'ElfPack.elf'
 	val_elfpack_bin: Path = arg_output / 'ElfPack.bin'
 	val_elfpack_sym: Path = arg_output / 'ElfPack.sym'
-	forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym)
+	if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym):
+		logging.error(f'Cannot link "{val_elfpack_elf}" executable file.')
+		return False
 	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	logging.info(f'')
 
