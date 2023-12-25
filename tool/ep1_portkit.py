@@ -79,7 +79,7 @@ def generate_register_sym(combined_sym: Path, cgs_path: Path, register_func: str
 	return False
 
 
-# PortKit working flow.
+# PortKit ARM v1.0 working flow.
 def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'Start building ElfPack v1.0 for Motorola P2K.')
 	logging.info(f'')

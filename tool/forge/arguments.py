@@ -27,7 +27,7 @@ from .firmware import parse_phone_firmware
 # Phone Firmware, e.g. 'E1_R373_G_0E.30.49R'.
 def at_pfw(phone_firmware_tuple: str) -> tuple[str, str]:
 	try:
-		return parse_phone_firmware(phone_firmware_tuple + '.smg')
+		return parse_phone_firmware(phone_firmware_tuple, False)
 	except ValueError as value_error:
 		raise argparse.ArgumentTypeError(value_error)
 
