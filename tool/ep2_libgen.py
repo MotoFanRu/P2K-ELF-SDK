@@ -105,7 +105,7 @@ class Args(argparse.ArgumentParser):
 				self.error('phone_fw argument is empty')
 			return Mode.SYMBOLS_LISTING, sort, args
 		elif forge.check_files_extensions([s], ['sym'], False) and out_sym:
-			if not args.phone:
+			if not args.phone_fw:
 				self.error('phone_fw argument is empty')
 			if not forge.compare_paths(s, o):
 				return Mode.SYMBOLS_LISTING_ORDERED, sort, args

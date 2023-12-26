@@ -17,6 +17,7 @@ from pathlib import Path
 
 from .types import Symbol
 from .hexer import hex2int
+from .hexer import hex2hex
 from .types import LibraryModel
 from .constants import ADS_SYM_FILE_HEADER
 from .filesystem import check_files_if_exists
@@ -138,7 +139,7 @@ def dump_sym_file_to_library_model(in_p: Path, validate: bool = False) -> Librar
 			for line in f_i.read().splitlines():
 				address, mode, name = split_and_validate_line(line)
 				if (address is not None) and (mode is not None) and (name is not None):
-					model.append((address, mode, name))
+					model.append((hex2hex(address, 8), mode, name))
 			return model
 	except OSError as error:
 		logging.error(f'Cannot parse "{in_p}" symbols file: {error}')

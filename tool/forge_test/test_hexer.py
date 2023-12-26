@@ -21,6 +21,7 @@ from forge import arrange16
 from forge import is_hex_string
 from forge import normalize_hex_string
 from forge import normalize_hex_address
+from forge import hex2hex
 
 
 class TestHexer(unittest.TestCase):
@@ -137,3 +138,23 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(normalize_hex_address('10A', False), '0x0000010A')
 		self.assertEqual(normalize_hex_address('0123456789abcdefABCDEF', True), None)
 		self.assertEqual(normalize_hex_address('0123456789abcdefABCDEF', False), None)
+
+	def test_hex2hex(self) -> None:
+		self.assertEqual(hex2hex('FF', 2), '0xFF')
+		self.assertEqual(hex2hex('0xFF', 2), '0xFF')
+		self.assertEqual(hex2hex('FF', 4), '0x00FF')
+		self.assertEqual(hex2hex('0xFF', 4), '0x00FF')
+		self.assertEqual(hex2hex('FF', 6), '0x0000FF')
+		self.assertEqual(hex2hex('0xFF', 6), '0x0000FF')
+		self.assertEqual(hex2hex('FF', 8), '0x000000FF')
+		self.assertEqual(hex2hex('0xFF', 8), '0x000000FF')
+		self.helper_test_hex2hex('FF', 0)
+		self.helper_test_hex2hex('0xFF', 0)
+		self.helper_test_hex2hex('FF', 10)
+		self.helper_test_hex2hex('0xFF', 10)
+		self.helper_test_hex2hex('FFFFFF', 4)
+		self.helper_test_hex2hex('0xFFFFFF', 4)
+
+	def helper_test_hex2hex(self, hex_value: str, size: int = 8) -> None:
+		with self.assertRaises(ValueError):
+			hex2hex(hex_value, size)

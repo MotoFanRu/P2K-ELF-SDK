@@ -52,6 +52,7 @@ from .hexer import arrange16
 from .hexer import is_hex_string
 from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
+from .hexer import hex2hex
 
 from .libgen import LibrarySort
 from .libgen import libgen_version

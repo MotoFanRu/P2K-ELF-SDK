@@ -25,6 +25,7 @@ from .constants import P2K_SDK_CONSTS_H
 from .constants import P2K_TOOL_POSTLINK
 from .hexer import int2hex
 from .hexer import hex2int
+from .hexer import hex2hex
 from .types import LibraryModel
 from .types import NamesDefs
 from .filesystem import check_files_if_exists
@@ -285,8 +286,8 @@ def ep2_libgen_header(p_lib: Path) -> tuple[dict[str, any], int] | None:
 		magic: int = 0x7F4C4942
 		with p_lib.open(mode='rb') as f_i:
 			header['magic'] = int2hex(int.from_bytes(f_i.read(4), byteorder='big'))      # sizeof(uint32_t)
-			header['version'] = f_i.read(1 * 8).decode('ascii')                          # sizeof(char) * 8
-			header['firmware'] = f_i.read(1 * 24).decode('ascii')                        # sizeof(char) * 24
+			header['version'] = f_i.read(1 * 8).decode('ascii').strip('\0')              # sizeof(char) * 8
+			header['firmware'] = f_i.read(1 * 24).decode('ascii').strip('\0')            # sizeof(char) * 24
 			header['symCnt'] = int.from_bytes(f_i.read(4), byteorder='big')              # sizeof(uint32_t)
 			header['strTabSz'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
 			header['strTabOff'] = int.from_bytes(f_i.read(4), byteorder='big')           # sizeof(uint32_t)
@@ -359,7 +360,7 @@ def ep2_libgen_const_entries(list_ci: list[int], list_cv: list[int], resolve_nam
 			name: str = 'WARNING_WARNING_WARNING_UNKNOWN_CONST_NAME_INDEX_'
 			if resolve_names:
 				for const_name, const_index in names.items():
-					if hex2int(const_index, 4) == c_index:
+					if hex2int(hex2hex(const_index, 4), 4) == c_index:
 						name = const_name
 						break
 			else:

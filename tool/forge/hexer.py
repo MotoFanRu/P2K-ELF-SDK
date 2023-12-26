@@ -16,7 +16,7 @@ def hex2int(hex_value: str, size: int = 8) -> int:
 	if not hex_value.startswith('0x'):
 		raise ValueError(f'value "{hex_value}" should starts with a "0x" prefix')
 	if len(hex_value) != (size + 2):
-		raise ValueError(f'value "{hex_value}" should be in the "{size} + 2" format like "0x000012FF" hex digit')
+		raise ValueError(f'value "{hex_value}" should be in the "{size} + 2" format like "0x000012FF", "0x12FF" digit')
 	try:
 		return int(hex_value, 16)
 	except ValueError:
@@ -64,3 +64,24 @@ def normalize_hex_address(hex_address: str, raw: bool) -> str | None:
 			return int2hex_r(value)
 		return int2hex(value)
 	return None
+
+
+def hex2hex(hex_value: str, size: int = 8) -> str:
+	max_values: dict[int, int] = {
+		2: 0xFF,
+		4: 0xFFFF,
+		6: 0xFFFFFF,
+		8: 0xFFFFFFFF
+	}
+
+	if size not in max_values:
+		raise ValueError(f'size "{size}" not supported, please use 2, 4, 6, or 8')
+
+	try:
+		value: int = int(hex_value, 16)
+		if value <= max_values[size]:
+			return int2hex(value, size)
+	except ValueError:
+		raise ValueError(f'value "{hex_value}" is not a HEX number')
+
+	raise ValueError(f'value "{hex_value}" exceeds the maximum for size "{size}"')
