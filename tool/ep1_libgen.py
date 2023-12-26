@@ -28,6 +28,7 @@ class Mode(Enum):
 	OBJECT_LIBRARY: int = 2
 	STATIC_LIBRARY: int = 3
 	SYMBOLS_LISTING: int = 4
+	SYMBOLS_LISTING_ORDERED: int = 5
 
 
 # Helpers.
@@ -57,7 +58,7 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 	logging.info(f'Start ElfPack v1.0 LibGen utility, mode: {mode.name}.')
 
 	if mode == Mode.SYMBOLS_LISTING:
-		phone, firmware = forge.parse_phone_firmware(args.phone_fw, False)
+		phone, firmware = args.phone_fw
 		logging.info(f'Will create "{args.output}" symbols file from "{args.source}" library to "{phone}_{firmware}".')
 		return forge.log_result(forge.ep1_libgen_symbols(args.source, args.output, sort, phone, firmware))
 	else:
@@ -73,6 +74,14 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 			return sym2obj(library_model, args.source, args.output)
 		elif mode == Mode.STATIC_LIBRARY:
 			return sym2lib(library_model, args.source, args.output)
+		elif mode == Mode.SYMBOLS_LISTING_ORDERED:
+			logging.info(f'Will create "{args.output}" ordered symbols file from "{args.source}" symbols file.')
+			phone, firmware = args.phone_fw
+			version: str = forge.libgen_version()
+			if forge.dump_library_model_to_sym_file(library_model, args.output, phone, firmware, 'EP1', version):
+				return forge.log_result(forge.validate_sym_file(args.output))
+			else:
+				logging.error(f'Cannot generate "{args.output}" ordered symbols file.')
 		else:
 			logging.error(f'Unknown mode: {mode.name}')
 
@@ -108,12 +117,16 @@ class Args(argparse.ArgumentParser):
 			return Mode.OBJECT_LIBRARY, sort, args
 		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['a'], False):
 			return Mode.STATIC_LIBRARY, sort, args
+		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['sym'], False):
+			if args.phone_fw is None:
+				self.error('phone_fw argument is empty')
+			if not forge.compare_paths(s, o):
+				return Mode.SYMBOLS_LISTING_ORDERED, sort, args
 		elif forge.check_files_extensions([s], ['lib'], False) and forge.check_files_extensions([o], ['sym'], False):
 			if args.phone_fw is None:
 				self.error('phone_fw argument is empty')
 			return Mode.SYMBOLS_LISTING, sort, args
-		else:
-			self.error('unknown --output mode, check output file extension')
+		self.error('unknown --output mode, check output file extension and name')
 
 
 def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
@@ -139,6 +152,8 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 
 	python ep1_libgen.py -s Lib.sym -o Lib.asm
 	python ep1_libgen.py -s Lib.sym -o Lib.o
+
+	python ep1_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])

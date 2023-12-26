@@ -37,6 +37,7 @@ from .filesystem import create_temporary_file_with_extension
 from .filesystem import get_temporary_directory_path
 from .filesystem import normalize_extension
 from .filesystem import delete_file
+from .filesystem import compare_paths
 
 from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware
@@ -53,10 +54,12 @@ from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
 
 from .libgen import LibrarySort
+from .libgen import libgen_version
 from .libgen import ep1_libgen_asm
 from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library
 from .libgen import ep1_libgen_symbols
+from .libgen import ep2_libgen_model
 from .libgen import ep2_libgen_library
 from .libgen import ep2_libgen_symbols
 from .libgen import ep2_libgen_generate_names_defines
