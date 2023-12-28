@@ -29,6 +29,7 @@ class Mode(Enum):
 	NAME_DEFINES: int = 3
 	REGENERATOR: int = 4
 	SYMBOLS_LISTING_ORDERED: int = 5
+	RESORT_SYMBOLS: int = 6
 
 
 # LibGen EP2 working flow.
@@ -48,6 +49,9 @@ def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 	elif mode == Mode.REGENERATOR:
 		logging.info(f'Will regenerate all EP2 libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
 		return forge.log_result(forge.ep2_libgen_regenerator(sort))
+	elif mode == Mode.RESORT_SYMBOLS:
+		logging.info(f'Will resort all EP2 symbols files in "{forge.P2K_DIR_LIB}" directory.')
+		return forge.log_result(forge.ep2_libgen_resort(sort))
 	elif mode == Mode.SYMBOLS_LISTING_ORDERED:
 		logging.info(f'Will create "{args.output}" ordered symbols file from "{args.source}" symbols file.')
 		library_model: forge.LibraryModel = forge.ep2_libgen_model(args.source, sort)
@@ -82,6 +86,9 @@ class Args(argparse.ArgumentParser):
 
 		if args.all:
 			return Mode.REGENERATOR, sort, args
+
+		if args.resort:
+			return Mode.RESORT_SYMBOLS, sort, args
 
 		if args.defines is not None:
 			return Mode.NAME_DEFINES, sort, args
@@ -133,6 +140,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'rn': 'do not resolve names',
 		'd': 'generate library defines file for resolve "D" (DATA) and "C" (CONST) names',
 		'a': 're-generate all libraries by symbol files in library directory',
+		'r': 'resort symbols in file',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -151,6 +159,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 
 	python ep2_libgen.py -a
 	python ep2_libgen.py -sn -a
+	python ep2_libgen.py -sn -r
 
 	python ep2_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
@@ -165,6 +174,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-rn', '--no-resolve-names', required=False, action='store_true', help=hlp['rn'])
 	parser_args.add_argument('-d', '--defines', required=False, type=forge.at_path, metavar='DEFINES', help=hlp['d'])
 	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
+	parser_args.add_argument('-r', '--resort', required=False, action='store_true', help=hlp['r'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

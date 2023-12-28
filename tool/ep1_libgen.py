@@ -30,6 +30,7 @@ class Mode(Enum):
 	SYMBOLS_LISTING: int = 4
 	REGENERATOR: int = 5
 	SYMBOLS_LISTING_ORDERED: int = 6
+	RESORT_SYMBOLS: int = 7
 
 
 # Helpers.
@@ -65,6 +66,9 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 	elif mode == Mode.REGENERATOR:
 		logging.info(f'Will regenerate all EP1 libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
 		return forge.log_result(forge.ep1_libgen_regenerator(sort))
+	elif mode == Mode.RESORT_SYMBOLS:
+		logging.info(f'Will resort all EP1 symbols files in "{forge.P2K_DIR_LIB}" directory.')
+		return forge.log_result(forge.ep1_libgen_resort(sort))
 	else:
 		functions, library_model = forge.ep1_libgen_model(args.source, sort)
 
@@ -115,6 +119,9 @@ class Args(argparse.ArgumentParser):
 		if args.all:
 			return Mode.REGENERATOR, sort, args
 
+		if args.resort:
+			return Mode.RESORT_SYMBOLS, sort, args
+
 		s: Path = args.source
 		o: Path = args.output
 		if (not s) and (not o):
@@ -155,6 +162,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'st': 'sort by types',
 		'sn': 'sort by names',
 		'a': 're-generate all libraries by symbol files in library directory',
+		'r': 'resort symbols in file',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -172,6 +180,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 
 	python ep1_libgen.py -a
 	python ep1_libgen.py -sn -a
+	python ep1_libgen.py -sn -r
 
 	python ep1_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
@@ -183,6 +192,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
 	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
+	parser_args.add_argument('-r', '--resort', required=False, action='store_true', help=hlp['r'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

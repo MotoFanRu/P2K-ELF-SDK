@@ -573,3 +573,48 @@ def ep1_libgen_regenerator(sort: LibrarySort) -> bool:
 
 def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
 	return libgen_regenerator(sort, ElfPack.EP2)
+
+
+def libgen_resort_syms(sort: LibrarySort, e: ElfPack) -> bool:
+	directories: list[Path] = get_all_directories_in_directory(P2K_DIR_LIB, True)
+	if directories is not None:
+		for directory in directories:
+			if e == ElfPack.EP1:
+				sym_file: Path = directory / 'elfloader.sym'
+			elif e == ElfPack.EP2:
+				sym_file: Path = directory / 'library.sym'
+			else:
+				logging.error(f'Fatal. Unknown ElfPack version.')
+				return False
+
+			phone, firmware = parse_phone_firmware(directory.name, False)
+			version: str = libgen_version()
+
+			# Resort Symbols files.
+			if check_files_if_exists([sym_file], False):
+				logging.info(f'Will resort "{sym_file}" symbols file.')
+				if e == ElfPack.EP1:
+					functions, library_model = ep1_libgen_model(sym_file, sort)
+					elfpack: str = ElfPack.EP1.name
+				elif e == ElfPack.EP2:
+					library_model = ep2_libgen_model(sym_file, sort)
+					elfpack: str = ElfPack.EP2.name
+				else:
+					return False
+
+				if library_model:
+					if not dump_library_model_to_sym_file(library_model, sym_file, phone, firmware, elfpack, version):
+						return False
+
+				if not validate_sym_file(sym_file):
+					return False
+		return True
+	return False
+
+
+def ep1_libgen_resort(sort: LibrarySort) -> bool:
+	return libgen_resort_syms(sort, ElfPack.EP1)
+
+
+def ep2_libgen_resort(sort: LibrarySort) -> bool:
+	return libgen_resort_syms(sort, ElfPack.EP2)

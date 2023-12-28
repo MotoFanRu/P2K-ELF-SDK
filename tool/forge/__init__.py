@@ -62,11 +62,13 @@ from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library
 from .libgen import ep1_libgen_symbols
 from .libgen import ep1_libgen_regenerator
+from .libgen import ep1_libgen_resort
 from .libgen import ep2_libgen_model
 from .libgen import ep2_libgen_library
 from .libgen import ep2_libgen_symbols
 from .libgen import ep2_libgen_generate_names_defines
 from .libgen import ep2_libgen_regenerator
+from .libgen import ep2_libgen_resort
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa
