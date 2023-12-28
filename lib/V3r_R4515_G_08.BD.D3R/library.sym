@@ -6,7 +6,7 @@
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
 # Version: 2812231
-# Timestamp: 28-Dec-2023 09:57:39
+# Timestamp: 28-Dec-2023 10:56:20
 
 0x00000069 C AUDIO_STATUS
 0x0000060C C BEGIN_4A__IN_DB
@@ -449,6 +449,7 @@
 0x10227DD4 T JavaStopMarquee
 0x1022791E T JavaSuspendApp
 0x140443E2 D jsapi_marquee_text
+0x2484E000 D kpp
 0x10099B68 T localtime
 0x000010D8 T memcpy
 0x00001100 T memset

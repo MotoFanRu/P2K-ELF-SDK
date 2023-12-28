@@ -30,7 +30,7 @@ def split_and_validate_line(line: str) -> Symbol:
 		modes: set[str] = {'A', 'C', 'D', 'T'}
 		line: str = line.strip()
 		if len(line) != 0 and not line.startswith('#'):
-			address, mode, name = line.split(' ')
+			address, mode, name = line.split()
 			if mode != 'C':
 				hex2int(address)
 			if mode in modes:
