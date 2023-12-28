@@ -6,7 +6,7 @@
 # Phone: L7
 # Firmware: R4513_G_08.B7.ACR_RB
 # Version: 2812231
-# Timestamp: 28-Dec-2023 09:56:53
+# Timestamp: 28-Dec-2023 09:57:39
 
 0x00000069 C AUDIO_STATUS
 0x00000604 C BEGIN_4A__IN_DB
