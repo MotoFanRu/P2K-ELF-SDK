@@ -529,11 +529,11 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 	if directories is not None:
 		for directory in directories:
 			if e == ElfPack.EP1:
-				sym_file: Path = directory / 'library.sym'
-				lib_file: Path = directory / 'library.bin'
-			elif e == ElfPack.EP2:
 				sym_file: Path = directory / 'elfloader.sym'
 				lib_file: Path = directory / 'elfloader.lib'
+			elif e == ElfPack.EP2:
+				sym_file: Path = directory / 'library.sym'
+				lib_file: Path = directory / 'library.bin'
 			else:
 				logging.error(f'Fatal. Unknown ElfPack version.')
 				return False
