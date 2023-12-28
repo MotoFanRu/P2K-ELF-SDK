@@ -19,6 +19,7 @@ from .arguments import at_hex
 from .arguments import at_fpa
 from .arguments import at_path
 from .arguments import at_hds
+from .arguments import at_ep
 
 from .constants import *
 
@@ -81,6 +82,8 @@ from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
 from .symbols import dump_library_model_to_sym_file
 
+from .types import ElfPack
+from .types import ElfPacks
 from .types import LibraryModel
 
 from .utilities import format_timedelta

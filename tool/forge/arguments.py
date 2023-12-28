@@ -22,6 +22,7 @@ from .hexer import normalize_hex_string
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 from .firmware import parse_phone_firmware
+from .types import ElfPack
 
 
 # Phone Firmware, e.g. 'E1_R373_G_0E.30.49R'.
@@ -86,3 +87,17 @@ def at_hds(hds: str) -> str:
 	if hex_data_string is None:
 		raise argparse.ArgumentTypeError(f'wrong hex data string: {chop_str(hds, 32)}')
 	return hex_data_string
+
+
+def at_ep(ep: str) -> ElfPack:
+	ep = ep.upper()
+	if ep == 'EP1':
+		return ElfPack.EP1
+	elif ep == 'EP2':
+		return ElfPack.EP2
+	elif ep == 'EM1':
+		return ElfPack.EM1
+	elif ep == 'EM2':
+		return ElfPack.EM2
+	else:
+		return ElfPack.UNK

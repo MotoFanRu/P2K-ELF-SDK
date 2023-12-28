@@ -1,0 +1,7 @@
+#<SYMDEFS>#symdef-file
+0x10097A74 D _region_table
+0x102FF87E T APP_CALC_MainRegister
+0x104E8AC2 T APP_SyncML_MainRegister
+0x104FA850 T APP_SYNCMLMGR_MainRegister
+0x2484E000 D kpp
+0x10A04E94 D product_version

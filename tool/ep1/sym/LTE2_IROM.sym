@@ -1,3 +1,4 @@
+#<SYMDEFS>#symdef-file
 0x00000364 T abs_0
 0x000003F8 T __16__rt_divtest
 0x000003FC A __rt_divtest

@@ -102,10 +102,10 @@ class Args(argparse.ArgumentParser):
 				return Mode.SDK_STUB_LIBRARY, sort, args
 		elif forge.check_files_extensions([s], ['bin'], False) and out_sym:
 			if not args.phone:
-				self.error('phone_fw argument is empty')
+				self.error('phone argument is empty')
 			return Mode.SYMBOLS_LISTING, sort, args
 		elif forge.check_files_extensions([s], ['sym'], False) and out_sym:
-			if not args.phone_fw:
+			if not pfw:
 				self.error('phone_fw argument is empty')
 			if not forge.compare_paths(s, o):
 				return Mode.SYMBOLS_LISTING_ORDERED, sort, args
@@ -144,7 +144,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	python ep2_libgen.py -a
 	python ep2_libgen.py -sn -a
 
-	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
+	python ep2_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=False, type=forge.at_file, metavar='INPUT', help=hlp['s'])
