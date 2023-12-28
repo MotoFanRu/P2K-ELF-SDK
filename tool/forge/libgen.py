@@ -584,7 +584,7 @@ def libgen_resort_syms(sort: LibrarySort, e: ElfPack) -> bool:
 			elif e == ElfPack.EP2:
 				sym_file: Path = directory / 'library.sym'
 			else:
-				logging.error(f'Fatal. Unknown ElfPack version.')
+				logging.error(f'Fatal. Unknown ElfPack version: "{e.name}".')
 				return False
 
 			phone, firmware = parse_phone_firmware(directory.name, False)
@@ -597,7 +597,7 @@ def libgen_resort_syms(sort: LibrarySort, e: ElfPack) -> bool:
 					functions, library_model = ep1_libgen_model(sym_file, sort)
 					elfpack: str = ElfPack.EP1.name
 				elif e == ElfPack.EP2:
-					library_model = ep2_libgen_model(sym_file, sort)
+					library_model: LibraryModel = ep2_libgen_model(sym_file, sort)
 					elfpack: str = ElfPack.EP2.name
 				else:
 					return False
@@ -618,3 +618,38 @@ def ep1_libgen_resort(sort: LibrarySort) -> bool:
 
 def ep2_libgen_resort(sort: LibrarySort) -> bool:
 	return libgen_resort_syms(sort, ElfPack.EP2)
+
+
+def libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pfw: tuple[str, str], e: ElfPack) -> bool:
+	if check_files_if_exists([i], False) and check_files_extensions([i], ['sym']):
+		if e == ElfPack.EP1:
+			functions, library_model = ep1_libgen_model(i, sort)
+		elif e == ElfPack.EP2:
+			library_model: LibraryModel = ep2_libgen_model(i, sort)
+		else:
+			logging.error(f'Fatal. Unknown ElfPack version: "{e.name}".')
+			return False
+
+		chunk_model: LibraryModel = []
+		for addr, mode, name in library_model:
+			if name in symbols:
+				entry: tuple[str, str, str] = (addr, mode, name)
+				logging.debug(f'Will append "{name}" => "{entry}".')
+				chunk_model.append(entry)
+
+		if chunk_model:
+			phone, firmware = pfw
+			if not dump_library_model_to_sym_file(chunk_model, o, phone, firmware, e.name, libgen_version()):
+				return False
+
+		return validate_sym_file(o)
+
+	return False
+
+
+def ep1_libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pfw: tuple[str, str]) -> bool:
+	return libgen_chunk_sym(i, o, sort, symbols, pfw, ElfPack.EP1)
+
+
+def ep2_libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pfw: tuple[str, str]) -> bool:
+	return libgen_chunk_sym(i, o, sort, symbols, pfw, ElfPack.EP2)
