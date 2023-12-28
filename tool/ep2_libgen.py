@@ -31,7 +31,7 @@ class Mode(Enum):
 	SYMBOLS_LISTING_ORDERED: int = 5
 
 
-# LibGen working flow.
+# LibGen EP2 working flow.
 def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
 	logging.info(f'Start ElfPack v2.0 LibGen utility, mode: "{mode.name}", sort: "{sort.name}".')
 	if (mode == Mode.PHONE_LIBRARY) or (mode == Mode.SDK_STUB_LIBRARY):
@@ -46,7 +46,7 @@ def start_ep2_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 		logging.info(f'Will create "{args.defines}" file from SDK and "{forge.P2K_DIR_LIB}" directory.')
 		return forge.log_result(forge.ep2_libgen_generate_names_defines(sort, args.defines))
 	elif mode == Mode.REGENERATOR:
-		logging.info(f'Will regenerate all libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
+		logging.info(f'Will regenerate all EP2 libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
 		return forge.log_result(forge.ep2_libgen_regenerator(sort))
 	elif mode == Mode.SYMBOLS_LISTING_ORDERED:
 		logging.info(f'Will create "{args.output}" ordered symbols file from "{args.source}" symbols file.')

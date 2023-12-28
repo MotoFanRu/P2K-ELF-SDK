@@ -28,7 +28,8 @@ class Mode(Enum):
 	OBJECT_LIBRARY: int = 2
 	STATIC_LIBRARY: int = 3
 	SYMBOLS_LISTING: int = 4
-	SYMBOLS_LISTING_ORDERED: int = 5
+	REGENERATOR: int = 5
+	SYMBOLS_LISTING_ORDERED: int = 6
 
 
 # Helpers.
@@ -53,7 +54,7 @@ def sym2lib(library_model: forge.LibraryModel, p_i: Path, p_o: Path) -> bool:
 	return False
 
 
-# LibGen working flow.
+# LibGen EP1 working flow.
 def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
 	logging.info(f'Start ElfPack v1.0 LibGen utility, mode: {mode.name}.')
 
@@ -61,6 +62,9 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 		phone, firmware = args.phone_fw
 		logging.info(f'Will create "{args.output}" symbols file from "{args.source}" library to "{phone}_{firmware}".')
 		return forge.log_result(forge.ep1_libgen_symbols(args.source, args.output, sort, phone, firmware))
+	elif mode == Mode.REGENERATOR:
+		logging.info(f'Will regenerate all EP1 libraries from symbols files in "{forge.P2K_DIR_LIB}" directory.')
+		return forge.log_result(forge.ep1_libgen_regenerator(sort))
 	else:
 		functions, library_model = forge.ep1_libgen_model(args.source, sort)
 
@@ -109,6 +113,10 @@ class Args(argparse.ArgumentParser):
 		s: Path = args.source
 		o: Path = args.output
 		sort: forge.LibrarySort = self.determine_sort_mode(args)
+
+		if args.all:
+			return Mode.REGENERATOR, sort, args
+
 		if forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['lib'], False):
 			return Mode.PHONE_LIBRARY, sort, args
 		elif forge.check_files_extensions([s], ['sym'], False) and forge.check_files_extensions([o], ['asm'], False):
@@ -138,6 +146,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
+		'a': 're-generate all libraries by symbol files in library directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -153,6 +162,9 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	python ep1_libgen.py -s Lib.sym -o Lib.asm
 	python ep1_libgen.py -s Lib.sym -o Lib.o
 
+	python ep2_libgen.py -a
+	python ep2_libgen.py -sn -a
+
 	python ep1_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -162,6 +174,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-sa', '--sort-address', required=False, action='store_true', help=hlp['sa'])
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
+	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

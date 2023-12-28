@@ -42,6 +42,7 @@ from .symbols import dump_sym_file_to_library_model
 from .symbols import dump_library_model_to_sym_file
 from .symbols import parse_sdk_const_header_to_list
 from .invoker import invoke_external_command_res
+from .types import ElfPack
 
 
 class LibrarySort(Enum):
@@ -523,16 +524,40 @@ def ep2_libgen_generate_names_defines(sort: LibrarySort, out_p: Path) -> bool:
 	return False
 
 
-def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
+def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 	directories: list[Path] = get_all_directories_in_directory(P2K_DIR_LIB, True)
 	if directories is not None:
 		for directory in directories:
-			sym_file: Path = directory / 'library.sym'
-			bin_file: Path = directory / 'library.bin'
+			if e == ElfPack.EP1:
+				sym_file: Path = directory / 'library.sym'
+				lib_file: Path = directory / 'library.bin'
+			elif e == ElfPack.EP2:
+				sym_file: Path = directory / 'elfloader.sym'
+				lib_file: Path = directory / 'elfloader.lib'
+			else:
+				logging.error(f'Fatal. Unknown ElfPack version.')
+				return False
+
 			if check_files_if_exists([sym_file], False):
-				logging.info(f'Will create "{bin_file}" library from "{sym_file}" symbols file.')
+				logging.info(f'Will create "{lib_file}" library from "{sym_file}" symbols file.')
 				phone, firmware = parse_phone_firmware(directory.name, False)
-				if not ep2_libgen_library(sym_file, sort, phone, firmware, bin_file):
-					return False
+				if e == ElfPack.EP1:
+					functions, library_model = ep1_libgen_model(sym_file, sort)
+					if functions and library_model:
+						if not ep1_libgen_library(lib_file, library_model, functions):
+							return False
+					else:
+						return False
+				elif e == ElfPack.EP2:
+					if not ep2_libgen_library(sym_file, sort, phone, firmware, lib_file):
+						return False
 		return True
 	return False
+
+
+def ep1_libgen_regenerator(sort: LibrarySort) -> bool:
+	return libgen_regenerator(sort, ElfPack.EP1)
+
+
+def ep2_libgen_regenerator(sort: LibrarySort) -> bool:
+	return libgen_regenerator(sort, ElfPack.EP2)

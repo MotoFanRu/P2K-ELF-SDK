@@ -1,0 +1,4 @@
+#<SYMDEFS>#symdef-file
+0x104FD664 T APP_SYNCMLMGR_MainRegister
+0x2484E000 D kpp
+0x10A10C80 D product_version

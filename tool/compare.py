@@ -47,6 +47,8 @@ def cmp_sym_def(a_sym: Path, a_def: Path, elfpacks: forge.ElfPacks) -> bool:
 					if line == name:
 						logging.info(f'Found: "{line}" as "{addr} {mode} {name}" in "{a_sym}" file.')
 						found_something = True
+					else:
+						logging.info(f'Not Found: "{line}".')
 			if not found_something:
 				logging.info(f'Nothing found.')
 			return found_something
