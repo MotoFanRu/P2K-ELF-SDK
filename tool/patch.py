@@ -129,8 +129,8 @@ class Args(argparse.ArgumentParser):
 				return Mode.UNITE, args
 			else:
 				self.error('needs more than one patch for unite')
-		else:
-			self.error('all arguments are empty')
+
+		self.error('all arguments are empty')
 
 
 def parse_arguments() -> tuple[Mode, Namespace]:

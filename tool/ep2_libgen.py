@@ -79,20 +79,27 @@ class Args(argparse.ArgumentParser):
 	def parse_check_arguments(self) -> tuple[Mode, forge.LibrarySort, Namespace]:
 		args: Namespace = self.parse_args()
 		sort: forge.LibrarySort = self.determine_sort_mode(args)
+
 		if args.all:
 			return Mode.REGENERATOR, sort, args
+
 		if args.defines is not None:
 			return Mode.NAME_DEFINES, sort, args
+
 		s: Path = args.source
 		o: Path = args.output
 		pfw: tuple[str, str] = args.phone_fw
-		if s is None:
+		if (not s) or (not o):
+			self.error('source and output arguments are empty')
+		if not s:
 			self.error('source argument is empty')
-		if o is None:
+		if not o:
 			self.error('output argument is empty')
-		out_bin = forge.check_files_extensions([o], ['bin'], False)
-		out_sym = forge.check_files_extensions([o], ['sym'], False)
-		out_sa = forge.check_files_extensions([o], ['sa'], False)
+
+		out_bin: bool = forge.check_files_extensions([o], ['bin'], False)
+		out_sym: bool = forge.check_files_extensions([o], ['sym'], False)
+		out_sa: bool = forge.check_files_extensions([o], ['sa'], False)
+
 		if forge.check_files_extensions([s], ['sym'], False) and (out_bin or out_sa):
 			if pfw is None:
 				self.error('phone_fw argument is empty')
@@ -109,6 +116,7 @@ class Args(argparse.ArgumentParser):
 				self.error('phone_fw argument is empty')
 			if not forge.compare_paths(s, o):
 				return Mode.SYMBOLS_LISTING_ORDERED, sort, args
+
 		self.error('all arguments are empty')
 
 
