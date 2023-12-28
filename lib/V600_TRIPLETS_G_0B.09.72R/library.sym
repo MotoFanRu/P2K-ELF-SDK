@@ -324,7 +324,6 @@
 0x108B07FC A u_strncmp
 0x108B08A8 A u_strncpy
 0x108B0F0C A u_strrchr
-0x10CBCA72 T u_utoa
 0x10AF2C10 A UIS_CanvasDrawColorSoftkey
 0x10AF1E58 A UIS_CanvasDrawColorText
 0x10AF270C A UIS_CanvasDrawRect
@@ -359,6 +358,5 @@
 0x108AEF4C A UIS_MakeContentFromString
 0x108AF6A8 A UIS_Refresh
 0x108AF714 A UIS_SetActionList
-0x10CBC408 T UtilLogStringData
 0x10A158F0 T vsnprintf
 0x10C8D810 T vsprintf

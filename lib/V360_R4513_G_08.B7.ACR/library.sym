@@ -128,6 +128,4 @@
 0x03FCCC30 T suDeleteTask
 0x03FCEF9C T suReleaseSem
 0x127612C8 D theStatusManager
-0x10D1E912 T u_utoa
 0x10BB7B3C A UIS_CreateSelectionEditor
-0x10D1E2A8 T UtilLogStringData

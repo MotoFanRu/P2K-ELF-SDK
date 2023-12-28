@@ -590,7 +590,6 @@
 0x10BE6C68 A u_strstr
 0x10BE7A08 A u_uint64tou
 0x10BE7684 A u_ultou
-0x10D7A782 T u_utoa
 0x10BDD358 A UIS_CanvasCloseImage
 0x10BDE25C A UIS_CanvasDecodeImageToPointer
 0x10BDBC24 A UIS_CanvasDrawArc
@@ -701,6 +700,5 @@
 0x10BD89C2 T USB_DRIVER_select_config
 0x10BD61F4 A utility_draw_image
 0x10BD60D0 A utility_get_image_size
-0x10D7A118 T UtilLogStringData
 0x100A710C T vsnprintf
 0x100A7158 T vsprintf

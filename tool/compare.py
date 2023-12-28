@@ -42,13 +42,18 @@ def cmp_sym_def(a_sym: Path, a_def: Path, elfpacks: forge.ElfPacks) -> bool:
 			found_something: bool = False
 			for line in f_i.read().splitlines():
 				line: str = line.strip()
+				found: bool = False
 				for addr, mode, name in model:
 					name: str = name.strip()
 					if line == name:
 						logging.info(f'Found: "{line}" as "{addr} {mode} {name}" in "{a_sym}" file.')
+						found = True
 						found_something = True
+						break
 					else:
-						logging.info(f'Not Found: "{line}".')
+						found = False
+				if not found:
+					logging.info(f'Not Found: "{line}".')
 			if not found_something:
 				logging.info(f'Nothing found.')
 			return found_something
@@ -100,7 +105,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	}
 	epl: str = """examples:
 	python compare.py -s library_1.sym -e1 EP1 -c library_2.sym -e2 EP1
-	python compare.py -s library_1.sym -e1 EP1 -c library_2.def -e2 EP2 
+	python compare.py -s library_1.sym -e1 EP1 -c library_2.def -e2 EP2
+	python compare.py -s library_1.sym -e1 EP2 -c library_2.def -e2 EP2
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])
