@@ -6,7 +6,7 @@
 # Phone: V3i
 # Firmware: R4441D_G_08.01.03R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 14:38:44
+# Timestamp: 29-Dec-2023 14:54:07
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -451,6 +451,7 @@
 0x10B3AEE8 T SEEM_MAX_RECORD_get_max_record
 0x103C8204 D SENDED_TRAFFIC
 0x100E9DD0 D SESSION_TIME
+0x10BAA868 A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x10BC3772 D SKIN_FOLDER
 0x100A6F00 T snprintf
@@ -471,12 +472,18 @@
 0x100A6FE4 T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03F9EFDA T suAcquireSem
 0x03F9E19C T suAllocMem
+0x03F9EAC0 T suCreateBSem
+0x03F9EB90 T suCreateCSem
 0x03F9CDEE T suCreateMessage
+0x03F9EC8C T suCreateMSem
 0x03F9D3C6 T suCreatePortFromQueue
 0x03F9CDAC T suCreateQueue
 0x03F9D648 T suCreateTask
 0x03F9CE2A T suDeleteMessage
+0x03F9ED66 T suDeleteSem
+0x03F9D7BC T suDeleteTask
 0x03FACC44 A suDisableAllInt
 0x03F9E3A2 T suFreeMem
 0x03F9D5C2 T suGetMessageType
@@ -485,9 +492,11 @@
 0x03FA0AA0 T suPalReadTime
 0x10BA5578 T suPalTicksToMsec
 0x03F9CF68 T suReceiveMessageFromQueue
+0x03F9EEA4 T suReleaseSem
 0x03F9D48A T suSendMessage
 0x03FACC54 A suSetInt
 0x03F9D7E0 T suSleep
+0x146CB850 D theStatusManager
 0x100A7038 T tolower
 0x100A7058 T toupper
 0x10BE6E70 A u_atol

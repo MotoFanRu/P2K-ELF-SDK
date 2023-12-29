@@ -6,7 +6,7 @@
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 14:39:06
+# Timestamp: 29-Dec-2023 14:54:12
 
 0x00000069 C AUDIO_STATUS
 0x0000060C C BEGIN_4A__IN_DB
@@ -504,6 +504,7 @@
 0x10A9FCE8 D product_version
 0x10A93E1E T pu_main_powerdown
 0x10098B88 T qsort
+0x144C7C68 D Ram
 0x10098E98 T rand
 0x102EC8F4 T RestartDisplayTimer
 0x14737524 D SBCM_ATOD_supply

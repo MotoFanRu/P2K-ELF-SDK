@@ -6,7 +6,7 @@
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 14:38:44
+# Timestamp: 29-Dec-2023 14:54:07
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -436,6 +436,7 @@
 0x10A9FCE8 D product_version
 0x10A93E1E T pu_main_powerdown
 0x10098B88 T qsort
+0x144C7C68 D Ram
 0x10098E98 T rand
 0x102EC8F4 T RestartDisplayTimer
 0x14737524 D SBCM_ATOD_supply
@@ -453,6 +454,7 @@
 0x10B03114 T SEEM_MAX_RECORD_get_max_record
 0x10398C18 D SENDED_TRAFFIC
 0x100EC398 D SESSION_TIME
+0x10B75BCC A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x10B8AF56 D SKIN_FOLDER
 0x10098EE4 T snprintf
@@ -473,12 +475,18 @@
 0x10098F84 T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03FACF12 T suAcquireSem
 0x03FAC0D4 T suAllocMem
+0x03FAC9F8 T suCreateBSem
+0x03FACAC8 T suCreateCSem
 0x03FAAD26 T suCreateMessage
+0x03FACBC4 T suCreateMSem
 0x03FAB2FE T suCreatePortFromQueue
 0x03FAACE4 T suCreateQueue
 0x03FAB580 T suCreateTask
 0x03FAAD62 T suDeleteMessage
+0x03FACC9E T suDeleteSem
+0x03FAB6F4 T suDeleteTask
 0x03FB6C6C A suDisableAllInt
 0x03FAC2DA T suFreeMem
 0x03FAB4FA T suGetMessageType
@@ -487,9 +495,11 @@
 0x03FAE0C4 T suPalReadTime
 0x10B708E4 T suPalTicksToMsec
 0x03FAAEA0 T suReceiveMessageFromQueue
+0x03FACDDC T suReleaseSem
 0x03FAB3C2 T suSendMessage
 0x03FB6C7C A suSetInt
 0x03FAB718 T suSleep
+0x146D99CC D theStatusManager
 0x10098FD8 T tolower
 0x10098FF8 T toupper
 0x10BA97C0 A u_atol

@@ -270,6 +270,9 @@ def parse_arguments() -> Namespace:
 	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7e_R452D_G_08.01.0AR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.E0R_RB.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L9_R452J_G_08.22.05R.smg -o build
+	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V3r_R4515_G_08.BD.D3R.smg -o build
 
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
