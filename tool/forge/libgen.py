@@ -542,17 +542,21 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 
 			# Create Libraries.
 			if check_files_if_exists([sym_file], False):
-				logging.info(f'Will create "{lib_file}" library from "{sym_file}" symbols file.')
-				if e == ElfPack.EP1:
-					functions, library_model = ep1_libgen_model(sym_file, sort)
-					if functions and library_model:
-						if not ep1_libgen_library(lib_file, library_model, functions):
+				if validate_sym_file(sym_file):
+					logging.info(f'Will create "{lib_file}" library from "{sym_file}" symbols file.')
+					if e == ElfPack.EP1:
+						functions, library_model = ep1_libgen_model(sym_file, sort)
+						if functions and library_model:
+							if not ep1_libgen_library(lib_file, library_model, functions):
+								return False
+						else:
 							return False
-					else:
-						return False
-				elif e == ElfPack.EP2:
-					if not ep2_libgen_library(sym_file, sort, phone, firmware, lib_file):
-						return False
+					elif e == ElfPack.EP2:
+						if not ep2_libgen_library(sym_file, sort, phone, firmware, lib_file):
+							return False
+				else:
+					logging.error(f'Cannot open and check "{sym_file}" symbols file.')
+					return False
 
 			# Create Symbols files.
 			if check_files_if_exists([lib_file], False):
