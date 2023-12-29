@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: Z3
 # Firmware: R452H6_G_08.00.05R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:53
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -373,6 +373,14 @@
 0x10D57406 T JavaStopMarquee
 0x10D57624 D jsapi_marquee_text
 0x1055C51C D KEYPAD_STATE
+0x2484E000 D kpp
+0x102AFBEE T LdrGetFirmwareMajorVersion
+0x102AFBF2 T LdrGetFirmwareMinorVersion
+0x102AFBE6 T LdrGetPhoneName
+0x102AFBEA T LdrGetPlatformName
+0x102AFB6A T LdrLoadELF
+0x102AFB30 T LdrStartApp
+0x102AFBB2 T LdrUnloadELF
 0x10C96630 T localtime
 0x00001080 T memcmp
 0x000010D8 T memcpy
@@ -618,11 +626,3 @@
 0x102AF4E8 T UtilLogStringData
 0x10C95C94 T vsnprintf
 0x111C0620 T vsprintf
-0x2484E000 D kpp
-0x102AFBEE T LdrGetFirmwareMajorVersion
-0x102AFBF2 T LdrGetFirmwareMinorVersion
-0x102AFBE6 T LdrGetPhoneName
-0x102AFBEA T LdrGetPlatformName
-0x102AFB6A T LdrLoadELF
-0x102AFB30 T LdrStartApp
-0x102AFBB2 T LdrUnloadELF

@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -55,11 +55,22 @@
 0x109A9AAC A AhiDevClose
 0x109A95C8 A AhiDevEnum
 0x109A9864 A AhiDevOpen
+0x10E3E8A0 A AhiDispBlend
 0x10D31688 A AhiDispIsInVBlank
 0x10D3135C A AhiDispModeClip
 0x10D31138 A AhiDispModeEnum
 0x10D31250 A AhiDispModeGet
 0x10D31AC0 A AhiDispModeSet
+0x10E3F64C A AhiDispOverlayCaps
+0x10E3F75C A AhiDispOverlayCapsEx
+0x10E4012C A AhiDispOverlayOrderEx
+0x10E3FEF8 A AhiDispOverlayPos
+0x10E40008 A AhiDispOverlayPosEx
+0x10E3F884 A AhiDispOverlayState
+0x10E3F998 A AhiDispOverlayStateEx
+0x10E3FAC4 A AhiDispOverlaySurf
+0x10E3FD98 A AhiDispOverlaySurf2
+0x10E3FC2C A AhiDispOverlaySurfEx
 0x110B8A70 A AhiDispState
 0x10D3157C A AhiDispSurfGet
 0x10D31468 A AhiDispSurfSet
@@ -67,6 +78,7 @@
 0x10D31788 A AhiDispWaitVBlank
 0x10A694A8 A AhiDrawAlphaBlt
 0x10D33CAC A AhiDrawAlphaSet
+0x10D33B2C A AhiDrawAlphaSetEx
 0x10D31E20 A AhiDrawBgColorSet
 0x109A53C8 A AhiDrawBitBlt
 0x109A5924 A AhiDrawBitBltMulti
@@ -82,6 +94,7 @@
 0x11098050 A AhiDrawGlyph
 0x10E3E9D4 A AhiDrawLines
 0x10D3393C A AhiDrawLineStyleSet
+0x109A6A64 A AhiDrawMaskBlt
 0x03FA3174 A AhiDrawMaskBltEx
 0x109A6FE0 A AhiDrawMonoBltMulti
 0x10D33718 A AhiDrawRopSet
@@ -101,6 +114,7 @@
 0x109AB3B8 A AhiSurfGetLargestFreeBlockSize
 0x109AC420 A AhiSurfInfo
 0x109AC8BC A AhiSurfLock
+0x109AC108 A AhiSurfReuse
 0x109ACB04 A AhiSurfUnlock
 0x1049B538 T AlertStatusStart
 0x105649D4 D ALMCLK_REMINDER_START
@@ -289,6 +303,7 @@
 0x10D1F7D8 T DL_FsSGetLastDirName
 0x10D22260 T DL_FsSGetModTime
 0x10D21A52 T DL_FsSGetPath
+0x10D1FC54 T DL_FsSGetVolume
 0x10D20652 T DL_FsSRenameFile
 0x10D20E30 T DL_FsSSearch
 0x10D1FF26 T DL_FsSSetAttr
@@ -306,6 +321,7 @@
 0x10D2BF36 T DL_SigMsgSendTextMsgReq
 0x10D2B498 T DL_SigRegGetCellID
 0x10D2B5B6 T DL_SigRegGetLAI
+0x10D2B5CA T DL_SigRegQueryGprsEgprs
 0x10D2B5CA T DL_SigRegQueryGprsEgprsState
 0x10D2B484 T DL_SigRegQuerySignalStrength
 0x10D2B53E T DL_SigRegSetMobileClass
@@ -349,6 +365,8 @@
 0x10C40270 T HAPI_ATOD_read
 0x10D9E2C2 T HAPI_BATTERY_ROM_get_unique_id
 0x10D9E1E4 T HAPI_BATTERY_ROM_read
+0x0000B0A0 T HAPI_GPIO_config
+0x0000B080 T HAPI_GPIO_data_write
 0x0000B1EC T HAPI_IC_ID_unique_id_read
 0x10C3FABE T HAPI_WATCHDOG_soft_reset
 0x108C6926 T hPortRead
@@ -364,7 +382,9 @@
 0x10D564A4 T JavaStartMarquee
 0x10D5633A T JavaStopMarquee
 0x10D56558 D jsapi_marquee_text
+0x102AE3DC D keypad_columns
 0x1055B5DC D KEYPAD_STATE
+0x2484E000 D kpp
 0x102AFC9E T LdrGetFirmwareMajorVersion
 0x102AFCA2 T LdrGetFirmwareMinorVersion
 0x102AFC96 T LdrGetPhoneName
@@ -444,6 +464,7 @@
 0x10DC1C14 T SEEM_MAX_RECORD_get_max_record
 0x10509BC0 D SENDED_TRAFFIC
 0x10CFDEC4 D SESSION_TIME
+0x104142B4 A setCanvasControl__13StatusManagerFScPUs
 0x1047C360 D SKIN_FOLDER
 0x111BD4A4 T snprintf
 0x111BD4FC T sprintf
@@ -480,6 +501,7 @@
 0x03FC4A7A T suSendMessage
 0x03FCFD98 A suSetInt
 0x03FC4DD0 T suSleep
+0x143D9E38 D theStatusManager
 0x111BD544 T tolower
 0x10C93B88 T toupper
 0x10288FFC A u_atol
@@ -589,6 +611,7 @@
 0x1027E0DC A UIS_CreateViewer
 0x1027F118 A UIS_Delete
 0x10280EB8 A UIS_ForceRefresh
+0x103B2884 A uis_get_dialog_ptr
 0x1027F4EC A UIS_GetActiveDialogType
 0x10282D2C A UIS_GetCurrentSkinIndex
 0x10281B38 A UIS_GetCurrentStatusValue
@@ -611,31 +634,8 @@
 0x10D26096 T URINameValid
 0x109B5DFE T USB_DRIVER_select_config
 0x1038E848 A utility_draw_image
+0x1038E5F0 A utility_draw_image_from_fileid
 0x1038E4CC A utility_get_image_size
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x10E3E8A0 A AhiDispBlend
-0x10E3F64C A AhiDispOverlayCaps
-0x10E3F75C A AhiDispOverlayCapsEx
-0x10E4012C A AhiDispOverlayOrderEx
-0x10E3FEF8 A AhiDispOverlayPos
-0x10E40008 A AhiDispOverlayPosEx
-0x10E3F884 A AhiDispOverlayState
-0x10E3F998 A AhiDispOverlayStateEx
-0x10E3FAC4 A AhiDispOverlaySurf
-0x10E3FD98 A AhiDispOverlaySurf2
-0x10E3FC2C A AhiDispOverlaySurfEx
-0x10D33B2C A AhiDrawAlphaSetEx
-0x109A6A64 A AhiDrawMaskBlt
-0x109AC108 A AhiSurfReuse
-0x10D1FC54 T DL_FsSGetVolume
-0x10D2B5CA T DL_SigRegQueryGprsEgprs
-0x0000B0A0 T HAPI_GPIO_config
-0x0000B080 T HAPI_GPIO_data_write
-0x102AE3DC D keypad_columns
-0x2484E000 D kpp
-0x104142B4 A setCanvasControl__13StatusManagerFScPUs
-0x143D9E38 D theStatusManager
-0x103B2884 A uis_get_dialog_ptr
-0x1038E5F0 A utility_draw_image_from_fileid

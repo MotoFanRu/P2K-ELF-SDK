@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: Z3
 # Firmware: R452B_G_08.02.0DR
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:53
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -56,6 +56,9 @@
 0x10D2D758 A AhiDevClose
 0x10D2D274 A AhiDevEnum
 0x10AF21E0 A AhiDevOpen
+0x10D2E120 A AhiDispIsInVBlank
+0x10D2E248 A AhiDispModeClip
+0x10D2E120 A AhiDispModeEnum
 0x10D2DC48 A AhiDispModeGet
 0x10D2E5F8 A AhiDispModeSet
 0x10D2E760 A AhiDispState
@@ -80,6 +83,7 @@
 0x10AE26A0 A AhiDrawGlyph
 0x10E4896C A AhiDrawLines
 0x1099539C A AhiDrawLineStyleSet
+0x03FA3174 A AhiDrawMaskBltEx
 0x10991040 A AhiDrawMonoBltMulti
 0x10995128 A AhiDrawRopSet
 0x10990940 A AhiDrawRotateBlt
@@ -91,6 +95,7 @@
 0x10990B98 A AhiDrawSwapBlt
 0x109914FC A AhiDrawTileBlt
 0x109907F0 A AhiDrawTransBlt
+0x1098F250 A AhiIntersect
 0x10995A64 A AhiSurfAlloc
 0x109971E4 A AhiSurfCopy
 0x1099665C A AhiSurfFree
@@ -154,6 +159,7 @@
 0x1025FD6C A DAL_ATIDevMemConfiguration
 0x1025C060 A DAL_DisableDisplay
 0x1025C160 A DAL_EnableDisplay
+0x1026003C A DAL_FreeCache
 0x1025FEF8 A DAL_GetDeviceContext
 0x1025C744 A DAL_GetDisplayPixelAddress
 0x1025FFDC A DAL_GetDrawingSurface
@@ -182,6 +188,7 @@
 0x109486B8 T DL_ClkGetDate
 0x10948774 T DL_ClkGetParsedClock
 0x10948708 T DL_ClkGetTime
+0x1094875A T DL_ClkSetClock
 0x109486EA T DL_ClkSetDate
 0x1094878E T DL_ClkSetParsedClock
 0x10948722 T DL_ClkSetTime
@@ -314,6 +321,7 @@
 0x1058D0F0 D EV_BacklightContinueOn
 0x1058D520 D EV_BacklightRestore
 0x1074174C D EV_BacklightTimeout
+0x10CC4E54 D EV_CALL_INCOMING
 0x105683E0 D EV_CALL_PLACE1
 0x105683DC D EV_CALL_PLACE2
 0x104C0600 D EV_CALL_TERMINATED
@@ -359,6 +367,7 @@
 0x10D5707E T JavaStopMarquee
 0x14369980 D jsapi_marquee_text
 0x1055C350 D KEYPAD_STATE
+0x2484E000 D kpp
 0x102AFBEE T LdrGetFirmwareMajorVersion
 0x102AFBF2 T LdrGetFirmwareMinorVersion
 0x102AFBE6 T LdrGetPhoneName
@@ -395,6 +404,7 @@
 0x105AF202 T MsgUtilGetUnreadMsgsInAllFolders
 0x102AF524 T namecmp
 0x10735906 T Nsscanf
+0x10C543A6 T PFprintf
 0x10CD84C0 A png_check_sig
 0x10CD8644 A png_create_info_struct
 0x10CD9624 A png_create_read_struct
@@ -564,6 +574,7 @@
 0x1024DEDC A UIS_CreateColorCanvasWithWallpaper
 0x102786A0 A UIS_CreateConfirmation
 0x1027A0B8 A UIS_CreateExtendedNotice
+0x102F02C8 A UIS_CreateFormattedEditor
 0x10278BC8 A UIS_CreateIconicAppPickerTab
 0x10278AB8 A UIS_CreateIconicMenu
 0x1027A1BC A UIS_CreateIncomingCallNotice
@@ -608,14 +619,3 @@
 0x102AF4E8 T UtilLogStringData
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
-0x2484E000 D kpp
-0x10D2E120 A AhiDispIsInVBlank
-0x10D2E248 A AhiDispModeClip
-0x10D2E120 A AhiDispModeEnum
-0x03FA3174 A AhiDrawMaskBltEx
-0x1098F250 A AhiIntersect
-0x1026003C A DAL_FreeCache
-0x1094875A T DL_ClkSetClock
-0x10CC4E54 D EV_CALL_INCOMING
-0x10C543A6 T PFprintf
-0x102F02C8 A UIS_CreateFormattedEditor

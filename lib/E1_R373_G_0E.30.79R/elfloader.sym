@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.79R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x10097C0C T __16__rt_divtest
 0x10BE4610 T __16__rt_sdiv
@@ -130,6 +130,7 @@
 0x1031F4BE T APP_Start
 0x1031F54E T APP_StateExit
 0x104EB5E2 T APP_SyncML_MainRegister
+0x104FD664 T APP_SYNCMLMGR_MainRegister
 0x104F6530 T APP_UtilAddEvChangeListPosition
 0x104F6590 T APP_UtilAddEvUISGetDataForItem
 0x104F65AC T APP_UtilAddEvUISListChange
@@ -368,6 +369,7 @@
 0x10227764 T JavaStopMarquee
 0x1204D3CA D jsapi_marquee_text
 0x10399240 D KEYPAD_STATE
+0x2484E000 D kpp
 0x10C30D1E T LdrGetFirmwareMajorVersion
 0x10C30D22 T LdrGetFirmwareMinorVersion
 0x10C30D16 T LdrGetPhoneName
@@ -427,6 +429,7 @@
 0x109ADBDC A png_set_strip_16
 0x109B2754 A png_set_swap_alpha
 0x109AE34C A png_set_tRNS_to_alpha
+0x10A10C80 D product_version
 0x10A1343A T pu_main_powerdown
 0x10098260 T qsort
 0x12502538 D Ram
@@ -620,6 +623,3 @@
 0x10C30618 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x104FD664 T APP_SYNCMLMGR_MainRegister
-0x2484E000 D kpp
-0x10A10C80 D product_version

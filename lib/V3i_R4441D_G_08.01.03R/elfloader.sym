@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: V3i
 # Firmware: R4441D_G_08.01.03R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -32,6 +32,7 @@
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
+0x100A6960 D _region_table
 0x000013A8 A _rt_memset
 0x00000364 T abs_0
 0x142DE4F4 D ADN_storage_mgr
@@ -110,6 +111,7 @@
 0x1030B72A D ALMCLK_REMINDER_START
 0x1077A2D0 T AmMemAllocPointer
 0x1077A2EC T AmMemFreePointer
+0x1032F342 T APP_CALC_MainRegister
 0x1034BBF0 T APP_ChangeRoutingStack
 0x102BB7CC T APP_ConsumeEv
 0x1034BD90 T APP_Exit
@@ -127,6 +129,8 @@
 0x1034C6A8 T APP_Register
 0x1034C72A T APP_Start
 0x1034C7BA T APP_StateExit
+0x1053C7D2 T APP_SyncML_MainRegister
+0x1053F616 T APP_SYNCMLMGR_MainRegister
 0x1054AAC4 T APP_UtilAddEvChangeListPosition
 0x1054AB24 T APP_UtilAddEvUISGetDataForItem
 0x1054AB40 T APP_UtilAddEvUISListChange
@@ -147,6 +151,7 @@
 0x1054ACC4 T APP_UtilStartTimer
 0x1054AD5C T APP_UtilStopTimer
 0x1054C076 T APP_UtilUISDialogDelete
+0x10358F48 D BEGIN_4A__IN_DB
 0x03FAC654 T bsearch
 0x1034AB34 D CALL_ALERT
 0x142C602C D Class_dal
@@ -365,6 +370,7 @@
 0x102238C4 T JavaStopMarquee
 0x140AE4D2 D jsapi_marquee_text
 0x103D4F68 D KEYPAD_STATE
+0x2484E000 D kpp
 0x10D7A81E T LdrGetFirmwareMajorVersion
 0x10D7A822 T LdrGetFirmwareMinorVersion
 0x10D7A816 T LdrGetPhoneName
@@ -424,8 +430,10 @@
 0x10A57A38 A png_set_strip_16
 0x10A5C5B0 A png_set_swap_alpha
 0x10A581A8 A png_set_tRNS_to_alpha
+0x10AD42F4 D product_version
 0x10AD713E T pu_main_powerdown
 0x100A6BA4 T qsort
+0x1446428C D Ram
 0x100A6EB4 T rand
 0x10302FF8 T RestartDisplayTimer
 0x1474BCDC D SBCM_ATOD_supply
@@ -616,11 +624,3 @@
 0x10D7A118 T UtilLogStringData
 0x100A710C T vsnprintf
 0x100A7158 T vsprintf
-0x100A6960 D _region_table
-0x1032F342 T APP_CALC_MainRegister
-0x1053C7D2 T APP_SyncML_MainRegister
-0x1053F616 T APP_SYNCMLMGR_MainRegister
-0x2484E000 D kpp
-0x10AD42F4 D product_version
-0x10358F48 D BEGIN_4A__IN_DB
-0x1446428C D Ram

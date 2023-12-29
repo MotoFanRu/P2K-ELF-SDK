@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: Z3
 # Firmware: R452F1_G_08.04.09R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:53
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -126,6 +126,7 @@
 0x10488CDC T APP_Register
 0x10488D5E T APP_Start
 0x10488DEE T APP_StateExit
+0x10653F5E T APP_SyncML_MainRegister
 0x10640EB6 T APP_SYNCMLMGR_MainRegister
 0x1030818C T APP_UtilAddEvChangeListPosition
 0x103081EC T APP_UtilAddEvUISGetDataForItem
@@ -368,6 +369,14 @@
 0x10D4BEF8 T JavaStopMarquee
 0x10D4C26C D jsapi_marquee_text
 0x10547F18 D KEYPAD_STATE
+0x2484E000 D kpp
+0x115BEB1E T LdrGetFirmwareMajorVersion
+0x115BEB22 T LdrGetFirmwareMinorVersion
+0x115BEB16 T LdrGetPhoneName
+0x115BEB1A T LdrGetPlatformName
+0x115BEA9A T LdrLoadELF
+0x115BEA60 T LdrStartApp
+0x115BEAE2 T LdrUnloadELF
 0x10C89B40 T localtime
 0x00001080 T memcmp
 0x000010D8 T memcpy
@@ -613,12 +622,3 @@
 0x115BE418 T UtilLogStringData
 0x10C891A4 T vsnprintf
 0x111C0524 T vsprintf
-0x10653F5E T APP_SyncML_MainRegister
-0x2484E000 D kpp
-0x115BEB1E T LdrGetFirmwareMajorVersion
-0x115BEB22 T LdrGetFirmwareMinorVersion
-0x115BEB16 T LdrGetPhoneName
-0x115BEB1A T LdrGetPlatformName
-0x115BEA9A T LdrLoadELF
-0x115BEA60 T LdrStartApp
-0x115BEAE2 T LdrUnloadELF

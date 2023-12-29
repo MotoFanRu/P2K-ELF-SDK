@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: V235
 # Firmware: R3512_G_0A.30.6CR
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
@@ -261,6 +261,7 @@
 0x10BD6548 T JkVideoDrawString
 0x101D53B2 T JkVideoEndPaintOnVirtual
 0x10369EA4 D KEYPAD_STATE
+0x2484E000 D kpp
 0x10C04FCE T LdrGetFirmwareMajorVersion
 0x10C04FD2 T LdrGetFirmwareMinorVersion
 0x10C04FC6 T LdrGetPhoneName
@@ -439,4 +440,3 @@
 0x10AC4F9C A utility_get_image_size
 0x10C048C8 T UtilLogStringData
 0x10099190 T vsprintf
-0x2484E000 D kpp

@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -20,6 +20,7 @@
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -129,6 +130,7 @@
 0x10323132 T APP_Start
 0x103231C2 T APP_StateExit
 0x1051F5CA T APP_SyncML_MainRegister
+0x1052241A T APP_SYNCMLMGR_MainRegister
 0x1052D2AC T APP_UtilAddEvChangeListPosition
 0x1052D30C T APP_UtilAddEvUISGetDataForItem
 0x1052D328 T APP_UtilAddEvUISListChange
@@ -181,16 +183,20 @@
 0x1066A674 T DL_Char_convKOI8RtoUCS2String
 0x106693F4 T DL_Char_convUCS2toUTF8String
 0x10669462 T DL_Char_convUTF8toUCS2String
+0x1066909C T DL_ClkDeleteIndividualEvent
 0x10668BA6 T DL_ClkGetClock
 0x10668B38 T DL_ClkGetDate
 0x10668BDA T DL_ClkGetParsedClock
 0x10668B6E T DL_ClkGetTime
+0x10668BC0 T DL_ClkSetClock
 0x10668B50 T DL_ClkSetDate
 0x10668BF4 T DL_ClkSetParsedClock
 0x10668B88 T DL_ClkSetTime
+0x106690CC T DL_ClkSetWakeupEvent
 0x1066913A T DL_ClkStartCyclicalTimer
 0x106690E6 T DL_ClkStartTimer
 0x10669164 T DL_ClkStopTimer
+0x1066907C T DL_ClkStoreIndividualEvent
 0x10668C32 T DL_ClkUnpack
 0x100F9BF8 T DL_DbAlmclkCreateRecord
 0x100F9960 T DL_DbAlmclkDeleteAllRecords
@@ -288,6 +294,7 @@
 0x106899A0 T DL_FsSGetPath
 0x10688774 T DL_FsSRenameFile
 0x10688EE2 T DL_FsSSearch
+0x106880D8 T DL_FsSSetAttr
 0x10689806 T DL_FsVolumeEnum
 0x10686CAC T DL_FsWriteFile
 0x10699558 T DL_KeyInjectKeyPress
@@ -317,6 +324,7 @@
 0x102F2B94 D EV_BacklightTimeout
 0x10311F18 D EV_CALL_PLACE1
 0x10311F14 D EV_CALL_PLACE2
+0x102942E4 D EV_CHANGE_MODE
 0x103675D0 D EV_DisplayActivity
 0x104A87D8 D EV_DisplayTimeout
 0x10482458 D EV_FLIPClOSE
@@ -331,6 +339,7 @@
 0x1050D464 D EV_UNLOC_KPAD
 0x10507A74 D EVENT_BT
 0x106F2562 T FlashDevEraseBlock
+0x03FEF3C8 T FlashDevWrite
 0x10378D94 T FSS_SendFileViaObex
 0x141F03FC D GAIN_TABLE
 0x100CB940 T get_connection_status
@@ -342,6 +351,7 @@
 0x10717448 T HAPI_ATOD_read_pcap
 0x1071C3B6 T HAPI_BATTERY_ROM_get_unique_id
 0x1071C2D8 T HAPI_BATTERY_ROM_read
+0x0000B1EC T HAPI_IC_ID_unique_id_read
 0x03FAA7C0 T HAPI_PCAP_transceive
 0x107255AE T HAPI_WATCHDOG_soft_reset
 0x1071632C T hPortRead
@@ -363,6 +373,7 @@
 0x102077F6 T JkVideoEndPaintOnVirtual
 0x140443E2 D jsapi_marquee_text
 0x103A4480 D KEYPAD_STATE
+0x2484E000 D kpp
 0x10CF28FE T LdrGetFirmwareMajorVersion
 0x10CF2902 T LdrGetFirmwareMinorVersion
 0x10CF28F6 T LdrGetPhoneName
@@ -371,6 +382,7 @@
 0x10CF2840 T LdrStartApp
 0x10CF28C2 T LdrUnloadELF
 0x10099B68 T localtime
+0x000010D8 T memcpy
 0x00001100 T memset
 0x10A135A2 T MME_GC_capture_create
 0x10A1482C T MME_GC_capture_delete
@@ -392,11 +404,13 @@
 0x10A11A2C A MME_IMG_interface_create
 0x10A11C48 A MME_IMG_interface_decode
 0x10A11C40 A MME_IMG_interface_parse
+0x1068E1FC T mmm_handle_file_copy
 0x10432B78 T MsgUtilFileUtilsReadLn
 0x1043E6CE T MsgUtilGetUnreadMsgs
 0x1043E774 T MsgUtilGetUnreadMsgsInAllFolders
 0x10CF2234 T namecmp
 0x10A7FA96 T Nsscanf
+0x105C3CE4 D PARAM_TABLE
 0x10233B30 T PFprintf
 0x10A29334 A png_check_sig
 0x10A29424 A png_create_info_struct
@@ -419,6 +433,7 @@
 0x10A2CF40 A png_set_strip_16
 0x10A31AB8 A png_set_swap_alpha
 0x10A2D6B0 A png_set_tRNS_to_alpha
+0x10A9FCE8 D product_version
 0x10A93E1E T pu_main_powerdown
 0x10098B88 T qsort
 0x10098E98 T rand
@@ -438,6 +453,7 @@
 0x10B03114 T SEEM_MAX_RECORD_get_max_record
 0x10398C18 D SENDED_TRAFFIC
 0x100EC398 D SESSION_TIME
+0x000019C0 A setjmp
 0x10B8AF56 D SKIN_FOLDER
 0x10098EE4 T snprintf
 0x100989C4 T sprintf
@@ -463,13 +479,16 @@
 0x03FAACE4 T suCreateQueue
 0x03FAB580 T suCreateTask
 0x03FAAD62 T suDeleteMessage
+0x03FB6C6C A suDisableAllInt
 0x03FAC2DA T suFreeMem
 0x03FAB4FA T suGetMessageType
+0x03FADDCA T suLogData
 0x1099AFD2 T suPalPanic
 0x03FAE0C4 T suPalReadTime
 0x10B708E4 T suPalTicksToMsec
 0x03FAAEA0 T suReceiveMessageFromQueue
 0x03FAB3C2 T suSendMessage
+0x03FB6C7C A suSetInt
 0x03FAB718 T suSleep
 0x10098FD8 T tolower
 0x10098FF8 T toupper
@@ -607,22 +626,3 @@
 0x10CF21F8 T UtilLogStringData
 0x100990AC T vsnprintf
 0x100990F8 T vsprintf
-0x00001304 A __rt_memmove
-0x1052241A T APP_SYNCMLMGR_MainRegister
-0x1066909C T DL_ClkDeleteIndividualEvent
-0x10668BC0 T DL_ClkSetClock
-0x106690CC T DL_ClkSetWakeupEvent
-0x1066907C T DL_ClkStoreIndividualEvent
-0x106880D8 T DL_FsSSetAttr
-0x102942E4 D EV_CHANGE_MODE
-0x03FEF3C8 T FlashDevWrite
-0x0000B1EC T HAPI_IC_ID_unique_id_read
-0x2484E000 D kpp
-0x000010D8 T memcpy
-0x1068E1FC T mmm_handle_file_copy
-0x105C3CE4 D PARAM_TABLE
-0x10A9FCE8 D product_version
-0x000019C0 A setjmp
-0x03FB6C6C A suDisableAllInt
-0x03FADDCA T suLogData
-0x03FB6C7C A suSetInt

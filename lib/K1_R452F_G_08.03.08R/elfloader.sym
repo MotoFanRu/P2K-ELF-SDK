@@ -5,8 +5,8 @@
 # ElfPack: EP1
 # Phone: K1
 # Firmware: R452F_G_08.03.08R
-# Version: 2812231
-# Timestamp: 28-Dec-2023 10:59:07
+# Version: 2912231
+# Timestamp: 29-Dec-2023 09:32:52
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -360,6 +360,7 @@
 0x10E7CDF6 T JavaStopMarquee
 0x143C9EE0 D jsapi_marquee_text
 0x104F3888 D KEYPAD_STATE
+0x2484E000 D kpp
 0x115AECAE T LdrGetFirmwareMajorVersion
 0x115AECB2 T LdrGetFirmwareMinorVersion
 0x115AECA6 T LdrGetPhoneName
@@ -609,4 +610,3 @@
 0x115AE5A8 T UtilLogStringData
 0x1112D6A8 T vsnprintf
 0x10DC96B4 T vsprintf
-0x2484E000 D kpp
