@@ -34,14 +34,18 @@ Z3_05R:
 AhiDrawMaskBltEx ??
 
 RAM & RAMTRANS ! Check! Build
-E1_49R:   1, 2, 3, 4
-E1_79R:   1, 2, 3, 4
-E1_DAR:   1, 2, 3, 4
-K1_08R:   ?, ?, ?, ?
-L7e_0AR:  ?, ?, ?, ?
-L6i_0BR:  ?, ?, 3, 4
-L6_45R_A: ?, ?, 3, 4
-V235_6CR: ?, ?, 3, 4
+E1_49R:           1, 2, 3, 4
+E1_79R:           1, 2, 3, 4
+E1_DAR:           1, 2, 3, 4
+K1_08R:           ?, ?, ?, ?
+L7e_0AR:          ?, ?, ?, ?
+L6i_0BR:          ?, ?, 3, 4
+L6_45R_A:         ?, ?, 3, 4
+V235_6CR:         ?, ?, 3, 4
+L7_ACR_RB:        1, 2, 3, 4
+L7_E0R_RB:        1, 2, 3, 4
+V360_ACR:         1, 2, 3, 4
+
 
 LibGen 6.5 readme, etc.
 LTE2 Modern wtf.

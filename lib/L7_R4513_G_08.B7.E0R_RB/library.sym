@@ -691,3 +691,7 @@
 0x10BCA5AC A utility_get_image_size
 0x1009917C T vsnprintf
 0x100991C8 T vsprintf
+0x124EC694 D Ram
+0x107122CA T FlashDevEraseBlock
+0x03FD9B98 A suDisableAllInt
+0x03FD9BA8 A suSetInt

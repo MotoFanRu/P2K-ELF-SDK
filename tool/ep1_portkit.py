@@ -265,11 +265,14 @@ def parse_arguments() -> Namespace:
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.79R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.DAR.smg -o build
 	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/K1_R452F_G_08.03.08R.smg -o build
-	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7e_R452D_G_08.01.0AR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6i_R3443H1_0BR.pat -f cg/L6i_R3443H1_G_0A.65.0BR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6_R3511_45R_A.pat -f cg/L6_R3511_G_0A.52.45R_A.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7e_R452D_G_08.01.0AR.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.E0R_RB.smg -o build
 
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
+	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
 
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
 	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
