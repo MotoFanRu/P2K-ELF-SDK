@@ -1,5 +1,5 @@
-Find Patterns Optimizided SSE Library
-=====================================
+Find Patterns SSE Optimized Library
+===================================
 
 Author: **Andy51**
 
