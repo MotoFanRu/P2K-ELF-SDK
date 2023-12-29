@@ -693,3 +693,11 @@
 0x10B088A8 A utility_get_image_size
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x124FD320 D Ram
+0x10612B04 T DL_ClkDeleteIndividualEvent
+0x10612628 T DL_ClkSetClock
+0x10612B34 T DL_ClkSetWakeupEvent
+0x10612AE4 T DL_ClkStoreIndividualEvent
+0x10623604 T DL_DbMessageGenericGetTotalMessage
+0x10C1ACCC T memcpy
+0x10098214 T memset

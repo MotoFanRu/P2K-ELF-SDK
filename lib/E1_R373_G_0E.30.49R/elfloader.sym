@@ -631,3 +631,15 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x12745ED8 D theStatusManager
+0x10226ED4 T JavaSuspendApp
+0x10ADE928 A setCanvasControl__13StatusManagerFScPUs
+0x124FD320 D Ram
+0x100F8C7C D SESSION_TIME
+0x03FECDBA T suAcquireSem
+0x03FEC8A0 T suCreateBSem
+0x03FEC970 T suCreateCSem
+0x03FECA6C T suCreateMSem
+0x03FECB46 T suDeleteSem
+0x03FEACA4 T suDeleteTask
+0x03FECC84 T suReleaseSem

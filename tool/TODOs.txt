@@ -20,7 +20,6 @@ V600_TRIPLETS_G_0B.09.72R
 DAR Found addresses of:
 T APP_CALC_MainRegister
 T APP_SyncML_MainRegister
-T APP_SYNCMLMGR_MainRegister
 D product_version
 D EV_MsgNotif
 
@@ -39,8 +38,10 @@ AhiDrawMaskBltEx ??
 Z3_05R:
 AhiDrawMaskBltEx ??
 
-RAM! Check!
-
+RAM & RAMTRANS ! Check!
+E1_49R: 1, 2, 3
+E1_79R: 1, 2, 3
+E1_DAR: 1, 2, 3
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
