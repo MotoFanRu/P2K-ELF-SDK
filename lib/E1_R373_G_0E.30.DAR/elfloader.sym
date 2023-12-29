@@ -6,13 +6,14 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.DAR
 # Version: 2912231
-# Timestamp: 29-Dec-2023 09:32:52
+# Timestamp: 29-Dec-2023 11:33:58
 
 0x107F0200 T __16__rt_divtest
 0x10A5D6A4 T __16__rt_sdiv
 0x10A5F1A0 A __16__rt_sdiv10
 0x10A5D77C T __16__rt_udiv
 0x10A5DAC8 T __16__rt_udiv10
+0x10BA55D0 T __16_ll_cmpu
 0x10A5DAB8 T __pvfn__Fv
 0x107F0204 A __rt_divtest
 0x03FEC954 A __rt_memclr
@@ -127,6 +128,7 @@
 0x1019BA00 T APP_Register
 0x1019BA82 T APP_Start
 0x1019BB12 T APP_StateExit
+0x10209FF4 T APP_SYNCMLMGR_MainRegister
 0x1019BB2C T APP_UtilAddEvChangeListPosition
 0x1019BB8C T APP_UtilAddEvUISGetDataForItem
 0x1019BBA8 T APP_UtilAddEvUISListChange
@@ -330,6 +332,7 @@
 0x102528E8 D EV_DisplayActivity
 0x10193948 D EV_DisplayTimeout
 0x100BE244 D EV_FLIPClOSE
+0x103ACE04 D EV_IDLE_GAIN_FOCUS
 0x103AD340 D EV_LOC_KPAD
 0x103AC32C D EV_MISSEDCALLS
 0x103A6544 D EV_MSGG_PHBK_SEARCH
@@ -433,6 +436,7 @@
 0x10AF9BE8 A png_set_tRNS_to_alpha
 0x10983F2A T pu_main_powerdown
 0x10A5EE34 T qsort
+0x12318C5C D Ram
 0x10A5F154 T rand
 0x10199578 T RestartDisplayTimer
 0x120099F0 D SBCM_ATOD_supply
@@ -471,12 +475,17 @@
 0x10A5F2AC T strtok
 0x10A5F300 T strtol
 0x10A5F37C T strtoul
+0x03FF052A T suAcquireSem
 0x03FEB4E4 T suAllocMem
+0x03FF0010 T suCreateBSem
+0x03FF00E0 T suCreateCSem
 0x03FEC06A T suCreateMessage
+0x03FF01DC T suCreateMSem
 0x03FEBCE6 T suCreatePortFromQueue
 0x03FEC028 T suCreateQueue
 0x03FEC5F4 T suCreateTask
 0x03FEC0A6 T suDeleteMessage
+0x03FF02B6 T suDeleteSem
 0x03FF4AB0 A suDisableAllInt
 0x03FEB6EA T suFreeMem
 0x03FEBEE2 T suGetMessageType
@@ -485,6 +494,7 @@
 0x10B5A518 T suPalReadTime
 0x10B5A5CC T suPalTicksToMsec
 0x03FEC1E4 T suReceiveMessageFromQueue
+0x03FF03F4 T suReleaseSem
 0x03FEBDAA T suSendMessage
 0x03FF4AC0 A suSetInt
 0x03FEC6DE T suSleep
@@ -625,13 +635,3 @@
 0x10393A0C T UtilLogStringData
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
-0x10BA55D0 T __16_ll_cmpu
-0x103ACE04 D EV_IDLE_GAIN_FOCUS
-0x03FF052A T suAcquireSem
-0x03FF0010 T suCreateBSem
-0x03FF00E0 T suCreateCSem
-0x03FF01DC T suCreateMSem
-0x03FF02B6 T suDeleteSem
-0x03FF03F4 T suReleaseSem
-0x12318C5C D Ram
-0x10209FF4 T APP_SYNCMLMGR_MainRegister

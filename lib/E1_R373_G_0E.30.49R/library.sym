@@ -6,7 +6,7 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 09:55:33
+# Timestamp: 29-Dec-2023 11:34:03
 
 0x00000069 C AUDIO_STATUS
 0x00000582 C BEGIN_4A__IN_DB
@@ -279,16 +279,20 @@
 0x10611DD0 T DL_Char_convKOI8RtoUCS2String
 0x10610B60 T DL_Char_convUCS2toUTF8String
 0x10610BCE T DL_Char_convUTF8toUCS2String
+0x10612B04 T DL_ClkDeleteIndividualEvent
 0x1061260E T DL_ClkGetClock
 0x106125A0 T DL_ClkGetDate
 0x10612642 T DL_ClkGetParsedClock
 0x106125D6 T DL_ClkGetTime
+0x10612628 T DL_ClkSetClock
 0x106125B8 T DL_ClkSetDate
 0x1061265C T DL_ClkSetParsedClock
 0x106125F0 T DL_ClkSetTime
+0x10612B34 T DL_ClkSetWakeupEvent
 0x10612BA2 T DL_ClkStartCyclicalTimer
 0x10612B4E T DL_ClkStartTimer
 0x10612BCC T DL_ClkStopTimer
+0x10612AE4 T DL_ClkStoreIndividualEvent
 0x1061269A T DL_ClkUnpack
 0x100EDEAC T DL_DbAlmclkCreateRecord
 0x100EDC14 T DL_DbAlmclkDeleteAllRecords
@@ -317,6 +321,7 @@
 0x10626E78 T DL_DBK_UpdateEventData
 0x106237B8 T DL_DbMessageGenericGetMessage
 0x10623444 T DL_DbMessageGenericGetMessageIDList
+0x10623604 T DL_DbMessageGenericGetTotalMessage
 0x10624EE4 T DL_DbPhoneBookDeleteAllRecords
 0x10624DB0 T DL_DbPhoneBookFindCachedRecordByTelno
 0x10624D66 T DL_DbPhoneBookFindRecordByTelno
@@ -447,6 +452,8 @@
 0x1204C12A D jsapi_marquee_text
 0x2484E000 D kpp
 0x100998F8 T localtime
+0x10C1ACCC T memcpy
+0x10098214 T memset
 0x1097743E T MME_GC_capture_create
 0x1097781E T MME_GC_capture_delete
 0x10978004 T MME_GC_capture_get_attribute
@@ -498,6 +505,7 @@
 0x10A04E94 D product_version
 0x10A0764E T pu_main_powerdown
 0x10098260 T qsort
+0x124FD320 D Ram
 0x10098570 T rand
 0x102D7E00 T RestartDisplayTimer
 0x127D0F40 D SBCM_ATOD_supply
@@ -693,11 +701,3 @@
 0x10B088A8 A utility_get_image_size
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x124FD320 D Ram
-0x10612B04 T DL_ClkDeleteIndividualEvent
-0x10612628 T DL_ClkSetClock
-0x10612B34 T DL_ClkSetWakeupEvent
-0x10612AE4 T DL_ClkStoreIndividualEvent
-0x10623604 T DL_DbMessageGenericGetTotalMessage
-0x10C1ACCC T memcpy
-0x10098214 T memset

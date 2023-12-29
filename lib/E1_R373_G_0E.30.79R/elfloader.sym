@@ -6,7 +6,7 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.79R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 09:32:52
+# Timestamp: 29-Dec-2023 11:33:58
 
 0x10097C0C T __16__rt_divtest
 0x10BE4610 T __16__rt_sdiv
@@ -16,8 +16,12 @@
 0x10C31130 T __16_ll_cmpu
 0x10098250 T __pvfn__Fv
 0x10097C10 A __rt_divtest
+0x03FF38A0 A __rt_memclr
 0x10C2D900 A __rt_memclr_w
+0x03FF3944 A __rt_memcpy
+0x03FF39FC A __rt_memcpy_w
 0x100985F0 A __rt_memmove
+0x03FF3A6C A __rt_memset
 0x10BE4614 A __rt_sdiv
 0x10098694 A __rt_sdiv10
 0x10BE46EC A __rt_udiv
@@ -29,6 +33,7 @@
 0x10097E54 A _ll_sdiv
 0x10098118 A _ll_ushift_r
 0x10097A74 D _region_table
+0x03FF3A6C A _rt_memset
 0x10097B28 T abs_0
 0x12348774 D ADN_storage_mgr
 0x102BF5D4 T AFW_AddAppToRoutingStack
@@ -181,16 +186,20 @@
 0x1061AF0C T DL_Char_convKOI8RtoUCS2String
 0x10619C8C T DL_Char_convUCS2toUTF8String
 0x10619CFA T DL_Char_convUTF8toUCS2String
+0x1061BC40 T DL_ClkDeleteIndividualEvent
 0x1061B74A T DL_ClkGetClock
 0x1061B6DC T DL_ClkGetDate
 0x1061B77E T DL_ClkGetParsedClock
 0x1061B712 T DL_ClkGetTime
+0x1061B764 T DL_ClkSetClock
 0x1061B6F4 T DL_ClkSetDate
 0x1061B798 T DL_ClkSetParsedClock
 0x1061B72C T DL_ClkSetTime
+0x1061BC70 T DL_ClkSetWakeupEvent
 0x1061BCDE T DL_ClkStartCyclicalTimer
 0x1061BC8A T DL_ClkStartTimer
 0x1061BD08 T DL_ClkStopTimer
+0x1061BC20 T DL_ClkStoreIndividualEvent
 0x1061B7D6 T DL_ClkUnpack
 0x100EEBFC T DL_DbAlmclkCreateRecord
 0x100EE964 T DL_DbAlmclkDeleteAllRecords
@@ -319,6 +328,7 @@
 0x1031D5B8 D EV_CALL_PLACE1
 0x1031D5B4 D EV_CALL_PLACE2
 0x103106E0 D EV_CALL_TERMINATED
+0x1027708C D EV_CHANGE_MODE
 0x1035FDE4 D EV_DisplayActivity
 0x10477C64 D EV_DisplayTimeout
 0x1045CFC8 D EV_FLIPClOSE
@@ -373,6 +383,7 @@
 0x10C30C60 T LdrStartApp
 0x10C30CE2 T LdrUnloadELF
 0x100998F8 T localtime
+0x03FF3888 T memcpy
 0x10098214 T memset
 0x10983BE2 T MME_GC_capture_create
 0x10983FBA T MME_GC_capture_delete
@@ -444,6 +455,7 @@
 0x10A78798 T SEEM_MAX_RECORD_get_max_record
 0x1039215C D SENDED_TRAFFIC
 0x100F9A18 D SESSION_TIME
+0x10AEB470 A setCanvasControl__13StatusManagerFScPUs
 0x10098D2C A setjmp
 0x10B02F5E D SKIN_FOLDER
 0x10098704 T snprintf
@@ -464,12 +476,19 @@
 0x10098A88 T strtok
 0x10098ADC T strtol
 0x10098B58 T strtoul
+0x03FECF76 T suAcquireSem
 0x03FEB7DC T suAllocMem
+0x03FECA5C T suCreateBSem
+0x03FECB2C T suCreateCSem
 0x03FEBC7A T suCreateMessage
+0x03FECC28 T suCreateMSem
 0x03FEC252 T suCreatePortFromQueue
 0x03FEBC38 T suCreateQueue
 0x03FEACEC T suCreateTask
 0x03FEBCB6 T suDeleteMessage
+0x03FECD02 T suDeleteSem
+0x03FEAE60 T suDeleteTask
+0x03FF3FB8 A suDisableAllInt
 0x03FEB9E2 T suFreeMem
 0x03FEC44E T suGetMessageType
 0x10909E44 T suLogData
@@ -477,8 +496,11 @@
 0x10AE615C T suPalReadTime
 0x10AE6210 T suPalTicksToMsec
 0x03FEBDF4 T suReceiveMessageFromQueue
+0x03FECE40 T suReleaseSem
 0x03FEC316 T suSendMessage
+0x03FF3FC8 A suSetInt
 0x03FEAE84 T suSleep
+0x1276B094 D theStatusManager
 0x10098BD0 T tolower
 0x10098BF0 T toupper
 0x10B264C4 A u_atol
@@ -615,25 +637,3 @@
 0x10C30618 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x1061BC40 T DL_ClkDeleteIndividualEvent
-0x1061B764 T DL_ClkSetClock
-0x1061BC70 T DL_ClkSetWakeupEvent
-0x1061BC20 T DL_ClkStoreIndividualEvent
-0x1027708C D EV_CHANGE_MODE
-0x03FECF76 T suAcquireSem
-0x03FECA5C T suCreateBSem
-0x03FECB2C T suCreateCSem
-0x03FECC28 T suCreateMSem
-0x03FECD02 T suDeleteSem
-0x03FEAE60 T suDeleteTask
-0x03FF3FB8 A suDisableAllInt
-0x03FECE40 T suReleaseSem
-0x03FF3FC8 A suSetInt
-0x1276B094 D theStatusManager
-0x10AEB470 A setCanvasControl__13StatusManagerFScPUs
-0x03FF38A0 A __rt_memclr
-0x03FF3944 A __rt_memcpy
-0x03FF39FC A __rt_memcpy_w
-0x03FF3A6C A __rt_memset
-0x03FF3A6C A _rt_memset
-0x03FF3888 T memcpy

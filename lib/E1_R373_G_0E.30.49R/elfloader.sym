@@ -6,7 +6,7 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 09:32:52
+# Timestamp: 29-Dec-2023 11:33:57
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
@@ -374,6 +374,7 @@
 0x102255F0 T JavaStartApp
 0x10227484 T JavaStartMarquee
 0x1022733E T JavaStopMarquee
+0x10226ED4 T JavaSuspendApp
 0x1204C12A D jsapi_marquee_text
 0x103963C0 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -439,6 +440,7 @@
 0x10A04E94 D product_version
 0x10A0764E T pu_main_powerdown
 0x10098260 T qsort
+0x124FD320 D Ram
 0x10098570 T rand
 0x102D7E00 T RestartDisplayTimer
 0x127D0F40 D SBCM_ATOD_supply
@@ -455,6 +457,8 @@
 0x10502048 D SEEM_IMSI
 0x10A6C1E0 T SEEM_MAX_RECORD_get_max_record
 0x1038F364 D SENDED_TRAFFIC
+0x100F8C7C D SESSION_TIME
+0x10ADE928 A setCanvasControl__13StatusManagerFScPUs
 0x10098D2C A setjmp
 0x10AF6082 D SKIN_FOLDER
 0x10098704 T snprintf
@@ -475,13 +479,19 @@
 0x10098A88 T strtok
 0x10098ADC T strtol
 0x10098B58 T strtoul
+0x03FECDBA T suAcquireSem
 0x10A55E3C T suAllocLowPowerFlag
 0x03FEB620 T suAllocMem
+0x03FEC8A0 T suCreateBSem
+0x03FEC970 T suCreateCSem
 0x03FEBABE T suCreateMessage
+0x03FECA6C T suCreateMSem
 0x03FEC096 T suCreatePortFromQueue
 0x03FEBA7C T suCreateQueue
 0x03FEAB30 T suCreateTask
 0x03FEBAFA T suDeleteMessage
+0x03FECB46 T suDeleteSem
+0x03FEACA4 T suDeleteTask
 0x03FF3FA8 A suDisableAllInt
 0x10A55E64 T suDisableLowPowerFlag
 0x10A55E64 T suEnableLowPowerFlag
@@ -492,9 +502,11 @@
 0x10AD9690 T suPalReadTime
 0x10AD9744 T suPalTicksToMsec
 0x03FEBC38 T suReceiveMessageFromQueue
+0x03FECC84 T suReleaseSem
 0x03FEC15A T suSendMessage
 0x03FF3FB8 A suSetInt
 0x03FEACC8 T suSleep
+0x12745ED8 D theStatusManager
 0x10098BD0 T tolower
 0x10098BF0 T toupper
 0x10B194CC A u_atol
@@ -631,15 +643,3 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x12745ED8 D theStatusManager
-0x10226ED4 T JavaSuspendApp
-0x10ADE928 A setCanvasControl__13StatusManagerFScPUs
-0x124FD320 D Ram
-0x100F8C7C D SESSION_TIME
-0x03FECDBA T suAcquireSem
-0x03FEC8A0 T suCreateBSem
-0x03FEC970 T suCreateCSem
-0x03FECA6C T suCreateMSem
-0x03FECB46 T suDeleteSem
-0x03FEACA4 T suDeleteTask
-0x03FECC84 T suReleaseSem
