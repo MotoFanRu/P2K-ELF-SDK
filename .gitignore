@@ -4,8 +4,8 @@ tool/.venv
 tool/forge/__pycache__
 tool/forge_test/__pycache__
 
-tool/*.smg
-tool/*.bin
+tool/cg/*.smg
+tool/cg/*.bin
 
 tool/build
 
