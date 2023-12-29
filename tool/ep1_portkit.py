@@ -218,6 +218,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
 	forge.ep1_libgen_asm(val_library_asm, library_model)
 	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions)
+	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, arg_phone, arg_fw)
 	logging.info(f'')
 
 	logging.info(f'Compiling ElfPack v1.0 library for SDK.')
@@ -261,6 +262,7 @@ def parse_arguments() -> Namespace:
 	}
 	epl: str = """examples:
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
+	
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
 	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
 	"""
