@@ -273,12 +273,12 @@ def parse_arguments() -> Namespace:
 	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L9_R452J_G_08.22.05R.smg -o build
 	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V3r_R4515_G_08.BD.D3R.smg -o build
-
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
-
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
-	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452B_G_08.02.0DR.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452F1_G_08.04.09R.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452H6_G_08.00.05R.smg -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
