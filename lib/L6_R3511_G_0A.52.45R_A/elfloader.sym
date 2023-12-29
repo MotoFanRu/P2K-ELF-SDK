@@ -6,7 +6,7 @@
 # Phone: L6
 # Firmware: R3511_G_0A.52.45R_A
 # Version: 2912231
-# Timestamp: 29-Dec-2023 11:33:58
+# Timestamp: 29-Dec-2023 14:14:13
 
 0x1009C5BC T __16__rt_divtest
 0x10C466EC T __16__rt_sdiv
@@ -121,6 +121,7 @@
 0x103377A4 T APP_Register
 0x10337826 T APP_Start
 0x10509E6A T APP_SyncML_MainRegister
+0x1050CC8C T APP_SYNCMLMGR_MainRegister
 0x10508760 T APP_UtilAddEvChangeListPosition
 0x105087C0 T APP_UtilAddEvUISGetDataForItem
 0x105087DC T APP_UtilAddEvUISListChange
@@ -176,6 +177,7 @@
 0x10638FC6 T DL_ClkStartTimer
 0x10639044 T DL_ClkStopTimer
 0x10638B12 T DL_ClkUnpack
+0x106484C2 T DL_DbFeatureGetBlock
 0x1064817A T DL_DbFeatureGetCurrentState
 0x106481FC T DL_DbFeatureGetValue
 0x106481DE T DL_DbFeatureGetValueString
@@ -246,9 +248,14 @@
 0x106642DE T DL_KeyUpdateKeypadBacklight
 0x1062AE50 T DL_PwrGetActiveBatteryPercent
 0x10669380 T DL_SigCallGetCallStates
+0x1066913C T DL_SigCallReleaseReq
+0x1066D0A4 T DL_SigCallSSAbortUSSDReq
+0x1066CCF6 T DL_SigCallSSOperationReq
+0x1066D03C T DL_SigCallSSSendUSSDResponseReq
 0x1066A64A T DL_SigMsgSendTextMsgReq
 0x10669764 T DL_SigRegGetCellID
 0x10669868 T DL_SigRegQueryGprsEgprs
+0x10669868 T DL_SigRegQueryGprsEgprsState
 0x10669750 T DL_SigRegQuerySignalStrength
 0x1066D58C T DL_SimMgrGetPinStatus
 0x10691B62 T DRM_ClearResource
@@ -268,6 +275,8 @@
 0x10516C28 D EV_PREVIEW_START
 0x104F56AC D EV_UNLOC_KPAD
 0x104EFF18 D EVENT_BT
+0x106B9E4A T FlashDevEraseBlock
+0x03FE9CE8 T FlashDevWrite
 0x121D5FBC D GAIN_TABLE
 0x106DB088 T HAPI_ATOD_convert_ambient_light_sensor
 0x106DAF30 T HAPI_ATOD_read
@@ -315,6 +324,7 @@
 0x10C96F24 T namecmp
 0x121D63A4 D PARAM_TABLE
 0x1021C678 T PFprintf
+0x10A56370 D product_version
 0x10A47316 T pu_main_powerdown
 0x1009CC10 T qsort
 0x1009CF20 T rand
@@ -330,6 +340,7 @@
 0x102CCBC0 D SEEM_IMEI
 0x1051784C D SEEM_IMSI
 0x10ABA94C T SEEM_MAX_RECORD_get_max_record
+0x1009D0B4 T snprintf
 0x1009C490 T sprintf
 0x1009CEC4 T srand
 0x1009D198 T strcat
@@ -347,12 +358,19 @@
 0x1009D4A4 T strtok
 0x1009D4F8 T strtol
 0x1009D574 T strtoul
+0x10B37C3A T suAcquireSem
 0x10B364A0 T suAllocMem
+0x10B37720 T suCreateBSem
+0x10B377F0 T suCreateCSem
 0x10B3693E T suCreateMessage
+0x10B378EC T suCreateMSem
 0x10B36F16 T suCreatePortFromQueue
 0x10B368FC T suCreateQueue
 0x10B35CE8 T suCreateTask
 0x10B3697A T suDeleteMessage
+0x10B379C6 T suDeleteSem
+0x10B35E5C T suDeleteTask
+0x10B45A88 A suDisableAllInt
 0x10B366A6 T suFreeMem
 0x10B37112 T suGetMessageType
 0x1094F2D0 T suLogData
@@ -360,7 +378,9 @@
 0x10B38ECC T suPalReadTime
 0x10B38F80 T suPalTicksToMsec
 0x10B36AB8 T suReceiveMessageFromQueue
+0x10B37B04 T suReleaseSem
 0x10B36FDA T suSendMessage
+0x10B45A98 A suSetInt
 0x10B35E80 T suSleep
 0x1009D5EC T tolower
 0x1009D60C T toupper
@@ -391,6 +411,7 @@
 0x10B69AC4 A UIS_CanvasDrawColorScrollBar
 0x10B69618 A UIS_CanvasDrawColorSoftkey
 0x10B68464 A UIS_CanvasDrawColorText
+0x10B687B0 A UIS_CanvasDrawColorTextWithClipping
 0x10B69E1C A UIS_CanvasDrawImage
 0x10B68C30 A UIS_CanvasDrawLine
 0x10B67514 A UIS_CanvasDrawPicture
@@ -405,6 +426,7 @@
 0x10B68F60 A UIS_CanvasFillRect
 0x10B68164 A UIS_CanvasGetBackgroundColor
 0x10B66A28 A UIS_CanvasGetCharacterSize
+0x10B6800C A UIS_CanvasGetClippingRegion
 0x10B67F0C A UIS_CanvasGetColorDepth
 0x10B66940 A UIS_CanvasGetCurrentFonts
 0x10B6636C A UIS_CanvasGetDefaultDisplayBuffer
@@ -434,6 +456,7 @@
 0x10B6A54C A UIS_CanvasResizeImage
 0x10B68170 A UIS_CanvasSetBackgroundColor
 0x10B68118 A UIS_CanvasSetBackLight
+0x10B67FA0 A UIS_CanvasSetClippingRegion
 0x10B66320 A UIS_CanvasSetDefaultDisplayBuffer
 0x10B681B4 A UIS_CanvasSetFillColor
 0x10B67F2C A UIS_CanvasSetFont
@@ -475,6 +498,7 @@
 0x10B57594 A UIS_SetActionList
 0x10B57678 A UIS_SetBacklightWithIntensity
 0x10B57618 A UIS_SetCenterSelectAction
+0x100D43E0 A UIS_SetClearKeyAction
 0x10B57760 A UIS_SetNoticeStatus
 0x10B57850 A UIS_SetStatus
 0x10B57A0C A UIS_SetWallpaper
@@ -486,27 +510,3 @@
 0x10B6D4BC A utility_get_image_size
 0x10C96EE8 T UtilLogStringData
 0x1009D79C T vsprintf
-0x1050CC8C T APP_SYNCMLMGR_MainRegister
-0x10669868 T DL_SigRegQueryGprsEgprsState
-0x106B9E4A T FlashDevEraseBlock
-0x03FE9CE8 T FlashDevWrite
-0x10A56370 D product_version
-0x106484C2 T DL_DbFeatureGetBlock
-0x1066913C T DL_SigCallReleaseReq
-0x1066D0A4 T DL_SigCallSSAbortUSSDReq
-0x1066CCF6 T DL_SigCallSSOperationReq
-0x1066D03C T DL_SigCallSSSendUSSDResponseReq
-0x1009D0B4 T snprintf
-0x10B37C3A T suAcquireSem
-0x10B37720 T suCreateBSem
-0x10B377F0 T suCreateCSem
-0x10B378EC T suCreateMSem
-0x10B379C6 T suDeleteSem
-0x10B35E5C T suDeleteTask
-0x10B45A88 A suDisableAllInt
-0x10B37B04 T suReleaseSem
-0x10B45A98 A suSetInt
-0x10B687B0 A UIS_CanvasDrawColorTextWithClipping
-0x10B6800C A UIS_CanvasGetClippingRegion
-0x10B67FA0 A UIS_CanvasSetClippingRegion
-0x100D43E0 A UIS_SetClearKeyAction
