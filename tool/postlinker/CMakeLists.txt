@@ -16,6 +16,10 @@ include_directories(${PROJECT_SOURCE_DIR})
 #add_definitions("-DLILENDIAN")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -O2")
+if(CMAKE_HOST_WIN32)
+	set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -static")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+endif()
 
 set(SOURCE_FILES
 	constlib.cpp

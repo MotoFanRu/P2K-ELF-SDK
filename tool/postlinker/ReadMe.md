@@ -1,7 +1,7 @@
-Patterns
-========
+PostLinker
+==========
 
-Set of utilities for working with patterns.
+Postlinker utility for finalizing ElfPack v2.0 artifacts.
 
 Author: **Andy51**
 
@@ -10,7 +10,7 @@ Author: **Andy51**
 ```bash
 cmake ..
 make VERBOSE=1
-strip -s pat
+strip -s postlink
 ```
 
 ### Building on Windows (MinGW)
@@ -25,9 +25,9 @@ strip -s pat
 set PATH=C:\Dev\MinGW\bin;C:\Dev\CMake\bin;%PATH%
 cmake -G "MinGW Makefiles" ..
 mingw32-make VERBOSE=1
-strip -s pat.exe
+strip -s postlink.exe
 ```
 
 ## Additional information
 
-* [Libpat - библиотека для поиска паттерн, инструмент для патчеров](https://forum.motofan.ru/index.php?showtopic=174598)
+* [ElfPack v2.0, Начало всеобщего тестирования](https://forum.motofan.ru/index.php?showtopic=161718)

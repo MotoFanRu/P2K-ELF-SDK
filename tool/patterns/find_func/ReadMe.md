@@ -1,5 +1,7 @@
-Find Patterns SSE Optimized Library
-===================================
+Find Func
+=========
+
+A SSE optimized library for finding patterns in binary files written in Assembly language.
 
 Author: **Andy51**
 
