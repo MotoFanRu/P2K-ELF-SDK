@@ -6,7 +6,7 @@
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
 # Version: 2912231
-# Timestamp: 29-Dec-2023 09:41:17
+# Timestamp: 29-Dec-2023 09:55:33
 
 0x00000069 C AUDIO_STATUS
 0x00000650 C BEGIN_4A__IN_DB
@@ -445,13 +445,6 @@
 0x10D088EE T JkMediaMIDIDrvGetMIDIController
 0x10CEDF34 D jsapi_marquee_text
 0x2484E000 D kpp
-0x115C096E T LdrGetFirmwareMajorVersion
-0x115C0972 T LdrGetFirmwareMinorVersion
-0x115C0966 T LdrGetPhoneName
-0x115C096A T LdrGetPlatformName
-0x115C08EA T LdrLoadELF
-0x115C08B0 T LdrStartApp
-0x115C0932 T LdrUnloadELF
 0x000011DC A memcpy
 0x00001100 T memset
 0x106F750E A mma_default_file_name
