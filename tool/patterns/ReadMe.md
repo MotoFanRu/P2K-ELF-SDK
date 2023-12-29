@@ -15,11 +15,10 @@ strip -s pat
 
 ### Building on Windows (MinGW)
 
-1. Install [CMake](https://cmake.org/) and add it to the `PATH` environment variable.
-2. Install [MinGW + MSYS](https://sourceforge.net/projects/mingw/files/) to the `C:\Dev\MinGW\` directory.
-3. Add `C:\Dev\MinGW\bin\` directory to the `PATH` environment variable.
-4. Run `cmd.exe` Command Prompt.
-
+1. Install [CMake](https://cmake.org/) to the `C:\Dev\MinGW\` directory and add `C:\Dev\MinGW\bin` to the `PATH` environment variable.
+2. Install [MinGW + MSYS](https://sourceforge.net/projects/mingw/files/) to the `C:\Dev\CMake\` directory and add `C:\Dev\CMake\bin` to the `PATH` environment variable.
+3. Install `mingw-developer-toolkit`, `mingw32-base`, `mingw32-gcc-g++`, `msys-base` packages in the MinGW Installation Manager.
+4. Run `cmd.exe` Command Prompt in current directory and enter commands.
 
 ```bat
 set PATH=C:\Dev\MinGW\bin;C:\Dev\CMake\bin;%PATH%
