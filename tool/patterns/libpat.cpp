@@ -16,7 +16,7 @@ libpatCallback		gStatusCallback;
 u32					*gFindPatternResult;
 
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
                        LPVOID lpReserved
@@ -59,9 +59,12 @@ u32 createPattern(PATTERN_T *pattern, PARSED_DATA_T *pdata)
 
 	bytelen = (len/2 + LENGTH_ALIGNMENT_MASK) & (~LENGTH_ALIGNMENT_MASK);
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
 	pattern->text = (u8*)_aligned_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
 	pattern->mask = (u8*)_aligned_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
+#elif defined(__MINGW32__ )
+	pattern->text = (u8*)__mingw_aligned_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
+	pattern->mask = (u8*)__mingw_aligned_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
 #else
 	pattern->text = (u8*)_mm_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
 	pattern->mask = (u8*)_mm_malloc(bytelen*sizeof(u8), LENGTH_ALIGNMENT);
@@ -145,9 +148,12 @@ u32 addPattern(PARSED_DATA_T *pdata)
 void freePattern(PATTERN_T *pattern)
 {
 	free(pattern->name);
-#if defined(WIN32)
+#if defined(_MSC_VER)
 	_aligned_free(pattern->text);
 	_aligned_free(pattern->mask);
+#elif defined(__MINGW32__)
+	__mingw_aligned_free(pattern->text);
+	__mingw_aligned_free(pattern->mask);
 #else
 	_mm_free(pattern->text);
 	_mm_free(pattern->mask);
@@ -251,8 +257,10 @@ void libpatTerm()
 	}
 
 	if(gBuffer != NULL)
-#if defined(WIN32)
+#if defined(_MSC_VER)
 		_aligned_free(gBuffer);
+#elif defined(__MINGW32__)
+		__mingw_aligned_free(gBuffer);
 #else
 		_mm_free(gBuffer);
 #endif

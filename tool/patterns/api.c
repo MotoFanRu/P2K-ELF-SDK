@@ -16,8 +16,10 @@ void* __stdcall libpatLoadBinary(const char *path, u32 *size)
 	gBufLength = ftell(f);
 	fseek(f, 0, SEEK_SET);
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
 	gBuffer = (u8*)_aligned_malloc(gBufLength, LENGTH_ALIGNMENT);
+#elif defined(__MINGW32__ )
+	gBuffer = (u8*)__mingw_aligned_malloc(gBufLength, LENGTH_ALIGNMENT);
 #else
 	gBuffer = (u8*)_mm_malloc(gBufLength, LENGTH_ALIGNMENT);
 #endif

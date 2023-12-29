@@ -20,6 +20,10 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -m32 -O2 -no-pie")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -O2 -no-pie")
+if(CMAKE_HOST_WIN32)
+	set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -static")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+endif()
 
 set(SOURCE_FILES
 	api.c

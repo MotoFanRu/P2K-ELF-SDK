@@ -1,12 +1,15 @@
-
 #ifndef LIBPAT__H
 #define LIBPAT__H
+
+#if defined(WIN32)
+#include <windows.h>
+#endif
 
 #if !defined(WIN32)
 #define __stdcall
 #endif
 
-#if defined(WIN32)
+#if defined(_MSC_VER)
 #ifdef LIBPAT_EXPORTS
 #define LIBPAT_API __declspec(dllexport)
 #else

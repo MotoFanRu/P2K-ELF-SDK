@@ -1,6 +1,11 @@
 #ifndef COMMON__H
 #define COMMON__H
 
+#if defined(WIN32)
+#include <windows.h>
+#include <malloc.h>
+#endif
+
 #if !defined(WIN32)
 #include <xmmintrin.h>
 #endif
@@ -36,8 +41,8 @@ extern "C" {
 long findAllPatternsSSEa(void);
 u32* findPatternSSEa(PATTERN_T *pattern);
 
-void libpatInit();
-void libpatTerm();
+void __stdcall libpatInit();
+void __stdcall libpatTerm();
 
 void translateValue(PATTERN_T *pat, u32 *value);
 u32 createPattern(PATTERN_T *pattern, PARSED_DATA_T *pdata);

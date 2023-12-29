@@ -67,7 +67,7 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 	gotoxy(x, y);
 
 #if defined(WIN32)
-	printf("%03d/%03d, %06.2f%%", count, stat.patcount, count*100/(float)stat.patcount);
+	printf("%03d/%03d, %06.2f%%, %s", count, stat.patcount, count*100/(float)stat.patcount, buf);
 #else
 	fprintf(stderr, "%06.2f%% | %03ld/%03ld | %s\n", count*100/(float)stat.patcount, count, stat.patcount, buf);
 #endif
