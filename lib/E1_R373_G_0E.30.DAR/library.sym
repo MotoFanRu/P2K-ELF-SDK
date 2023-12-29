@@ -687,3 +687,4 @@
 0x107F2DE4 A utility_get_image_size
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
+0x2484E000 D kpp

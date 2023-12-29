@@ -439,3 +439,4 @@
 0x10AC4F9C A utility_get_image_size
 0x10C048C8 T UtilLogStringData
 0x10099190 T vsprintf
+0x2484E000 D kpp

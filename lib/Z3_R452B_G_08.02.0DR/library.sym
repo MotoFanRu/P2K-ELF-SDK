@@ -683,3 +683,8 @@
 0x1038E4E0 A utility_get_image_size
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
+0x104B22A8 T APP_CALC_MainRegister
+0x111BF76C D _region_table
+0x10653F5E T APP_SyncML_MainRegister
+0x1407332C D Ram
+0x2484E000 D kpp

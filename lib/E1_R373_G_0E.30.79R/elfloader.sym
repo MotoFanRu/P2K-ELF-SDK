@@ -620,3 +620,6 @@
 0x10C30618 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x104FD664 T APP_SYNCMLMGR_MainRegister
+0x2484E000 D kpp
+0x10A10C80 D product_version

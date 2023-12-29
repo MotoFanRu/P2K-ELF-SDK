@@ -702,3 +702,4 @@
 0x10BC6774 A utility_get_image_size
 0x1009917C T vsnprintf
 0x100991C8 T vsprintf
+0x124EBBA0 D Ram

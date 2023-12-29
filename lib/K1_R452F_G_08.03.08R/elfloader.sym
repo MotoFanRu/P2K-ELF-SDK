@@ -609,3 +609,4 @@
 0x115AE5A8 T UtilLogStringData
 0x1112D6A8 T vsnprintf
 0x10DC96B4 T vsprintf
+0x2484E000 D kpp

@@ -402,7 +402,6 @@
 0x10D1E2E4 T namecmp
 0x10A991B6 T Nsscanf
 0x105DBDD0 D PARAM_TABLE
-0x10246E24 T PFprintf
 0x10A37234 A png_check_sig
 0x10A37324 A png_create_info_struct
 0x10A396B8 A png_create_read_struct
@@ -616,3 +615,18 @@
 0x10D1E2A8 T UtilLogStringData
 0x1009917C T vsnprintf
 0x100991C8 T vsprintf
+0x10098900 D _region_table
+0x10342AF6 T APP_CALC_MainRegister
+0x1054CE2E T APP_SyncML_MainRegister
+0x1054FC5C T APP_SYNCMLMGR_MainRegister
+0x2484E000 D kpp
+0x00001300 T __16__rt_memmove
+0x106BB1B0 T DL_SigRegQueryGprsEgprs
+0x103E7F48 D EV_BacklightContinueOn
+0x101FFA0C T JkGraphicsCreateContext
+0x101FFCC8 T JkGraphicsSetColor
+0x1020AEB2 T JkVideoDrawRect
+0x03F81AB0 T JkVideoDrawString
+0x1020AE06 T JkVideoEndPaintOnVirtual
+0x10AB7D80 D product_version
+0x10246E26 T PFprintf

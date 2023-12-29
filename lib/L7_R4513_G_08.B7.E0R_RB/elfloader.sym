@@ -195,12 +195,6 @@
 0x1068DFD0 T DL_ClkStopTimer
 0x1068DEE8 T DL_ClkStoreIndividualEvent
 0x1068DA9E T DL_ClkUnpack
-0x100E3DF8 T DL_DbAlmclkCreateRecord
-0x100E3BC0 T DL_DbAlmclkDeleteAllRecords
-0x100E3F48 T DL_DbAlmclkDeleteRecordByIndex
-0x100E3E9C T DL_DbAlmclkGetRecordByIndex
-0x100E3FFA T DL_DbAlmclkRegisterApplication
-0x100E4018 T DL_DbAlmclkUnregisterApplication
 0x1068E3EA T DL_DbFeatureGetBlock
 0x1068E0A2 T DL_DbFeatureGetCurrentState
 0x1068E124 T DL_DbFeatureGetValue
@@ -224,7 +218,6 @@
 0x10695954 T DL_DbMessageGenericGetMessageIDList
 0x106A0308 T DL_DbPhoneBookDeleteAllRecords
 0x106A01E0 T DL_DbPhoneBookFindCachedRecordByTelno
-0x106A0196 T DL_DbPhoneBookFindRecordByTelno
 0x106A0AEA T DL_DbPhoneBookGetCategoryRecordByIndex
 0x1012CE1A T DL_DbPhoneBookGetNumberofCategories
 0x10127DFE T DL_DbPhoneBookGetNumberRecords
@@ -403,7 +396,6 @@
 0x10D229C4 T namecmp
 0x10A9CDB6 T Nsscanf
 0x105DCF70 D PARAM_TABLE
-0x10247256 T PFprintf
 0x10A3AE1C A png_check_sig
 0x10A3AF0C A png_create_info_struct
 0x10A3D2A0 A png_create_read_struct
@@ -443,7 +435,6 @@
 0x1055636C D SEEM_IMSI
 0x10B22C78 T SEEM_MAX_RECORD_get_max_record
 0x103D290C D SENDED_TRAFFIC
-0x100EEC50 D SESSION_TIME
 0x000019C0 A setjmp
 0x10BB83EA D SKIN_FOLDER
 0x10098EB8 T snprintf
@@ -617,3 +608,15 @@
 0x10D22988 T UtilLogStringData
 0x1009917C T vsnprintf
 0x100991C8 T vsprintf
+0x105508C0 T APP_SYNCMLMGR_MainRegister
+0x106979F8 T DL_DbAlmclkCreateRecord
+0x10697A34 T DL_DbAlmclkDeleteAllRecords
+0x10697A28 T DL_DbAlmclkDeleteRecordByIndex
+0x10697A10 T DL_DbAlmclkGetRecordByIndex
+0x10697A4C T DL_DbAlmclkRegisterApplication
+0x10697A58 T DL_DbAlmclkUnregisterApplication
+0x106A019C T DL_DbPhoneBookFindRecordByTelno
+0x2484E000 D kpp
+0x10247254 T PFprintf
+0x10ABB994 D product_version
+0x107D61E0 D SESSION_TIME

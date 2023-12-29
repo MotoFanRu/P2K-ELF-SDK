@@ -17,4 +17,30 @@ E1_R373_G_0E.30.DAR
 L7_R4513_G_08.B7.E0R_RB
 V600_TRIPLETS_G_0B.09.72R
 
-D EV_MsgNotif on DAR is wrong.
+DAR Found addresses of:
+T APP_CALC_MainRegister
+T APP_SyncML_MainRegister
+T APP_SYNCMLMGR_MainRegister
+D product_version
+D EV_MsgNotif
+
+L6/L6i/V235:
+T APP_SYNCMLMGR_MainRegister
+D product_version
+D _region_table
+
+Z3_ODR:
+AhiDrawFgColorSet ??
+AhiDispModeClip ??
+AhiDispModeEnum ??
+AhiDispModeGet ??
+AhiDrawMaskBltEx ??
+
+Z3_05R:
+AhiDrawMaskBltEx ??
+
+RAM! Check!
+
+Update/recompile EP2 libraries using Windows DevKIT Pro.
+
+Update L6/L6i patterns.

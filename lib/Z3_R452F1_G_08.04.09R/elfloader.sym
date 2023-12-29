@@ -368,13 +368,6 @@
 0x10D4BEF8 T JavaStopMarquee
 0x10D4C26C D jsapi_marquee_text
 0x10547F18 D KEYPAD_STATE
-0x115BEB1E T LdrGetFirmwareMajorVersion
-0x115BEB22 T LdrGetFirmwareMinorVersion
-0x115BEB16 T LdrGetPhoneName
-0x115BEB1A T LdrGetPlatformName
-0x115BEA9A T LdrLoadELF
-0x115BEA60 T LdrStartApp
-0x115BEAE2 T LdrUnloadELF
 0x10C89B40 T localtime
 0x00001080 T memcmp
 0x000010D8 T memcpy
@@ -620,3 +613,12 @@
 0x115BE418 T UtilLogStringData
 0x10C891A4 T vsnprintf
 0x111C0524 T vsprintf
+0x10653F5E T APP_SyncML_MainRegister
+0x2484E000 D kpp
+0x115BEB1E T LdrGetFirmwareMajorVersion
+0x115BEB22 T LdrGetFirmwareMinorVersion
+0x115BEB16 T LdrGetPhoneName
+0x115BEB1A T LdrGetPlatformName
+0x115BEA9A T LdrLoadELF
+0x115BEA60 T LdrStartApp
+0x115BEAE2 T LdrUnloadELF

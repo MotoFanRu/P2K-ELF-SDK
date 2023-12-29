@@ -686,3 +686,5 @@
 0x10B157BC A utility_get_image_size
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x10097A74 D _region_table
+0x2484E000 D kpp

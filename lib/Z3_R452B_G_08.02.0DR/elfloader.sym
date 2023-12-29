@@ -182,7 +182,6 @@
 0x109486B8 T DL_ClkGetDate
 0x10948774 T DL_ClkGetParsedClock
 0x10948708 T DL_ClkGetTime
-0x10AC09F2 T DL_ClkSetClock
 0x109486EA T DL_ClkSetDate
 0x1094878E T DL_ClkSetParsedClock
 0x10948722 T DL_ClkSetTime
@@ -396,7 +395,6 @@
 0x105AF202 T MsgUtilGetUnreadMsgsInAllFolders
 0x102AF524 T namecmp
 0x10735906 T Nsscanf
-0x10C543A8 T PFprintf
 0x10CD84C0 A png_check_sig
 0x10CD8644 A png_create_info_struct
 0x10CD9624 A png_create_read_struct
@@ -610,3 +608,14 @@
 0x102AF4E8 T UtilLogStringData
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
+0x2484E000 D kpp
+0x10D2E120 A AhiDispIsInVBlank
+0x10D2E248 A AhiDispModeClip
+0x10D2E120 A AhiDispModeEnum
+0x03FA3174 A AhiDrawMaskBltEx
+0x1098F250 A AhiIntersect
+0x1026003C A DAL_FreeCache
+0x1094875A T DL_ClkSetClock
+0x10CC4E54 D EV_CALL_INCOMING
+0x10C543A6 T PFprintf
+0x102F02C8 A UIS_CreateFormattedEditor

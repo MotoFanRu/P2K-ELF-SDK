@@ -696,3 +696,4 @@
 0x10BA888C A utility_get_image_size
 0x100990AC T vsnprintf
 0x100990F8 T vsprintf
+0x10B01BD2 T SEEM_FDI_OUTSIDE_SEEM_ACCESS_read
