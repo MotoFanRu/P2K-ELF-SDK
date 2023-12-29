@@ -23,11 +23,6 @@ T APP_SyncML_MainRegister
 D product_version
 D EV_MsgNotif
 
-L6/L6i/V235:
-T APP_SYNCMLMGR_MainRegister
-D product_version
-D _region_table
-
 Z3_ODR:
 AhiDrawFgColorSet ??
 AhiDispModeClip ??
@@ -38,13 +33,19 @@ AhiDrawMaskBltEx ??
 Z3_05R:
 AhiDrawMaskBltEx ??
 
-RAM & RAMTRANS ! Check!
-E1_49R: 1, 2, 3
-E1_79R: 1, 2, 3
-E1_DAR: 1, 2, 3
+RAM & RAMTRANS ! Check! Build
+E1_49R:   1, 2, 3, 4
+E1_79R:   1, 2, 3, 4
+E1_DAR:   1, 2, 3, 4
+K1_08R:   ?, ?, ?, ?
+L7e_0AR:  ?, ?, ?, ?
+L6i_0BR:  ?, ?, 3, 4
+L6_45R_A: ?, ?, 3, 4
+V235_6CR: ?, ?, 3, 4
+
+LibGen 6.5 readme, etc.
+LTE2 Modern wtf.
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
 Update L6/L6i patterns.
-
-

@@ -58,6 +58,8 @@ def libgen_version() -> str:
 
 
 def ep1_normalize_address(address: int) -> tuple[str, int]:
+	if address == 0xFFFFFFFF:
+		return 'D', 0xFFFFFFFF
 	if address > 0x30000000:
 		return 'D', (address - 0x30000000)
 	else:
@@ -103,7 +105,15 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> 
 					elif mode == 'D':
 						address_int += 0x30000000
 					f_o.write(offset.to_bytes(4, byteorder='big'))
-					f_o.write(address_int.to_bytes(4, byteorder='big'))
+					try:
+						address_value_to_write = address_int.to_bytes(4, byteorder='big')
+					except OverflowError:
+						raw_address_int: int = 0xFFFFFFFF
+						logging.warning(f'32-bit int overflow on "{address} {mode} {name}" line.')
+						logging.warning(f'Overflowed value: {int2hex(address_int)}')
+						logging.warning(f'Will write default value: {int2hex(raw_address_int)}')
+						address_value_to_write = raw_address_int.to_bytes(4, byteorder='big')
+					f_o.write(address_value_to_write)
 				else:
 					logging.error(f'Function "{address_int} {mode} {name}" not found in the library model.')
 
@@ -208,7 +218,10 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, phone: str, 
 				model: LibraryModel = []
 				for i in range(0, cnt):
 					mode, address = ep1_normalize_address(ent[i][1])  # Second is address.
-					model.append((int2hex(address), mode, ent_names[i]))
+					entry: tuple[str, str, str] = (int2hex(address), mode, ent_names[i])
+					if address == 0xFFFFFFFF:
+						logging.warning(f'Overflowed value on "{entry}" entry.')
+					model.append(entry)
 				model = ep1_libgen_model_sort(model, sort)
 				if dump_library_model_to_sym_file(model, p_sym, phone, fw, 'EP1', libgen_version()):
 					return validate_sym_file(p_sym)
