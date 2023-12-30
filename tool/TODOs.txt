@@ -18,12 +18,6 @@ E1_R373_G_0E.30.DAR
 L7_R4513_G_08.B7.E0R_RB
 V600_TRIPLETS_G_0B.09.72R
 
-DAR Found addresses of:
-T APP_CALC_MainRegister
-T APP_SyncML_MainRegister
-D product_version
-D EV_MsgNotif
-
 RAM & RAMTRANS ! Check! Build
 E1_49R:           1, 2, 3, 4
 E1_79R:           1, 2, 3, 4
@@ -45,11 +39,9 @@ Z3_05R:           ?, ?, ?, ?
 Z3_09R:           ?, ?, ?, ?
 
 LibGen 6.5 readme, etc.
+
 LTE2 Modern wtf.
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
-Update L6/L6i patterns.
-
-
-0x00001494 A __16__rt_udiv Question??
+0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?

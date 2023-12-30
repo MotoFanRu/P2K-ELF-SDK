@@ -691,3 +691,7 @@
 0x107F2DE4 A utility_get_image_size
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
+0x10B5B088 D product_version
+0x103B98F8 D EV_MsgNotif
+0x101A16B0 T APP_CALC_MainRegister
+0x102071C2 T APP_SyncML_MainRegister
