@@ -13,6 +13,7 @@
 + L7_R4513_G_08.B7.ACR_RB
 + V3r_R4515_G_08.BD.D3R
 
+Add EP2 compiling to these:
 E1_R373_G_0E.30.DAR
 L7_R4513_G_08.B7.E0R_RB
 V600_TRIPLETS_G_0B.09.72R
@@ -22,16 +23,6 @@ T APP_CALC_MainRegister
 T APP_SyncML_MainRegister
 D product_version
 D EV_MsgNotif
-
-Z3_ODR:
-AhiDrawFgColorSet ??
-AhiDispModeClip ??
-AhiDispModeEnum ??
-AhiDispModeGet ??
-AhiDrawMaskBltEx ??
-
-Z3_05R:
-AhiDrawMaskBltEx ??
 
 RAM & RAMTRANS ! Check! Build
 E1_49R:           1, 2, 3, 4
@@ -59,3 +50,6 @@ LTE2 Modern wtf.
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
 Update L6/L6i patterns.
+
+
+0x00001494 A __16__rt_udiv Question??
