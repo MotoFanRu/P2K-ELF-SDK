@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.DAR
-# Version: 3012231
-# Timestamp: 30-Dec-2023 15:58:46
+# Version: 3112231
+# Timestamp: 31-Dec-2023 01:26:45
 
 0x107F0200 T __16__rt_divtest
 0x10A5D6A4 T __16__rt_sdiv
@@ -112,6 +112,7 @@
 0x10399D82 D ALMCLK_REMINDER_START
 0x10553658 T AmMemAllocPointer
 0x10553674 T AmMemFreePointer
+0x101A16B0 T APP_CALC_MainRegister
 0x1019AF54 T APP_ChangeRoutingStack
 0x10093388 T APP_ConsumeEv
 0x1019B0F4 T APP_Exit
@@ -129,6 +130,7 @@
 0x1019BA00 T APP_Register
 0x1019BA82 T APP_Start
 0x1019BB12 T APP_StateExit
+0x102071C2 T APP_SyncML_MainRegister
 0x10209FF4 T APP_SYNCMLMGR_MainRegister
 0x1019BB2C T APP_UtilAddEvChangeListPosition
 0x1019BB8C T APP_UtilAddEvUISGetDataForItem
@@ -337,7 +339,7 @@
 0x103AD340 D EV_LOC_KPAD
 0x103AC32C D EV_MISSEDCALLS
 0x103A6544 D EV_MSGG_PHBK_SEARCH
-0x10087515 D EV_MsgNotif
+0x103B98F8 D EV_MsgNotif
 0x100EA7B0 D EV_PREVIEW_START
 0x103ACF8C D EV_SECURITY_UNLOCK_PHONE
 0x1077AE7C D EV_UIS_REFRESH
@@ -435,6 +437,7 @@
 0x10AF93C0 A png_set_strip_16
 0x10AFE70C A png_set_swap_alpha
 0x10AF9BE8 A png_set_tRNS_to_alpha
+0x10B5B088 D product_version
 0x10983F2A T pu_main_powerdown
 0x10A5EE34 T qsort
 0x12318C5C D Ram
@@ -636,7 +639,3 @@
 0x10393A0C T UtilLogStringData
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
-0x10B5B088 D product_version
-0x103B98F8 D EV_MsgNotif
-0x101A16B0 T APP_CALC_MainRegister
-0x102071C2 T APP_SyncML_MainRegister
