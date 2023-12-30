@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: Z3
 # Firmware: R452B_G_08.02.0DR
-# Version: 3012231
-# Timestamp: 30-Dec-2023 15:59:22
+# Version: 3112231
+# Timestamp: 31-Dec-2023 01:24:54
 
 0x00000069 C AUDIO_STATUS
 0x00000615 C BEGIN_4A__IN_DB

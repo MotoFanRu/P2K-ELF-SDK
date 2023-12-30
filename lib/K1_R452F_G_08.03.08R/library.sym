@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: K1
 # Firmware: R452F_G_08.03.08R
-# Version: 3012231
-# Timestamp: 30-Dec-2023 15:59:22
+# Version: 3112231
+# Timestamp: 31-Dec-2023 01:24:53
 
 0x00000069 C AUDIO_STATUS
 0x0000061F C BEGIN_4A__IN_DB
