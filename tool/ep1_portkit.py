@@ -28,6 +28,24 @@ FUNC_REGISTER: str = 'Register'
 FUNC_AUTORUN: str = 'AutorunMain'
 
 
+# Patches.
+def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
+	result: bool = False
+
+	if phone == 'E1':
+		if firmware == 'R373_G_0E.30.49R':
+			# Pattern: EV_BacklightContinueOn D 00000E10102E
+			patches: list[str] = ['0x102FC120 D EV_BacklightContinueOn']
+			result = forge.libgen_apply_patches(patches, lib_sym, phone, firmware, 'EP1')
+	elif phone == 'V3i':
+		if firmware == 'R4441D_G_08.01.03R':
+			# Pattern: BEGIN_4A__IN_DB D 1 BC08471800000600+0x4
+			patches: list[str] = ['0x100A7AB6 D BEGIN_4A__IN_DB']
+			result = forge.libgen_apply_patches(patches, lib_sym, phone, firmware, 'EP1')
+
+	return result
+
+
 # Various generators.
 def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str], patterns_add: list[str]) -> bool:
 	if forge.check_files_if_exists([p_i_f, p_i_e]):
@@ -146,6 +164,10 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 		forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
 	elif arg_soc == 'LTE2':
 		forge.create_combined_sym_file([val_functions_sym, val_platform_sym, val_lte2_irom_sym], val_combined_sym)
+	logging.info(f'')
+
+	logging.info(f'Applying phone specific patches.')
+	apply_patches(arg_phone, arg_fw, val_combined_sym)
 	logging.info(f'')
 
 	logging.info(f'Validating combined symbols file.')

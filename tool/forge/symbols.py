@@ -190,3 +190,53 @@ def parse_sdk_const_header_to_list(in_p: Path) -> list[tuple[str, str]] | None:
 
 		return list_const_defines
 	return None
+
+
+def combine_sym_str(addr: str, mode: str, name: str) -> str:
+	return f'{addr} {mode} {name}'
+
+
+def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: str, version: str) -> bool:
+	if check_files_if_exists([in_p]) and check_files_extensions([in_p], ['sym']):
+		model_patches: LibraryModel = []
+		for patch in patches:
+			addr, mode, name = split_and_validate_line(patch)
+			if (addr is not None) and (mode is not None) and (name is not None):
+				model_patches.append((addr, mode, name))
+		if len(model_patches) > 0:
+			model_library_patched: LibraryModel = []
+			model_library_original: LibraryModel = dump_sym_file_to_library_model(in_p, True)
+
+			# Apply all patches.
+			for addr_original, mode_original, name_original in model_library_original:
+				for addr_patch, mode_patch, name_patch in model_patches:
+					if name_patch.strip() == name_original.strip():
+						patched_sym: str = combine_sym_str(addr_patch, mode_patch, name_patch)
+						original_sym: str = combine_sym_str(addr_original, mode_original, name_original)
+						if (addr_patch != addr_original) or (mode_patch != mode_original):
+							logging.info(f'Will apply "{original_sym}" => "{patched_sym}" patch.')
+							model_library_patched.append((addr_patch, mode_patch, name_patch))
+						else:
+							logging.warning(f'Patch "{original_sym}" => "{patched_sym}" already applied.')
+					else:
+						model_library_patched.append((addr_original, mode_original, name_original))
+
+			# Add missing patches as symbols.
+			for addr_patch, mode_patch, name_patch in model_patches:
+				name_is_present: bool = False
+				for addr_original, mode_original, name_original in model_library_original:
+					if name_original.strip() == name_patch.strip():
+						name_is_present = True
+				if not name_is_present:
+					patched_sym: str = combine_sym_str(addr_patch, mode_patch, name_patch)
+					logging.info(f'Will add "{patched_sym}" patch as a symbol.')
+					model_library_patched.append((addr_patch, mode_patch, name_patch))
+
+			if len(model_library_patched) > 0:
+				return dump_library_model_to_sym_file(model_library_patched, in_p, phone, firmware, ep, version)
+			else:
+				logging.error(f'Patched library model is empty.')
+		else:
+			logging.error(f'List of patches is empty.')
+
+	return False

@@ -57,6 +57,7 @@ from .hexer import hex2hex
 
 from .libgen import LibrarySort
 from .libgen import libgen_version
+from .libgen import libgen_apply_patches
 from .libgen import ep1_libgen_asm
 from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library

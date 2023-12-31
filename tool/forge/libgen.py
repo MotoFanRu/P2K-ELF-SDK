@@ -37,6 +37,7 @@ from .filesystem import compare_paths
 from .filesystem import delete_file
 from .firmware import parse_phone_firmware
 from .symbols import validate_sym_file
+from .symbols import replace_syms
 from .symbols import split_and_validate_line
 from .symbols import dump_sym_file_to_library_model
 from .symbols import dump_library_model_to_sym_file
@@ -670,3 +671,7 @@ def ep1_libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str]
 
 def ep2_libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pfw: tuple[str, str]) -> bool:
 	return libgen_chunk_sym(i, o, sort, symbols, pfw, ElfPack.EP2)
+
+
+def libgen_apply_patches(patches: list[str], io_sym: Path, phone: str, firmware: str, ep: str) -> bool:
+	return replace_syms(patches, io_sym, phone, firmware, ep, libgen_version())
