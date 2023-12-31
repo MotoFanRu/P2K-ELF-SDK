@@ -274,7 +274,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'ElfPack v1.0 building report.')
 	logging.info(f'')
 	logging.info(f'Important files:')
-	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{arg_phone}" and "{arg_fw}".')
+	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{arg_phone}" phone on "{arg_fw}" firmware.')
 	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v1.0 combined patch for Flash&Backup 3.')
 	logging.info(f'')
 	logging.info(f'Developer files:')
