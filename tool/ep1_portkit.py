@@ -35,6 +35,10 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 		if firmware == 'R373_G_0E.30.49R':
 			# Pattern: EV_BacklightContinueOn D 00000E10102E
 			patches.append('0x102FC120 D EV_BacklightContinueOn')
+	elif phone == 'V235':
+		if firmware == 'R3512_G_0A.30.6CR':
+			# Pattern: Ram_398_l7 D [80A842B0D1062006+0x24]+0x10
+			patches.append('0x124A4BB8 D Ram_398_l7')
 	elif phone == 'V3i':
 		if firmware == 'R4441D_G_08.01.03R':
 			# Pattern: BEGIN_4A__IN_DB D 1 BC08471800000600+0x4
@@ -270,7 +274,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'ElfPack v1.0 building report.')
 	logging.info(f'')
 	logging.info(f'Important files:')
-	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for {arg_phone}.')
+	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{arg_phone}" and "{arg_fw}".')
 	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v1.0 combined patch for Flash&Backup 3.')
 	logging.info(f'')
 	logging.info(f'Developer files:')

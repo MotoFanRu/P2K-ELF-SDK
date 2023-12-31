@@ -511,3 +511,4 @@
 0x10BB52A4 A utility_get_image_size
 0x10CFD2C8 T UtilLogStringData
 0x1009D738 T vsprintf
+0x126A4E50 D Ram
