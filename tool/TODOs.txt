@@ -38,8 +38,6 @@ Z3_0DR:           ?, ?, ?, ?
 Z3_05R:           ?, ?, ?, ?
 Z3_09R:           ?, ?, ?, ?
 
-LibGen 6.5 readme, etc.
-
 LTE2 Modern wtf.
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
