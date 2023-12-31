@@ -663,3 +663,4 @@
 0x10336568 A utility_get_image_size
 0x11187230 T vsnprintf
 0x10C4E34C T vsprintf
+0x1451C1C8 D Ram

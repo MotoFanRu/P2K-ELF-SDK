@@ -497,7 +497,6 @@
 0x1141D010 D product_version
 0x100AE96E T pu_main_powerdown
 0x10C2068C T qsort
-0x1407332C D Ram
 0x10C2099C T rand
 0x1049DCDA T RestartDisplayTimer
 0x146429E4 D SBCM_ATOD_supply
@@ -690,3 +689,4 @@
 0x1038E3E0 A utility_get_image_size
 0x10C95C94 T vsnprintf
 0x111C0620 T vsprintf
+0x14073328 D Ram

@@ -437,7 +437,7 @@
 0x1141D010 D product_version
 0x100AE96E T pu_main_powerdown
 0x10C2068C T qsort
-0x1407332C D Ram
+0x14073328 D Ram
 0x10C2099C T rand
 0x1049DCDA T RestartDisplayTimer
 0x146429E4 D SBCM_ATOD_supply

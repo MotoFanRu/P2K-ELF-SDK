@@ -703,3 +703,4 @@
 0x1038E4CC A utility_get_image_size
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
+0x140737B0 D Ram

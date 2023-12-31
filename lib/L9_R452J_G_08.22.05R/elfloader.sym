@@ -539,7 +539,6 @@
 0x111A6568 D product_version
 0x100AEEFE T pu_main_powerdown
 0x10BF3E5C T qsort
-0x1407687C T Ram
 0x1118704C T rand
 0x1058F874 T Replaced_Function
 0x104425E2 T RestartDisplayTimer
@@ -743,3 +742,4 @@
 0x115C0268 T UtilLogStringData
 0x11187230 T vsnprintf
 0x10C4E34C T vsprintf
+0x1451C1C8 D Ram

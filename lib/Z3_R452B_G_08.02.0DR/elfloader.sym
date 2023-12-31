@@ -430,7 +430,6 @@
 0x1141CC70 D product_version
 0x100AE96E T pu_main_powerdown
 0x10C20304 T qsort
-0x1407332C D Ram
 0x10C20614 T rand
 0x1049DD4A T RestartDisplayTimer
 0x14642748 D SBCM_ATOD_supply
@@ -620,3 +619,4 @@
 0x102AF4E8 T UtilLogStringData
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
+0x14073328 D Ram

@@ -75,6 +75,7 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_body':  0x01456000,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x0118AD54,  # Register patch address.
 		'addr_upd_disp':  0x002E6328,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
 		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
 	},
@@ -89,6 +90,7 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_body':  0x01430000,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x01253FEC,  # Register patch address.
 		'addr_upd_disp':  0x0028E148,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145C96C8 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C.
 		'addr_ram_block': 0x140737B0  # At least ~0x400 free bytes block in RAM.
 	},
@@ -103,7 +105,8 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_body':  0x0153C000,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x0118B0C8,  # Register patch address.
 		'addr_upd_disp':  0x002CD2B0,  # Update Display patch address.
-		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C  ;Ram D [14??????00003E580000FFFF]+0x4.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1453EC28 value (Andy51).
+		# Ram_l7e D [14??????00003E580000FFFF]+0x4.
 		'addr_ram_block': 0x14076374   # At least ~0x400 free bytes block in RAM.
 	},
 	'R452F_G_08.03.08R': {
@@ -117,7 +120,8 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_body':  0x01530000,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x011EB174,  # Register patch address.
 		'addr_upd_disp':  0x00244310,  # Update Display patch address.
-		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, probably wrong alternative 0x1402B2A4 value (Andy51).
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1402B2A4 value (Andy51).
+		# Ram_l7e D [201490002000900190029003+0x01E8]+28
 		'addr_ram_block': 0x14501210   # At least ~0x400 free bytes block in RAM.
 	},
 	'R452H6_G_08.00.05R': {
@@ -131,6 +135,7 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_body':  0x0145B000,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x0118B0FC,  # Register patch address.
 		'addr_upd_disp':  0x002E6228,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
 		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
 	},
@@ -146,6 +151,7 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_ep2_reg':   0x0121E0CC,  # Register patch address.
 		'addr_upd_disp':  0x00236C6C,  # Update Display patch address.
 		# 0x1451C1C8  0x3e9  uis_data_logger_buffer
+		# Ram_l7e D [7FFF0000011E00000122+0x0A]
 		'addr_ram_block': 0x1451C1C8   # At least ~0x400 free bytes block in RAM.
 	},
 	'R4441D_G_08.01.03R': {
