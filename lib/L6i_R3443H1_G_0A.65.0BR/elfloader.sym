@@ -7,7 +7,7 @@
 # Phone: L6i
 # Firmware: R3443H1_G_0A.65.0BR
 # Version: 3112231
-# Timestamp: 31-Dec-2023 18:15:52
+# Timestamp: 31-Dec-2023 19:05:31
 
 0x1009C588 T __16__rt_divtest
 0x10CA271C T __16__rt_sdiv
@@ -328,6 +328,7 @@
 0x10A98698 D product_version
 0x10A8905E T pu_main_powerdown
 0x1009CBAC T qsort
+0x126A4E50 D Ram
 0x1009CEBC T rand
 0x127D0F40 D SBCM_ATOD_supply
 0x10AE7F9C D SBCM_ATOD_vltg
@@ -511,4 +512,3 @@
 0x10BB52A4 A utility_get_image_size
 0x10CFD2C8 T UtilLogStringData
 0x1009D738 T vsprintf
-0x126A4E50 D Ram

@@ -7,7 +7,7 @@
 # Phone: V235
 # Firmware: R3512_G_0A.30.6CR
 # Version: 3112231
-# Timestamp: 31-Dec-2023 18:15:53
+# Timestamp: 31-Dec-2023 19:05:31
 
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
@@ -296,6 +296,7 @@
 0x1020158C T PFprintf
 0x109B846C D product_version
 0x10098B24 T qsort
+0x124A4BB8 D Ram
 0x10098E34 T rand
 0x1270FD80 D SBCM_ATOD_supply
 0x10A0576C D SBCM_ATOD_vltg
@@ -469,4 +470,3 @@
 0x10AC4F9C A utility_get_image_size
 0x10C048C8 T UtilLogStringData
 0x10099190 T vsprintf
-0x124A4BB8 D Ram
