@@ -44,6 +44,7 @@ from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware
 from .firmware import get_file_size
 from .firmware import determine_soc
+from .firmware import is_modern_lte2
 
 from .hexer import hex2int
 from .hexer import hex2int_r

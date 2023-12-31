@@ -16,7 +16,7 @@ import unittest
 from forge import determine_soc
 from forge import parse_phone_firmware
 from forge import parse_minor_major_firmware
-
+from forge import is_modern_lte2
 
 class TestFirmware(unittest.TestCase):
 	def test_parse_phone_firmware(self) -> None:
@@ -62,3 +62,16 @@ class TestFirmware(unittest.TestCase):
 		self.assertEqual(parse_minor_major_firmware('R3511_G_0A.52.45R_A'), ('R3511_G_0A.52', '45R_A'))
 		self.assertEqual(parse_minor_major_firmware('R3443H1_G_0A.65.0BR'), ('R3443H1_G_0A.65', '0BR'))
 		self.assertEqual(parse_minor_major_firmware('TRIPLETS_G_0B.09.72R'), ('TRIPLETS_G_0B.09', '72R'))
+
+	def test_is_modern_lte2(self) -> None:
+		self.assertTrue(is_modern_lte2('L7e'))
+		self.assertTrue(is_modern_lte2('L9'))
+		self.assertTrue(is_modern_lte2('K1'))
+		self.assertTrue(is_modern_lte2('Z3'))
+		self.assertFalse(is_modern_lte2('C650'))
+		self.assertFalse(is_modern_lte2('E398'))
+		self.assertFalse(is_modern_lte2('E1'))
+		self.assertFalse(is_modern_lte2('V235'))
+		self.assertFalse(is_modern_lte2('V360'))
+		self.assertFalse(is_modern_lte2('V3r'))
+		self.assertFalse(is_modern_lte2('V3i'))

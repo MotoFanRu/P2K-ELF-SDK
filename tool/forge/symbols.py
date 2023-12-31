@@ -45,53 +45,58 @@ def split_and_validate_line(line: str) -> Symbol:
 	return None, None, None
 
 
-def create_combined_sym_file(files: list[Path], out_p: Path) -> None:
-	with out_p.open(mode='w', newline='\r\n') as f_o:
-		f_o.write(f'{ADS_SYM_FILE_HEADER}\n')
-		f_o.write(f'# SYMDEFS ADS HEADER\n\n\n\n')
-		for file in files:
-			with file.open(mode='r') as f_i:
-				f_o.write(f'# {file.name}\n')
-				f_o.write(f_i.read())
-				f_o.write(f'\n\n\n')
+def create_combined_sym_file(files: list[Path], out_p: Path) -> bool:
+	if check_files_if_exists(files) and check_files_extensions(files, ['sym']):
+		with out_p.open(mode='w', newline='\r\n') as f_o:
+			f_o.write(f'{ADS_SYM_FILE_HEADER}\n')
+			f_o.write(f'# SYMDEFS ADS HEADER\n\n\n\n')
+			for file in files:
+				with file.open(mode='r') as f_i:
+					f_o.write(f'# {file.name}\n')
+					f_o.write(f_i.read())
+					f_o.write(f'\n\n\n')
+			return True
+	return False
 
 
 def validate_sym_file(in_p: Path) -> bool:
-	symbols: dict[str, tuple[str, str]] = {}
-	missed: list[tuple[str, str]] = []
-	index: int = 0
-	with in_p.open(mode='r') as f_i:
-		for line in f_i.read().splitlines():
-			line: str = line.strip()
-			if (index == 0) and line != ADS_SYM_FILE_HEADER:
-				logging.error(f'Symbols file "{in_p}" does not contains "{ADS_SYM_FILE_HEADER}" at first line.')
-				return False
-			if len(line) != 0 and not line.startswith('#'):
-				address, mode, name = split_and_validate_line(line)
-				if name is not None:
-					if not symbols.get(name, None):
-						symbols[name] = address, mode
-					else:
-						first_address, first_mode = symbols[name]
-						if (first_mode == 'C') ^ (mode == 'C'):  # XOR here, CONSTS names may be same as other names.
-							logging.warning(f'Duplicate SYM values in "{in_p}" symbols file:')
-							logging.warning(f'\t{first_address} {first_mode} {name}')
-							logging.warning(f'\t{address} {mode} {name}')
+	if check_files_if_exists([in_p]) and check_files_extensions([in_p], ['sym']):
+		symbols: dict[str, tuple[str, str]] = {}
+		missed: list[tuple[str, str]] = []
+		index: int = 0
+		with in_p.open(mode='r') as f_i:
+			for line in f_i.read().splitlines():
+				line: str = line.strip()
+				if (index == 0) and line != ADS_SYM_FILE_HEADER:
+					logging.error(f'Symbols file "{in_p}" does not contains "{ADS_SYM_FILE_HEADER}" at first line.')
+					return False
+				if len(line) != 0 and not line.startswith('#'):
+					address, mode, name = split_and_validate_line(line)
+					if name is not None:
+						if not symbols.get(name, None):
+							symbols[name] = address, mode
 						else:
-							logging.error(f'Duplicate SYM values in "{in_p}" symbols file:')
-							logging.error(f'\t{first_address} {first_mode} {name}')
-							logging.error(f'\t{address} {mode} {name}')
-							return False
-			elif line.startswith('# NOT_FOUND: '):
-				mode, name = line.replace('# NOT_FOUND: ', '').split(' ')
-				logging.debug(line)
-				missed.append((name, mode))
-			index += 1
-	logging.info(f'Checking missing symbols in "{in_p}" file.')
-	for name, mode in missed:
-		if not symbols.get(name, None):
-			logging.warning(f'Missed: {mode} {name}')
-	return True
+							first_address, first_mode = symbols[name]
+							if (first_mode == 'C') ^ (mode == 'C'):  # XOR here, CONST names may be same as other names.
+								logging.warning(f'Duplicate SYM values in "{in_p}" symbols file:')
+								logging.warning(f'\t{first_address} {first_mode} {name}')
+								logging.warning(f'\t{address} {mode} {name}')
+							else:
+								logging.error(f'Duplicate SYM values in "{in_p}" symbols file:')
+								logging.error(f'\t{first_address} {first_mode} {name}')
+								logging.error(f'\t{address} {mode} {name}')
+								return False
+				elif line.startswith('# NOT_FOUND: '):
+					mode, name = line.replace('# NOT_FOUND: ', '').split(' ')
+					logging.debug(line)
+					missed.append((name, mode))
+				index += 1
+		logging.info(f'Checking missing symbols in "{in_p}" file.')
+		for name, mode in missed:
+			if not symbols.get(name, None):
+				logging.warning(f'Missed: {mode} {name}')
+		return True
+	return False
 
 
 def get_function_address_from_sym_file(in_p: Path, func: str) -> int:
