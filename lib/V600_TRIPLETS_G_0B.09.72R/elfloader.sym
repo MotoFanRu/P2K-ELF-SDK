@@ -19,7 +19,6 @@
 0x000FBE34 A __rt_memcpy
 0x000FBEEC A __rt_memcpy_w
 0x10A15594 A __rt_memmove
-0x000FBF5C A __rt_memset
 0x000FBF74 A __rt_sdiv
 0x000FDC7C A __rt_sdiv10
 0x000FC04C A __rt_udiv
@@ -276,7 +275,6 @@
 0x10CBCA8A T LdrLoadELF
 0x10CBCA50 T LdrStartApp
 0x10CBCAD2 T LdrUnloadELF
-0x10D404F4 T memcpy
 0x10A152AC T memset
 0x108EEDCC T MME_GC_capture_create
 0x108EF086 T MME_GC_capture_delete
@@ -373,3 +371,10 @@
 0x10CBC408 T UtilLogStringData
 0x10A158F0 T vsnprintf
 0x10C8D810 T vsprintf
+0x03FF4494 A __rt_memclr
+0x03FF44DC A __rt_memclr_w
+0x03FF4538 A __rt_memcpy
+0x03FF45F0 A __rt_memcpy_w
+0x03FF4660 A __rt_memset
+0x03FF4660 A _rt_memset
+0x03FF4534 T memcpy

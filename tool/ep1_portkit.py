@@ -121,6 +121,8 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	arg_firmware: Path = args.firmware
 	arg_start: int = args.start
 	arg_offset: int = forge.arrange16(forge.get_file_size(arg_firmware))
+	if args.offset:
+		arg_offset = args.offset
 	arg_address: int = arg_start + arg_offset  # Start + Offset.
 	arg_ram_trans: bool = args.ram_trans
 	arg_fw_name: str = arg_firmware.name
@@ -304,11 +306,12 @@ def parse_arguments() -> Namespace:
 		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
-		's': 'start address of CG0+CG1 firmware',
+		's': 'start address of CG0+CG1 firmware (in HEX)',
 		'p': 'path to patterns file',
 		'f': 'path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
 		'q': 'use old object files',
+		'g': 'patch offset to CG0+CG1 file (in HEX)',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -327,13 +330,16 @@ def parse_arguments() -> Namespace:
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V3r_R4515_G_08.BD.D3R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
-	!python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/V600_TRIPLETS_G_0B.09.72R.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -o build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/V600_TRIPLETS_G_0B.09.72R.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452B_G_08.02.0DR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452F1_G_08.04.09R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452H6_G_08.00.05R.smg -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using old object files.
 	python ep1_portkit.py -c -r -q -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
+
+	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset).
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -g 0x00C3C1B0 -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
@@ -343,6 +349,7 @@ def parse_arguments() -> Namespace:
 	parser_args.add_argument('-f', '--firmware', required=True, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-q', '--old', required=False, action='store_true', help=hlp['q'])
+	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_args()
 

@@ -43,5 +43,15 @@ Update/recompile EP2 libraries using Windows DevKIT Pro.
 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
 
 Create EP1 def file with Elf Loader API
+Error: L6200E: Symbol LdrGetFirmwareMajorVersion multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrGetFirmwareMinorVersion multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrGetPhoneName multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrGetPlatformName multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrLoadELF multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrStartApp multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol LdrUnloadELF multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol namecmp multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol u_utoa multiply defined (by Combined.sym and ElfLoaderApp.o).
+Error: L6200E: Symbol UtilLogStringData multiply defined (by Combined.sym and ElfLoaderApp.o).
 
 Recreate libs again with RAM-Trans!
