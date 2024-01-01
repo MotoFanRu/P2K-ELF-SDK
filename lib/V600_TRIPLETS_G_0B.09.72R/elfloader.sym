@@ -6,19 +6,20 @@
 # ElfPack: EP1
 # Phone: V600
 # Firmware: TRIPLETS_G_0B.09.72R
-# Version: 3112231
-# Timestamp: 31-Dec-2023 19:05:32
+# Version: 0101241
+# Timestamp: 01-Jan-2024 23:39:30
 
 0x000FBF70 T __16__rt_sdiv
 0x000FDC78 T __16__rt_sdiv10
 0x000FC048 T __16__rt_udiv
 0x000FD984 A __16__rt_udiv10
 0x107E8318 T __pvfn__Fv
-0x000FBD90 A __rt_memclr
-0x000FBDD8 A __rt_memclr_w
-0x000FBE34 A __rt_memcpy
-0x000FBEEC A __rt_memcpy_w
+0x03FF4494 A __rt_memclr
+0x03FF44DC A __rt_memclr_w
+0x03FF4538 A __rt_memcpy
+0x03FF45F0 A __rt_memcpy_w
 0x10A15594 A __rt_memmove
+0x03FF4660 A __rt_memset
 0x000FBF74 A __rt_sdiv
 0x000FDC7C A __rt_sdiv10
 0x000FC04C A __rt_udiv
@@ -27,6 +28,7 @@
 0x000FB75C T _ll_rsblu
 0x000FB76C A _ll_sdiv
 0x000FBC00 A _ll_ushift_r
+0x03FF4660 A _rt_memset
 0x000FB564 T abs_0
 0x101B72F6 T AFW_AddAppToRoutingStack
 0x100A2A16 T AFW_AddEv
@@ -275,6 +277,7 @@
 0x10CBCA8A T LdrLoadELF
 0x10CBCA50 T LdrStartApp
 0x10CBCAD2 T LdrUnloadELF
+0x03FF4534 T memcpy
 0x10A152AC T memset
 0x108EEDCC T MME_GC_capture_create
 0x108EF086 T MME_GC_capture_delete
@@ -371,10 +374,3 @@
 0x10CBC408 T UtilLogStringData
 0x10A158F0 T vsnprintf
 0x10C8D810 T vsprintf
-0x03FF4494 A __rt_memclr
-0x03FF44DC A __rt_memclr_w
-0x03FF4538 A __rt_memcpy
-0x03FF45F0 A __rt_memcpy_w
-0x03FF4660 A __rt_memset
-0x03FF4660 A _rt_memset
-0x03FF4534 T memcpy
