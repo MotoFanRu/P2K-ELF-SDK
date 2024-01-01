@@ -163,9 +163,9 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	val_functions_modern_lte2: Path = arg_output / 'Functions_LTE2_Modern.sym'
 	val_combined_sym: Path = arg_output / 'Combined.sym'
 	if arg_soc == 'LTE':
-		forge.pat_find(val_lte1_pat, arg_firmware, arg_start, False, val_platform_sym)
+		forge.pat_find(val_lte1_pat, arg_firmware, arg_start, arg_ram_trans, val_platform_sym)
 	elif arg_soc == 'LTE2':
-		forge.pat_find(val_lte2_pat, arg_firmware, arg_start, False, val_platform_sym)
+		forge.pat_find(val_lte2_pat, arg_firmware, arg_start, arg_ram_trans, val_platform_sym)
 		if forge.is_modern_lte2(arg_phone):
 			forge.pat_find(val_lte2_modern_pat, arg_firmware, arg_start, arg_ram_trans, val_functions_modern_lte2)
 	else:
@@ -317,8 +317,8 @@ def parse_arguments() -> Namespace:
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.79R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.DAR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/K1_R452F_G_08.03.08R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6i_R3443H1_0BR.pat -f cg/L6i_R3443H1_G_0A.65.0BR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6_R3511_45R_A.pat -f cg/L6_R3511_G_0A.52.45R_A.smg -o build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6i_R3443H1_G_0A.65.0BR.pat -f cg/L6i_R3443H1_G_0A.65.0BR.smg -o build
+	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6_R3511_G_0A.52.45R_A.pat -f cg/L6_R3511_G_0A.52.45R_A.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7e_R452D_G_08.01.0AR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.E0R_RB.smg -o build
@@ -327,7 +327,7 @@ def parse_arguments() -> Namespace:
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V3r_R4515_G_08.BD.D3R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
-	!python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -o build
+	!python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/V600_TRIPLETS_G_0B.09.72R.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452B_G_08.02.0DR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452F1_G_08.04.09R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452H6_G_08.00.05R.smg -o build

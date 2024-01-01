@@ -41,3 +41,7 @@ Z3_09R:           1, 2, 3, 4
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
+
+Create EP1 def file with Elf Loader API
+
+Recreate libs again with RAM-Trans!
