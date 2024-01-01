@@ -11,6 +11,8 @@ Date: 15-Dec-2023
 Version: 1.0
 """
 
+import configparser
+
 from enum import Enum
 from typing import TypeAlias
 
@@ -31,3 +33,25 @@ class ElfPack(Enum):
 
 
 ElfPacks: TypeAlias = tuple[ElfPack, ElfPack]
+
+
+class LibrarySort(Enum):
+	ADDR: int = 0
+	MODE: int = 1
+	NAME: int = 2
+	NONE: int = 3
+
+
+# Case-sensitive config parser.
+class CsConfigParser(configparser.ConfigParser):
+	def optionxform(self, option: any) -> any:
+		return option
+
+
+class MemoryRegion(Enum):
+	IROM: int = 0
+	IRAM: int = 1
+	ROM: int = 2
+	RAM: int = 3
+	PERIPHERALS: int = 4
+	UNKNOWN: int = 5

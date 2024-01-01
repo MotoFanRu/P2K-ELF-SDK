@@ -69,3 +69,7 @@ def set_logging_configuration(verbose: bool) -> None:
 		format=log_format,
 		datefmt='%d-%b-%Y %H:%M:%S'
 	)
+
+
+def is_string_filled_by_character(arg_string: str, arg_char: str) -> bool:
+	return set(arg_string) == {arg_char}

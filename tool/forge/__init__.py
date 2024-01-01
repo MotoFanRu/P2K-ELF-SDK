@@ -46,6 +46,7 @@ from .firmware import parse_minor_major_firmware
 from .firmware import get_file_size
 from .firmware import determine_soc
 from .firmware import is_modern_lte2
+from .firmware import determine_memory_region
 
 from .hexer import hex2int
 from .hexer import hex2int_r
@@ -57,7 +58,6 @@ from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
 from .hexer import hex2hex
 
-from .libgen import LibrarySort
 from .libgen import libgen_version
 from .libgen import libgen_apply_patches
 from .libgen import ep1_libgen_asm
@@ -83,6 +83,7 @@ from .patcher import apply_fpa_patch
 
 from .patterns import pat_find
 from .patterns import pat_append
+from .patterns import sym2pat
 
 from .symbols import create_combined_sym_file
 from .symbols import split_and_validate_line
@@ -93,6 +94,8 @@ from .symbols import dump_library_model_to_sym_file
 from .types import ElfPack
 from .types import ElfPacks
 from .types import LibraryModel
+from .types import LibrarySort
+from .types import MemoryRegion
 
 from .utilities import format_timedelta
 from .utilities import chop_str
@@ -100,3 +103,4 @@ from .utilities import log_result
 from .utilities import dump_text_file_to_debug_log
 from .utilities import set_logging_configuration
 from .utilities import get_current_datetime_formatted
+from .utilities import is_string_filled_by_character

@@ -13,7 +13,6 @@ Version: 1.0
 
 import shutil
 import logging
-import configparser
 
 from pathlib import Path
 
@@ -26,12 +25,7 @@ from .types import PatchDictNone
 from .hexer import normalize_hex_address
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
-
-
-# Case-sensitive config parser.
-class CsConfigParser(configparser.ConfigParser):
-	def optionxform(self, option: any) -> any:
-		return option
+from .types import CsConfigParser
 
 
 def sort_patch_dict(unsorted: PatchDict) -> PatchDict:

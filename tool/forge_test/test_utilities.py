@@ -17,6 +17,7 @@ from datetime import datetime
 
 from forge import format_timedelta
 from forge import chop_str
+from forge import is_string_filled_by_character
 
 
 class TestUtilities(unittest.TestCase):
@@ -38,3 +39,9 @@ class TestUtilities(unittest.TestCase):
 		self.assertEqual(chop_str('a', 16, True), 'a            ...')
 		self.assertEqual(chop_str('a', arrange=True), 'a                    ...')
 		self.assertEqual(chop_str('a0', 16, True), 'a0           ...')
+
+	def test_is_string_filled_by_character(self) -> None:
+		self.assertTrue(is_string_filled_by_character('FFFFFFFFFFFFFFFFFFFFFFFFFFFFF', 'F'))
+		self.assertTrue(is_string_filled_by_character('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ', 'Z'))
+		self.assertFalse(is_string_filled_by_character('FAFFFFFFFFFFFFFFFFFFFFFFFFFFF', 'F'))
+		self.assertFalse(is_string_filled_by_character('FFFFFFFFFFFFFFFFFFFFFFFFFFFFA', 'F'))

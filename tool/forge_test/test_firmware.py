@@ -13,10 +13,12 @@ Version: 1.0
 
 import unittest
 
+from forge import MemoryRegion
 from forge import determine_soc
 from forge import parse_phone_firmware
 from forge import parse_minor_major_firmware
 from forge import is_modern_lte2
+from forge import determine_memory_region
 
 
 class TestFirmware(unittest.TestCase):
@@ -76,3 +78,19 @@ class TestFirmware(unittest.TestCase):
 		self.assertFalse(is_modern_lte2('V360'))
 		self.assertFalse(is_modern_lte2('V3r'))
 		self.assertFalse(is_modern_lte2('V3i'))
+
+	def test_determine_memory_region(self) -> None:
+		self.assertEqual(determine_memory_region(0x0), MemoryRegion.IROM)
+		self.assertEqual(determine_memory_region(0x000018B0), MemoryRegion.IROM)
+		self.assertEqual(determine_memory_region(0x000015A0), MemoryRegion.IROM)
+		self.assertEqual(determine_memory_region(0x03FCD938), MemoryRegion.IRAM)
+		self.assertEqual(determine_memory_region(0x03FD18A0), MemoryRegion.IRAM)
+		self.assertEqual(determine_memory_region(0x10B9DA50), MemoryRegion.ROM)
+		self.assertEqual(determine_memory_region(0x10BCB00C), MemoryRegion.ROM)
+		self.assertEqual(determine_memory_region(0x1204714A), MemoryRegion.RAM)
+		self.assertEqual(determine_memory_region(0x127CF170), MemoryRegion.RAM)
+		self.assertEqual(determine_memory_region(0x2484E000), MemoryRegion.PERIPHERALS)
+		self.assertEqual(determine_memory_region(0x28888880), MemoryRegion.PERIPHERALS)
+		self.assertEqual(determine_memory_region(0x30000000), MemoryRegion.UNKNOWN)
+		self.assertEqual(determine_memory_region(0x40000000), MemoryRegion.UNKNOWN)
+		self.assertEqual(determine_memory_region(0xFFFFFFFF), MemoryRegion.UNKNOWN)

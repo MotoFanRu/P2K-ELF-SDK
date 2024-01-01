@@ -6,6 +6,7 @@ tool/forge_test/__pycache__
 
 tool/cg/*.smg
 tool/cg/*.bin
+tool/irom/*.bin
 
 tool/build
 

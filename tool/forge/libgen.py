@@ -44,13 +44,7 @@ from .symbols import dump_library_model_to_sym_file
 from .symbols import parse_sdk_const_header_to_list
 from .invoker import invoke_external_command_res
 from .types import ElfPack
-
-
-class LibrarySort(Enum):
-	ADDR: int = 0
-	MODE: int = 1
-	NAME: int = 2
-	NONE: int = 3
+from .types import LibrarySort
 
 
 def libgen_version() -> str:

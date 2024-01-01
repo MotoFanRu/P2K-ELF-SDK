@@ -33,8 +33,9 @@ class Mode(Enum):
 def start_forge_work(mode: Mode, args: Namespace) -> bool:
 	logging.info(f'Start Forge auxiliary utility, mode: "{mode.name}".')
 	if mode == Mode.SYM_TO_PAT:
-		# return forge.log_result(cmp_sym_def(args.source, args.compare, (args.ep1, args.ep2)))
-		pass
+		return forge.log_result(
+			forge.sym2pat(args.source, args.output, args.firmware, args.offset, args.size, args.irom)
+		)
 	return False
 
 
@@ -68,20 +69,23 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		's': 'source file',
 		'f': 'path to CG0+CG1 firmware file',
 		'g': 'offset (in HEX)',
-		'z': 'size (in HEX)',
+		'z': 'size (integer)',
 		'o': 'output file',
+		'i': 'irom',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	# Generate patterns file from symbols file.
-	python forge.py -s library.sym -f cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 0xF -o library.pat
+	# Generate a draft patterns file from symbols file (+irom).
+	python forge.py -s library.sym -f cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 16 -o patterns.pat
+	python forge.py -i -s library.sym -f irom/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 16 -o patterns.pat
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='OUTPUT', help=hlp['o'])
-	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
+	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_file, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
-	parser_args.add_argument('-z', '--size', required=False, type=forge.at_hex, metavar='SIZE', help=hlp['z'])
+	parser_args.add_argument('-z', '--size', required=False, type=forge.at_int, metavar='SIZE', help=hlp['z'])
+	parser_args.add_argument('-i', '--irom', required=False, action='store_true', help=hlp['i'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

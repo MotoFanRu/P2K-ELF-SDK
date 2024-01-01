@@ -13,9 +13,9 @@ Version: 1.0
 
 from pathlib import Path
 
+from .types import MemoryRegion
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
-
 
 def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:
 	segments: list[str] = firmware.split('.')
@@ -66,3 +66,18 @@ def determine_soc(start_firmware_address: int) -> str:
 def is_modern_lte2(phone: str) -> bool:
 	modern_lte2_phones: set[str] = {'L7e', 'K1', 'Z3', 'L9', 'L71', 'L72', 'W490', 'W510', 'V3re', 'V3ie', 'U3'}
 	return phone in modern_lte2_phones
+
+
+def determine_memory_region(address: int) -> MemoryRegion:
+	if address < 0x03000000:
+		return MemoryRegion.IROM
+	elif address < 0x10000000:
+		return MemoryRegion.IRAM
+	elif address < 0x12000000:
+		return MemoryRegion.ROM
+	elif address < 0x20000000:
+		return MemoryRegion.RAM
+	elif address < 0x30000000:
+		return MemoryRegion.PERIPHERALS
+	else:
+		return MemoryRegion.UNKNOWN
