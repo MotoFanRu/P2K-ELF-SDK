@@ -111,7 +111,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	python compare.py -s library_1.sym -e1 EP1 -c library_2.sym -e2 EP1
 
 	# Compare symbols file with name definition file.
-	python compare.py -s elfloader.sym -e1 EP1 -c ep2/def/ElfLoaderAPI.def -e2 EP2
+	python compare.py -s elfloader.sym -e1 EP1 -c ep2/def/ElfLoaderAPI1.def -e2 EP1
+	python compare.py -s elfloader.sym -e1 EP1 -c ep2/def/ElfLoaderAPI2.def -e2 EP2
 	python compare.py -s library.sym -e1 EP2 -c ep2/def/EntriesNames.def -e2 EP2
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)

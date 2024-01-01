@@ -17,12 +17,7 @@
 0x10C1E440 T __16_ll_cmpu
 0x10098250 T __pvfn__Fv
 0x10097C10 A __rt_divtest
-0x10C1AC2C A __rt_memclr
-0x10C1AC74 A __rt_memclr_w
-0x10C1ACD0 A __rt_memcpy
-0x10C1AD88 A __rt_memcpy_w
 0x100985F0 A __rt_memmove
-0x10C1ADF8 A __rt_memset
 0x10BD2320 A __rt_sdiv
 0x10098694 A __rt_sdiv10
 0x10BD23F8 A __rt_udiv
@@ -34,7 +29,6 @@
 0x10097E54 A _ll_sdiv
 0x10098118 A _ll_ushift_r
 0x10097A74 D _region_table
-0x10C1ADF8 A _rt_memset
 0x10097B28 T abs_0
 0x123441DC D ADN_storage_mgr
 0x102BD720 T AFW_AddAppToRoutingStack
@@ -387,7 +381,6 @@
 0x10C1DF70 T LdrStartApp
 0x10C1DFF2 T LdrUnloadELF
 0x100998F8 T localtime
-0x10C1ACCC T memcpy
 0x10098214 T memset
 0x1097743E T MME_GC_capture_create
 0x1097781E T MME_GC_capture_delete
@@ -644,3 +637,10 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x03FF38A0 A __rt_memclr
+0x03FF38E8 A __rt_memclr_w
+0x03FF3944 A __rt_memcpy
+0x03FF39FC A __rt_memcpy_w
+0x03FF3A6C A __rt_memset
+0x03FF3A6C A _rt_memset
+0x03FF3940 T memcpy

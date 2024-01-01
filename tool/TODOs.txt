@@ -19,39 +19,27 @@ L7_R4513_G_08.B7.E0R_RB
 V600_TRIPLETS_G_0B.09.72R
 
 RAM & RAMTRANS ! Check! Build
-E1_49R:           1, 2, ?, 4
-E1_79R:           1, 2, ?, 4
-E1_DAR:           1, 2, ?, 4
-K1_08R:           1, 2, ?, 4
-L7e_0AR:          1, 2, ?, 4
-L6i_0BR:          1, 2, ?, 4
-L6_45R_A:         1, 2, ?, 4
-V235_6CR:         1, 2, ?, 4
-L7_ACR_RB:        1, 2, ?, 4
-L7_E0R_RB:        1, 2, ?, 4
-V360_ACR:         1, 2, ?, 4
-L9_05R:           1, 2, ?, 4
-V3i_03R:          1, 2, ?, 4
-V3r_D3R:          1, 2, ?, 4
-V600_72R:         1, 2, ?, 4
-Z3_0DR:           1, 2, ?, 4
-Z3_05R:           1, 2, ?, 4
-Z3_09R:           1, 2, ?, 4
+E1_49R:           1, 2, ?, 4, ?
+E1_79R:           1, 2, ?, 4, ?
+E1_DAR:           1, 2, ?, 4, ?
+K1_08R:           1, 2, ?, 4, ?
+L7e_0AR:          1, 2, ?, 4, ?
+L6i_0BR:          1, 2, ?, 4, ?
+L6_45R_A:         1, 2, ?, 4, ?
+V235_6CR:         1, 2, ?, 4, ?
+L7_ACR_RB:        1, 2, ?, 4, ?
+L7_E0R_RB:        1, 2, ?, 4, ?
+V360_ACR:         1, 2, ?, 4, ?
+L9_05R:           1, 2, ?, 4, ?
+V3i_03R:          1, 2, ?, 4, ?
+V3r_D3R:          1, 2, ?, 4, ?
+V600_72R:         1, 2, ?, 4, ?
+Z3_0DR:           1, 2, ?, 4, ?
+Z3_05R:           1, 2, ?, 4, ?
+Z3_09R:           1, 2, ?, 4, ?
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
 
-Create EP1 def file with Elf Loader API
-Error: L6200E: Symbol LdrGetFirmwareMajorVersion multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrGetFirmwareMinorVersion multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrGetPhoneName multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrGetPlatformName multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrLoadELF multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrStartApp multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol LdrUnloadELF multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol namecmp multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol u_utoa multiply defined (by Combined.sym and ElfLoaderApp.o).
-Error: L6200E: Symbol UtilLogStringData multiply defined (by Combined.sym and ElfLoaderApp.o).
-
-Recreate libs again with RAM-Trans!
+Recreate libs again with RAM-Trans and fix libraries arrange!

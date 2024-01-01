@@ -1,0 +1,16 @@
+0xFFFFFFFF T __16_ll_cmpu
+0xFFFFFFFF T __call_via_r1
+0xFFFFFFFF T __call_via_r2
+0xFFFFFFFF T __call_via_r3
+0xFFFFFFFF T __call_via_r4
+0xFFFFFFFF A _ll_cmpu
+0xFFFFFFFF T LdrGetFirmwareMajorVersion
+0xFFFFFFFF T LdrGetFirmwareMinorVersion
+0xFFFFFFFF T LdrGetPhoneName
+0xFFFFFFFF T LdrGetPlatformName
+0xFFFFFFFF T LdrLoadELF
+0xFFFFFFFF T LdrStartApp
+0xFFFFFFFF T LdrUnloadELF
+0xFFFFFFFF T namecmp
+0xFFFFFFFF T u_utoa
+0xFFFFFFFF T UtilLogStringData
