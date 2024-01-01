@@ -42,6 +42,9 @@ def cmp_sym_def(a_sym: Path, a_def: Path, elfpacks: forge.ElfPacks) -> bool:
 			found_something: bool = False
 			for line in f_i.read().splitlines():
 				line: str = line.strip()
+				addr, mode, name = forge.split_and_validate_line(line)
+				if name:
+					line = name
 				found: bool = False
 				for addr, mode, name in model:
 					name: str = name.strip()
@@ -104,9 +107,12 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Compare symbols files among themselves.
 	python compare.py -s library_1.sym -e1 EP1 -c library_2.sym -e2 EP1
-	python compare.py -s library_1.sym -e1 EP1 -c library_2.def -e2 EP2
-	python compare.py -s library_1.sym -e1 EP2 -c library_2.def -e2 EP2
+
+	# Compare symbols file with name definition file.
+	python compare.py -s elfloader.sym -e1 EP1 -c ep2/def/ElfLoaderAPI.def -e2 EP2
+	python compare.py -s library.sym -e1 EP2 -c ep2/def/EntriesNames.def -e2 EP2
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])

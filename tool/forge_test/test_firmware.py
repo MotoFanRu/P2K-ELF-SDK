@@ -18,6 +18,7 @@ from forge import parse_phone_firmware
 from forge import parse_minor_major_firmware
 from forge import is_modern_lte2
 
+
 class TestFirmware(unittest.TestCase):
 	def test_parse_phone_firmware(self) -> None:
 		self.assertEqual(parse_phone_firmware('E1_R373_G_0E.30.49R.smg'), ('E1', 'R373_G_0E.30.49R'))

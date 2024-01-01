@@ -17,6 +17,7 @@ import logging
 from pathlib import Path
 
 from .hexer import hex2int
+from .hexer import int2hex
 from .utilities import chop_str
 from .hexer import normalize_hex_string
 from .filesystem import check_files_if_exists
@@ -101,3 +102,13 @@ def at_ep(ep: str) -> ElfPack:
 		return ElfPack.EM2
 	else:
 		return ElfPack.UNK
+
+
+def at_int(argument: str) -> int:
+	try:
+		value: int = int(argument)
+		if value <= 0xFFFFFFFF:
+			return value
+		raise argparse.ArgumentTypeError(f'int size overflow: {value} ({int2hex(value)}) too long, max is 0xFFFFFFFF')
+	except ValueError as value_error:
+		raise argparse.ArgumentTypeError(value_error)

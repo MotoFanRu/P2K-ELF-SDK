@@ -285,6 +285,7 @@ def parse_arguments() -> Namespace:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Build ElfPack v2.0 to the phone/firmware using source code.
 	python ep2_portkit.py -c -pf E1_R373_G_0E.30.49R -o build
 	python ep2_portkit.py -c -pf L7_R4513_G_08.B7.ACR_RB -o build
 	python ep2_portkit.py -c -pf V3r_R4515_G_08.BD.D3R -o build

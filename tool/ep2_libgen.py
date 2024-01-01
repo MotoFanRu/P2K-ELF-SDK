@@ -137,30 +137,36 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
-		'rn': 'do not resolve names',
+		'rn': 'do not resolve DATA and CONST names',
 		'd': 'generate library defines file for resolve "D" (DATA) and "C" (CONST) names',
 		'a': 're-generate all libraries by symbol files in library directory',
 		'r': 'resort symbols in file',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Generate phone library from symbols file (+sorting).
 	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
 	python ep2_libgen.py -sn -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.bin
 
+	# Generate SDK library from symbols file (+sorting).
 	python ep2_libgen.py -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.sa
 	python ep2_libgen.py -sn -s library.sym -pf 'E1_R373_G_0E.30.49R' -o library.sa
 
+	# Generate symbols file from phone library (+sorting and generation without DATA and CONST names resolving).
 	python ep2_libgen.py -s library.bin -p 'E1' -o library.sym
 	python ep2_libgen.py -sn -s library.bin -p 'E1' -o library.sym
 	python ep2_libgen.py -sn -rn -s library.bin -p 'E1' -o library.sym
 
+	# Generate name definitions file from some SDK files like headers and symbols files.
 	python ep2_libgen.py -d names.def
 	python ep2_libgen.py -sn -d names.def
 
+	# Regenerate all libraries by symbols files (+sorting and resorting without regeneration).
 	python ep2_libgen.py -a
 	python ep2_libgen.py -sn -a
 	python ep2_libgen.py -sn -r
 
+	# Resort, update, validate symbols file.
 	python ep2_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)

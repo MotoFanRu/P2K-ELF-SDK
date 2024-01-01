@@ -152,17 +152,22 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Create patch from binary file (+UNDOs).
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
 
+	# Create patch from hex data string (+UNDOs).
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "0123456789ABCDEF" -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -x "A0B1C3" -u CG1.smg -o Result.fpa
 
+	# Apply patch to binary file (+validate and no-backup before applying).
 	python patch.py -w Result.fpa -u CG1.smg -l
 	python patch.py -w Result.fpa -u CG1.smg -l -n
 
+	# Create a binary files from patch.
 	python patch.py -c ElfPack.fpa -o Result.bin
 
+	# Unite several patches to one.
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "United Patches" -i ElfPack.fpa Register.fpa -o Result.fpa
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)

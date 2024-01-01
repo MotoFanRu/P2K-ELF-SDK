@@ -166,22 +166,28 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Generate phone library from symbols file (+sorting).
 	python ep1_libgen.py -s Lib.sym -o elfloader.lib
 	python ep1_libgen.py -sn -s Lib.sym -o elfloader.lib
 
+	# Generate SDK library from symbols file (+sorting).
 	python ep1_libgen.py -s Lib.sym -o libstd.a
 	python ep1_libgen.py -sn -s Lib.sym -o libstd.a
 
+	# Generate symbols file from phone library (+sorting).
 	python ep1_libgen.py -s elfloader.lib -pf 'E1_R373_G_0E.30.49R' -o Lib.sym
 	python ep1_libgen.py -sn -s elfloader.lib -pf 'E1_R373_G_0E.30.49R' -o Lib.sym
 
+	# Generate assembly listing and object file from symbols file.
 	python ep1_libgen.py -s Lib.sym -o Lib.asm
 	python ep1_libgen.py -s Lib.sym -o Lib.o
 
+	# Regenerate all libraries by symbols files (+sorting and resorting without regeneration).
 	python ep1_libgen.py -a
 	python ep1_libgen.py -sn -a
 	python ep1_libgen.py -sn -r
 
+	# Resort, update, validate symbols file.
 	python ep1_libgen.py -sn -s Lib.sym -pf 'E1_R373_G_0E.30.49R' -o Lib_ordered.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)

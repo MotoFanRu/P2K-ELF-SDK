@@ -126,6 +126,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	arg_fw_name: str = arg_firmware.name
 	arg_soc: str = forge.determine_soc(arg_start)
 	arg_phone, arg_fw = forge.parse_phone_firmware(arg_fw_name)
+	arg_old = args.old
 
 	logging.info(f'Values:')
 	logging.info(f'\targ_verbose={arg_verbose}')
@@ -141,6 +142,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'\targ_soc={arg_soc}')
 	logging.info(f'\targ_phone={arg_phone}')
 	logging.info(f'\targ_fw={arg_fw}')
+	logging.info(f'\targ_old={arg_old}')
 	logging.info(f'')
 
 	logging.info(f'Prepare PortKit environment.')
@@ -217,11 +219,16 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'')
 
 	logging.info(f'Linking object files to binary.')
+	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
+	if arg_old:
+		val_object_path = forge.P2K_DIR_EP1_OBJ / 'old'
+	# if arg_compile:
+	# 	val_object_path = arg_output
 	val_link_objects: list[Path] = [
-		forge.P2K_DIR_EP1_OBJ / 'AutoRun.o',
-		forge.P2K_DIR_EP1_OBJ / 'ElfLoader.o',
-		forge.P2K_DIR_EP1_OBJ / 'ElfLoaderApp.o',
-		forge.P2K_DIR_EP1_OBJ / 'LibC.o',
+		val_object_path / 'AutoRun.o',
+		val_object_path / 'ElfLoader.o',
+		val_object_path / 'ElfLoaderApp.o',
+		val_object_path / 'LibC.o',
 		val_system_info_o,
 		val_combined_sym
 	]
@@ -301,9 +308,11 @@ def parse_arguments() -> Namespace:
 		'p': 'path to patterns file',
 		'f': 'path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
+		'q': 'use old object files',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
+	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.79R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.DAR.smg -o build
@@ -322,6 +331,9 @@ def parse_arguments() -> Namespace:
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452B_G_08.02.0DR.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452F1_G_08.04.09R.smg -o build
 	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452H6_G_08.00.05R.smg -o build
+
+	# Build ElfPack v1.0 and libraries to the phone/firmware using old object files.
+	python ep1_portkit.py -c -r -q -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
@@ -330,6 +342,7 @@ def parse_arguments() -> Namespace:
 	parser_args.add_argument('-p', '--patterns', required=True, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
 	parser_args.add_argument('-f', '--firmware', required=True, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
+	parser_args.add_argument('-q', '--old', required=False, action='store_true', help=hlp['q'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_args()
 
