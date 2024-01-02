@@ -7,7 +7,7 @@
 # Phone: L7
 # Firmware: R4513_G_08.B7.ACR_RB
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:52:09
+# Timestamp: 02-Jan-2024 22:00:36
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -344,7 +344,7 @@
 0x103DD324 D EV_UNLOC_KPAD
 0x105354A4 D EVENT_BT
 0x1070EDB2 T FlashDevEraseBlock
-0x10D13B6C T FlashDevWrite
+0x03FD14E8 T FlashDevWrite
 0x103B2B20 T FSS_SendFileViaObex
 0x105DBDC0 D GAIN_TABLE
 0x100D978C T get_connection_status

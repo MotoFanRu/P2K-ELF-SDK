@@ -30,14 +30,14 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.49R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg'
 	},
 	'R373_G_0E.30.79R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg'
 	},
@@ -51,28 +51,28 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452F_G_08.03.08R': {
 		'opts_all':       ['-DFTR_K1'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0151C350,  # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x0151C350,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg'
 	},
 	'R3511_G_0A.52.45R_A': {
 		'opts_all':       ['-DFTR_L6'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg'
 	},
 	'R3443H1_G_0A.65.0BR': {
 		'opts_all':       ['-DFTR_L6I'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg'
 	},
 	'R4513_G_08.B7.ACR_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x00CA01B0,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg'
 	},
