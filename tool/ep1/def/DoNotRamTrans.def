@@ -1,0 +1,9 @@
+# Do not RAM translate these functions for compatibility reasons.
+
+0xFFFFFFFF A __rt_memclr
+0xFFFFFFFF A __rt_memclr_w
+0xFFFFFFFF A __rt_memcpy
+0xFFFFFFFF A __rt_memcpy_w
+0xFFFFFFFF A __rt_memset
+0xFFFFFFFF A _rt_memset
+0xFFFFFFFF T memcpy
