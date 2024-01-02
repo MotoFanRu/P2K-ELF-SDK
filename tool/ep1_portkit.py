@@ -107,14 +107,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg'
 	},
-	'R4515_G_08.BD.D3R': {
-		'opts_all':       ['-DFTR_V3R'],
-		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
-	},
 	'R4441D_G_08.01.03R': {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
@@ -122,6 +114,14 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg'
+	},
+	'R4515_G_08.BD.D3R': {
+		'opts_all':       ['-DFTR_V3R'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
 	},
 	'R3512_G_0A.30.6CR': {
 		'opts_all':       ['-DFTR_V235'],
@@ -181,26 +181,26 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 		if firmware == 'R373_G_0E.30.49R':
 			# Pattern: EV_BacklightContinueOn D 00000E10102E
 			patches.append('0x102FC120 D EV_BacklightContinueOn')
-	elif phone == 'V235':
-		if firmware == 'R3512_G_0A.30.6CR':
-			# Pattern: Ram_398_l7 D [80A842B0D1062006+0x24]+0x10
-			patches.append('0x124A4BB8 D Ram_398_l7')
-	elif phone == 'V3i':
-		if firmware == 'R4441D_G_08.01.03R':
-			# Pattern: BEGIN_4A__IN_DB D 1 BC08471800000600+0x4
-			patches.append('0x100A7AB6 D BEGIN_4A__IN_DB')
 	elif phone == 'K1':
 		if firmware == 'R452F_G_08.03.08R':
 			# Pattern: [201490002000900190029003+0x01E8]+28
 			patches.append('0x14501210 D Ram_l7e')
-	elif phone == 'Z3':
-		if firmware == 'R452F1_G_08.04.09R':
-			# Pattern: [14??????00003E580000FFFF]+0x4
-			patches.append('0x14076374 D Ram_l7e')
 	elif phone == 'L9':
 		if firmware == 'R452J_G_08.22.05R':
 			# Pattern: [7FFF0000011E00000122+0x0A]
 			patches.append('0x1451C1C8 D Ram_l7e')
+	elif phone == 'V3i':
+		if firmware == 'R4441D_G_08.01.03R':
+			# Pattern: BEGIN_4A__IN_DB D 1 BC08471800000600+0x4
+			patches.append('0x100A7AB6 D BEGIN_4A__IN_DB')
+	elif phone == 'V235':
+		if firmware == 'R3512_G_0A.30.6CR':
+			# Pattern: Ram_398_l7 D [80A842B0D1062006+0x24]+0x10
+			patches.append('0x124A4BB8 D Ram_398_l7')
+	elif phone == 'Z3':
+		if firmware == 'R452F1_G_08.04.09R':
+			# Pattern: [14??????00003E580000FFFF]+0x4
+			patches.append('0x14076374 D Ram_l7e')
 	return forge.libgen_apply_patches(patches, lib_sym, phone, firmware, 'EP1')
 
 
@@ -342,12 +342,13 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_object_path = forge.P2K_DIR_EP1_OBJ / 'old'
 	# if opts['compile']:
 	# 	val_object_path = opts['output']
+	# WARNING: Order is important here!
 	val_link_objects: list[Path] = [
 		val_object_path / 'AutoRun.o',
-		val_object_path / 'ElfLoader.o',
 		val_object_path / 'ElfLoaderApp.o',
-		val_object_path / 'LibC.o',
+		val_object_path / 'ElfLoader.o',
 		val_system_info_o,
+		val_object_path / 'LibC.o',
 		val_combined_sym
 	]
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
@@ -466,21 +467,21 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -o build
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.79R -o build
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -c -r -pf K1_R452F_G_08.03.08R -o build
 	python ep1_portkit.py -c -r -pf L6_R3511_G_0A.52.45R_A -o build
 	python ep1_portkit.py -c -r -pf L6i_R3443H1_G_0A.65.0BR -o build
-	python ep1_portkit.py -c -r -pf V235_R3512_G_0A.30.6CR -o build
-	python ep1_portkit.py -c -r -pf V360_R4513_G_08.B7.ACR -o build
 	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.ACR_RB -o build
 	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.E0R_RB -o build
-	python ep1_portkit.py -c -r -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -c -r -pf L7e_R452D_G_08.01.0AR -o build
+	python ep1_portkit.py -c -r -pf L9_R452J_G_08.22.05R -o build
 	python ep1_portkit.py -c -r -pf V3i_R4441D_G_08.01.03R -o build
-	python ep1_portkit.py -c -r -pf K1_R452F_G_08.03.08R -o build
+	python ep1_portkit.py -c -r -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -c -r -pf V235_R3512_G_0A.30.6CR -o build
+	python ep1_portkit.py -c -r -pf V360_R4513_G_08.B7.ACR -o build
+	python ep1_portkit.py -c -r -pf V600_TRIPLETS_G_0B.09.72R -o build
 	python ep1_portkit.py -c -r -pf Z3_R452B_G_08.02.0DR -o build
 	python ep1_portkit.py -c -r -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -c -r -pf Z3_R452H6_G_08.00.05R -o build
-	python ep1_portkit.py -c -r -pf L7e_R452D_G_08.01.0AR -o build
-	python ep1_portkit.py -c -r -pf L9_R452J_G_08.22.05R -o build
-	python ep1_portkit.py -c -r -pf V600_TRIPLETS_G_0B.09.72R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using old object files.
 	python ep1_portkit.py -c -r -q -pf E1_R373_G_0E.30.49R -o build
