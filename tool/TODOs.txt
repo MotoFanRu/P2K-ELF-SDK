@@ -19,7 +19,7 @@ L7_R4513_G_08.B7.E0R_RB
 V600_TRIPLETS_G_0B.09.72R
 
 RAM & RAMTRANS ! Check! Build
-E1_49R:           1, 2, 3, 4, 5, A, -
+E1_49R:           1, 2, 3, 4, 5, -, ?
 E1_79R:           1, 2, 3, 4, 5, A, ?
 E1_DAR:           1, 2, 3, 4, 5, A, ?
 K1_08R:           1, 2, 3, 4, 5, N, ?
