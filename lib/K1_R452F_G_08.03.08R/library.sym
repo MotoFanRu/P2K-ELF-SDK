@@ -7,7 +7,7 @@
 # Phone: K1
 # Firmware: R452F_G_08.03.08R
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:18:45
+# Timestamp: 02-Jan-2024 21:41:20
 
 0x00000069 C AUDIO_STATUS
 0x0000061F C BEGIN_4A__IN_DB
@@ -116,7 +116,7 @@
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
-0x00001304 T __rt_memmove
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -124,6 +124,7 @@
 0x000015A0 A __rt_udiv10
 0x1112D628 A __rt_uwrite4
 0x10C4B0A8 T _itoa
+0x115AF0D0 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
@@ -198,6 +199,7 @@
 0x10E59B60 A AhiSurfGetLargestFreeBlockSize
 0x10E5ABC8 A AhiSurfInfo
 0x10E5B064 A AhiSurfLock
+0x10E5A8B0 A AhiSurfReuse
 0x10E5B2AC A AhiSurfUnlock
 0x1041B1FC T AlertStatusStart
 0x1041D4C6 T AlmclkReminderUtilCallInProgress
@@ -672,6 +674,7 @@
 0x113A7680 A UIS_SetActionList
 0x113A7B00 A UIS_SetBacklightWithIntensity
 0x113A77FC A UIS_SetCenterSelectAction
+0x102D0EE8 A UIS_SetClearKeyAction
 0x113A7EA8 A UIS_SetNoticeStatus
 0x113A95D4 A UIS_SetSkin
 0x113A8034 A UIS_SetStatus
