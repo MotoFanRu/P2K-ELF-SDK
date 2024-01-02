@@ -7,7 +7,7 @@
 # Phone: L6
 # Firmware: R3511_G_0A.52.45R_A
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:41:16
+# Timestamp: 02-Jan-2024 21:46:03
 
 0x1009C5BC T __16__rt_divtest
 0x10C466EC T __16__rt_sdiv
@@ -19,9 +19,10 @@
 0x10C979DC T __call_via_r3
 0x1009C5C0 A __rt_divtest
 0x10C94810 A __rt_memclr
-0x10C94810 A __rt_memclr_w
+0x10C94858 A __rt_memclr_w
 0x10C948B4 A __rt_memcpy
 0x10C9496C A __rt_memcpy_w
+0x1009CFA0 A __rt_memmove
 0x10C949DC A __rt_memset
 0x10C466F0 A __rt_sdiv
 0x1009D044 A __rt_sdiv10
@@ -30,6 +31,8 @@
 0x1009D658 A __rt_uwrite4
 0x10D1704A T _itoa
 0x10C979E4 A _ll_cmpu
+0x1009C7D0 A _ll_rsblu
+0x1009C804 A _ll_sdiv
 0x1009CAC8 A _ll_ushift_r
 0x1009C424 D _region_table
 0x10C949DC A _rt_memset
@@ -284,6 +287,7 @@
 0x106DAED2 T HAPI_ATOD_read_pcap
 0x106DCBEE T HAPI_BATTERY_ROM_get_unique_id
 0x106DCB10 T HAPI_BATTERY_ROM_read
+0x106DBB44 T HAPI_IC_ID_unique_id_read
 0x106D9E14 T HAPI_PCAP_transceive
 0x106D9CBE T HAPI_WATCHDOG_soft_reset
 0x106D9764 T hPortRead
@@ -309,7 +313,7 @@
 0x10C97530 T LdrStartApp
 0x10C975B2 T LdrUnloadELF
 0x1009CB76 T malloc
-0x10C947F8 T memcpy
+0x10C948B0 T memcpy
 0x1009CBC4 T memset
 0x109BDCEA T MME_GC_playback_create
 0x109BD482 T MME_GC_playback_delete
@@ -342,6 +346,7 @@
 0x102CCBC0 D SEEM_IMEI
 0x1051784C D SEEM_IMSI
 0x10ABA94C T SEEM_MAX_RECORD_get_max_record
+0x1009D7D8 A setjmp
 0x1009D0B4 T snprintf
 0x1009C490 T sprintf
 0x1009CEC4 T srand
@@ -504,7 +509,7 @@
 0x10B57760 A UIS_SetNoticeStatus
 0x10B57850 A UIS_SetStatus
 0x10B57A0C A UIS_SetWallpaper
-0x10C946E0 A uisAllocateMemory
+0x03FECE6C A uisAllocateMemory
 0x109D60BC A uisFreeMemory
 0x109D610C A uisReAllocMemory
 0x1066272A T URINameValid
