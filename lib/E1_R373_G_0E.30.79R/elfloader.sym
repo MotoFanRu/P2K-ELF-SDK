@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.79R
-# Version: 0101241
-# Timestamp: 01-Jan-2024 23:39:30
+# Version: 0201241
+# Timestamp: 02-Jan-2024 20:36:47
 
 0x10097C0C T __16__rt_divtest
 0x10BE4610 T __16__rt_sdiv
@@ -18,6 +18,7 @@
 0x10098250 T __pvfn__Fv
 0x10097C10 A __rt_divtest
 0x03FF38A0 A __rt_memclr
+0x03FF38E8 A __rt_memclr_w
 0x03FF3944 A __rt_memcpy
 0x03FF39FC A __rt_memcpy_w
 0x100985F0 A __rt_memmove
@@ -383,6 +384,7 @@
 0x10C30C60 T LdrStartApp
 0x10C30CE2 T LdrUnloadELF
 0x100998F8 T localtime
+0x03FF3940 T memcpy
 0x10098214 T memset
 0x10983BE2 T MME_GC_capture_create
 0x10983FBA T MME_GC_capture_delete
@@ -636,5 +638,3 @@
 0x10C30618 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x03FF38E8 A __rt_memclr_w
-0x03FF3940 T memcpy
