@@ -25,11 +25,11 @@ typedef struct
 	int		shared:1;
 	int		stubs:1;
 	int		stdlib:1;
-	char	deffile[128];
+	char	deffile[256];
 	char	version[8];
 	char	firmware[24];
-	char	header[64];
-	char	output[64];
+	char	header[256];
+	char	output[256];
 
 } CONFIG_T;
 

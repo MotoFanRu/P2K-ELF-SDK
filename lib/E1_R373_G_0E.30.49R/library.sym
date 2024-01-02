@@ -702,5 +702,3 @@
 0x10C1ADF8 A __rt_memset
 0x10C1ADF8 A _rt_memset
 0x10C1ACCC T memcpy
-0x10C1E440 T __16_ll_cmpu
-0x10C1E444 A _ll_cmpu
