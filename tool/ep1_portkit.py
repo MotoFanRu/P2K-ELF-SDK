@@ -136,7 +136,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452B_G_08.02.0DR': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg'
 	},
