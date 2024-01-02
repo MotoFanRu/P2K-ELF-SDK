@@ -407,7 +407,7 @@ class Args(argparse.ArgumentParser):
 		args: Namespace = self.parse_args()
 
 		phone, firmware = args.phone_fw
-		variants: dict[str, any] = EP1_PFW_VARIANTS[firmware]
+		variants: dict[str, any] = EP1_PFW_VARIANTS.get(firmware, None)
 		if not variants:
 			self.error(f'unknown {phone} phone and {firmware} firmware')
 
