@@ -115,21 +115,21 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R3512_G_0A.30.6CR': {
 		'opts_all':       ['-DFTR_V235'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg'
 	},
 	'R4513_G_08.B7.ACR': {
 		'opts_all':       ['-DFTR_V360'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg'
 	},
 	'TRIPLETS_G_0B.09.72R': {
 		'opts_all':       ['-DFTR_V600'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x00C3C1B0,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg'
 	},

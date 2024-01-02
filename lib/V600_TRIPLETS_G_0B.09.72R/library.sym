@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: V600
 # Firmware: TRIPLETS_G_0B.09.72R
-# Version: 0201241
-# Timestamp: 02-Jan-2024 23:19:12
+# Version: 0301241
+# Timestamp: 03-Jan-2024 00:04:37
 
 0x000020C9 C EV_CREATE_SHORTCUT
 0x0000214B C EV_PB_SET_NAME
@@ -18,6 +18,7 @@
 0x000FDC78 T __16__rt_sdiv10
 0x000FC048 T __16__rt_udiv
 0x000FD984 A __16__rt_udiv10
+0x10CBCEE8 T __16_ll_cmpu
 0x107E8318 T __pvfn__Fv
 0x000FBD90 A __rt_memclr
 0x000FBDD8 A __rt_memclr_w
@@ -30,9 +31,11 @@
 0x000FC04C A __rt_udiv
 0x000FD988 A __rt_udiv10
 0x107E8520 A __rt_uwrite4
+0x10CBCEEC A _ll_cmpu
 0x000FB75C T _ll_rsblu
 0x000FB76C A _ll_sdiv
 0x000FBC00 A _ll_ushift_r
+0x000FBF5C A _rt_memset
 0x000FB564 T abs_0
 0x101B72F6 T AFW_AddAppToRoutingStack
 0x100A2A16 T AFW_AddEv
@@ -295,15 +298,22 @@
 0x10A2B21C D product_version
 0x10A152DC T qsort
 0x10C8D494 T rand
+0x10C8D84C A setjmp
 0x10C8D5B8 T snprintf
 0x10C8D610 T sprintf
 0x10C8D438 T srand
 0x000FC154 T strcat
+0x10C8D658 T strchr
 0x000FC198 A strcmp
 0x000FC234 A strcpy
+0x10C8D674 T strcspn
 0x000FC280 T strlen
+0x10C8D6A4 T strncat
 0x10A15804 T strncmp
 0x000FC31C T strncpy
+0x107E8430 T strrchr
+0x10A15854 T strspn
+0x107E8448 T strstr
 0x000FD0FC T strtol
 0x000FC3EC T strtoul
 0x1063CEC0 T suAllocMem
@@ -315,20 +325,28 @@
 0x1229BD28 D theWallpaper
 0x108B1364 A u_atol
 0x108B1E20 A u_atou
+0x108B14BC A u_isAlpha
+0x108B12F4 A u_isDigit
+0x108B1B78 A u_isLower
+0x108B1320 A u_isSpace
+0x108B1A48 A u_isUpper
 0x108B123C A u_itoh
-0x108B1C98 T u_ltou
+0x108B1D6C A u_ltou
 0x108B0698 A u_strcat
 0x108B07A4 A u_strcmp
 0x108B0878 A u_strcpy
 0x108B0908 A u_strlen
+0x108B0C2C A u_strmakelower
 0x108B0ED0 A u_strmakeupper
 0x108B07FC A u_strncmp
 0x108B08A8 A u_strncpy
 0x108B0F0C A u_strrchr
 0x10AF2C10 A UIS_CanvasDrawColorSoftkey
 0x10AF1E58 A UIS_CanvasDrawColorText
+0x10AF25EC A UIS_CanvasDrawLine
 0x10AF270C A UIS_CanvasDrawRect
 0x10AF2B1C A UIS_CanvasDrawRoundRect
+0x10AF44D8 A UIS_CanvasDrawTitleBar
 0x10AF46D4 A UIS_CanvasDrawTitleBarWithIcon
 0x10AF27C4 A UIS_CanvasFillRect
 0x10AF1B10 A UIS_CanvasGetDisplaySize
