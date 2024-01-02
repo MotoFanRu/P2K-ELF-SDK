@@ -217,7 +217,9 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 					else:
 						f_o.seek(file_size)
 						p_pad: int = (arrange16(file_size) - file_size) + arrange16(p_size)
-						logging.info(f'Add some extra space "{int2hex(p_pad)}" to "{firmware} {file_size}".')
+						h_p: str = int2hex(p_pad)
+						h_s: str = int2hex(file_size)
+						logging.info(f'Add some extra space "{h_p}" to "{firmware}", size: "{file_size}", hex "{h_s}".')
 						f_o.write(b'\xFF' * p_pad)
 						f_o.seek(p_addr)
 						f_o.write(bytes.fromhex(value))
