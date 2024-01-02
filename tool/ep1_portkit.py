@@ -101,7 +101,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4441D_G_08.01.03R': {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg'
 	},
