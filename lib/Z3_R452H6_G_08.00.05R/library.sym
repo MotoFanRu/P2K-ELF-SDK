@@ -7,7 +7,7 @@
 # Phone: Z3
 # Firmware: R452H6_G_08.00.05R
 # Version: 0301241
-# Timestamp: 03-Jan-2024 00:24:30
+# Timestamp: 03-Jan-2024 00:33:41
 
 0x00000069 C AUDIO_STATUS
 0x00000615 C BEGIN_4A__IN_DB
@@ -124,7 +124,7 @@
 0x000015A0 A __rt_udiv10
 0x10C95BC0 A __rt_uwrite4
 0x110A0EE0 T _itoa
-0x102AFF64 A _ll_cmpu
+0x102AFF60 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
@@ -200,6 +200,7 @@
 0x10995BE8 A AhiSurfGetLargestFreeBlockSize
 0x10996CD0 A AhiSurfInfo
 0x109971C4 A AhiSurfLock
+0x10996990 A AhiSurfReuse
 0x10997434 A AhiSurfUnlock
 0x1049BD78 T AlertStatusStart
 0x1049DFA4 T AlmclkReminderUtilCallInProgress
@@ -677,6 +678,7 @@
 0x1027FB9C A UIS_SetActionList
 0x1028001C A UIS_SetBacklightWithIntensity
 0x1027FD18 A UIS_SetCenterSelectAction
+0x10286900 A UIS_SetClearKeyAction
 0x102803C4 A UIS_SetNoticeStatus
 0x10281AF4 A UIS_SetSkin
 0x10280550 A UIS_SetStatus

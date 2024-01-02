@@ -36,7 +36,7 @@ V3r_D3R:          1, 2, 3, 4, 5, A
 V600_72R:         1, 2, 3, 4, 5, A
 Z3_0DR:           1, 2, 3, 4, 5, N
 Z3_05R:           1, 2, 3, 4, 5, N
-Z3_09R:           1, 2, ?, 4, ?, N
+Z3_09R:           1, 2, 3, 4, 5, N
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
 
@@ -58,4 +58,4 @@ L7e check:
 +0x10D3157C A AhiDispSurfGet
 +0x10D35544 A AhiDrawFlush
 
-ll_cmpu on EP2 drop
+ll_cmpu on EP2 drop?
