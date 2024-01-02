@@ -245,7 +245,7 @@ def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str
 
 def generate_register_patch(fw: str, author: str, desc: str, p_e: Path, p_r: Path, p_p: Path, cg: Path) -> bool:
 	if forge.check_files_if_exists([p_e, p_r]):
-		hex_data: str = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN) + 1)  # Thumb
+		hex_data: str = forge.int2hex_r(forge.get_function_address_from_sym_file(p_e, FUNC_AUTORUN))
 		reg_address: int = forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER)
 
 		forge.hex2fpa(fw, author, desc, reg_address, hex_data, p_p, cg)
