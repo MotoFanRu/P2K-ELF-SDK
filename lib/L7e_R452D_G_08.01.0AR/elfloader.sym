@@ -7,7 +7,7 @@
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
 # Version: 0201241
-# Timestamp: 02-Jan-2024 22:00:36
+# Timestamp: 02-Jan-2024 23:00:26
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -21,6 +21,7 @@
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -467,6 +468,7 @@
 0x10509BC0 D SENDED_TRAFFIC
 0x10CFDEC4 D SESSION_TIME
 0x104142B4 A setCanvasControl__13StatusManagerFScPUs
+0x000019C0 A setjmp
 0x1047C360 D SKIN_FOLDER
 0x111BD4A4 T snprintf
 0x111BD4FC T sprintf
@@ -486,12 +488,18 @@
 0x10C93B34 T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03FC66AE T suAcquireSem
 0x03FC5870 T suAllocMem
+0x03FC6194 T suCreateBSem
+0x03FC6264 T suCreateCSem
 0x03FC43DE T suCreateMessage
+0x03FC6360 T suCreateMSem
 0x03FC49B6 T suCreatePortFromQueue
 0x03FC439C T suCreateQueue
 0x03FC4C38 T suCreateTask
 0x03FC441A T suDeleteMessage
+0x03FC643A T suDeleteSem
+0x03FC4DAC T suDeleteTask
 0x03FCFD88 A suDisableAllInt
 0x03FC5A76 T suFreeMem
 0x03FC4BB2 T suGetMessageType
@@ -500,6 +508,7 @@
 0x03FC5840 T suPalReadTime
 0x10954330 T suPalTicksToMsec
 0x03FC4558 T suReceiveMessageFromQueue
+0x03FC6578 T suReleaseSem
 0x03FC4A7A T suSendMessage
 0x03FCFD98 A suSetInt
 0x03FC4DD0 T suSleep
@@ -626,6 +635,7 @@
 0x10280FE0 A UIS_SetActionList
 0x10281460 A UIS_SetBacklightWithIntensity
 0x1028115C A UIS_SetCenterSelectAction
+0x10287D18 A UIS_SetClearKeyAction
 0x10281808 A UIS_SetNoticeStatus
 0x10282F38 A UIS_SetSkin
 0x10281994 A UIS_SetStatus
@@ -641,13 +651,3 @@
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x00001304 A __rt_memmove
-0x000019C0 A setjmp
-0x03FC66AE T suAcquireSem
-0x03FC6194 T suCreateBSem
-0x03FC6264 T suCreateCSem
-0x03FC6360 T suCreateMSem
-0x03FC643A T suDeleteSem
-0x03FC4DAC T suDeleteTask
-0x03FC6578 T suReleaseSem
-0x10287D18 A UIS_SetClearKeyAction

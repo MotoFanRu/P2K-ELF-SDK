@@ -7,7 +7,7 @@
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
 # Version: 0201241
-# Timestamp: 02-Jan-2024 22:00:40
+# Timestamp: 02-Jan-2024 23:00:22
 
 0x00000069 C AUDIO_STATUS
 0x00000612 C BEGIN_4A__IN_DB
@@ -117,6 +117,7 @@
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -124,6 +125,7 @@
 0x000015A0 A __rt_udiv10
 0x111BD568 A __rt_uwrite4
 0x110826AC T _itoa
+0x102B0010 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
@@ -455,6 +457,7 @@
 0x2484E000 D kpp
 0x111BD720 T localtime
 0x00001080 T memcmp
+0x000010D8 T memcpy
 0x00001100 T memset
 0x10927092 T MME_GC_capture_create
 0x10927508 T MME_GC_capture_delete
@@ -523,6 +526,7 @@
 0x10DC1C14 T SEEM_MAX_RECORD_get_max_record
 0x40532E7C D SESSION_TIME
 0x104142B4 A setCanvasControl__13StatusManagerFScPUs
+0x000019C0 A setjmp
 0x1047C360 D SKIN_FOLDER
 0x111BD4A4 T snprintf
 0x111BD4FC T sprintf
@@ -702,7 +706,3 @@
 0x1038E4CC A utility_get_image_size
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x000019C0 A setjmp
-0x000010D8 T memcpy
-0x00001304 A __rt_memmove
-0x102B0010 A _ll_cmpu
