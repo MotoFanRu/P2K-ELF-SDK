@@ -23,7 +23,6 @@ from argparse import Namespace
 
 
 # Constants.
-FUNC_INJECTION: str = 'APP_SyncML_MainRegister'
 FUNC_REGISTER: str = 'Register'
 FUNC_AUTORUN: str = 'AutorunMain'
 
@@ -33,126 +32,162 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.79R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.DAR': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    0x003137B4,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452F_G_08.03.08R': {
 		'opts_all':       ['-DFTR_K1'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0151C350,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R3511_G_0A.52.45R_A': {
 		'opts_all':       ['-DFTR_L6'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R3443H1_G_0A.65.0BR': {
 		'opts_all':       ['-DFTR_L6I'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x00CA01B0,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.E0R_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x00C90730,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452D_G_08.01.0AR': {
 		'opts_all':       ['-DFTR_L7E'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D340,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452J_G_08.22.05R': {
 		'opts_all':       ['-DFTR_L9'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0152E010,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R4441D_G_08.01.03R': {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R4515_G_08.BD.D3R': {
 		'opts_all':       ['-DFTR_V3R'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R3512_G_0A.30.6CR': {
 		'opts_all':       ['-DFTR_V235'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR': {
 		'opts_all':       ['-DFTR_V360'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'TRIPLETS_G_0B.09.72R': {
 		'opts_all':       ['-DFTR_V600'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    0x00C3C1B0,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
-		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'a'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452B_G_08.02.0DR': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg'
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452F1_G_08.04.09R': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	},
 	'R452H6_G_08.00.05R': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
-		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg'
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
 	}
 }
 
@@ -304,7 +339,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info(f'Generating register symbols file.')
 	val_register_pat: Path = opts['output'] / 'Register.pat'
 	val_register_sym: Path = opts['output'] / 'Register.sym'
-	if not generate_register_sym(val_combined_sym, opts['fw_file'], FUNC_INJECTION, val_register_pat, val_register_sym):
+	if not generate_register_sym(val_combined_sym, opts['fw_file'], opts['inject'], val_register_pat, val_register_sym):
 		logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
 		return False
 	logging.info(f'')
@@ -321,8 +356,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info(f'Linking object files to binary.')
 	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
-	if opts['old_obj']:
-		val_object_path = forge.P2K_DIR_EP1_OBJ / 'old'
+	if opts['new_obj']:
+		val_object_path = forge.P2K_DIR_EP1_OBJ / 'new'
 	# if opts['compile']:
 	# 	val_object_path = opts['output']
 	# WARNING: Order is important here!
@@ -366,7 +401,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	val_elfloader_lib: Path = opts['output'] / 'elfloader.lib'
 	generate_lib_sym(
 		val_combined_sym, val_elfpack_sym, val_library_sym,
-		[FUNC_INJECTION, 'APP_CALC_MainRegister', '_region_table'],
+		[opts['inject'], 'APP_CALC_MainRegister', '_region_table'],
 		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
 	)
 	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
@@ -414,7 +449,7 @@ class Args(argparse.ArgumentParser):
 		opts['verbose'] = args.verbose
 		opts['clean'] = args.clean
 		opts['ram_trans'] = args.ram_trans
-		opts['old_obj'] = args.old_obj
+		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
@@ -427,6 +462,9 @@ class Args(argparse.ArgumentParser):
 		opts['soc'] = forge.determine_soc(opts['start'])
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
+
+		opts['inject'] = variants['func_inject']
+		opts['drive'] = variants['drive_patch']
 
 		return opts
 
@@ -441,7 +479,7 @@ def parse_arguments() -> dict[str, any]:
 		'p': 'override path to patterns file',
 		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
-		'q': 'use old object files',
+		'n': 'use new object files',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'v': 'verbose output'
 	}
@@ -466,8 +504,8 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -c -r -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -c -r -pf Z3_R452H6_G_08.00.05R -o build
 
-	# Build ElfPack v1.0 and libraries to the phone/firmware using old object files.
-	python ep1_portkit.py -c -r -q -pf E1_R373_G_0E.30.49R -o build
+	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
+	python ep1_portkit.py -c -r -n -pf E1_R373_G_0E.30.49R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset override).
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
@@ -480,7 +518,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
-	parser_args.add_argument('-q', '--old-obj', required=False, action='store_true', help=hlp['q'])
+	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
