@@ -7,19 +7,21 @@
 # Phone: Z3
 # Firmware: R452B_G_08.02.0DR
 # Version: 0301241
-# Timestamp: 03-Jan-2024 00:03:37
+# Timestamp: 03-Jan-2024 00:16:38
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008448 T __16__rt_udiv10
+0x102AFF5C T __16_ll_cmpu
 0x111C01B8 T __pvfn__Fv
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -27,12 +29,14 @@
 0x000015A0 A __rt_udiv10
 0x10C95838 A __rt_uwrite4
 0x110A0B58 T _itoa
+0x102AFF60 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
 0x111BF76C D _region_table
 0x000013A8 A _rt_memset
 0x00000364 T abs_0
+0x14123D54 D ADN_storage_mgr
 0x1031F730 T AFW_AddAppToRoutingStack
 0x1031FDBA T AFW_AddEvAux
 0x1031FDF6 T AFW_AddEvAuxD
@@ -102,6 +106,7 @@
 0x10995860 A AhiSurfGetLargestFreeBlockSize
 0x10996948 A AhiSurfInfo
 0x10996E3C A AhiSurfLock
+0x10996608 A AhiSurfReuse
 0x109970AC A AhiSurfUnlock
 0x1049BDE8 T AlertStatusStart
 0x10565574 D ALMCLK_REMINDER_START
@@ -467,12 +472,18 @@
 0x111C0210 T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03FC99AA T suAcquireSem
 0x03FC8B6C T suAllocMem
+0x03FC9490 T suCreateBSem
+0x03FC9560 T suCreateCSem
 0x03FC76DA T suCreateMessage
+0x03FC965C T suCreateMSem
 0x03FC7CB2 T suCreatePortFromQueue
 0x03FC7698 T suCreateQueue
 0x03FC7F34 T suCreateTask
 0x03FC7716 T suDeleteMessage
+0x03FC9736 T suDeleteSem
+0x03FC80A8 T suDeleteTask
 0x03FD3058 A suDisableAllInt
 0x03FC8D72 T suFreeMem
 0x03FC7EAE T suGetMessageType
@@ -481,6 +492,7 @@
 0x03FC8B3C T suPalReadTime
 0x10CF0264 T suPalTicksToMsec
 0x03FC7854 T suReceiveMessageFromQueue
+0x03FC9874 T suReleaseSem
 0x03FC7D76 T suSendMessage
 0x03FD3068 A suSetInt
 0x03FC80CC T suSleep
@@ -605,6 +617,7 @@
 0x1027FC9C A UIS_SetActionList
 0x1028011C A UIS_SetBacklightWithIntensity
 0x1027FE18 A UIS_SetCenterSelectAction
+0x10286A00 A UIS_SetClearKeyAction
 0x102804C4 A UIS_SetNoticeStatus
 0x10281BF4 A UIS_SetSkin
 0x10280650 A UIS_SetStatus
@@ -619,16 +632,3 @@
 0x102AF4E8 T UtilLogStringData
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
-0x102AFF5C T __16_ll_cmpu
-0x00001304 A __rt_memmove
-0x102AFF60 A _ll_cmpu
-0x14123D54 D ADN_storage_mgr
-0x10996608 A AhiSurfReuse
-0x03FC99AA T suAcquireSem
-0x03FC9490 T suCreateBSem
-0x03FC9560 T suCreateCSem
-0x03FC965C T suCreateMSem
-0x03FC9736 T suDeleteSem
-0x03FC80A8 T suDeleteTask
-0x03FC9874 T suReleaseSem
-0x10286A00 A UIS_SetClearKeyAction
