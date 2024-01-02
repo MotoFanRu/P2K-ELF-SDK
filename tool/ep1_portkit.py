@@ -79,7 +79,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4513_G_08.B7.E0R_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x00C90730,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg'
 	},
