@@ -117,7 +117,6 @@
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
-0x00001304 T __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -125,7 +124,6 @@
 0x000015A0 A __rt_udiv10
 0x111BD568 A __rt_uwrite4
 0x110826AC T _itoa
-0x102AC76C A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
@@ -704,3 +702,7 @@
 0x1038E4CC A utility_get_image_size
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
+0x000019C0 A setjmp
+0x000010D8 T memcpy
+0x00001304 A __rt_memmove
+0x102B0010 A _ll_cmpu

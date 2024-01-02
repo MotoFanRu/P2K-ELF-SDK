@@ -26,6 +26,7 @@ from argparse import Namespace
 FUNC_INJECTION: str = 'APP_SyncML_MainRegister'
 FUNC_REGISTER: str = 'Register'
 FUNC_AUTORUN: str = 'AutorunMain'
+
 EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.49R': {
 		'opts_all':       ['-DFTR_E1'],
@@ -86,7 +87,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452D_G_08.01.0AR': {
 		'opts_all':       ['-DFTR_L7E'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x0021D340,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg'
 	},

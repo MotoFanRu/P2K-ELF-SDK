@@ -47,3 +47,15 @@ Recreate libs again with RAM-Trans and fix libraries arrange!
 Otnositelinie puty.
 
 Update postlink on Windows!
+
+EP1
+-0x102611A8 A DAL_GetDeviceContext
+-0x102611C8 A DAL_GetDrawingSurface
++0x10261298 A DAL_GetDeviceContext
++0x1026137C A DAL_GetDrawingSurface
+-0x10D33134 A AhiDispSurfGet
+-0x102AD4B4 A AhiDrawFlush
++0x10D3157C A AhiDispSurfGet
++0x10D35544 A AhiDrawFlush
+
+ll_cmpu

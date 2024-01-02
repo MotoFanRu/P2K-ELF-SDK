@@ -14,6 +14,7 @@
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008448 T __16__rt_udiv10
+0x102B000C T __16_ll_cmpu
 0x10C3B910 T __pvfn__Fv
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
@@ -27,7 +28,7 @@
 0x000015A0 A __rt_udiv10
 0x111BD568 A __rt_uwrite4
 0x110826AC T _itoa
-0x102AC76C A _ll_cmpu
+0x102B0010 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
@@ -640,3 +641,13 @@
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
+0x00001304 A __rt_memmove
+0x000019C0 A setjmp
+0x03FC66AE T suAcquireSem
+0x03FC6194 T suCreateBSem
+0x03FC6264 T suCreateCSem
+0x03FC6360 T suCreateMSem
+0x03FC643A T suDeleteSem
+0x03FC4DAC T suDeleteTask
+0x03FC6578 T suReleaseSem
+0x10287D18 A UIS_SetClearKeyAction
