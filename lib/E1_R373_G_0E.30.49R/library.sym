@@ -125,7 +125,6 @@
 0x100986D8 A __rt_udiv10
 0x10098C3C A __rt_uwrite4
 0x10163774 T _itoa
-0x10097D70 A _ll_cmpu
 0x10097E20 A _ll_rsblu
 0x10097E54 A _ll_sdiv
 0x10098118 A _ll_ushift_r

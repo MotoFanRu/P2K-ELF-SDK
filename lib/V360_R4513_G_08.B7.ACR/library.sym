@@ -114,7 +114,6 @@
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008448 T __16__rt_udiv10
-0x000007E4 T __16_ll_cmpu
 0x10098B4C T __pvfn__Fv
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
@@ -129,7 +128,6 @@
 0x000015A0 A __rt_udiv10
 0x10099084 A __rt_uwrite4
 0x10161764 T _itoa
-0x000007E8 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r

@@ -124,7 +124,6 @@
 0x10A5DACC A __rt_udiv10
 0x10A5DD78 A __rt_uwrite4
 0x10490598 T _itoa
-0x10A5D9DC A _ll_cmpu
 0x10A5E854 A _ll_rsblu
 0x10A5D9EC A _ll_sdiv
 0x10A5DA90 A _ll_ushift_r

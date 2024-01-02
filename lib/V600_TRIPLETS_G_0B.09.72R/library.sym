@@ -18,7 +18,6 @@
 0x000FDC78 T __16__rt_sdiv10
 0x000FC048 T __16__rt_udiv
 0x000FD984 A __16__rt_udiv10
-0x10CBCEE8 T __16_ll_cmpu
 0x107E8318 T __pvfn__Fv
 0x000FBD90 A __rt_memclr
 0x000FBDD8 A __rt_memclr_w
@@ -31,7 +30,6 @@
 0x000FC04C A __rt_udiv
 0x000FD988 A __rt_udiv10
 0x107E8520 A __rt_uwrite4
-0x10CBCEEC A _ll_cmpu
 0x000FB75C T _ll_rsblu
 0x000FB76C A _ll_sdiv
 0x000FBC00 A _ll_ushift_r

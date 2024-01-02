@@ -14,6 +14,7 @@
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008448 T __16__rt_udiv10
+# 0x000007E4 T __16_ll_cmpu
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
 0x00001180 A __rt_memclr_w
@@ -25,6 +26,7 @@
 0x0000155C A __rt_sdiv10
 0x00001498 A __rt_udiv
 0x000015A0 A __rt_udiv10
+# 0x000007E8 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
