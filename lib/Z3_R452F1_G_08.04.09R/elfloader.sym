@@ -7,21 +7,21 @@
 # Phone: Z3
 # Firmware: R452F1_G_08.04.09R
 # Version: 0301241
-# Timestamp: 03-Jan-2024 00:16:38
+# Timestamp: 03-Jan-2024 00:24:27
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008448 T __16__rt_udiv10
-0x115BEF30 T __16_ll_cmpu
+0x115BEF2C T __16_ll_cmpu
 0x111C0454 T __pvfn__Fv
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
 0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
-0x00001304 T __rt_memmove
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -29,12 +29,13 @@
 0x000015A0 A __rt_udiv10
 0x10C890D0 A __rt_uwrite4
 0x110A6A70 T _itoa
-0x115BEF34 A _ll_cmpu
+0x115BEF30 A _ll_cmpu
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
 0x000013A8 A _rt_memset
 0x00000364 T abs_0
+0x1412744C D ADN_storage_mgr
 0x10306D1C T AFW_AddAppToRoutingStack
 0x103073A6 T AFW_AddEvAux
 0x103073E2 T AFW_AddEvAuxD
@@ -104,6 +105,7 @@
 0x1098B504 A AhiSurfGetLargestFreeBlockSize
 0x1098C5EC A AhiSurfInfo
 0x1098CAE0 A AhiSurfLock
+0x1098C2AC A AhiSurfReuse
 0x1098CD50 A AhiSurfUnlock
 0x104840CC T AlertStatusStart
 0x105511D8 D ALMCLK_REMINDER_START
@@ -471,12 +473,18 @@
 0x111C04AC T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03FCB0A6 T suAcquireSem
 0x03FCA268 T suAllocMem
+0x03FCAB8C T suCreateBSem
+0x03FCAC5C T suCreateCSem
 0x03FC8D8A T suCreateMessage
+0x03FCAD58 T suCreateMSem
 0x03FC9362 T suCreatePortFromQueue
 0x03FC8D48 T suCreateQueue
 0x03FC95E4 T suCreateTask
 0x03FC8DC6 T suDeleteMessage
+0x03FCAE32 T suDeleteSem
+0x03FC9758 T suDeleteTask
 0x03FD47F0 A suDisableAllInt
 0x03FCA46E T suFreeMem
 0x03FC955E T suGetMessageType
@@ -485,6 +493,7 @@
 0x03FCA238 T suPalReadTime
 0x10CE2748 T suPalTicksToMsec
 0x03FC8F04 T suReceiveMessageFromQueue
+0x03FCAF70 T suReleaseSem
 0x03FC9426 T suSendMessage
 0x03FD4800 A suSetInt
 0x03FC977C T suSleep
@@ -609,6 +618,7 @@
 0x102517A0 A UIS_SetActionList
 0x10251C20 A UIS_SetBacklightWithIntensity
 0x1025191C A UIS_SetCenterSelectAction
+0x102585E8 A UIS_SetClearKeyAction
 0x10251FC8 A UIS_SetNoticeStatus
 0x102536F4 A UIS_SetSkin
 0x10252154 A UIS_SetStatus

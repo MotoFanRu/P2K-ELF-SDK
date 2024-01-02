@@ -35,7 +35,7 @@ V3i_03R:          1, 2, 3, 4, 5, A
 V3r_D3R:          1, 2, 3, 4, 5, A
 V600_72R:         1, 2, 3, 4, 5, A
 Z3_0DR:           1, 2, 3, 4, 5, N
-Z3_05R:           1, 2, ?, 4, ?, N
+Z3_05R:           1, 2, 3, 4, 5, N
 Z3_09R:           1, 2, ?, 4, ?, N
 
 Update/recompile EP2 libraries using Windows DevKIT Pro.
