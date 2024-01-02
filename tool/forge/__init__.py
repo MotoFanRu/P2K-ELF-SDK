@@ -58,6 +58,7 @@ from .hexer import is_hex_string
 from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
 from .hexer import hex2hex
+from .hexer import str2hex
 
 from .libgen import libgen_version
 from .libgen import libgen_apply_patches
@@ -81,6 +82,7 @@ from .patcher import hex2fpa
 from .patcher import fpa2bin
 from .patcher import unite_fpa_patches
 from .patcher import apply_fpa_patch
+from .patcher import patch_binary_file
 
 from .patterns import pat_find
 from .patterns import pat_append

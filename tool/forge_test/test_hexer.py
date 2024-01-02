@@ -22,6 +22,7 @@ from forge import is_hex_string
 from forge import normalize_hex_string
 from forge import normalize_hex_address
 from forge import hex2hex
+from forge import str2hex
 
 
 class TestHexer(unittest.TestCase):
@@ -158,3 +159,10 @@ class TestHexer(unittest.TestCase):
 	def helper_test_hex2hex(self, hex_value: str, size: int = 8) -> None:
 		with self.assertRaises(ValueError):
 			hex2hex(hex_value, size)
+
+	def test_str2hex(self) -> None:
+		self.assertEqual(str2hex('A'), '41')
+		self.assertEqual(str2hex('B'), '42')
+		self.assertEqual(str2hex('C'), '43')
+		self.assertEqual(str2hex('ABC'), '414243')
+		self.assertEqual(str2hex('ABC D'), '4142432044')

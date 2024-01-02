@@ -378,6 +378,20 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	logging.info(f'')
 
+	logging.info(f'Patch resulting binaries.')
+	d: str = forge.str2hex(opts["drive"])
+	# file://b/Elf/elfloader.lib
+	# Pattern: 66696C653A2F2F622F456C662F656C666C6F616465722E6C6962
+	po1: str = f'66696C653A2F2F622F456C662F656C666C6F616465722E6C6962'
+	pn1: str = f'66696C653A2F2F{d}2F456C662F656C666C6F616465722E6C6962'
+	forge.patch_binary_file(val_elfpack_bin, po1, pn1)
+	# f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n.
+	# Pattern: 660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00
+	po2: str = f'660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00'
+	pn2: str = f'660069006C0065003A002F002F00{d}002F0045006C0066002F006100750074006F002E00720075006E00'
+	forge.patch_binary_file(val_elfpack_bin, po2, pn2)
+	logging.info(f'')
+
 	logging.info(f'Creating Flash&Backup 3 patches.')
 	val_register_fpa: Path = opts['output'] / 'Register.fpa'
 	val_elfpack_fpa: Path = opts['output'] / 'ElfPack.fpa'

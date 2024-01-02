@@ -223,3 +223,35 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 						f_o.write(bytes.fromhex(value))
 			return True
 	return False
+
+
+def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str) -> bool:
+	if check_files_if_exists([binary_file]) and check_files_extensions([binary_file], ['bin', 'smg']):
+		found: int = 0
+		write_to: int = 0
+		chunk_size: int = 4096
+		old_bytes_sequence: bytes = bytes.fromhex(old_bytes.replace('\\x', ''))
+		new_bytes_sequence: bytes = bytes.fromhex(new_bytes.replace('\\x', ''))
+		if len(old_bytes_sequence) == len(new_bytes_sequence):
+			with binary_file.open('rb+') as f_io:
+				chunk: bytes = f_io.read(chunk_size)
+				while chunk:
+					offset: int = chunk.find(old_bytes_sequence)
+					if offset >= 0:
+						found = found + 1
+						write_to = f_io.tell() - len(chunk) + offset
+					chunk = f_io.read(chunk_size)
+				if found == 1:
+					logging.info(f'Apply patch to "{binary_file}" file:')
+					logging.info(f'Old: "{old_bytes}"')
+					logging.info(f'New: "{new_bytes}"')
+					f_io.seek(write_to)
+					f_io.write(new_bytes_sequence)
+					return True
+				elif found > 1:
+					logging.error(f'Too many ({found}) matches of "{old_bytes}" pattern in "{binary_file}" file.')
+				else:
+					logging.error(f'Pattern "{old_bytes}" not found in "{binary_file}" file.')
+		else:
+			logging.error(f'Length of "{old_bytes}" and "{new_bytes}" patterns does not match.')
+	return False

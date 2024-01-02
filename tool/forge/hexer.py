@@ -85,3 +85,7 @@ def hex2hex(hex_value: str, size: int = 8) -> str:
 		raise ValueError(f'value "{hex_value}" is not a HEX number')
 
 	raise ValueError(f'value "{hex_value}" exceeds the maximum for size "{size}"')
+
+
+def str2hex(str_value: str) -> str:
+	return str_value.encode('ascii').hex().upper()
