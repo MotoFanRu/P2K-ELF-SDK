@@ -7,13 +7,14 @@
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
 # Version: 0201241
-# Timestamp: 02-Jan-2024 23:00:26
+# Timestamp: 02-Jan-2024 23:18:03
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
 0x00008634 T __16__rt_udiv10
+0x115C0D8C T __16_ll_cmpu
 0x10BF3E4C T __pvfn__Fv
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
@@ -48,8 +49,10 @@
 0x00000904 A _ll_rsblu
 0x00000938 A _ll_sdiv
 0x00001034 A _ll_ushift_r
+0x000013A8 A _rt_memset
 0x111870F0 T _sprintf
 0x00000364 T abs_0
+0x14127808 D ADN_storage_mgr
 0x102CF250 T AFW_AddAppToRoutingStack
 0x102CF8DA T AFW_AddEvAux
 0x102CF916 T AFW_AddEvAuxD
@@ -579,12 +582,18 @@
 0x10C4E28C T strtok
 0x000018B0 T strtol
 0x00001938 T strtoul
+0x03FC7D6E T suAcquireSem
 0x03FC6F30 T suAllocMem
+0x03FC7854 T suCreateBSem
+0x03FC7924 T suCreateCSem
 0x03FC5A54 T suCreateMessage
+0x03FC7A20 T suCreateMSem
 0x03FC602E T suCreatePortFromQueue
 0x03FC5A14 T suCreateQueue
 0x03FC62F8 T suCreateTask
 0x03FC5A92 T suDeleteMessage
+0x03FC7AFA T suDeleteSem
+0x03FC6424 T suDeleteTask
 0x03FD1630 A suDisableAllInt
 0x03FC7136 T suFreeMem
 0x03FC622A T suGetMessageType
@@ -593,6 +602,7 @@
 0x03FC6F00 T suPalReadTime
 0x1090DA08 T suPalTicksToMsec
 0x03FC5BD0 T suReceiveMessageFromQueue
+0x03FC7C38 T suReleaseSem
 0x03FC60F2 T suSendMessage
 0x03FD1640 A suSetInt
 0x03FC6448 T suSleep
@@ -728,6 +738,7 @@
 0x1024FCC0 A UIS_SetActionList
 0x10250140 A UIS_SetBacklightWithIntensity
 0x1024FE3C A UIS_SetCenterSelectAction
+0x10235A48 A UIS_SetClearKeyAction
 0x102530BC A UIS_SetNewTitle
 0x102504E8 A UIS_SetNoticeStatus
 0x10251D28 A UIS_SetSkin

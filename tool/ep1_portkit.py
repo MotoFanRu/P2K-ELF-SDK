@@ -94,7 +94,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452J_G_08.22.05R': {
 		'opts_all':       ['-DFTR_L9'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    0x0152E010,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg'
 	},

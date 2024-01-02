@@ -7,7 +7,7 @@
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
 # Version: 0201241
-# Timestamp: 02-Jan-2024 23:00:22
+# Timestamp: 02-Jan-2024 23:19:12
 
 0x00000069 C AUDIO_STATUS
 0x00000650 C BEGIN_4A__IN_DB
@@ -110,9 +110,10 @@
 0x00008634 T __16__rt_udiv10
 0x000003FC A __rt_divtest
 0x00001138 A __rt_memclr
-0x10109594 T __rt_memclr_w
+0x00001180 A __rt_memclr_w
 0x000011DC A __rt_memcpy
 0x00001294 A __rt_memcpy_w
+0x00001304 A __rt_memmove
 0x000013A8 A __rt_memset
 0x000013C0 A __rt_sdiv
 0x0000155C A __rt_sdiv10
@@ -131,12 +132,15 @@
 0x1010A594 T _ll_rsblu
 0x104087B4 T _ll_sdiv
 0x10407B0C T _ll_ushift_r
+0x000013A8 A _rt_memset
 0x111870F0 T _sprintf
+0x00000364 T abs_0
 0x102CF250 T AFW_AddAppToRoutingStack
 0x102CF8DA T AFW_AddEvAux
 0x102CF916 T AFW_AddEvAuxD
 0x102CF89C T AFW_AddEvEvD
 0x102CEC68 T AFW_AddEvNoD
+0x102CF952 T AFW_AddSvcEvNoD
 0x102CFB18 T AFW_ConsumeEv
 0x1031BF42 T AFW_CopyEvToInternalQueue
 0x102CEF52 T AFW_CreateInternalQueuedEvAux
@@ -146,6 +150,7 @@
 0x102CFB7C T AFW_CreateInternalQueuedSvcEvAuxD
 0x102CF342 T AFW_GenAppInstanceId
 0x102CEFB0 T AFW_GenAppRegistryId
+0x102CF642 T AFW_GetAppsInSession
 0x102CED48 T AFW_GetEv
 0x102CFCCE T AFW_GetEvCode
 0x102F1540 T AFW_GetEvRtid
@@ -196,6 +201,7 @@
 0x10965964 A AhiSurfGetLargestFreeBlockSize
 0x109669CC A AhiSurfInfo
 0x10966E68 A AhiSurfLock
+0x109666B4 A AhiSurfReuse
 0x109670B0 A AhiSurfUnlock
 0x104405C8 T AlertStatusStart
 0x1044288E T AlmclkReminderUtilCallInProgress
@@ -256,7 +262,7 @@
 0x102D08C0 T APP_UtilStartTimer
 0x102D0958 T APP_UtilStopTimer
 0x10445376 T APP_UtilUISDialogDelete
-0x10D8AE50 T bsearch
+0x03FD108C T bsearch
 0x14152668 D Class_dal
 0x10371450 D clipboard_data_buf
 0x145FAF42 D connect_status_USB_CABLE
@@ -366,6 +372,7 @@
 0x10CCC286 T DL_FsGetURIFromID
 0x10CCB21A T DL_FsGetVolumeDescr
 0x10CC818A T DL_FsICloseFile
+0x10CCA348 T DL_FsICopyFile
 0x10CCC090 T DL_FsIWriteFile
 0x10CCC4CC T DL_FsMkDir
 0x10CCA8A8 T DL_FsMoveFile
@@ -398,6 +405,7 @@
 0x10CD25E4 T DL_PudReasonForPowerUpEng
 0x10C9972A T DL_PwrGetActiveBatteryPercent
 0x10CD4E22 T DL_SigCallGetCallStates
+0x10CD4C0E T DL_SigCallReleaseReq
 0x10CD6482 T DL_SigCallSSAbortUSSDReq
 0x10CD641A T DL_SigCallSSSendUSSDResponseReq
 0x10CD58A2 T DL_SigMsgIsSMSTrasactionInProgress
@@ -415,16 +423,20 @@
 0x1031D2E8 T DRM_GetResourceLength
 0x1031D420 T DRM_GetResourceType
 0x1031D67A T DRM_SetResource
+0x10C34C2A T FlashDevEraseBlock
+0x03FEF3C8 T FlashDevWrite
 0x10499468 T FSS_SendFileViaObex
 0x10C96B44 T get_connection_status
 0x10A152FC T get_number_of_active_calls
 0x03F90248 A GlobalState
+0x10C21C66 T graph_decodePNG
 0x10BF8894 T HAPI_ATOD_convert_ambient_light_sensor
 0x10BF87AC T HAPI_ATOD_read
 0x10D51F72 T HAPI_BATTERY_ROM_get_unique_id
 0x10D51E94 T HAPI_BATTERY_ROM_read
 0x0000B28C T HAPI_GPIO_config
 0x0000B25C T HAPI_GPIO_data_write
+0x0000B1EC T HAPI_IC_ID_unique_id_read
 0x10BF7FFA T HAPI_WATCHDOG_soft_reset
 0x1087F1D2 T hPortRead
 0x1087F262 T hPortWrite
@@ -446,11 +458,13 @@
 0x10D088EE T JkMediaMIDIDrvGetMIDIController
 0x10CEDF34 D jsapi_marquee_text
 0x2484E000 D kpp
+0x11187310 T localtime
 0x000011DC A memcpy
 0x00001100 T memset
 0x106F750E A mma_default_file_name
 0x106F752E A mma_dyn_index_file_name
 0x106F7554 A mma_dyn_temp_ucp_file_name
+0x108E164C T MME_GC_capture_delete
 0x108DE3FE T MME_GC_playback_create
 0x108DD888 T MME_GC_playback_delete
 0x108DCF56 T MME_GC_playback_get_attribute
@@ -460,12 +474,34 @@
 0x108DDC60 T MME_GC_playback_set_attribute
 0x108DDA16 T MME_GC_playback_start
 0x108DEC0C T MME_GC_playback_stop
+0x10C06118 A MME_IMG_interface_close
+0x10C06110 A MME_IMG_interface_decode
 0x105579C8 T MsgUtilFileUtilsReadLn
 0x10559C72 T MsgUtilGetUnreadMsgs
 0x10559D42 T MsgUtilGetUnreadMsgsInAllFolders
 0x115C02A4 T namecmp
 0x106E7786 T Nsscanf
 0x10C13336 T PFprintf
+0x113E3AD4 A png_check_sig
+0x113E3C58 A png_create_info_struct
+0x113E4C38 A png_create_read_struct
+0x113E49FC A png_destroy_read_struct
+0x113E4EB8 A png_get_IHDR
+0x113E4324 A png_get_rowbytes
+0x113E5820 A png_get_valid
+0x113E9BD8 A png_read_end
+0x113E92E0 A png_read_info
+0x113E572C A png_read_update_info
+0x113F1CD4 A png_set_filler
+0x113E5810 A png_set_gray_1_2_4_to_8
+0x113E5838 A png_set_gray_to_rgb
+0x113E5858 A png_set_packing
+0x113E5810 A png_set_palette_to_rgb
+0x113E4BA8 A png_set_read_fn
+0x113E3A54 A png_set_sig_bytes
+0x113E5848 A png_set_strip_16
+0x113F0FCC A png_set_swap_alpha
+0x113E5810 A png_set_tRNS_to_alpha
 0x111A6568 D product_version
 0x100AEEFE T pu_main_powerdown
 0x10BF3E5C T qsort
@@ -474,6 +510,7 @@
 0x1058F874 T Replaced_Function
 0x1465D6E4 D SBCM_ATOD_supply
 0x100BF46C D SBCM_ATOD_vltg
+0x100BCAF8 T SBCM_BATT_DATA_get_tbl_elmnt
 0x03FD1D80 T sc_lock
 0x03FD21D4 T sc_unlock
 0x108BF238 T SEEM_ELEMENT_DATA_read
@@ -483,6 +520,7 @@
 0x10D7482A T SEEM_GET_ADDRESS_LENGTH_element_length
 0x10D74868 T SEEM_MAX_RECORD_get_max_record
 0x103BA60C A setCanvasControl__13StatusManagerFScPUs
+0x000019C0 A setjmp
 0x10420E84 D SKIN_FOLDER
 0x11187098 T snprintf
 0x111870F0 T sprintf
@@ -524,6 +562,7 @@
 0x03FC5BD0 T suReceiveMessageFromQueue
 0x03FC7C38 T suReleaseSem
 0x03FC60F2 T suSendMessage
+0x03FD1640 A suSetInt
 0x03FC6448 T suSleep
 0x1465A3A8 A TemporaryRoots
 0x1465A2CC A TemporaryRootsLength
@@ -653,6 +692,7 @@
 0x1024FCC0 A UIS_SetActionList
 0x10250140 A UIS_SetBacklightWithIntensity
 0x1024FE3C A UIS_SetCenterSelectAction
+0x10235A48 A UIS_SetClearKeyAction
 0x102530BC A UIS_SetNewTitle
 0x102504E8 A UIS_SetNoticeStatus
 0x10251D28 A UIS_SetSkin
