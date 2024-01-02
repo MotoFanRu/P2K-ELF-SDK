@@ -384,29 +384,45 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	# Pattern: 66696C653A2F2F622F456C662F656C666C6F616465722E6C6962
 	po1: str = f'66696C653A2F2F622F456C662F656C666C6F616465722E6C6962'
 	pn1: str = f'66696C653A2F2F{d}2F456C662F656C666C6F616465722E6C6962'
-	forge.patch_binary_file(val_elfpack_bin, po1, pn1)
+	forge.patch_binary_file_res(val_elfpack_bin, po1, pn1)
 	# f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n.
 	# Pattern: 660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00
 	po2: str = f'660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00'
 	pn2: str = f'660069006C0065003A002F002F00{d}002F0045006C0066002F006100750074006F002E00720075006E00'
-	forge.patch_binary_file(val_elfpack_bin, po2, pn2)
+	forge.patch_binary_file_res(val_elfpack_bin, po2, pn2)
 	logging.info(f'')
 
 	logging.info(f'Creating Flash&Backup 3 patches.')
 	val_register_fpa: Path = opts['output'] / 'Register.fpa'
 	val_elfpack_fpa: Path = opts['output'] / 'ElfPack.fpa'
+	val_elfdir_fpa: Path = opts['output'] / 'ElfDirectory.fpa'
 	val_result_fpa: Path = opts['output'] / 'Result.fpa'
 	forge.bin2fpa(
 		opts['fw_name'], 'Andy51', 'ElfPack v1.0', opts['offset'], val_elfpack_bin, val_elfpack_fpa, opts['fw_file']
 	)
 	generate_register_patch(
-		opts['fw_name'], 'Andy51', 'ElfPack v1.0 Register',
+		opts['fw_name'], 'Andy51', 'ElfPack v1.0 Register patch',
 		val_elfpack_sym, val_register_sym, val_register_fpa, opts['fw_file']
 	)
-	forge.unite_fpa_patches(
-		opts['fw_name'], 'Andy51', 'Combined ElfPack v1.0 patch',
-		[val_register_fpa, val_elfpack_fpa], val_result_fpa
-	)
+	patches: list[Path] = [val_register_fpa, val_elfpack_fpa]
+	if opts['mixedmedia']:
+		desc: str = f'Elf Directory patch'
+		logging.info(f'Generate {desc}: "{val_elfdir_fpa}".')
+		po3: str = (
+			'006D0069007800650064006D0065006400690061000000000000000000000000'
+			'0000000000000000000000000000000000000000000000000000000000000000'
+			'000000000000000000000016000200'
+		)
+		pn3: str = (
+			'0045006C00660000000000000000000000000000000000000000000000000000'
+			'0000000000000000000000000000000000000000000000000000000000000000'
+			'000000000000000000000010000100'
+		)
+		offset: int = forge.patch_binary_file(opts['fw_file'], po3, pn3, True)
+		if offset > 0:
+			if forge.hex2fpa(opts['fw_name'], 'EXL', desc, offset, pn3, val_elfdir_fpa, opts['fw_file']):
+				patches.append(val_elfdir_fpa)
+	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.0 patch', patches, val_result_fpa)
 	logging.info(f'')
 
 	logging.info(f'Creating ElfPack v1.0 library for Phone.')
@@ -465,6 +481,7 @@ class Args(argparse.ArgumentParser):
 		opts['ram_trans'] = args.ram_trans
 		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output
+		opts['mixedmedia'] = args.mixedmedia
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
 
@@ -494,6 +511,7 @@ def parse_arguments() -> dict[str, any]:
 		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
 		'n': 'use new object files',
+		'm': 'generate mixedmedia => Elf directory patch',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'v': 'verbose output'
 	}
@@ -521,6 +539,9 @@ def parse_arguments() -> dict[str, any]:
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -n -pf E1_R373_G_0E.30.49R -o build
 
+	# Build ElfPack v1.0 and libraries to the phone/firmware with 'Elf' directory patch.
+	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.49R -o build
+
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset override).
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 	"""
@@ -533,6 +554,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
+	parser_args.add_argument('-m', '--mixedmedia', required=False, action='store_true', help=hlp['m'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()

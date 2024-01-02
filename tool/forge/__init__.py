@@ -83,6 +83,7 @@ from .patcher import fpa2bin
 from .patcher import unite_fpa_patches
 from .patcher import apply_fpa_patch
 from .patcher import patch_binary_file
+from .patcher import patch_binary_file_res
 
 from .patterns import pat_find
 from .patterns import pat_append
