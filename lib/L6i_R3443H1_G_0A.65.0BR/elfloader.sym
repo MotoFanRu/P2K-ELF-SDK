@@ -7,7 +7,7 @@
 # Phone: L6i
 # Firmware: R3443H1_G_0A.65.0BR
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:46:03
+# Timestamp: 02-Jan-2024 21:52:09
 
 0x1009C588 T __16__rt_divtest
 0x10CA271C T __16__rt_sdiv
@@ -19,9 +19,10 @@
 0x10CFDDBC T __call_via_r3
 0x1009C58C A __rt_divtest
 0x10CFABCC A __rt_memclr
-0x10CFABCC A __rt_memclr_w
+0x10CFAC14 A __rt_memclr_w
 0x10CFAC70 A __rt_memcpy
 0x10CFAD28 A __rt_memcpy_w
+0x1009CF3C A __rt_memmove
 0x10CFAD98 A __rt_memset
 0x10CA2720 A __rt_sdiv
 0x1009CFE0 A __rt_sdiv10
@@ -30,6 +31,8 @@
 0x1009D5F4 A __rt_uwrite4
 0x10D1704A T _itoa
 0x10CFDDC4 A _ll_cmpu
+0x1009C76C A _ll_rsblu
+0x1009C7A0 A _ll_sdiv
 0x1009CA44 A _ll_ushift_r
 0x1009C3F0 D _region_table
 0x10CFAD98 A _rt_memset
@@ -284,6 +287,7 @@
 0x10710768 T HAPI_ATOD_read_pcap
 0x1071238A T HAPI_BATTERY_ROM_get_unique_id
 0x107122AC T HAPI_BATTERY_ROM_read
+0x107114B8 T HAPI_IC_ID_unique_id_read
 0x1070F5D8 T HAPI_PCAP_transceive
 0x1070F476 T HAPI_WATCHDOG_soft_reset
 0x1070ED90 T hPortRead
@@ -297,7 +301,7 @@
 0x101E7DC0 T JkGraphicsCreateContext
 0x101E807C T JkGraphicsSetColor
 0x101F6022 T JkVideoDrawRect
-0x10CE76EC T JkVideoDrawString
+0x03FD2608 T JkVideoDrawString
 0x101F5F76 T JkVideoEndPaintOnVirtual
 0x103B8248 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -309,7 +313,7 @@
 0x10CFD910 T LdrStartApp
 0x10CFD992 T LdrUnloadELF
 0x1009CB12 T malloc
-0x10CFABB4 T memcpy
+0x10CFAC6C T memcpy
 0x1009CB60 T memset
 0x109FEE4A T MME_GC_playback_create
 0x109FE5DE T MME_GC_playback_delete
@@ -342,6 +346,7 @@
 0x102DA804 D SEEM_IMEI
 0x10532D88 D SEEM_IMSI
 0x10AFEAA8 T SEEM_MAX_RECORD_get_max_record
+0x1009D774 A setjmp
 0x1009D050 T snprintf
 0x1009C45C T sprintf
 0x1009CE60 T srand
@@ -504,7 +509,7 @@
 0x10B9F2E4 A UIS_SetNoticeStatus
 0x10B9F3D4 A UIS_SetStatus
 0x10B9F590 A UIS_SetWallpaper
-0x10CFAA9C A uisAllocateMemory
+0x03FED2E4 A uisAllocateMemory
 0x1099277C A uisFreeMemory
 0x109927C4 A uisReAllocMemory
 0x10695026 T URINameValid
