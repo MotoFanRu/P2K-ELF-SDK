@@ -26,6 +26,152 @@ from argparse import Namespace
 FUNC_INJECTION: str = 'APP_SyncML_MainRegister'
 FUNC_REGISTER: str = 'Register'
 FUNC_AUTORUN: str = 'AutorunMain'
+EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
+	'R373_G_0E.30.49R': {
+		'opts_all':       ['-DFTR_E1'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg'
+	},
+	'R373_G_0E.30.79R': {
+		'opts_all':       ['-DFTR_E1'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg'
+	},
+	'R373_G_0E.30.DAR': {
+		'opts_all':       ['-DFTR_E1'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg'
+	},
+	'R452F_G_08.03.08R': {
+		'opts_all':       ['-DFTR_K1'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg'
+	},
+	'R3511_G_0A.52.45R_A': {
+		'opts_all':       ['-DFTR_L6'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg'
+	},
+	'R3443H1_G_0A.65.0BR': {
+		'opts_all':       ['-DFTR_L6I'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg'
+	},
+	'R4513_G_08.B7.ACR_RB': {
+		'opts_all':       ['-DFTR_L7'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg'
+	},
+	'R4513_G_08.B7.E0R_RB': {
+		'opts_all':       ['-DFTR_L7'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg'
+	},
+	'R452D_G_08.01.0AR': {
+		'opts_all':       ['-DFTR_L7E'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg'
+	},
+	'R452J_G_08.22.05R': {
+		'opts_all':       ['-DFTR_L9'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg'
+	},
+	'R4515_G_08.BD.D3R': {
+		'opts_all':       ['-DFTR_V3R'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
+	},
+	'R4441D_G_08.01.03R': {
+		'opts_all':       ['-DFTR_V3I'],
+		'addr_start':     0x100A0000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg'
+	},
+	'R3512_G_0A.30.6CR': {
+		'opts_all':       ['-DFTR_V235'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg'
+	},
+	'R4513_G_08.B7.ACR': {
+		'opts_all':       ['-DFTR_V360'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg'
+	},
+	'TRIPLETS_G_0B.09.72R': {
+		'opts_all':       ['-DFTR_V600'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
+		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg'
+	},
+	'R452B_G_08.02.0DR': {
+		'opts_all':       ['-DFTR_Z3'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg'
+	},
+	'R452F1_G_08.04.09R': {
+		'opts_all':       ['-DFTR_Z3'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg'
+	},
+	'R452H6_G_08.00.05R': {
+		'opts_all':       ['-DFTR_Z3'],
+		'addr_start':     0x10092000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_register':  None,        # Register patch address, calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg'
+	}
+}
 
 
 # Patches.
@@ -110,49 +256,19 @@ def generate_register_sym(combined_sym: Path, cgs_path: Path, register_func: str
 
 
 # PortKit ARM v1.0 working flow.
-def start_ep1_portkit_work(args: Namespace) -> bool:
+def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info(f'Start building ElfPack v1.0 for Motorola P2K.')
 	logging.info(f'')
-
-	arg_verbose: bool = args.verbose
-	arg_clean: bool = args.clean
-	arg_output: Path = args.output
-	arg_patterns: Path = args.patterns
-	arg_firmware: Path = args.firmware
-	arg_start: int = args.start
-	arg_offset: int = forge.arrange16(forge.get_file_size(arg_firmware))
-	if args.offset:
-		arg_offset = args.offset
-	arg_address: int = arg_start + arg_offset  # Start + Offset.
-	arg_ram_trans: bool = args.ram_trans
-	arg_fw_name: str = arg_firmware.name
-	arg_soc: str = forge.determine_soc(arg_start)
-	arg_phone, arg_fw = forge.parse_phone_firmware(arg_fw_name)
-	arg_old = args.old
-
-	logging.info(f'Values:')
-	logging.info(f'\targ_verbose={arg_verbose}')
-	logging.info(f'\targ_clean={arg_clean}')
-	logging.info(f'\targ_output={arg_output}')
-	logging.info(f'\targ_patterns={arg_patterns}')
-	logging.info(f'\targ_firmware={arg_firmware}')
-	logging.info(f'\targ_start=0x{arg_start:08X} {arg_start}')
-	logging.info(f'\targ_address=0x{arg_address:08X} {arg_address}')
-	logging.info(f'\targ_offset=0x{arg_offset:08X} {arg_offset}')
-	logging.info(f'\targ_ram_trans={arg_ram_trans}')
-	logging.info(f'\targ_fw_name={arg_fw_name}')
-	logging.info(f'\targ_soc={arg_soc}')
-	logging.info(f'\targ_phone={arg_phone}')
-	logging.info(f'\targ_fw={arg_fw}')
-	logging.info(f'\targ_old={arg_old}')
+	logging.info(f'Parameters:')
+	forge.args_dump(opts)
 	logging.info(f'')
 
 	logging.info(f'Prepare PortKit environment.')
-	if not forge.check_directories_if_exists([arg_output]):
-		logging.info(f'Will create "{arg_output}" output directory.')
-		arg_output.mkdir()
-	if arg_clean:
-		forge.delete_all_files_in_directory(args.output)
+	if not forge.check_directories_if_exists([opts['output']]):
+		logging.info(f'Will create "{opts["output"]}" output directory.')
+		opts['output'].mkdir()
+	if opts['clean']:
+		forge.delete_all_files_in_directory(opts['output'])
 	logging.info(f'')
 
 	logging.info(f'Finding SoC related functions from patterns.')
@@ -160,30 +276,30 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	val_lte2_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE2.pat'
 	val_lte2_modern_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE2_Modern.pat'
 	val_lte2_irom_sym: Path = forge.P2K_DIR_EP1_SYM / 'LTE2_IROM.sym'
-	val_platform_sym: Path = arg_output / 'Platform.sym'
-	val_functions_sym: Path = arg_output / 'Functions.sym'
-	val_functions_modern_lte2: Path = arg_output / 'Functions_LTE2_Modern.sym'
-	val_combined_sym: Path = arg_output / 'Combined.sym'
-	if arg_soc == 'LTE':
-		forge.pat_find(val_lte1_pat, arg_firmware, arg_start, arg_ram_trans, val_platform_sym)
-	elif arg_soc == 'LTE2':
-		forge.pat_find(val_lte2_pat, arg_firmware, arg_start, arg_ram_trans, val_platform_sym)
-		if forge.is_modern_lte2(arg_phone):
-			forge.pat_find(val_lte2_modern_pat, arg_firmware, arg_start, arg_ram_trans, val_functions_modern_lte2)
+	val_platform_sym: Path = opts['output'] / 'Platform.sym'
+	val_functions_sym: Path = opts['output'] / 'Functions.sym'
+	val_functions_modern_lte2: Path = opts['output'] / 'Functions_LTE2_Modern.sym'
+	val_combined_sym: Path = opts['output'] / 'Combined.sym'
+	if opts['soc'] == 'LTE':
+		forge.pat_find(val_lte1_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
+	elif opts['soc'] == 'LTE2':
+		forge.pat_find(val_lte2_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
+		if forge.is_modern_lte2(opts['phone']):
+			forge.pat_find(val_lte2_modern_pat, opts['fw_file'], opts['start'], False, val_functions_modern_lte2)
 	else:
 		val_functions_sym = val_combined_sym
 		logging.warning(f'Unknown SoC platform, will skip generating platform symbols file.')
 	logging.info(f'')
 
 	logging.info(f'Finding general functions from patterns.')
-	forge.pat_find(arg_patterns, arg_firmware, arg_start, arg_ram_trans, val_functions_sym)
+	forge.pat_find(opts['patterns'], opts['fw_file'], opts['start'], opts['ram_trans'], val_functions_sym)
 	logging.info(f'')
 
 	logging.info(f'Combining all functions into one symbols file.')
-	if arg_soc == 'LTE':
+	if opts['soc'] == 'LTE':
 		forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
-	elif arg_soc == 'LTE2':
-		if forge.is_modern_lte2(arg_phone):
+	elif opts['soc'] == 'LTE2':
+		if forge.is_modern_lte2(opts['phone']):
 			forge.create_combined_sym_file(
 				[val_functions_sym, val_platform_sym, val_functions_modern_lte2, val_lte2_irom_sym], val_combined_sym
 			)
@@ -192,7 +308,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'')
 
 	logging.info(f'Applying phone specific patches.')
-	apply_patches(arg_phone, arg_fw, val_combined_sym)
+	apply_patches(opts['phone'], opts['fw_name'], val_combined_sym)
 	logging.info(f'')
 
 	logging.info(f'Validating combined symbols file.')
@@ -203,17 +319,17 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'')
 
 	logging.info(f'Generating register symbols file.')
-	val_register_pat: Path = arg_output / 'Register.pat'
-	val_register_sym: Path = arg_output / 'Register.sym'
-	if not generate_register_sym(val_combined_sym, arg_firmware, FUNC_INJECTION, val_register_pat, val_register_sym):
+	val_register_pat: Path = opts['output'] / 'Register.pat'
+	val_register_sym: Path = opts['output'] / 'Register.sym'
+	if not generate_register_sym(val_combined_sym, opts['fw_file'], FUNC_INJECTION, val_register_pat, val_register_sym):
 		logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
 		return False
 	logging.info(f'')
 
 	logging.info(f'Generating system information C-source file.')
-	val_system_info_c: Path = arg_output / 'SysInfo.c'
-	val_system_info_o: Path = arg_output / 'SysInfo.o'
-	generate_system_information_source(arg_phone, arg_fw, arg_soc, val_system_info_c)
+	val_system_info_c: Path = opts['output'] / 'SysInfo.c'
+	val_system_info_o: Path = opts['output'] / 'SysInfo.o'
+	generate_system_information_source(opts['phone'], opts['fw_name'], opts['soc'], val_system_info_c)
 	logging.info(f'')
 
 	logging.info(f'Compiling system C-source files.')
@@ -222,10 +338,10 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 
 	logging.info(f'Linking object files to binary.')
 	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
-	if arg_old:
+	if opts['old_obj']:
 		val_object_path = forge.P2K_DIR_EP1_OBJ / 'old'
-	# if arg_compile:
-	# 	val_object_path = arg_output
+	# if opts['compile']:
+	# 	val_object_path = opts['output']
 	val_link_objects: list[Path] = [
 		val_object_path / 'AutoRun.o',
 		val_object_path / 'ElfLoader.o',
@@ -234,34 +350,36 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 		val_system_info_o,
 		val_combined_sym
 	]
-	val_elfpack_elf: Path = arg_output / 'ElfPack.elf'
-	val_elfpack_bin: Path = arg_output / 'ElfPack.bin'
-	val_elfpack_sym: Path = arg_output / 'ElfPack.sym'
-	if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, arg_address, val_elfpack_sym):
+	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
+	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
+	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
+	if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym):
 		logging.error(f'Cannot link "{val_elfpack_elf}" executable file.')
 		return False
 	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	logging.info(f'')
 
 	logging.info(f'Creating Flash&Backup 3 patches.')
-	val_register_fpa: Path = arg_output / 'Register.fpa'
-	val_elfpack_fpa: Path = arg_output / 'ElfPack.fpa'
-	val_result_fpa: Path = arg_output / 'Result.fpa'
-	forge.bin2fpa(arg_fw, 'Andy51', 'ElfPack v1.0', arg_offset, val_elfpack_bin, val_elfpack_fpa, arg_firmware)
+	val_register_fpa: Path = opts['output'] / 'Register.fpa'
+	val_elfpack_fpa: Path = opts['output'] / 'ElfPack.fpa'
+	val_result_fpa: Path = opts['output'] / 'Result.fpa'
+	forge.bin2fpa(
+		opts['fw_name'], 'Andy51', 'ElfPack v1.0', opts['offset'], val_elfpack_bin, val_elfpack_fpa, opts['fw_file']
+	)
 	generate_register_patch(
-		arg_fw, 'Andy51', 'ElfPack v1.0 Register',
-		val_elfpack_sym, val_register_sym, val_register_fpa, arg_firmware
+		opts['fw_name'], 'Andy51', 'ElfPack v1.0 Register',
+		val_elfpack_sym, val_register_sym, val_register_fpa, opts['fw_file']
 	)
 	forge.unite_fpa_patches(
-		arg_fw, 'Andy51', 'Combined ElfPack v1.0 patch',
+		opts['fw_name'], 'Andy51', 'Combined ElfPack v1.0 patch',
 		[val_register_fpa, val_elfpack_fpa], val_result_fpa
 	)
 	logging.info(f'')
 
 	logging.info(f'Creating ElfPack v1.0 library for Phone.')
-	val_library_sym: Path = arg_output / 'Lib.sym'
-	val_library_asm: Path = arg_output / 'Lib.asm'
-	val_elfloader_lib: Path = arg_output / 'elfloader.lib'
+	val_library_sym: Path = opts['output'] / 'Lib.sym'
+	val_library_asm: Path = opts['output'] / 'Lib.asm'
+	val_elfloader_lib: Path = opts['output'] / 'elfloader.lib'
 	generate_lib_sym(
 		val_combined_sym, val_elfpack_sym, val_library_sym,
 		[FUNC_INJECTION, 'APP_CALC_MainRegister', '_region_table'],
@@ -270,12 +388,12 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
 	forge.ep1_libgen_asm(val_library_asm, library_model)
 	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions)
-	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, arg_phone, arg_fw)
+	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, opts['phone'], opts['fw_name'])
 	logging.info(f'')
 
 	logging.info(f'Compiling ElfPack v1.0 library for SDK.')
-	val_library_obj: Path = arg_output / 'Lib.o'
-	val_libstd_static_lib: Path = arg_output / 'libstd.a'
+	val_library_obj: Path = opts['output'] / 'Lib.o'
+	val_libstd_static_lib: Path = opts['output'] / 'libstd.a'
 	forge.ep1_ads_armasm(val_library_asm, val_library_obj)
 	forge.ep1_ads_armar([val_library_obj], val_libstd_static_lib)
 	logging.info(f'')
@@ -283,7 +401,7 @@ def start_ep1_portkit_work(args: Namespace) -> bool:
 	logging.info(f'ElfPack v1.0 building report.')
 	logging.info(f'')
 	logging.info(f'Important files:')
-	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{arg_phone}" phone on "{arg_fw}" firmware.')
+	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{opts["phone"]}" on "{opts["fw_name"]}" firmware.')
 	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v1.0 combined patch for Flash&Backup 3.')
 	logging.info(f'')
 	logging.info(f'Developer files:')
@@ -300,65 +418,95 @@ class Args(argparse.ArgumentParser):
 		self.print_help(sys.stderr)
 		self.exit(2, f'{self.prog}: error: {message}\n')
 
+	def parse_check_arguments(self) -> dict[str, any]:
+		opts: dict[str, any] = {}
+		args: Namespace = self.parse_args()
 
-def parse_arguments() -> Namespace:
+		phone, firmware = args.phone_fw
+		variants: dict[str, any] = EP1_PFW_VARIANTS[firmware]
+		if not variants:
+			self.error(f'unknown {phone} phone and {firmware} firmware')
+
+		opts['verbose'] = args.verbose
+		opts['clean'] = args.clean
+		opts['ram_trans'] = args.ram_trans
+		opts['old_obj'] = args.old_obj
+		opts['output'] = args.output
+		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
+		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
+
+		opts['start'] = args.start if args.start else variants['addr_start']
+		opts['offset'] = args.offset if args.offset else variants['addr_offset']
+		if not opts['offset']:
+			opts['offset'] = forge.arrange16(forge.get_file_size(opts['fw_file']))
+		opts['address'] = opts['start'] + opts['offset']
+		opts['soc'] = forge.determine_soc(opts['start'])
+		opts['phone'] = phone
+		opts['fw_name'] = firmware
+
+		return opts
+
+
+def parse_arguments() -> dict[str, any]:
 	hlp: dict[str, str] = {
 		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
-		's': 'start address of CG0+CG1 firmware (in HEX)',
-		'p': 'path to patterns file',
-		'f': 'path to CG0+CG1 firmware file',
+		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
+		's': 'override start address of CG0+CG1 firmware (in HEX)',
+		'p': 'override path to patterns file',
+		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
 		'q': 'use old object files',
-		'g': 'patch offset to CG0+CG1 file (in HEX)',
+		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.79R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.DAR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/K1_R452F_G_08.03.08R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6i_R3443H1_G_0A.65.0BR.pat -f cg/L6i_R3443H1_G_0A.65.0BR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/L6_R3511_G_0A.52.45R_A.pat -f cg/L6_R3511_G_0A.52.45R_A.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7e_R452D_G_08.01.0AR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.ACR_RB.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L7_R4513_G_08.B7.E0R_RB.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/L9_R452J_G_08.22.05R.smg -o build
-	python ep1_portkit.py -c -r -s 0x100A0000 -p ep1/pat/General.pat -f cg/V3i_R4441D_G_08.01.03R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V3r_R4515_G_08.BD.D3R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V235_R3512_G_0A.30.6CR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/V360_R4513_G_08.B7.ACR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/V600_TRIPLETS_G_0B.09.72R.pat -f cg/V600_TRIPLETS_G_0B.09.72R.smg -g 0x00C3C1B0 -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452B_G_08.02.0DR.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452F1_G_08.04.09R.smg -o build
-	python ep1_portkit.py -c -r -s 0x10092000 -p ep1/pat/General.pat -f cg/Z3_R452H6_G_08.00.05R.smg -o build
+	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.79R -o build
+	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -c -r -pf L6_R3511_G_0A.52.45R_A -o build
+	python ep1_portkit.py -c -r -pf L6i_R3443H1_G_0A.65.0BR -o build
+	python ep1_portkit.py -c -r -pf V235_R3512_G_0A.30.6CR -o build
+	python ep1_portkit.py -c -r -pf V360_R4513_G_08.B7.ACR -o build
+	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.ACR_RB -o build
+	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.E0R_RB -o build
+	python ep1_portkit.py -c -r -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -c -r -pf V3i_R4441D_G_08.01.03R -o build
+	python ep1_portkit.py -c -r -pf K1_R452F_G_08.03.08R -o build
+	python ep1_portkit.py -c -r -pf Z3_R452B_G_08.02.0DR -o build
+	python ep1_portkit.py -c -r -pf Z3_R452F1_G_08.04.09R -o build
+	python ep1_portkit.py -c -r -pf Z3_R452H6_G_08.00.05R -o build
+	python ep1_portkit.py -c -r -pf L7e_R452D_G_08.01.0AR -o build
+	python ep1_portkit.py -c -r -pf L9_R452J_G_08.22.05R -o build
+	python ep1_portkit.py -c -r -pf V600_TRIPLETS_G_0B.09.72R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using old object files.
-	python ep1_portkit.py -c -r -q -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -o build
+	python ep1_portkit.py -c -r -q -pf E1_R373_G_0E.30.49R -o build
 
-	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset).
-	python ep1_portkit.py -c -r -s 0x10080000 -p ep1/pat/General.pat -f cg/E1_R373_G_0E.30.49R.smg -g 0x00C3C1B0 -o build
+	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset override).
+	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
-	parser_args.add_argument('-s', '--start', required=True, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
-	parser_args.add_argument('-p', '--patterns', required=True, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
-	parser_args.add_argument('-f', '--firmware', required=True, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
+	parser_args.add_argument('-pf', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
+	parser_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
+	parser_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
+	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
-	parser_args.add_argument('-q', '--old', required=False, action='store_true', help=hlp['q'])
+	parser_args.add_argument('-q', '--old-obj', required=False, action='store_true', help=hlp['q'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
-	return parser_args.parse_args()
+	return parser_args.parse_check_arguments()
 
 
 def main() -> None:
 	start_time: datetime = datetime.now()
-	args: Namespace = parse_arguments()
+	args: dict[str, any] = parse_arguments()
 
-	forge.set_logging_configuration(args.verbose)
+	forge.set_logging_configuration(args['verbose'])
 
 	start_ep1_portkit_work(args)
 

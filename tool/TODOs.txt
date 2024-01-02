@@ -43,3 +43,5 @@ Update/recompile EP2 libraries using Windows DevKIT Pro.
 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
 
 Recreate libs again with RAM-Trans and fix libraries arrange!
+
+Otnositelinie puty.

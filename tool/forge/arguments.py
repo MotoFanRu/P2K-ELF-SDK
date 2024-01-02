@@ -112,3 +112,11 @@ def at_int(argument: str) -> int:
 		raise argparse.ArgumentTypeError(f'int size overflow: {value} ({int2hex(value)}) too long, max is 0xFFFFFFFF')
 	except ValueError as value_error:
 		raise argparse.ArgumentTypeError(value_error)
+
+
+def args_dump(arguments: dict[str, any]) -> None:
+	for key, value in arguments.items():
+		if isinstance(value, int) and not isinstance(value, bool):
+			logging.info(f'\t{key}: {int2hex(value) + " " + str(value)}')
+		else:
+			logging.info(f'\t{key}: {value}')

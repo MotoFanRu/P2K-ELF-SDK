@@ -29,6 +29,7 @@ P2K_TOOLCHAIN_ROOT: Path = Path('..')
 P2K_DIR_LIB: Path = P2K_TOOLCHAIN_ROOT / 'lib'
 P2K_DIR_EP_SDK: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'sdk'
 P2K_DIR_TOOL: Path = P2K_TOOLCHAIN_ROOT / 'tool'
+P2K_DIR_CG: Path = P2K_DIR_TOOL / 'cg'
 P2K_DIR_COMPILER: Path = P2K_DIR_TOOL / 'compiler'
 P2K_DIR_EP1_ADS: Path = P2K_DIR_COMPILER / ('ep1_win_ADS' if is_win() else 'ep1_lin_ADS')
 P2K_DIR_EP1_ADS_BIN: Path = P2K_DIR_EP1_ADS / 'bin'
