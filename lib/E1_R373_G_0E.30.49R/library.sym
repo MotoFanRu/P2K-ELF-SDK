@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 3112231
-# Timestamp: 31-Dec-2023 19:05:34
+# Version: 0201241
+# Timestamp: 02-Jan-2024 20:51:05
 
 0x00000069 C AUDIO_STATUS
 0x00000582 C BEGIN_4A__IN_DB
@@ -113,7 +113,12 @@
 0x100986D4 T __16__rt_udiv10
 0x10098250 T __pvfn__Fv
 0x10097C10 A __rt_divtest
+0x10C1AC2C A __rt_memclr
+0x10C1AC74 A __rt_memclr_w
+0x10C1ACD0 A __rt_memcpy
+0x10C1AD88 A __rt_memcpy_w
 0x100985F0 A __rt_memmove
+0x10C1ADF8 A __rt_memset
 0x10BD2320 A __rt_sdiv
 0x10098694 A __rt_sdiv10
 0x10BD23F8 A __rt_udiv
@@ -125,6 +130,7 @@
 0x10097E54 A _ll_sdiv
 0x10098118 A _ll_ushift_r
 0x10097A74 D _region_table
+0x10C1ADF8 A _rt_memset
 0x10097B28 T abs_0
 0x123441DC D ADN_storage_mgr
 0x102BD720 T AFW_AddAppToRoutingStack
@@ -447,6 +453,7 @@
 0x1204C12A D jsapi_marquee_text
 0x2484E000 D kpp
 0x100998F8 T localtime
+0x10C1ACCC T memcpy
 0x10098214 T memset
 0x1097743E T MME_GC_capture_create
 0x1097781E T MME_GC_capture_delete
@@ -695,10 +702,3 @@
 0x10B088A8 A utility_get_image_size
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x10C1AC2C A __rt_memclr
-0x10C1AC74 A __rt_memclr_w
-0x10C1ACD0 A __rt_memcpy
-0x10C1AD88 A __rt_memcpy_w
-0x10C1ADF8 A __rt_memset
-0x10C1ADF8 A _rt_memset
-0x10C1ACCC T memcpy

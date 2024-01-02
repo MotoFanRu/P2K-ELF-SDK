@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: E1
 # Firmware: R373_G_0E.30.79R
-# Version: 3112231
-# Timestamp: 31-Dec-2023 19:05:34
+# Version: 0201241
+# Timestamp: 02-Jan-2024 20:51:05
 
 0x00000069 C AUDIO_STATUS
 0x000005D9 C BEGIN_4A__IN_DB
@@ -114,6 +114,7 @@
 0x10098250 T __pvfn__Fv
 0x10097C10 A __rt_divtest
 0x03FF38A0 A __rt_memclr
+0x03FF38E8 A __rt_memclr_w
 0x03FF3944 A __rt_memcpy
 0x03FF39FC A __rt_memcpy_w
 0x100985F0 A __rt_memmove
@@ -448,6 +449,7 @@
 0x1204D3CA D jsapi_marquee_text
 0x2484E000 D kpp
 0x100998F8 T localtime
+0x03FF3940 T memcpy
 0x10098214 T memset
 0x10983BE2 T MME_GC_capture_create
 0x10983FBA T MME_GC_capture_delete
@@ -694,5 +696,3 @@
 0x10B157BC A utility_get_image_size
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x03FF38E8 A __rt_memclr_w
-0x03FF3940 T memcpy

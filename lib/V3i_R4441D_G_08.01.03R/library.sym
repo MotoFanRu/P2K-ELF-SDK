@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: V3i
 # Firmware: R4441D_G_08.01.03R
-# Version: 3112231
-# Timestamp: 31-Dec-2023 19:05:35
+# Version: 0201241
+# Timestamp: 02-Jan-2024 20:51:05
 
 0x00000069 C AUDIO_STATUS
 0x00000600 C BEGIN_4A__IN_DB
