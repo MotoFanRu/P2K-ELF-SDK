@@ -46,11 +46,10 @@ Update postlink on Windows!
 
 format strings, warnings!
 
-libc.o to libc.a
-
 IDC scripts!
 
 Compare libarm.a, libc.a, libc.o
+libc.o to libc.a
 
 
 076fbe9ac06a3d1ef8ffbe7f0f41d8f4  ep1/obj/AutoRun.o
