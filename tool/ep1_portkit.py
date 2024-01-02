@@ -108,7 +108,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4515_G_08.BD.D3R': {
 		'opts_all':       ['-DFTR_V3R'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
 	},
