@@ -366,7 +366,9 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_object_path / 'ElfLoaderApp.o',
 		val_object_path / 'ElfLoader.o',
 		val_system_info_o,
-		val_object_path / 'LibC.o',
+#		forge.P2K_DIR_EP1_LIB / 'libarm.a',
+#		forge.P2K_DIR_EP2_LIB / 'libc.a',
+#		val_object_path / 'LibC.o',
 		val_combined_sym
 	]
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'

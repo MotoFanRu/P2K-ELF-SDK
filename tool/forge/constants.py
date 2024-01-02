@@ -28,6 +28,10 @@ P2K_TOOLCHAIN_ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
 P2K_DIR_LIB: Path = P2K_TOOLCHAIN_ROOT / 'lib'
 P2K_DIR_EP_SDK: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'sdk'
+P2K_DIR_EP1_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep1' / 'inc'
+P2K_DIR_EP1_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep1' / 'lib'
+P2K_DIR_EP2_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep2' / 'inc'
+P2K_DIR_EP2_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep2' / 'lib'
 P2K_DIR_TOOL: Path = P2K_TOOLCHAIN_ROOT / 'tool'
 P2K_DIR_CG: Path = P2K_DIR_TOOL / 'cg'
 P2K_DIR_COMPILER: Path = P2K_DIR_TOOL / 'compiler'
