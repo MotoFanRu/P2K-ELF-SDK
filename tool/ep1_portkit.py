@@ -31,7 +31,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg'
 	},
@@ -39,15 +38,13 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg'
 	},
 	'R373_G_0E.30.DAR': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
+		'addr_offset':    0x003137B4,  # ElfPack v1.0 patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg'
 	},
@@ -55,7 +52,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_K1'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg'
 	},
@@ -63,7 +59,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L6'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg'
 	},
@@ -71,7 +66,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L6I'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg'
 	},
@@ -79,7 +73,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg'
 	},
@@ -87,7 +80,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg'
 	},
@@ -95,7 +87,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7E'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg'
 	},
@@ -103,7 +94,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L9'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg'
 	},
@@ -111,7 +101,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg'
 	},
@@ -119,7 +108,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V3R'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg'
 	},
@@ -127,7 +115,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V235'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg'
 	},
@@ -135,7 +122,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V360'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg'
 	},
@@ -143,7 +129,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V600'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg'
 	},
@@ -151,7 +136,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg'
 	},
@@ -159,7 +143,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg'
 	},
@@ -167,7 +150,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, calculated.
-		'addr_register':  None,        # Register patch address, calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg'
 	}

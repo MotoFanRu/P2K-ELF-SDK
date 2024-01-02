@@ -7,7 +7,7 @@
 # Phone: V600
 # Firmware: TRIPLETS_G_0B.09.72R
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:03:50
+# Timestamp: 02-Jan-2024 21:18:46
 
 0x000020C9 C EV_CREATE_SHORTCUT
 0x0000214B C EV_PB_SET_NAME

@@ -7,22 +7,22 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.DAR
 # Version: 0201241
-# Timestamp: 02-Jan-2024 21:03:46
+# Timestamp: 02-Jan-2024 21:18:50
 
 0x107F0200 T __16__rt_divtest
 0x10A5D6A4 T __16__rt_sdiv
 0x10A5F1A0 A __16__rt_sdiv10
 0x10A5D77C T __16__rt_udiv
 0x10A5DAC8 T __16__rt_udiv10
-0x10BA55D0 T __16_ll_cmpu
+0x10394424 T __16_ll_cmpu
 0x10A5DAB8 T __pvfn__Fv
 0x107F0204 A __rt_divtest
-0x03FEC954 A __rt_memclr
-0x03FF0D74 A __rt_memclr_w
-0x03FEC99C A __rt_memcpy
-0x03FF0DD0 A __rt_memcpy_w
+0x10B9A384 A __rt_memclr
+0x10B9E7A4 A __rt_memclr_w
+0x10B9A3CC A __rt_memcpy
+0x10B9E800 A __rt_memcpy_w
 0x10A5DB0C A __rt_memmove
-0x03FF0E40 A __rt_memset
+0x10B9E870 A __rt_memset
 0x10A5D6A8 A __rt_sdiv
 0x10A5F1A4 A __rt_sdiv10
 0x10A5D780 A __rt_udiv
@@ -34,7 +34,7 @@
 0x10A5D9EC A _ll_sdiv
 0x10A5DA90 A _ll_ushift_r
 0x10A5D684 D _region_table
-0x03FF0E40 A _rt_memset
+0x10B9E870 A _rt_memset
 0x10A5FA08 T abs_0
 0x12211000 D ADN_storage_mgr
 0x10095BB4 T AFW_AddAppToRoutingStack
@@ -386,7 +386,7 @@
 0x10394054 T LdrStartApp
 0x103940D6 T LdrUnloadELF
 0x10A5FDA0 T localtime
-0x03FEC998 T memcpy
+0x10B9A3C8 T memcpy
 0x10A5EDF8 T memset
 0x10AF006A T MME_GC_capture_create
 0x10AF0442 T MME_GC_capture_delete
