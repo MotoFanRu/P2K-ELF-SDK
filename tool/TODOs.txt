@@ -48,19 +48,4 @@ format strings, warnings!
 
 IDC scripts!
 
-Compare libarm.a, libc.a, libc.o
-libc.o to libc.a
-
-
-076fbe9ac06a3d1ef8ffbe7f0f41d8f4  ep1/obj/AutoRun.o
-aa76452d4f242a534019d009bae3c3f0  ep1/obj/ElfLoaderApp.o
-2cf6fec2ccb833f20756eca75c536816  ep1/obj/ElfLoader.o
-48a780ac6c4ddb3110452309b7d79778  ep1/obj/LibC.o
-md5sum: ep1/obj/new: Is a directory
-exl@asus-k52f:~/Storage/Projects/Git/MotoFanRu/P2K-ELF-SDK/tool$ md5sum ep1/obj/new/*
-495326cc6b383a0b35eba861e35997a5  ep1/obj/new/AutoRun.o
-2cf6fec2ccb833f20756eca75c536816  ep1/obj/new/ElfLoaderApp.o
-afcdc7ed3d308dc27a88a3c80ede2733  ep1/obj/new/ElfLoader.o
-48a780ac6c4ddb3110452309b7d79778  ep1/obj/new/LibC.o
-
-WTF???
+ReadMe.md docs in every folder.
