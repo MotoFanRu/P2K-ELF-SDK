@@ -520,10 +520,10 @@ def parse_arguments() -> dict[str, any]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	# Build ElfPack v1.0 and libraries to the phone/firmware with 'Elf' directory patch.
+	# Build ElfPack v1.0 and libraries to the phone/firmware (+'Elf' directory patch).
 	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.49R -o build
 	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.79R -o build
-	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
 	python ep1_portkit.py -c -r -m -pf K1_R452F_G_08.03.08R -o build
 	python ep1_portkit.py -c -r -m -pf L6_R3511_G_0A.52.45R_A -o build
 	python ep1_portkit.py -c -r -m -pf L6i_R3443H1_G_0A.65.0BR -o build
