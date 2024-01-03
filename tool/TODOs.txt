@@ -44,7 +44,7 @@ Update/recompile EP2 libraries using Windows DevKIT Pro.
 
 Update postlink on Windows!
 
-format strings, warnings!
+Optimize and reorder imports.
 
 IDC scripts!
 

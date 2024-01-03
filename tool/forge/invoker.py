@@ -22,13 +22,13 @@ from .filesystem import check_files_if_exists
 def invoke_external_system_command(arguments: list[str]) -> int:
 	command: str = ' '.join(arguments)
 
-	logging.info(f'Will execute external system command:')
+	logging.info('Will execute external system command:')
 	logging.info(f'{command}')
-	logging.info(f'')
+	logging.info('')
 
 	result: int = subprocess.run(arguments).returncode
 
-	logging.info(f'Result:')
+	logging.info('Result:')
 	logging.info(f'{result}')
 
 	return result

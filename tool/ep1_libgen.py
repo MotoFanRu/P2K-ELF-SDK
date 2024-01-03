@@ -210,7 +210,7 @@ def main() -> None:
 
 	start_ep1_libgen_work(mode, sort, args)
 	if mode == Mode.ASSEMBLER_LISTING:
-		logging.debug(f'')
+		logging.debug('')
 		forge.dump_text_file_to_debug_log(args.output, strip_lines=False)
 
 

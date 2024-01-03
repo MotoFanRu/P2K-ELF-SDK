@@ -44,7 +44,7 @@ def chop_str(res: str, chop: int = 24, arrange: bool = False) -> str:
 
 
 def log_result(result: bool) -> bool:
-	logging.info(f'Done.' if result else f'Fail.')
+	logging.info('Done.' if result else 'Fail.')
 	return result
 
 

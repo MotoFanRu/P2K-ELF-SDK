@@ -34,7 +34,7 @@ class Mode(Enum):
 def is_undo_here(undo: Path) -> None:
 	if forge.check_files_if_exists([undo]):
 		logging.info(f'Undo patch source "{undo}" activated.')
-	logging.info(f'Undo patch source deactivated.')
+	logging.info('Undo patch source deactivated.')
 
 
 # Patcher working flow.
@@ -195,7 +195,7 @@ def main() -> None:
 
 	start_patcher_work(mode, args)
 	if (mode == Mode.BIN) or (mode == Mode.HEX) or (mode == Mode.UNITE):
-		logging.debug(f'')
+		logging.debug('')
 		forge.dump_text_file_to_debug_log(args.output)
 
 

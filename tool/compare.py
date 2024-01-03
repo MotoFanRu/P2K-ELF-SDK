@@ -58,7 +58,7 @@ def cmp_sym_def(a_sym: Path, a_def: Path, elfpacks: forge.ElfPacks) -> bool:
 				if not found:
 					logging.info(f'Not Found: "{line}".')
 			if not found_something:
-				logging.info(f'Nothing found.')
+				logging.info('Nothing found.')
 			return found_something
 	return False
 

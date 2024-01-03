@@ -239,8 +239,8 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 
 # PortKit ARM v2.0 working flow.
 def start_ep2_portkit_work(args: Namespace) -> bool:
-	logging.info(f'Start building ElfPack v2.0 for Motorola P2K.')
-	logging.info(f'')
+	logging.info('Start building ElfPack v2.0 for Motorola P2K.')
+	logging.info('')
 
 	arg_verbose: bool = args.verbose
 	arg_clean: bool = args.clean
@@ -248,22 +248,22 @@ def start_ep2_portkit_work(args: Namespace) -> bool:
 	arg_debug: bool = args.debug
 	arg_phone, arg_firmware = args.phone_fw
 
-	logging.info(f'Values:')
+	logging.info('Values:')
 	logging.info(f'\targ_verbose={arg_verbose}')
 	logging.info(f'\targ_clean={arg_clean}')
 	logging.info(f'\targ_debug={arg_debug}')
 	logging.info(f'\targ_output={arg_output}')
 	logging.info(f'\targ_phone={arg_phone}')
 	logging.info(f'\targ_firmware={arg_firmware}')
-	logging.info(f'')
+	logging.info('')
 
-	logging.info(f'Prepare PortKit environment.')
+	logging.info('Prepare PortKit environment.')
 	if not forge.check_directories_if_exists([arg_output]):
 		logging.info(f'Will create "{arg_output}" output directory.')
 		arg_output.mkdir()
 	if arg_clean:
 		forge.delete_all_files_in_directory(args.output)
-	logging.info(f'')
+	logging.info('')
 
 	return True
 

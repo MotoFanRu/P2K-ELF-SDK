@@ -70,7 +70,7 @@ def generate_fpa(fw: str, author: str, desc: str, patterns: PatchDict, fpa: Path
 					f_o.write(f'{addr}: {undo}\n')
 		return True
 	else:
-		logging.error(f'Patch data is empty.')
+		logging.error('Patch data is empty.')
 		return False
 
 

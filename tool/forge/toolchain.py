@@ -95,7 +95,7 @@ def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym
 		if path.name.endswith('.sym'):
 			sym_files_counter += 1
 	if sym_files_counter > 1:
-		logging.error(f'Too many *.sym files for linking.')
+		logging.error('Too many *.sym files for linking.')
 		return False
 
 	args: list[str] = [str(P2K_EP1_ADS_ARMLINK)]

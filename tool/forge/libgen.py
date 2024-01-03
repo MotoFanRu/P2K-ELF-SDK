@@ -13,7 +13,6 @@ Version: 1.0
 
 import logging
 
-from enum import Enum
 from pathlib import Path
 from datetime import datetime
 
@@ -120,7 +119,7 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> 
 
 			return True
 	else:
-		logging.error(f'Library model is empty.')
+		logging.error('Library model is empty.')
 	return False
 
 
@@ -303,7 +302,7 @@ def ep2_libgen_header(p_lib: Path) -> tuple[dict[str, any], int] | None:
 			header['constCnt'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
 			header['constOff'] = int.from_bytes(f_i.read(4), byteorder='big')            # sizeof(uint32_t)
 
-			logging.info(f'Library Header:')
+			logging.info('Library Header:')
 			for k, v in header.items():
 				logging.info(f'\t{k}={v}')
 
@@ -543,7 +542,7 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 				sym_file: Path = directory / 'library.sym'
 				lib_file: Path = directory / 'library.bin'
 			else:
-				logging.error(f'Fatal. Unknown ElfPack version.')
+				logging.error('Unknown ElfPack version.')
 				return False
 
 			phone, firmware = parse_phone_firmware(directory.name, False)
