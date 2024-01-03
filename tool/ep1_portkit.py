@@ -422,6 +422,10 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		if offset > 0:
 			if forge.hex2fpa(opts['fw_name'], 'EXL', desc, offset, pn3, val_elfdir_fpa, opts['fw_file']):
 				patches.append(val_elfdir_fpa)
+		else:
+			logging.info(f'Cannot find original patch data in "{opts["fw_file"]}" file.')
+			logging.info(f'Data: {po3}')
+			return False
 	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.0 patch', patches, val_result_fpa)
 	logging.info('')
 
