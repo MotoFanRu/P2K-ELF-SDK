@@ -516,33 +516,30 @@ def parse_arguments() -> dict[str, any]:
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
-	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -o build
-	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.79R -o build
-	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
-	python ep1_portkit.py -c -r -pf K1_R452F_G_08.03.08R -o build
-	python ep1_portkit.py -c -r -pf L6_R3511_G_0A.52.45R_A -o build
-	python ep1_portkit.py -c -r -pf L6i_R3443H1_G_0A.65.0BR -o build
-	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.ACR_RB -o build
-	python ep1_portkit.py -c -r -pf L7_R4513_G_08.B7.E0R_RB -o build
-	python ep1_portkit.py -c -r -pf L7e_R452D_G_08.01.0AR -o build
-	python ep1_portkit.py -c -r -pf L9_R452J_G_08.22.05R -o build
-	python ep1_portkit.py -c -r -pf V3i_R4441D_G_08.01.03R -o build
-	python ep1_portkit.py -c -r -pf V3r_R4515_G_08.BD.D3R -o build
-	python ep1_portkit.py -c -r -pf V235_R3512_G_0A.30.6CR -o build
-	python ep1_portkit.py -c -r -pf V360_R4513_G_08.B7.ACR -o build
-	python ep1_portkit.py -c -r -pf V600_TRIPLETS_G_0B.09.72R -o build
-	python ep1_portkit.py -c -r -pf Z3_R452B_G_08.02.0DR -o build
-	python ep1_portkit.py -c -r -pf Z3_R452F1_G_08.04.09R -o build
-	python ep1_portkit.py -c -r -pf Z3_R452H6_G_08.00.05R -o build
+	# Build ElfPack v1.0 and libraries to the phone/firmware with 'Elf' directory patch.
+	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.79R -o build
+	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -c -r -m -pf K1_R452F_G_08.03.08R -o build
+	python ep1_portkit.py -c -r -m -pf L6_R3511_G_0A.52.45R_A -o build
+	python ep1_portkit.py -c -r -m -pf L6i_R3443H1_G_0A.65.0BR -o build
+	python ep1_portkit.py -c -r -m -pf L7_R4513_G_08.B7.ACR_RB -o build
+	python ep1_portkit.py -c -r -m -pf L7_R4513_G_08.B7.E0R_RB -o build
+	python ep1_portkit.py -c -r -m -pf L7e_R452D_G_08.01.0AR -o build
+	python ep1_portkit.py -c -r -m -pf L9_R452J_G_08.22.05R -o build
+	python ep1_portkit.py -c -r -m -pf V3i_R4441D_G_08.01.03R -o build
+	python ep1_portkit.py -c -r -m -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -c -r -m -pf V235_R3512_G_0A.30.6CR -o build
+	python ep1_portkit.py -c -r -m -pf V360_R4513_G_08.B7.ACR -o build
+	python ep1_portkit.py -c -r -m -pf V600_TRIPLETS_G_0B.09.72R -o build
+	python ep1_portkit.py -c -r -m -pf Z3_R452B_G_08.02.0DR -o build
+	python ep1_portkit.py -c -r -m -pf Z3_R452F1_G_08.04.09R -o build
+	python ep1_portkit.py -c -r -m -pf Z3_R452H6_G_08.00.05R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -n -pf E1_R373_G_0E.30.49R -o build
 
-	# Build ElfPack v1.0 and libraries to the phone/firmware with 'Elf' directory patch.
-	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.49R -o build
-
-	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files (+patch offset override).
+	# Build ElfPack v1.0 and libraries to the phone/firmware with patch offset override.
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
