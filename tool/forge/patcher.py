@@ -20,6 +20,7 @@ from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import hex2int_r
 from .hexer import arrange16
+from .hexer import is_hex_string
 from .types import PatchDict
 from .types import PatchDictNone
 from .hexer import normalize_hex_address
@@ -229,11 +230,31 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 
 def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bool = False) -> int:
 	if check_files_if_exists([binary_file]) and check_files_extensions([binary_file], ['bin', 'smg']):
+		old_bytes: str = old_bytes.replace('\\x', '')
+		new_bytes: str = new_bytes.replace('\\x', '')
+
+		if old_bytes == new_bytes:
+			logging.warning('Skip patch. The patch data matches the original.')
+			logging.warning(f'Old: "{old_bytes}"')
+			logging.warning(f'New: "{new_bytes}"')
+			return (-1)
+
+		if not is_hex_string(old_bytes):
+			logging.warning('Wrong HEX-string with non-HEX data.')
+			logging.warning(f'old_bytes: "{old_bytes}"')
+			return (-1)
+
+		if not is_hex_string(new_bytes):
+			logging.warning('Wrong HEX-string with non-HEX data.')
+			logging.warning(f'new_bytes: "{new_bytes}"')
+			return (-1)
+
 		found: int = 0
 		write_to: int = 0
 		chunk_size: int = 4096
-		old_bytes_sequence: bytes = bytes.fromhex(old_bytes.replace('\\x', ''))
-		new_bytes_sequence: bytes = bytes.fromhex(new_bytes.replace('\\x', ''))
+		old_bytes_sequence: bytes = bytes.fromhex(old_bytes)
+		new_bytes_sequence: bytes = bytes.fromhex(new_bytes)
+
 		if len(old_bytes_sequence) == len(new_bytes_sequence):
 			with binary_file.open('rb+') as f_io:
 				chunk: bytes = f_io.read(chunk_size)
