@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <mem.h>
 #include <utilities.h>
-#include <ATI.h>
+#include <ati.h>
 #include "dd.h"
 #include "utils.h"
 #include "elfloaderApp.h"

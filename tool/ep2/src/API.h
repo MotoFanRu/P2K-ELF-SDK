@@ -4,7 +4,7 @@
 
 #include <typedefs.h>
 #include <apps.h>
-#include <ATI.h>
+#include <ati.h>
 #include "elfloader.h"
 #include "config.h"
 

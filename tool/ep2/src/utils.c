@@ -4,7 +4,7 @@
 #include <utilities.h>
 #include <stdarg1.h>
 #include <dl.h>
-#include "api.h"
+#include "API.h"
 //#include "elfloaderApp.h"
 #include "features.h"
 #include "dbg.h"

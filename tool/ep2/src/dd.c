@@ -1,6 +1,6 @@
 #include "dd.h"
-#include <ATI.h>
-#include <DAL.h>
+#include <ati.h>
+#include <dal.h>
 #include <mem.h>
 
 

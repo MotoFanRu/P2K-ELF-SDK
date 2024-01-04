@@ -2,7 +2,7 @@
 #define __DD_H__
 
 #include <typedefs.h>
-#include <ATI.h>
+#include <ati.h>
 
 
 extern BOOL				ahiInited;
