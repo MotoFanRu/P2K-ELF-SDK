@@ -308,12 +308,18 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
-	# Collect all object file names.
-	o_objects: list[Path] = []
+	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
+	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
+	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
+	lfs: list[Path] = []
 	for asm_source, mode in asm_sources:
-		o_objects.append(opts['output'] / (asm_source + '.o'))
+		lfs.append(opts['output'] / (asm_source + '.o'))
 	for c_source in c_sources:
-		o_objects.append(opts['output'] / (c_source + '.o'))
+		lfs.append(opts['output'] / (c_source + '.o'))
+	lfs.append(forge.P2K_DIR_EP1_LIB / 'libarm.a')
+	lfs = forge.sort_paths_by_filename(lfs, True)
+	if not forge.ep1_ads_armlink_scatter(lfs, val_elfpack_elf, val_scatter_file, val_viafile_file, val_elfpack_sym):
+		return False
 	logging.info('')
 
 	return True

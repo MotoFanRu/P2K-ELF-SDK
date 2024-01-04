@@ -44,13 +44,7 @@ def gen_src_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
 
 def ep1_ads_tcc(p_in: Path, p_out: Path, optimization: bool = False, custom_flags: list[str] | None = None) -> bool:
 	logging.info(f'Compiling "{p_in}" to "{p_out}"...')
-	args: list[str] = []
-	args.append(str(P2K_EP1_ADS_TCC))
-	args.append('-I' + str(P2K_DIR_EP_SDK))
-	args.append('-c')
-	args.append('-bigend')
-	args.append('-apcs')
-	args.append('/interwork')
+	args: list[str] = [str(P2K_EP1_ADS_TCC), '-I' + str(P2K_DIR_EP_SDK), '-c', '-bigend', '-apcs', '/interwork']
 	if optimization:
 		args.append('-O2')
 	if custom_flags:
@@ -91,7 +85,7 @@ def ep1_ads_armar(p_in: list[Path], p_out: Path, custom_flags: list[str] | None 
 	return invoke_external_command_res(p_in, args)
 
 
-def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym: Path | None = None) -> bool:
+def check_is_one_sym_here(p_i: list[Path]) -> bool:
 	sym_files_counter: int = 0
 	for path in p_i:
 		if path.name.endswith('.sym'):
@@ -99,12 +93,44 @@ def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym
 	if sym_files_counter > 1:
 		logging.error('Too many *.sym files for linking.')
 		return False
+	return True
+
+
+def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym: Path | None = None) -> bool:
+	if not check_is_one_sym_here(p_i):
+		return False
 
 	args: list[str] = [str(P2K_EP1_ADS_ARMLINK)]
 	if addr is not None:
 		args.append('-ro-base')
 		args.append(int2hex(addr))
 	if p_o_sym is not None:
+		args.append('-symdefs')
+		args.append(str(p_o_sym))
+	for path in p_i:
+		args.append(str(path))
+	args.append('-o')
+	args.append(str(p_o))
+	return invoke_external_command_res(p_i, args)
+
+
+def ep1_ads_armlink_scatter(
+	p_i: list[Path],
+	p_o: Path,
+	scatter: Path,
+	viafile: Path | None = None,
+	p_o_sym: Path | None = None
+) -> bool:
+	if not check_is_one_sym_here(p_i):
+		return False
+	if not check_files_if_exists([scatter, *p_i]):
+		return False
+
+	args: list[str] = [str(P2K_EP1_ADS_ARMLINK), '-scatter', str(scatter)]
+	if viafile:
+		args.append('-via')
+		args.append(str(viafile))
+	if p_o_sym:
 		args.append('-symdefs')
 		args.append(str(p_o_sym))
 	for path in p_i:

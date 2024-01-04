@@ -138,3 +138,7 @@ def prepare_clean_output_directory(directory: Path, clean: bool = False) -> bool
 	if clean:
 		result |= delete_all_files_in_directory(directory)
 	return result
+
+
+def sort_paths_by_filename(paths: list[Path], ignore_case: bool = False) -> list[Path]:
+	return sorted(paths, key=lambda path: path.name.upper() if ignore_case else path.name)

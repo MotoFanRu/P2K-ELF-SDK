@@ -365,8 +365,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_combined_sym
 	]
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
-	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
+	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
 	if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym):
 		logging.error(f'Cannot link "{val_elfpack_elf}" executable file.')
 		return False

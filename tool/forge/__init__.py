@@ -31,6 +31,7 @@ from .toolchain import ep1_ads_armlink
 from .toolchain import ep1_ads_fromelf
 from .toolchain import ep1_ads_armasm
 from .toolchain import ep1_ads_armar
+from .toolchain import ep1_ads_armlink_scatter
 
 from .filesystem import delete_all_files_in_directory
 from .filesystem import check_files_if_exists
@@ -42,6 +43,7 @@ from .filesystem import normalize_extension
 from .filesystem import delete_file
 from .filesystem import compare_paths
 from .filesystem import prepare_clean_output_directory
+from .filesystem import sort_paths_by_filename
 
 from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware
