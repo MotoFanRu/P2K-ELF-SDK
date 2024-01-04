@@ -197,16 +197,18 @@ def unite_fpa_patches(fw: str, author: str, desc: str, patches: list[Path], resu
 	return False
 
 
-def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -> bool:
+def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool, revert: bool = False) -> bool:
 	files_here: bool = check_files_if_exists([firmware, fpa])
 	extensions_ok: bool = check_files_extensions([firmware], ['bin', 'smg']) and check_files_extensions([fpa], ['fpa'])
 	if files_here and extensions_ok:
+		section_patches: str = 'Patch_Undo' if revert else 'Patch_Code'
+		section_undo_patches: str = 'Patch_Code' if revert else 'Patch_Undo'
 		config: CsConfigParser = read_fpa_patch_to_config_model(fpa)
 		if config is None:
 			return False
 		file_size: int = firmware.stat().st_size
 		if validating:
-			undo_patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Undo', True)
+			undo_patches: PatchDictNone = get_fpa_patch_values(config, section_undo_patches, True)
 			if undo_patches is not None:
 				with firmware.open(mode='rb') as f_i:
 					for address, value in undo_patches.items():
@@ -226,7 +228,7 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 			else:
 				logging.error(f'Validation mode failed, undo values are not present in the "{fpa}" patch.')
 				return False
-		patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
+		patches: PatchDictNone = get_fpa_patch_values(config, section_patches, True)
 		if patches is not None:
 			if backup:
 				backup_file: Path = firmware.with_stem(f'{firmware.stem}_backup')

@@ -59,7 +59,9 @@ def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	elif mode == Mode.WRITE:
 		is_undo_here(args.undo)
 		logging.info(f'Will write "{args.write}" to "{args.undo}"...')
-		return forge.log_result(forge.apply_fpa_patch(args.undo, args.write, not args.no_backup, args.validate))
+		return forge.log_result(
+			forge.apply_fpa_patch(args.undo, args.write, not args.no_backup, args.validate, args.revert)
+		)
 	elif mode == Mode.CONVERT:
 		logging.info(f'Will convert "{args.convert}" to "{args.output}"...')
 		return forge.log_result(forge.fpa2bin(args.convert, args.output))
@@ -99,32 +101,32 @@ class Args(argparse.ArgumentParser):
 		check_mode_hex: bool = self.check_arguments(
 			args,
 			['bin', 'convert', 'uni', 'write', 'generate_undo'],
-			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose', 'no_backup', 'validate']
+			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		check_mode_bin: bool = self.check_arguments(
 			args,
 			['hex', 'convert', 'uni', 'write', 'generate_undo'],
-			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose', 'no_backup', 'validate']
+			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		check_mode_write: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'generate_undo', 'uni'],
-			['undo', 'write', 'verbose', 'no_backup', 'validate']
+			['undo', 'write', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		check_mode_convert: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'generate_undo', 'uni'],
-			['output', 'convert', 'verbose', 'no_backup', 'validate']
+			['output', 'convert', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		check_mode_generate_undo: bool = self.check_arguments(
 			args,
 			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'write', 'uni'],
-			['undo', 'generate_undo', 'verbose', 'no_backup', 'validate']
+			['undo', 'generate_undo', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		check_mode_unite: bool = self.check_arguments(
 			args,
 			['start', 'hex', 'bin', 'undo', 'write', 'convert', 'generate_undo'],
-			['firmware', 'author', 'desc', 'output', 'uni', 'verbose', 'no_backup', 'validate']
+			['firmware', 'author', 'desc', 'output', 'uni', 'verbose', 'no_backup', 'validate', 'revert']
 		)
 		if check_mode_hex:
 			return Mode.HEX, args
@@ -162,6 +164,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'i': 'combine all FPA-patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
 		'l': 'validate patches if undo data and source is present',
 		'n': 'do not backup binary file before patching',
+		'r': 'revert patch using undo values',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -201,6 +204,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpa, metavar='FPA', help=hlp['i'])
 	parser_args.add_argument('-l', '--validate', required=False, action='store_true', help=hlp['l'])
 	parser_args.add_argument('-n', '--no-backup', required=False, action='store_true', help=hlp['n'])
+	parser_args.add_argument('-r', '--revert', required=False, action='store_true', help=hlp['r'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
