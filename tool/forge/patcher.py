@@ -42,6 +42,10 @@ def patch_size_of_hex_str(hex_str: str) -> int:
 	return length_good
 
 
+def patch_size_str(hex_str: str) -> str:
+	return f'{int2hex(int(len(hex_str) / 2))}, {int(len(hex_str) / 2)}'
+
+
 def check_if_address_beyond_file_size(address: int, file_size: int, patch_size: int) -> bool:
 	offset_size: int = address + patch_size
 	if (address > file_size) or (offset_size > file_size):
@@ -202,10 +206,13 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 						else:
 							hex_data: str = 'FF' * p_size
 						if hex_data == undo:
-							logging.info(f'Patch "{address}" is validated.')
+							logging.info(f'Patch "{address}" is validated, data size: "{int2hex(len(hex_data))}".')
 						else:
 							logging.info(f'Patch "{address}" not valid with undo values {hex_data}=={undo}.')
 							return False
+			else:
+				logging.error(f'Validation mode failed, undo values are not present in the "{fpa}" patch.')
+				return False
 		patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
 		if patches is not None:
 			if backup:
@@ -216,18 +223,16 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 				for address, value in patches.items():
 					p_addr: int = hex2int_r(address)
 					p_size: int = patch_size_of_hex_str(value)
-					if check_if_address_beyond_file_size(p_addr, file_size, p_size):
-						f_o.seek(p_addr)
-						f_o.write(bytes.fromhex(value))
-					else:
+					if not check_if_address_beyond_file_size(p_addr, file_size, p_size):
 						f_o.seek(file_size)
 						p_pad: int = (arrange16(file_size) - file_size) + arrange16(p_size)
 						h_p: str = int2hex(p_pad)
 						h_s: str = int2hex(file_size)
 						logging.info(f'Add some extra space "{h_p}" to "{firmware}", size: "{file_size}", hex "{h_s}".')
 						f_o.write(b'\xFF' * p_pad)
-						f_o.seek(p_addr)
-						f_o.write(bytes.fromhex(value))
+					f_o.seek(p_addr)
+					logging.info(f'Write: "{int2hex(p_addr)}", data length: "{patch_size_str(value)}".')
+					f_o.write(bytes.fromhex(value))
 			return True
 	return False
 
