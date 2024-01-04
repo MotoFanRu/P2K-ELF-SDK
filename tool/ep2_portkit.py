@@ -272,11 +272,23 @@ class Args(argparse.ArgumentParser):
 		opts['debug'] = args.debug
 		opts['directory'] = args.directory
 
-		opts['start'] = args.start if args.start else variants['addr_start']
-		opts['offset'] = args.offset if args.offset else variants['addr_offset']
-		if not opts['offset']:
-			opts['offset'] = forge.arrange16(forge.get_file_size(opts['fw_file']))
-		opts['address'] = opts['start'] + opts['offset']
+		opts['start'] = args.start if args.start else variants['addr_fw_start']
+		opts['address'] = args.offset if args.offset else variants['addr_ep2_body']
+		opts['register'] = args.register if args.register else variants['addr_ep2_reg']
+		opts['display'] = args.display if args.display else variants['addr_upd_disp']
+		opts['block'] = args.block if args.block else variants['addr_ram_block']
+		
+		flags: list[str] = (
+			variants['opts_main'] +
+			variants['opts_phone'] +
+			variants['opts_firmware'] +
+			variants['opts_keyboard'] +
+			variants['opts_keyfast']
+		)
+		if args.debug:
+			flags += variants['opts_debug']
+		opts['flags'] = ' '.join(flags)
+
 		opts['soc'] = forge.determine_soc(opts['start'])
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
@@ -289,19 +301,29 @@ def parse_arguments() -> dict[str, any]:
 		'd': 'A PortKit Utility for building ElfPack v2.0 for Motorola phones on P2K platform, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
+		's': 'override start address of CG0+CG1 firmware (in HEX)',
+		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
+		'r': 'override register address (in HEX)',
+		'j': 'override display inject address (in HEX)',
+		'b': 'override block RAM address (in HEX)',
 		'o': 'output artifacts directory',
 		'db': 'debug build of ElfPack v2.0',
 		't': 'generate patch with replacing "ringtone" to "Elf" directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
-	# Build ElfPack v2.0 to the phone/firmware using source code.
-	python ep2_portkit.py -c -pf E1_R373_G_0E.30.49R -o build
+	# Build ElfPack v2.0 to the phone/firmware using source code (+'Elf' directory patch).
+	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.49R -o build
 	# TODO: Fill it with phones and models.
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-pf', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
+	parser_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
+	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
+	parser_args.add_argument('-r', '--register', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['r'])
+	parser_args.add_argument('-j', '--display', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['j'])
+	parser_args.add_argument('-b', '--block', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['b'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-d', '--debug', required=False, action='store_true', help=hlp['db'])
 	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
