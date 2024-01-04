@@ -345,7 +345,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	generate_system_information_source(opts['phone'], opts['fw_name'], opts['soc'], val_system_info_c)
 	logging.info('')
 
-	logging.info('Compiling C-source files.')
+	logging.info('Compiling C-source files using ADS compiler.')
 	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o)
 	logging.info('')
 

@@ -248,6 +248,33 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	forge.prepare_clean_output_directory(opts["output"], opts['clean'])
 	logging.info('')
 
+	logging.info('Compiling C-source files using ADS compiler.')
+	c_sources: list[str] = [
+		'API.c',
+		'autorun.c',
+		'config.c',
+		'console.c',
+		'dd.c',
+		'dispCallBacks.c',
+		'elfloaderApp.c',
+		'font.c',
+		'loadCommon.c',
+		'loadDefLib.c',
+		'loadElf.c',
+		'loadLibrary.c',
+		'logo.c',
+		'lolvl.c',
+		'palette.c',
+		'parser.c',
+		'utils.c'
+	]
+	for c_source in c_sources:
+		p_c: Path = forge.P2K_DIR_EP2_SRC / c_source
+		p_o: Path = opts['output'] / (c_source + '.o')
+		if not forge.ep1_ads_tcc(p_c, p_o, True, opts['flags']):
+			return False
+	logging.info('')
+
 	return True
 
 
@@ -265,6 +292,9 @@ class Args(argparse.ArgumentParser):
 		variants: dict[str, any] = EP2_PFW_VARIANTS.get(firmware, None)
 		if not variants:
 			self.error(f'unknown {phone} phone and {firmware} firmware')
+		sym_source_file: Path = forge.P2K_DIR_LIB / '_'.join(args.phone_fw) / 'library.sym'
+		if not forge.check_files_if_exists([sym_source_file]):
+			self.error(f'cannot find {sym_source_file} file with entity addresses')
 
 		opts['verbose'] = args.verbose
 		opts['clean'] = args.clean
@@ -273,7 +303,7 @@ class Args(argparse.ArgumentParser):
 		opts['directory'] = args.directory
 
 		opts['start'] = args.start if args.start else variants['addr_fw_start']
-		opts['address'] = args.offset if args.offset else variants['addr_ep2_body']
+		opts['offset'] = args.offset if args.offset else variants['addr_ep2_body']
 		opts['register'] = args.register if args.register else variants['addr_ep2_reg']
 		opts['display'] = args.display if args.display else variants['addr_upd_disp']
 		opts['block'] = args.block if args.block else variants['addr_ram_block']
@@ -287,11 +317,15 @@ class Args(argparse.ArgumentParser):
 		)
 		if args.debug:
 			flags += variants['opts_debug']
-		opts['flags'] = ' '.join(flags)
+		opts['flags'] = flags
 
 		opts['soc'] = forge.determine_soc(opts['start'])
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
+		opts['sym'] = sym_source_file
+
+		opts['addr_main'] = opts['start'] + opts['offset']
+		opts['addr_disp'] = opts['start'] + opts['display']
 
 		return opts
 

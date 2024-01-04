@@ -42,20 +42,22 @@ def gen_src_const_chars(header_file: Path, array_dict: dict[str, str]) -> bool:
 		return False
 
 
-def ep1_ads_tcc(p_in: Path, p_out: Path, custom_flags: list[str] | None = None) -> bool:
+def ep1_ads_tcc(p_in: Path, p_out: Path, optimization: bool = False, custom_flags: list[str] | None = None) -> bool:
 	logging.info(f'Compiling "{p_in}" to "{p_out}"...')
-	args: list[str] = [
-		str(P2K_EP1_ADS_TCC),
-		'-I' + str(P2K_DIR_EP_SDK),
-		'-c',
-		'-bigend',
-		'-apcs',
-		'/interwork',
-		*invoke_custom_arguments(custom_flags),
-		str(p_in),
-		'-o',
-		str(p_out)
-	]
+	args: list[str] = []
+	args.append(str(P2K_EP1_ADS_TCC))
+	args.append('-I' + str(P2K_DIR_EP_SDK))
+	args.append('-c')
+	args.append('-bigend')
+	args.append('-apcs')
+	args.append('/interwork')
+	if optimization:
+		args.append('-O2')
+	if custom_flags:
+		args.extend(invoke_custom_arguments(custom_flags))
+	args.append(str(p_in))
+	args.append('-o')
+	args.append(str(p_out))
 	return invoke_external_command_res([p_in], args)
 
 
