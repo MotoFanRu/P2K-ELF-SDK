@@ -595,7 +595,7 @@ def libgen_resort_syms(sort: LibrarySort, e: ElfPack) -> bool:
 			elif e == ElfPack.EP2:
 				sym_file: Path = directory / 'library.sym'
 			else:
-				logging.error(f'Fatal. Unknown ElfPack version: "{e.name}".')
+				logging.error(f'Unknown ElfPack version: "{e.name}".')
 				return False
 
 			phone, firmware = parse_phone_firmware(directory.name, False)
@@ -638,7 +638,7 @@ def libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pf
 		elif e == ElfPack.EP2:
 			library_model: LibraryModel = ep2_libgen_model(i, sort)
 		else:
-			logging.error(f'Fatal. Unknown ElfPack version: "{e.name}".')
+			logging.error(f'Unknown ElfPack version: "{e.name}".')
 			return False
 
 		chunk_model: LibraryModel = []
@@ -668,3 +668,28 @@ def ep2_libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str]
 
 def libgen_apply_patches(patches: list[str], io_sym: Path, phone: str, firmware: str, ep: str) -> bool:
 	return replace_syms(patches, io_sym, phone, firmware, ep, libgen_version())
+
+
+def libgen_names_sym(i: Path, e: ElfPack, ignore_consts: bool) -> list[str] | None:
+	if check_files_if_exists([i]):
+		if e == ElfPack.EP1:
+			functions, library_model = ep1_libgen_model(i, LibrarySort.NAME)
+		elif e == ElfPack.EP2:
+			library_model: LibraryModel = ep2_libgen_model(i, LibrarySort.NAME)
+		else:
+			logging.error(f'Unknown ElfPack version: "{e.name}".')
+			return None
+		names: list[str] = [name for addr, mode, name in library_model if not ignore_consts or mode != 'C']
+		if len(names) > 0:
+			return names
+		else:
+			logging.error(f'Names array of "{i}" file is empty.')
+	return None
+
+
+def ep1_libgen_names_sym(i: Path) -> list[str] | None:
+	return libgen_names_sym(i, ElfPack.EP1, False)
+
+
+def ep2_libgen_names_sym(i: Path, ignore_consts: bool) -> list[str] | None:
+	return libgen_names_sym(i, ElfPack.EP2, ignore_consts)

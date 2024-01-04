@@ -307,6 +307,14 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	)
 	logging.info('')
 
+	logging.info('Generate link symbols file.')
+	val_link_def: Path = forge.P2K_DIR_EP2_DEF / 'ElfLoaderLink.def'
+	val_link_sym: Path = opts['output'] / 'Link.sym'
+	forge.ep2_libgen_chunk_sym(
+		opts['sym'], val_link_sym, forge.LibrarySort.NAME, forge.ep2_libgen_names_sym(val_link_def, True), opts['pfw']
+	)
+	logging.info('')
+
 	logging.info('Linking object files to binary.')
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
@@ -318,6 +326,7 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 		lfs.append(opts['output'] / (c_source + '.o'))
 	lfs.append(forge.P2K_DIR_EP1_LIB / 'libarm.a')
 	lfs = forge.sort_paths_by_filename(lfs, True)
+	lfs.append(val_link_sym)
 	if not forge.ep1_ads_armlink_scatter(lfs, val_elfpack_elf, val_scatter_file, val_viafile_file, val_elfpack_sym):
 		return False
 	logging.info('')
@@ -335,11 +344,12 @@ class Args(argparse.ArgumentParser):
 		opts: dict[str, any] = {}
 		args: Namespace = self.parse_args()
 
+		opts['pfw'] = args.phone_fw
 		phone, firmware = args.phone_fw
 		variants: dict[str, any] = EP2_PFW_VARIANTS.get(firmware, None)
 		if not variants:
 			self.error(f'unknown {phone} phone and {firmware} firmware')
-		sym_source_file: Path = forge.P2K_DIR_LIB / '_'.join(args.phone_fw) / 'library.sym'
+		sym_source_file: Path = forge.P2K_DIR_LIB / '_'.join(args.phone_fw) / 'elfloader.sym'
 		if not forge.check_files_if_exists([sym_source_file]):
 			self.error(f'cannot find {sym_source_file} file with entity addresses')
 
@@ -354,16 +364,15 @@ class Args(argparse.ArgumentParser):
 		opts['register'] = args.register if args.register else variants['addr_ep2_reg']
 		opts['display'] = args.display if args.display else variants['addr_upd_disp']
 		opts['addr_block'] = args.block if args.block else variants['addr_ram_block']
-		
-		flags: list[str] = (
-			variants['opts_main'] +
-			variants['opts_phone'] +
-			variants['opts_firmware'] +
-			variants['opts_keyboard'] +
-			variants['opts_keyfast']
-		)
+
+		flags: list[str] = []
+		flags.extend(variants['opts_main'])
+		flags.extend(variants['opts_phone'])
+		flags.extend(variants['opts_firmware'])
+		flags.extend(variants['opts_keyboard'])
+		flags.extend(variants['opts_keyfast'])
 		if args.debug:
-			flags += variants['opts_debug']
+			flags.extend(variants['opts_debug'])
 		opts['flags'] = flags
 
 		opts['soc'] = forge.determine_soc(opts['start'])
