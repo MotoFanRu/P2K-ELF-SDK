@@ -89,7 +89,7 @@ def undo_data(addr: int, hex_data: str, undo: Path, log: bool = False) -> str | 
 				undo_str: str = f_i.read(p_size).hex().upper()
 			else:
 				if log:
-					logging.warning(f'Read beyond: "{int2hex(addr)}", write "{int2hex(p_size)}, {p_size}" FF bytes.')
+					logging.warning(f'Read beyond: "{int2hex(addr)}", write "{int2hex(p_size)}, {p_size}" FF-bytes.')
 				undo_str: str = 'FF' * p_size
 			return undo_str
 	return None
