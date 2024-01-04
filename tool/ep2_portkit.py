@@ -248,6 +248,21 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	forge.prepare_clean_output_directory(opts["output"], opts['clean'])
 	logging.info('')
 
+	logging.info('Compiling ASM-source files using ADS compiler.')
+	asm_sources: list[tuple[str, bool]] = [
+		('dlopen.asm', False),
+		('ldrUnloadElf.asm', False),
+		('patchlib.asm', False),
+		('veneers.asm', False),
+		('UpdateDisplayInjection.asm', True)
+	]
+	for asm_source, arm_mode in asm_sources:
+		p_asm: Path = forge.P2K_DIR_EP2_SRC / asm_source
+		p_o: Path = opts['output'] / (asm_source + '.o')
+		if not forge.ep1_ads_armasm(p_asm, p_o, arm_mode):
+			return False
+	logging.info('')
+
 	logging.info('Compiling C-source files using ADS compiler.')
 	c_sources: list[str] = [
 		'API.c',

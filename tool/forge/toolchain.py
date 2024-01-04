@@ -61,11 +61,11 @@ def ep1_ads_tcc(p_in: Path, p_out: Path, optimization: bool = False, custom_flag
 	return invoke_external_command_res([p_in], args)
 
 
-def ep1_ads_armasm(p_in: Path, p_out: Path, custom_flags: list[str] | None = None) -> bool:
+def ep1_ads_armasm(p_in: Path, p_out: Path, arm_mode: bool = False, custom_flags: list[str] | None = None) -> bool:
 	logging.info(f'Assembling "{p_in}" to "{p_out}"...')
 	args: list[str] = [
 		str(P2K_EP1_ADS_ARMASM),
-		'-16',
+		'-32' if arm_mode else '-16',
 		'-bigend',
 		'-apcs',
 		'/interwork',
