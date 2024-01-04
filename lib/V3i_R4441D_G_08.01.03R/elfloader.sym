@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V3i
 # Firmware: R4441D_G_08.01.03R
-# Version: 0301241
-# Timestamp: 03-Jan-2024 01:19:31
+# Version: 0401241
+# Timestamp: 04-Jan-2024 06:53:31
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -376,7 +376,7 @@
 0x10D7A822 T LdrGetFirmwareMinorVersion
 0x10D7A816 T LdrGetPhoneName
 0x10D7A81A T LdrGetPlatformName
-0x10D7AF04 T LdrLoadELF
+0x10D7A79A T LdrLoadELF
 0x10D7A760 T LdrStartApp
 0x10D7A7E2 T LdrUnloadELF
 0x100A7BC8 T localtime

@@ -483,7 +483,7 @@
 0x1045B8D2 T MsgUtilGetUnreadMsgsInAllFolders
 0x10A99526 T Nsscanf
 0x105DBDD0 D PARAM_TABLE
-0x10246E26 T PFprintf
+0x10246E24 T PFprintf
 0x10A375A4 A png_check_sig
 0x10A37694 A png_create_info_struct
 0x10A39A28 A png_create_read_struct

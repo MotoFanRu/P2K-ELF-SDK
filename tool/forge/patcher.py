@@ -182,7 +182,11 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 	extensions_ok: bool = check_files_extensions([firmware], ['bin', 'smg']) and check_files_extensions([fpa], ['fpa'])
 	if files_here and extensions_ok:
 		config: CsConfigParser = CsConfigParser()
-		config.read(fpa)
+		try:
+			config.read(fpa)
+		except Exception as error:
+			logging.error(f'Cannot read patch: {error}')
+			return False
 		file_size: int = firmware.stat().st_size
 		if validating:
 			undo_patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Undo', True)
