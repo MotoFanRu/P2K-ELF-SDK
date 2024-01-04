@@ -1,3 +1,4 @@
+Add patterns of addresses in these global dict!
 + E1_R373_G_0E.30.49R
 ? E1_R373_G_0E.30.70R (deprecated)
 + E1_R373_G_0E.30.79R
@@ -32,3 +33,4 @@ ReadMe.md docs in every folder.
 
 Convert CP1251 to UTF-8 sources
 Dos to UNIX for sources
+ARMLINK scatter check PDF file if it scater.txt, viafile.txt or other?

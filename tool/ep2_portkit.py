@@ -290,6 +290,32 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 			return False
 	logging.info('')
 
+	logging.info('Create linker files from template.')
+	val_scatter_template: Path = forge.P2K_DIR_EP2_TPL / 'scatter.tpl'
+	val_scatter_file: Path = opts['output'] / 'scatter.txt'
+	forge.patch_text_file_template(
+		val_scatter_template, val_scatter_file, {
+			'%addr_disp%': forge.int2hex(opts['addr_disp']),
+			'%addr_main%': forge.int2hex(opts['addr_main']),
+			'%addr_block%': forge.int2hex(opts['addr_block']),
+		}
+	)
+	val_viafile_template: Path = forge.P2K_DIR_EP2_TPL / 'viafile.tpl'
+	val_viafile_file: Path = opts['output'] / 'viafile.txt'
+	forge.patch_text_file_template(
+		val_viafile_template, val_viafile_file, {'%info_file%': str(opts['output'] / 'info.txt')}
+	)
+	logging.info('')
+
+	logging.info('Linking object files to binary.')
+	# Collect all object file names.
+	o_objects: list[Path] = []
+	for asm_source, mode in asm_sources:
+		o_objects.append(opts['output'] / (asm_source + '.o'))
+	for c_source in c_sources:
+		o_objects.append(opts['output'] / (c_source + '.o'))
+	logging.info('')
+
 	return True
 
 
@@ -321,7 +347,7 @@ class Args(argparse.ArgumentParser):
 		opts['offset'] = args.offset if args.offset else variants['addr_ep2_body']
 		opts['register'] = args.register if args.register else variants['addr_ep2_reg']
 		opts['display'] = args.display if args.display else variants['addr_upd_disp']
-		opts['block'] = args.block if args.block else variants['addr_ram_block']
+		opts['addr_block'] = args.block if args.block else variants['addr_ram_block']
 		
 		flags: list[str] = (
 			variants['opts_main'] +

@@ -339,3 +339,19 @@ def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bo
 
 def patch_binary_file_res(binary_file: Path, old_bytes: str, new_bytes: str) -> bool:
 	return patch_binary_file(binary_file, old_bytes, new_bytes) > 0
+
+
+def patch_text_file_template(p_i: Path, p_o: Path, replaces: dict[str, str], replace_all: bool = False) -> bool:
+	if check_files_if_exists([p_i]):
+		text: str = p_i.read_text()
+		for template, replacement in replaces.items():
+			if replace_all:
+				text = text.replace(template, replacement)
+			else:
+				text = text.replace(template, replacement, 1)
+		try:
+			p_o.write_text(text, newline='\r\n')
+			return True
+		except IOError as error:
+			logging.error(f'An I/O error occurred with {p_o} file: {error}')
+	return False
