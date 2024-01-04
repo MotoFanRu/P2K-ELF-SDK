@@ -241,17 +241,17 @@ def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bo
 			logging.warning('Skip patch. The patch data matches the original.')
 			logging.warning(f'Old: "{old_bytes}"')
 			logging.warning(f'New: "{new_bytes}"')
-			return (-1)
+			return -1
 
 		if not is_hex_string(old_bytes):
 			logging.warning('Wrong HEX-string with non-HEX data.')
 			logging.warning(f'old_bytes: "{old_bytes}"')
-			return (-1)
+			return -1
 
 		if not is_hex_string(new_bytes):
 			logging.warning('Wrong HEX-string with non-HEX data.')
 			logging.warning(f'new_bytes: "{new_bytes}"')
-			return (-1)
+			return -1
 
 		found: int = 0
 		write_to: int = 0
@@ -283,7 +283,7 @@ def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bo
 					logging.error(f'Pattern "{old_bytes}" not found in "{binary_file}" file.')
 		else:
 			logging.error(f'Length of "{old_bytes}" and "{new_bytes}" patterns does not match.')
-	return (-1)
+	return -1
 
 
 def patch_binary_file_res(binary_file: Path, old_bytes: str, new_bytes: str) -> bool:

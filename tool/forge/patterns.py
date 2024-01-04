@@ -20,11 +20,9 @@ from .hexer import hex2int
 from .types import LibraryModel
 from .types import MemoryRegion
 from .firmware import determine_memory_region
-from .filesystem import move_file
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 from .constants import P2K_TOOL_PAT
-from .constants import P2K_DIR_TOOL
 from .invoker import invoke_external_command_res
 from .symbols import combine_sym_str
 from .symbols import dump_sym_file_to_library_model
@@ -41,10 +39,6 @@ def pat_find(pat_p: Path, cgs_p: Path, base_address: int, ram_trans: bool, out_p
 		str(out_p),
 		int2hex(base_address)
 	]
-	# invoked: bool = invoke_external_command_res([pat_p, cgs_p], args)
-	# if invoked:
-	# 	move_file(P2K_DIR_TOOL / 'functions.sym', out_p)
-	# return invoked
 	return invoke_external_command_res([pat_p, cgs_p], args)
 
 

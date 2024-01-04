@@ -17,6 +17,7 @@ from .types import MemoryRegion
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 
+
 def parse_minor_major_firmware(firmware: str) -> tuple[str, str]:
 	segments: list[str] = firmware.split('.')
 	fw_major: str = firmware.replace('.' + segments[-1], '')

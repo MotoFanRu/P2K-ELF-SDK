@@ -34,7 +34,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.79R': {
 		'opts_all':       ['-DFTR_E1'],
@@ -43,7 +43,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.DAR': {
 		'opts_all':       ['-DFTR_E1'],
@@ -52,7 +52,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452F_G_08.03.08R': {
 		'opts_all':       ['-DFTR_K1'],
@@ -61,7 +61,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3511_G_0A.52.45R_A': {
 		'opts_all':       ['-DFTR_L6'],
@@ -70,7 +70,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3443H1_G_0A.65.0BR': {
 		'opts_all':       ['-DFTR_L6I'],
@@ -79,7 +79,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR_RB': {
 		'opts_all':       ['-DFTR_L7'],
@@ -88,7 +88,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.E0R_RB': {
 		'opts_all':       ['-DFTR_L7'],
@@ -97,7 +97,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452D_G_08.01.0AR': {
 		'opts_all':       ['-DFTR_L7E'],
@@ -106,7 +106,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452J_G_08.22.05R': {
 		'opts_all':       ['-DFTR_L9'],
@@ -115,7 +115,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4441D_G_08.01.03R': {
 		'opts_all':       ['-DFTR_V3I'],
@@ -124,7 +124,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4515_G_08.BD.D3R': {
 		'opts_all':       ['-DFTR_V3R'],
@@ -133,7 +133,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3512_G_0A.30.6CR': {
 		'opts_all':       ['-DFTR_V235'],
@@ -142,7 +142,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR': {
 		'opts_all':       ['-DFTR_V360'],
@@ -151,7 +151,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'TRIPLETS_G_0B.09.72R': {
 		'opts_all':       ['-DFTR_V600'],
@@ -160,7 +160,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'a'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452B_G_08.02.0DR': {
 		'opts_all':       ['-DFTR_Z3'],
@@ -169,7 +169,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452F1_G_08.04.09R': {
 		'opts_all':       ['-DFTR_Z3'],
@@ -178,7 +178,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452H6_G_08.00.05R': {
 		'opts_all':       ['-DFTR_Z3'],
@@ -187,7 +187,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
-		'drive_patch':    'c'         # Patch "/b/elfloader.lib" and "/b/auto.run" disk with this letter.
+		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	}
 }
 
