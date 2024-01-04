@@ -27,7 +27,8 @@ class Mode(Enum):
 	BIN: int = 1
 	WRITE: int = 2
 	CONVERT: int = 3
-	UNITE: int = 4
+	GENERATE_UNDO: int = 4
+	UNITE: int = 5
 
 
 # Helpers.
@@ -62,6 +63,9 @@ def start_patcher_work(mode: Mode, args: Namespace) -> bool:
 	elif mode == Mode.CONVERT:
 		logging.info(f'Will convert "{args.convert}" to "{args.output}"...')
 		return forge.log_result(forge.fpa2bin(args.convert, args.output))
+	elif mode == Mode.GENERATE_UNDO:
+		logging.info(f'Will generate and append undo values from "{args.undo}" to "{args.generate_undo}"...')
+		return forge.log_result(forge.generate_and_append_undo_values_to_fpa(args.undo, args.generate_undo))
 	elif mode == Mode.UNITE:
 		for name in args.uni:
 			logging.info(f'Will unite "{name}" to "{args.output}"...')
@@ -94,27 +98,32 @@ class Args(argparse.ArgumentParser):
 		args: Namespace = self.parse_args()
 		check_mode_hex: bool = self.check_arguments(
 			args,
-			['bin', 'convert', 'uni', 'write'],
+			['bin', 'convert', 'uni', 'write', 'generate_undo'],
 			['output', 'firmware', 'author', 'desc', 'start', 'hex', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_bin: bool = self.check_arguments(
 			args,
-			['hex', 'convert', 'uni', 'write'],
+			['hex', 'convert', 'uni', 'write', 'generate_undo'],
 			['output', 'firmware', 'author', 'desc', 'start', 'bin', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_write: bool = self.check_arguments(
 			args,
-			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'uni'],
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'generate_undo', 'uni'],
 			['undo', 'write', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_convert: bool = self.check_arguments(
 			args,
-			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'uni'],
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'undo', 'write', 'generate_undo', 'uni'],
 			['output', 'convert', 'verbose', 'no_backup', 'validate']
+		)
+		check_mode_generate_undo: bool = self.check_arguments(
+			args,
+			['firmware', 'author', 'desc', 'start', 'hex', 'bin', 'output', 'convert', 'write', 'uni'],
+			['undo', 'generate_undo', 'verbose', 'no_backup', 'validate']
 		)
 		check_mode_unite: bool = self.check_arguments(
 			args,
-			['start', 'hex', 'bin', 'undo', 'write', 'convert'],
+			['start', 'hex', 'bin', 'undo', 'write', 'convert', 'generate_undo'],
 			['firmware', 'author', 'desc', 'output', 'uni', 'verbose', 'no_backup', 'validate']
 		)
 		if check_mode_hex:
@@ -125,6 +134,8 @@ class Args(argparse.ArgumentParser):
 			return Mode.CONVERT, args
 		elif check_mode_write:
 			return Mode.WRITE, args
+		elif check_mode_generate_undo:
+			return Mode.GENERATE_UNDO, args
 		elif check_mode_unite:
 			if len(args.uni) > 1:
 				return Mode.UNITE, args
@@ -145,11 +156,12 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 		'x': 'hex data string which will be written to offset, e.g. "0123456789ABCDEF"',
 		'b': 'binary file which will be written to offset, e.g. "ElfPack.bin"',
 		'u': 'generate UNDOs patch information, CG1.smg is needed, e.g. "E1_R373_G_0E.30.49R.smg"',
-		'w': 'apply and write patch to the firmware file',
+		'w': 'apply and write patch to the binary file',
 		'c': 'convert FPA-patch to binary code',
+		'g': 'generate and append undo values from binary file to FPA-patch',
 		'i': 'combine all FPA-patches to united one, e.g. "Patch1.fpa", "Patch2.fpa", "Patch3.fpa"',
 		'l': 'validate patches if undo data and source is present',
-		'n': 'do not backup firmware file before patching',
+		'n': 'do not backup binary file before patching',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -164,6 +176,9 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	# Apply patch to binary file (+validate and no-backup before applying).
 	python patch.py -w Result.fpa -u CG1.smg -l
 	python patch.py -w Result.fpa -u CG1.smg -l -n
+
+	# Append undo values from binary file to patch.
+	python patch.py -g Result.fpa -u CG1.smg
 
 	# Create a binary files from patch.
 	python patch.py -c ElfPack.fpa -o Result.bin
@@ -182,6 +197,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	parser_args.add_argument('-u', '--undo', required=False, type=forge.at_file, metavar='FIRMWARE_FILE', help=hlp['u'])
 	parser_args.add_argument('-w', '--write', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['w'])
 	parser_args.add_argument('-c', '--convert', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['c'])
+	parser_args.add_argument('-g', '--generate-undo', required=False, type=forge.at_fpa, metavar='FPA', help=hlp['g'])
 	parser_args.add_argument('-i', '--uni', required=False, nargs='+', type=forge.at_fpa, metavar='FPA', help=hlp['i'])
 	parser_args.add_argument('-l', '--validate', required=False, action='store_true', help=hlp['l'])
 	parser_args.add_argument('-n', '--no-backup', required=False, action='store_true', help=hlp['n'])

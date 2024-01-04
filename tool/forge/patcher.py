@@ -42,10 +42,6 @@ def patch_size_of_hex_str(hex_str: str) -> int:
 	return length_good
 
 
-def patch_size_str(hex_str: str) -> str:
-	return f'{int2hex(int(len(hex_str) / 2))}, {int(len(hex_str) / 2)}'
-
-
 def check_if_address_beyond_file_size(address: int, file_size: int, patch_size: int) -> bool:
 	offset_size: int = address + patch_size
 	if (address > file_size) or (offset_size > file_size):
@@ -79,15 +75,19 @@ def generate_fpa(fw: str, author: str, desc: str, patterns: PatchDict, fpa: Path
 		return False
 
 
-def undo_data(addr: int, hex_data: str, undo: Path) -> str | None:
+def undo_data(addr: int, hex_data: str, undo: Path, log: bool = False) -> str | None:
 	if check_files_if_exists([undo]) and check_files_extensions([undo], ['bin', 'smg']):
 		with undo.open(mode='rb') as f_i:
-			patch_size: int = patch_size_of_hex_str(hex_data)
-			if check_if_address_beyond_file_size(addr, undo.stat().st_size, patch_size):
+			p_size: int = patch_size_of_hex_str(hex_data)
+			if check_if_address_beyond_file_size(addr, undo.stat().st_size, p_size):
+				if log:
+					logging.info(f'Read: "{int2hex(addr)}" undo values, data size: "{int2hex(p_size)}, {p_size}".')
 				f_i.seek(addr)
-				undo_str: str = f_i.read(patch_size).hex().upper()
+				undo_str: str = f_i.read(p_size).hex().upper()
 			else:
-				undo_str: str = 'FF' * patch_size
+				if log:
+					logging.warning(f'Read beyond: "{int2hex(addr)}", write "{int2hex(p_size)}, {p_size}" FF bytes.')
+				undo_str: str = 'FF' * p_size
 			return undo_str
 	return None
 
@@ -125,14 +125,26 @@ def get_fpa_patch_values(config: CsConfigParser, section: str, is_code: bool = F
 				option: str = normalize_hex_address(option, True)
 			values[option] = value
 			logging.debug(f'{option} : {value}')
-		return values
+		if len(values) > 0:
+			return values
 	return None
+
+
+def read_fpa_patch_to_config_model(fpa: Path) -> CsConfigParser | None:
+	config: CsConfigParser = CsConfigParser()
+	try:
+		config.read(fpa)
+		return config
+	except Exception as error:
+		logging.error(f'Cannot read patch: {error}')
+		return None
 
 
 def fpa2bin(fpa: Path, binary: Path) -> bool:
 	if check_files_extensions([binary], ['bin']):
-		config: CsConfigParser = CsConfigParser()
-		config.read(fpa)
+		config: CsConfigParser = read_fpa_patch_to_config_model(fpa)
+		if config is None:
+			return False
 		values: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
 		if values is not None:
 			for address, value in values.items():
@@ -162,8 +174,9 @@ def unite_fpa_patches(fw: str, author: str, desc: str, patches: list[Path], resu
 	united_code_list: list[PatchDict] = []
 	united_undo_list: list[PatchDict] = []
 	for patch in patches:
-		config: CsConfigParser = CsConfigParser()
-		config.read(patch)
+		config: CsConfigParser = read_fpa_patch_to_config_model(patch)
+		if config is None:
+			return False
 		code_p: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
 		if code_p is not None:
 			united_code_list.append(code_p)
@@ -185,11 +198,8 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 	files_here: bool = check_files_if_exists([firmware, fpa])
 	extensions_ok: bool = check_files_extensions([firmware], ['bin', 'smg']) and check_files_extensions([fpa], ['fpa'])
 	if files_here and extensions_ok:
-		config: CsConfigParser = CsConfigParser()
-		try:
-			config.read(fpa)
-		except Exception as error:
-			logging.error(f'Cannot read patch: {error}')
+		config: CsConfigParser = read_fpa_patch_to_config_model(fpa)
+		if config is None:
 			return False
 		file_size: int = firmware.stat().st_size
 		if validating:
@@ -201,14 +211,14 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 						p_size: int = patch_size_of_hex_str(value)
 						undo: str = value.upper()
 						if check_if_address_beyond_file_size(p_addr, file_size, p_size):
-							f_i.seek(hex2int_r(address))
+							f_i.seek(p_addr)
 							hex_data: str = f_i.read(patch_size_of_hex_str(value)).hex().upper()
 						else:
 							hex_data: str = 'FF' * p_size
 						if hex_data == undo:
-							logging.info(f'Patch "{address}" is validated, data size: "{int2hex(len(hex_data))}".')
+							logging.info(f'Patch "{int2hex(p_addr)}" valid, data size: "{int2hex(p_size)}, {p_size}".')
 						else:
-							logging.info(f'Patch "{address}" not valid with undo values {hex_data}=={undo}.')
+							logging.info(f'Patch "{int2hex(p_addr)}" not valid with undo values {hex_data}=={undo}.')
 							return False
 			else:
 				logging.error(f'Validation mode failed, undo values are not present in the "{fpa}" patch.')
@@ -231,9 +241,39 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool) -
 						logging.info(f'Add some extra space "{h_p}" to "{firmware}", size: "{file_size}", hex "{h_s}".')
 						f_o.write(b'\xFF' * p_pad)
 					f_o.seek(p_addr)
-					logging.info(f'Write: "{int2hex(p_addr)}", data length: "{patch_size_str(value)}".')
+					logging.info(f'Write: "{int2hex(p_addr)}" patch, data size: "{int2hex(p_size)}, {p_size}".')
 					f_o.write(bytes.fromhex(value))
 			return True
+	return False
+
+
+def generate_and_append_undo_values_to_fpa(firmware: Path, fpa: Path) -> bool:
+	files_here: bool = check_files_if_exists([firmware, fpa])
+	extensions_ok: bool = check_files_extensions([firmware], ['bin', 'smg']) and check_files_extensions([fpa], ['fpa'])
+	if files_here and extensions_ok:
+		config: CsConfigParser = read_fpa_patch_to_config_model(fpa)
+		if config is None:
+			return False
+		patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Code', True)
+		undo_patches: PatchDictNone = get_fpa_patch_values(config, 'Patch_Undo', True)
+		if undo_patches:
+			logging.error(f'Undo values already present in the "{fpa}" patch.')
+			return False
+		if patches is not None:
+			with fpa.open(mode='a', newline='\r\n') as f_o:
+				f_o.write('\n[Patch_Undo]\n')
+				for address, value in patches.items():
+					p_addr: int = hex2int_r(address)
+					hex_data: str = undo_data(p_addr, value, firmware, True)
+					if hex_data:
+						f_o.write(f'{int2hex_r(p_addr)}: {hex_data}\n')
+
+			# Validate written values again.
+			config_validate: CsConfigParser = read_fpa_patch_to_config_model(fpa)
+			if config is not None:
+				patches_validate: PatchDictNone = get_fpa_patch_values(config_validate, 'Patch_Code', True)
+				undo_patches_validate: PatchDictNone = get_fpa_patch_values(config_validate, 'Patch_Undo', True)
+				return (patches_validate is not None) and (undo_patches_validate is not None)
 	return False
 
 
