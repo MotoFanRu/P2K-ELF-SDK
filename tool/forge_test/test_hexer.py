@@ -90,6 +90,12 @@ class TestHexer(unittest.TestCase):
 		self.assertEqual(int2hex(arrange16(0x1008000F)), '0x10080010')
 		self.assertEqual(int2hex(arrange16(0x10080010)), '0x10080020')
 		self.assertEqual(int2hex(arrange16(0x100800FF)), '0x10080100')
+		self.assertEqual(int2hex(arrange16(0x00000000)), '0x00000010')
+		self.assertEqual(int2hex(arrange16(0x00000001)), '0x00000010')
+		self.assertEqual(int2hex(arrange16(0x0000000F)), '0x00000010')
+		self.assertEqual(int2hex(arrange16(0x00000010)), '0x00000020')
+		self.assertEqual(int2hex(arrange16(0x00000011)), '0x00000020')
+		self.assertEqual(int2hex(arrange16(0x000000FF)), '0x00000100')
 
 	def test_int2hex(self) -> None:
 		self.assertEqual(int2hex(0), '0x00000000')
