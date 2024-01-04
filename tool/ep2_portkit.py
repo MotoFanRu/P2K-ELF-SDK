@@ -238,31 +238,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 
 
 # PortKit ARM v2.0 working flow.
-def start_ep2_portkit_work(args: Namespace) -> bool:
+def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('Start building ElfPack v2.0 for Motorola P2K.')
 	logging.info('')
-
-	arg_verbose: bool = args.verbose
-	arg_clean: bool = args.clean
-	arg_output: Path = args.output
-	arg_debug: bool = args.debug
-	arg_phone, arg_firmware = args.phone_fw
-
-	logging.info('Values:')
-	logging.info(f'\targ_verbose={arg_verbose}')
-	logging.info(f'\targ_clean={arg_clean}')
-	logging.info(f'\targ_debug={arg_debug}')
-	logging.info(f'\targ_output={arg_output}')
-	logging.info(f'\targ_phone={arg_phone}')
-	logging.info(f'\targ_firmware={arg_firmware}')
+	logging.info('Parameters:')
+	forge.args_dump(opts)
 	logging.info('')
-
 	logging.info('Prepare PortKit environment.')
-	if not forge.check_directories_if_exists([arg_output]):
-		logging.info(f'Will create "{arg_output}" output directory.')
-		arg_output.mkdir()
-	if arg_clean:
-		forge.delete_all_files_in_directory(args.output)
+	forge.prepare_clean_output_directory(opts["output"], opts['clean'])
 	logging.info('')
 
 	return True
@@ -274,36 +257,63 @@ class Args(argparse.ArgumentParser):
 		self.print_help(sys.stderr)
 		self.exit(2, f'{self.prog}: error: {message}\n')
 
+	def parse_check_arguments(self) -> dict[str, any]:
+		opts: dict[str, any] = {}
+		args: Namespace = self.parse_args()
 
-def parse_arguments() -> Namespace:
+		phone, firmware = args.phone_fw
+		variants: dict[str, any] = EP2_PFW_VARIANTS.get(firmware, None)
+		if not variants:
+			self.error(f'unknown {phone} phone and {firmware} firmware')
+
+		opts['verbose'] = args.verbose
+		opts['clean'] = args.clean
+		opts['output'] = args.output
+		opts['debug'] = args.debug
+		opts['directory'] = args.directory
+
+		opts['start'] = args.start if args.start else variants['addr_start']
+		opts['offset'] = args.offset if args.offset else variants['addr_offset']
+		if not opts['offset']:
+			opts['offset'] = forge.arrange16(forge.get_file_size(opts['fw_file']))
+		opts['address'] = opts['start'] + opts['offset']
+		opts['soc'] = forge.determine_soc(opts['start'])
+		opts['phone'] = phone
+		opts['fw_name'] = firmware
+
+		return opts
+
+
+def parse_arguments() -> dict[str, any]:
 	hlp: dict[str, str] = {
 		'd': 'A PortKit Utility for building ElfPack v2.0 for Motorola phones on P2K platform, 15-Dec-2023',
 		'c': 'clean output directory before processing',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
 		'o': 'output artifacts directory',
 		'db': 'debug build of ElfPack v2.0',
+		't': 'generate patch with replacing "ringtone" to "Elf" directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
 	# Build ElfPack v2.0 to the phone/firmware using source code.
 	python ep2_portkit.py -c -pf E1_R373_G_0E.30.49R -o build
-	python ep2_portkit.py -c -pf L7_R4513_G_08.B7.ACR_RB -o build
-	python ep2_portkit.py -c -pf V3r_R4515_G_08.BD.D3R -o build
+	# TODO: Fill it with phones and models.
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-pf', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-d', '--debug', required=False, action='store_true', help=hlp['db'])
+	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
-	return parser_args.parse_args()
+	return parser_args.parse_check_arguments()
 
 
 def main() -> None:
 	start_time: datetime = datetime.now()
-	args: Namespace = parse_arguments()
+	args: dict[str, any] = parse_arguments()
 
-	forge.set_logging_configuration(args.verbose)
+	forge.set_logging_configuration(args['verbose'])
 
 	start_ep2_portkit_work(args)
 

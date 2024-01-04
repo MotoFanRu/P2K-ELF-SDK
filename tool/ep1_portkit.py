@@ -280,13 +280,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('Parameters:')
 	forge.args_dump(opts)
 	logging.info('')
-
 	logging.info('Prepare PortKit environment.')
-	if not forge.check_directories_if_exists([opts['output']]):
-		logging.info(f'Will create "{opts["output"]}" output directory.')
-		opts['output'].mkdir()
-	if opts['clean']:
-		forge.delete_all_files_in_directory(opts['output'])
+	forge.prepare_clean_output_directory(opts["output"], opts['clean'])
 	logging.info('')
 
 	logging.info('Finding SoC related functions from patterns.')
@@ -405,7 +400,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_elfpack_sym, val_register_sym, val_register_fpa, opts['fw_file']
 	)
 	patches: list[Path] = [val_register_fpa, val_elfpack_fpa]
-	if opts['mixedmedia']:
+	if opts['directory']:
 		desc: str = 'Elf Directory patch'
 		logging.info(f'Generate {desc}: "{val_elfdir_fpa}".')
 		po3: str = (
@@ -485,7 +480,7 @@ class Args(argparse.ArgumentParser):
 		opts['ram_trans'] = args.ram_trans
 		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output
-		opts['mixedmedia'] = args.mixedmedia
+		opts['directory'] = args.directory
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
 
@@ -515,36 +510,36 @@ def parse_arguments() -> dict[str, any]:
 		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
 		'n': 'use new object files',
-		'm': 'generate mixedmedia => Elf directory patch',
+		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
 	# Build ElfPack v1.0 and libraries to the phone/firmware (+'Elf' directory patch).
-	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.49R -o build
-	python ep1_portkit.py -c -r -m -pf E1_R373_G_0E.30.79R -o build
+	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.79R -o build
 	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
-	python ep1_portkit.py -c -r -m -pf K1_R452F_G_08.03.08R -o build
-	python ep1_portkit.py -c -r -m -pf L6_R3511_G_0A.52.45R_A -o build
-	python ep1_portkit.py -c -r -m -pf L6i_R3443H1_G_0A.65.0BR -o build
-	python ep1_portkit.py -c -r -m -pf L7_R4513_G_08.B7.ACR_RB -o build
-	python ep1_portkit.py -c -r -m -pf L7_R4513_G_08.B7.E0R_RB -o build
-	python ep1_portkit.py -c -r -m -pf L7e_R452D_G_08.01.0AR -o build
-	python ep1_portkit.py -c -r -m -pf L9_R452J_G_08.22.05R -o build
-	python ep1_portkit.py -c -r -m -pf V3i_R4441D_G_08.01.03R -o build
-	python ep1_portkit.py -c -r -m -pf V3r_R4515_G_08.BD.D3R -o build
-	python ep1_portkit.py -c -r -m -pf V235_R3512_G_0A.30.6CR -o build
-	python ep1_portkit.py -c -r -m -pf V360_R4513_G_08.B7.ACR -o build
-	python ep1_portkit.py -c -r -m -pf V600_TRIPLETS_G_0B.09.72R -o build
-	python ep1_portkit.py -c -r -m -pf Z3_R452B_G_08.02.0DR -o build
-	python ep1_portkit.py -c -r -m -pf Z3_R452F1_G_08.04.09R -o build
-	python ep1_portkit.py -c -r -m -pf Z3_R452H6_G_08.00.05R -o build
+	python ep1_portkit.py -c -r -t -pf K1_R452F_G_08.03.08R -o build
+	python ep1_portkit.py -c -r -t -pf L6_R3511_G_0A.52.45R_A -o build
+	python ep1_portkit.py -c -r -t -pf L6i_R3443H1_G_0A.65.0BR -o build
+	python ep1_portkit.py -c -r -t -pf L7_R4513_G_08.B7.ACR_RB -o build
+	python ep1_portkit.py -c -r -t -pf L7_R4513_G_08.B7.E0R_RB -o build
+	python ep1_portkit.py -c -r -t -pf L7e_R452D_G_08.01.0AR -o build
+	python ep1_portkit.py -c -r -t -pf L9_R452J_G_08.22.05R -o build
+	python ep1_portkit.py -c -r -t -pf V3i_R4441D_G_08.01.03R -o build
+	python ep1_portkit.py -c -r -t -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -c -r -t -pf V235_R3512_G_0A.30.6CR -o build
+	python ep1_portkit.py -c -r -t -pf V360_R4513_G_08.B7.ACR -o build
+	python ep1_portkit.py -c -r -t -pf V600_TRIPLETS_G_0B.09.72R -o build
+	python ep1_portkit.py -c -r -t -pf Z3_R452B_G_08.02.0DR -o build
+	python ep1_portkit.py -c -r -t -pf Z3_R452F1_G_08.04.09R -o build
+	python ep1_portkit.py -c -r -t -pf Z3_R452H6_G_08.00.05R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
-	python ep1_portkit.py -c -r -n -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -c -r -t -n -pf E1_R373_G_0E.30.49R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware with patch offset override.
-	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
+	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
@@ -555,7 +550,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
-	parser_args.add_argument('-m', '--mixedmedia', required=False, action='store_true', help=hlp['m'])
+	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()

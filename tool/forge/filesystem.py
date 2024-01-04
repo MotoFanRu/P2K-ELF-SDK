@@ -124,3 +124,17 @@ def delete_file(file_path: Path, log_output: bool = True) -> bool:
 		except OSError as error:
 			logging.error(f'Cannot delete "{file_path}", error: {error}')
 	return False
+
+
+def prepare_clean_output_directory(directory: Path, clean: bool = False) -> bool:
+	result: bool = False
+	if not check_directories_if_exists([directory]):
+		logging.info(f'Will create "{directory}" output directory.')
+		try:
+			directory.mkdir()
+			result |= True
+		except OSError as error:
+			logging.error(f'Cannot create "{directory}" output directory: {error}')
+	if clean:
+		result |= delete_all_files_in_directory(directory)
+	return result

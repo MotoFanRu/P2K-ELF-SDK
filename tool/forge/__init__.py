@@ -41,6 +41,7 @@ from .filesystem import get_temporary_directory_path
 from .filesystem import normalize_extension
 from .filesystem import delete_file
 from .filesystem import compare_paths
+from .filesystem import prepare_clean_output_directory
 
 from .firmware import parse_phone_firmware
 from .firmware import parse_minor_major_firmware
