@@ -395,6 +395,14 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	forge.unite_fpa_patches(opts['fw_name'], all_authors, 'Combined ElfPack v2.0 patch', patches, val_result_fpa)
 	logging.info('')
 
+	logging.info('ElfPack v2.0 building report.')
+	logging.info('')
+	logging.info(f'Compiled ElfPack v2.0 for "{opts["phone"]}" on "{opts["fw_name"]}" firmware.')
+	logging.info('')
+	logging.info('Important files:')
+	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v2.0 combined patch for Flash&Backup 3.')
+	logging.info('')
+
 	return True
 
 
