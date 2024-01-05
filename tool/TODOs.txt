@@ -35,3 +35,5 @@ Convert CP1251 to UTF-8 sources
 Dos to UNIX for sources
 ARMLINK scatter check PDF file if it scater.txt, viafile.txt or other?
 -DEP1, -DEP2 defines, why errors
+CG1 generator patchsssssss ringtoneeee
+Additional patches like canvas debugging drop, etc?

@@ -23,8 +23,11 @@ from argparse import Namespace
 
 
 # Constants.
+FUNC_REGISTER: str = 'elfpackEntry_ven'
+
 EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.49R': {
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_E398', '-DFTR_PHONE_NAME="E398"'],
 		'opts_firmware':  ['-DR373_G_0E_30_49R', '-DFTR_PHONE_PLATFORM="LTE"'],
@@ -234,7 +237,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	}
 }
 
+
 # Various generators.
+def generate_register_patch(fw: str, author: str, desc: str, p_r: Path, reg_address: int, p_p: Path, cg: Path) -> bool:
+	if forge.check_files_if_exists([p_r]):
+		hex_data: str = forge.int2hex_r(forge.get_function_address_from_sym_file(p_r, FUNC_REGISTER))
+		forge.hex2fpa(fw, author, desc, reg_address, hex_data, p_p, cg)
+		return True
+	return False
 
 
 # PortKit ARM v2.0 working flow.
@@ -319,6 +329,8 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
 	val_elfpack_bin: Path = opts['output']
+	val_elfpack_bin_p: Path = opts['output'] / 'patch.bin'
+	val_elfpack_bin_d: Path = opts['output'] / 'UpdDisplInjection.bin'
 	lfs: list[Path] = []
 	for asm_source, mode in asm_sources:
 		lfs.append(opts['output'] / (asm_source + '.o'))
@@ -330,6 +342,57 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 	if not forge.ep1_ads_armlink_scatter(lfs, val_elfpack_elf, val_scatter_file, val_viafile_file, val_elfpack_sym):
 		return False
 	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
+	if not forge.check_files_if_exists([val_elfpack_bin_p, val_elfpack_bin_d, val_elfpack_sym]):
+		return False
+	logging.info('')
+
+	logging.info('Creating Flash&Backup 3 patches.')
+	val_result_fpa: Path = opts['output'] / 'Result.fpa'
+	val_register_fpa: Path = opts['output'] / 'Register.fpa'
+	val_display_fpa: Path = opts['output'] / 'Display.fpa'
+	val_elfpack_fpa: Path = opts['output'] / 'ElfPack.fpa'
+	val_elfdir_fpa: Path = opts['output'] / 'Directory.fpa'
+	authors: str = 'Andy51, tim_apple'
+	desc_r: str = 'ElfPack v2.0 Register patch'
+	desc_d: str = 'ElfPack v2.0 Display injection patch'
+	desc_e: str = 'ElfPack v2.0'
+	generate_register_patch(
+		opts['fw_name'], authors, desc_r, val_elfpack_sym, opts['register'], val_register_fpa, opts['fw_file']
+	)
+	forge.bin2fpa(
+		opts['fw_name'], authors, desc_d, opts['display'], val_elfpack_bin_d, val_display_fpa, opts['fw_file']
+	)
+	forge.bin2fpa(
+		opts['fw_name'], authors, desc_e, opts['offset'], val_elfpack_bin_p, val_elfpack_fpa, opts['fw_file']
+	)
+	patches: list[Path] = [val_register_fpa, val_display_fpa, val_elfpack_fpa]
+	if opts['directory']:
+		desc: str = 'ElfPack v2.0 Directory patch'
+		logging.info(f'Generate {desc} for "ringtone" => "Elf2" directory: "{val_elfdir_fpa}".')
+		po3: str = (
+			'00720069006E00670074006F006E0065'
+			'00000000000000000000000000000000'
+			'00000000000000000000000000000000'
+			'00000000000000000000000000000000'
+			'00000000000000000000001600020006'
+		)
+		pn3: str = (
+			'0045006C006600320000000000000000'
+			'00000000000000000000000000000000'
+			'00000000000000000000000000000000'
+			'00000000000000000000000000000000'
+			'00000000000000000000001000010006'
+		)
+		offset: int = forge.patch_binary_file(opts['fw_file'], po3, pn3, True)
+		if offset > 0:
+			if forge.hex2fpa(opts['fw_name'], 'EXL', desc, offset, pn3, val_elfdir_fpa, opts['fw_file']):
+				patches.append(val_elfdir_fpa)
+		else:
+			logging.info(f'Cannot find original patch data in "{opts["fw_file"]}" file.')
+			logging.info(f'Data: {po3}')
+			return False
+	all_authors: str = 'Andy51, tim_apple, EXL'
+	forge.unite_fpa_patches(opts['fw_name'], all_authors, 'Combined ElfPack v2.0 patch', patches, val_result_fpa)
 	logging.info('')
 
 	return True
@@ -365,6 +428,7 @@ class Args(argparse.ArgumentParser):
 		opts['register'] = args.register if args.register else variants['addr_ep2_reg']
 		opts['display'] = args.display if args.display else variants['addr_upd_disp']
 		opts['addr_block'] = args.block if args.block else variants['addr_ram_block']
+		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
 
 		flags: list[str] = []
 		flags.extend(variants['opts_main'])
@@ -397,6 +461,7 @@ def parse_arguments() -> dict[str, any]:
 		'r': 'override register address (in HEX)',
 		'j': 'override display inject address (in HEX)',
 		'b': 'override block RAM address (in HEX)',
+		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
 		'db': 'debug build of ElfPack v2.0',
 		't': 'generate patch with replacing "ringtone" to "Elf" directory',
@@ -415,6 +480,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-r', '--register', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['r'])
 	parser_args.add_argument('-j', '--display', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['j'])
 	parser_args.add_argument('-b', '--block', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['b'])
+	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-d', '--debug', required=False, action='store_true', help=hlp['db'])
 	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
