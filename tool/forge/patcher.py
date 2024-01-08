@@ -307,30 +307,30 @@ def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bo
 
 		found: int = 0
 		write_to: int = 0
+		position: int = 0
 		chunk_size: int = MAX_BINARY_CHUNK_READ
 		old_bytes_sequence: bytes = bytes.fromhex(old_bytes)
 		new_bytes_sequence: bytes = bytes.fromhex(new_bytes)
 		old_len: int = len(old_bytes_sequence)
 		new_len: int = len(new_bytes_sequence)
-		overlap_size: int = old_len - 1 if old_len > 1 else 0
 
 		if old_len == new_len:
 			with binary_file.open('rb+') as f_io:
-				prev_chunk: bytes = b''
 				while True:
 					chunk: bytes = f_io.read(chunk_size)
 					if not chunk:
 						break
-					combined_chunk: bytes = prev_chunk + chunk
-					offset: int = combined_chunk.find(old_bytes_sequence)
-					while offset >= 0:
+					idx: int = chunk.find(old_bytes_sequence)
+					if idx != -1:
 						found += 1
-						write_to = (f_io.tell() - len(chunk) - overlap_size + offset)
-						if found == 1:
-							logging.info(f'Match found on "{int2hex(write_to)}": "{old_bytes}".')
-						combined_chunk = combined_chunk[offset + old_len:]
-						offset = combined_chunk.find(old_bytes_sequence)
-					prev_chunk = chunk[-overlap_size:]
+						write_to = position + idx
+						logging.info(f'Match found on "{int2hex(write_to)}": "{old_bytes}".')
+					overlap_size: int = old_len - 1
+					if len(chunk) == chunk_size:
+						f_io.seek(position + chunk_size - overlap_size)
+						position += chunk_size - overlap_size
+					else:
+						break
 				if found == 1:
 					f_io.seek(write_to)
 					if not dry:
