@@ -1,18 +1,19 @@
 Add patterns of addresses in these global dict!
-+ E1_R373_G_0E.30.49R ?
-? E1_R373_G_0E.30.70R (deprecated) -
-+ E1_R373_G_0E.30.79R ?
-+ Z3_R452B_G_08.02.0DR -
-+ L7e_R452D_G_08.01.0AR -
-+ Z3_R452F1_G_08.04.09R -
-+ K1_R452F_G_08.03.08R -
-+ Z3_R452H6_G_08.00.05R -
-+ L9_R452J_G_08.22.05R -
-+ V3i_R4441D_G_08.01.03R ?
-? V3i_R4441D_G_08.03.05R (deprecated) -
-+ V360_R4513_G_08.B7.ACR ?
-+ L7_R4513_G_08.B7.ACR_RB ?
-+ V3r_R4515_G_08.BD.D3R ?
+
++ E1_R373_G_0E.30.49R +
+? E1_R373_G_0E.30.70R (deprecated) +
++ E1_R373_G_0E.30.79R +
++ Z3_R452B_G_08.02.0DR +
++ L7e_R452D_G_08.01.0AR +
++ Z3_R452F1_G_08.04.09R +
++ K1_R452F_G_08.03.08R +
++ Z3_R452H6_G_08.00.05R +
++ L9_R452J_G_08.22.05R +
++ V3i_R4441D_G_08.01.03R +
+? V3i_R4441D_G_08.03.05R (deprecated) +
++ V360_R4513_G_08.B7.ACR +
++ L7_R4513_G_08.B7.ACR_RB +
++ V3r_R4515_G_08.BD.D3R +
 
 Add EP2 compiling to these:
 E1_R373_G_0E.30.DAR ?
@@ -34,6 +35,6 @@ ReadMe.md docs in every folder.
 Convert CP1251 to UTF-8 sources
 Dos to UNIX for sources
 ARMLINK scatter check PDF file if it scater.txt, viafile.txt or other?
--DEP1, -DEP2 defines, why errors
-CG1 generator patchsssssss ringtoneeee
 Additional patches like canvas debugging drop, etc?
+
+Compare EP2 sources!

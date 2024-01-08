@@ -346,7 +346,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Compiling C-source files using ADS compiler.')
-	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True)
+	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True, ['-DEP1'])
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
@@ -408,14 +408,14 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			'00690061000000000000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
-			'00000000000000000000001600020006'
+			'0000000000000000000000160002'
 		)
 		pn3: str = (
 			'0045006C006600000000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
-			'00000000000000000000001000010006'
+			'0000000000000000000000100001'
 		)
 		offset: int = forge.patch_binary_file(opts['fw_file'], po3, pn3, True)
 		if offset > 0:

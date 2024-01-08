@@ -28,6 +28,7 @@ from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
 from .types import CsConfigParser
 from .utilities import get_current_datetime_formatted
+from .constants import MAX_BINARY_CHUNK_READ
 
 
 def sort_patch_dict(unsorted: PatchDict) -> PatchDict:
@@ -306,20 +307,30 @@ def patch_binary_file(binary_file: Path, old_bytes: str, new_bytes: str, dry: bo
 
 		found: int = 0
 		write_to: int = 0
-		chunk_size: int = 4096
+		chunk_size: int = MAX_BINARY_CHUNK_READ
 		old_bytes_sequence: bytes = bytes.fromhex(old_bytes)
 		new_bytes_sequence: bytes = bytes.fromhex(new_bytes)
+		old_len: int = len(old_bytes_sequence)
+		new_len: int = len(new_bytes_sequence)
+		overlap_size: int = old_len - 1 if old_len > 1 else 0
 
-		if len(old_bytes_sequence) == len(new_bytes_sequence):
+		if old_len == new_len:
 			with binary_file.open('rb+') as f_io:
-				chunk: bytes = f_io.read(chunk_size)
-				while chunk:
-					offset: int = chunk.find(old_bytes_sequence)
-					if offset >= 0:
-						found = found + 1
-						write_to = f_io.tell() - len(chunk) + offset
-						logging.info(f'Match found on "{int2hex(write_to)}": "{old_bytes}".')
-					chunk = f_io.read(chunk_size)
+				prev_chunk: bytes = b''
+				while True:
+					chunk: bytes = f_io.read(chunk_size)
+					if not chunk:
+						break
+					combined_chunk: bytes = prev_chunk + chunk
+					offset: int = combined_chunk.find(old_bytes_sequence)
+					while offset >= 0:
+						found += 1
+						write_to = (f_io.tell() - len(chunk) - overlap_size + offset)
+						if found == 1:
+							logging.info(f'Match found on "{int2hex(write_to)}": "{old_bytes}".')
+						combined_chunk = combined_chunk[offset + old_len:]
+						offset = combined_chunk.find(old_bytes_sequence)
+					prev_chunk = chunk[-overlap_size:]
 				if found == 1:
 					f_io.seek(write_to)
 					if not dry:

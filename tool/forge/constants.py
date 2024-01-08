@@ -67,3 +67,5 @@ P2K_EP2_API_DEF: Path = P2K_DIR_EP2_DEF / 'ElfLoaderAPI2.def'
 P2K_EP2_NMS_DEF: Path = P2K_DIR_EP2_DEF / 'EntriesNames.def'
 
 ADS_SYM_FILE_HEADER: str = '#<SYMDEFS>#symdef-file'
+
+MAX_BINARY_CHUNK_READ: int = 4096

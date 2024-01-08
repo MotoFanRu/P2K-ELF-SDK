@@ -26,6 +26,7 @@ from argparse import Namespace
 FUNC_REGISTER: str = 'elfpackEntry_ven'
 
 EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
+	# Ok.
 	'R373_G_0E.30.49R': {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -41,20 +42,9 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		# DataLogger block 0x12200000-0x122008CC (Andy51).
 		'addr_ram_block': 0x124FD320   # At least ~0x400 free bytes block in RAM, alternate: 0x122008E0.
 	},
-	'R373_G_0E.30.70R': {
-		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_E398', '-DFTR_PHONE_NAME="E398"'],
-		'opts_firmware':  ['-DR373_G_0E_30_70R', '-DFTR_PHONE_PLATFORM="LTE"'],
-		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
-		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
-		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10080000,  # Firmware start address.
-		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0025D0B0,  # Register patch address.
-		'addr_upd_disp':  0x00029504,  # Update Display patch address.
-		'addr_ram_block': 0x125015D8   # At least ~0x400 free bytes block in RAM.
-	},
+	# Ok.
 	'R373_G_0E.30.79R': {
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_E398', '-DFTR_PHONE_NAME="E398"'],
 		'opts_firmware':  ['-DR373_G_0E_30_79R', '-DFTR_PHONE_PLATFORM="LTE"'],
@@ -67,52 +57,24 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_upd_disp':  0x00029914,  # Update Display patch address.
 		'addr_ram_block': 0x12502538   # At least ~0x400 free bytes block in RAM.
 	},
-	'R452B_G_08.02.0DR': {
+	# Fail.
+	'R373_G_0E.30.DAR': {
+		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
-		'opts_firmware':  ['-DR452B_G_08_02_0DR', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_phone':     ['-DFTR_E398', '-DFTR_PHONE_NAME="E398"'],
+		'opts_firmware':  ['-DR373_G_0E_30_DAR', '-DFTR_PHONE_PLATFORM="LTE"'],
+		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x01456000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0118AD54,  # Register patch address.
-		'addr_upd_disp':  0x002E6328,  # Update Display patch address.
-		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
-		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
-		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
+		'addr_fw_start':  0x10080000,  # Firmware start address.
+		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.             TODO: ???
+		'addr_ep2_reg':   0x0025CC50,  # Register patch address.                  TODO: ???
+		'addr_upd_disp':  0x00029914,  # Update Display patch address.            TODO: ???
+		'addr_ram_block': 0x12502538   # At least ~0x400 free bytes block in RAM. TODO: ???
 	},
-	'R452D_G_08.01.0AR': {
-		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="L7e"'],
-		'opts_firmware':  ['-DR452D_G_08_01_0AR', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  [],  # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
-		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
-		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x01430000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x01253FEC,  # Register patch address.
-		'addr_upd_disp':  0x0028E148,  # Update Display patch address.
-		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145C96C8 value (Andy51).
-		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C.
-		'addr_ram_block': 0x140737B0  # At least ~0x400 free bytes block in RAM.
-	},
-	'R452F1_G_08.04.09R': {
-		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
-		'opts_firmware':  ['-DR452F1_G_08_04_09R', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
-		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
-		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x0153C000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0118B0C8,  # Register patch address.
-		'addr_upd_disp':  0x002CD2B0,  # Update Display patch address.
-		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1453EC28 value (Andy51).
-		# Ram_l7e D [14??????00003E580000FFFF]+0x4.
-		'addr_ram_block': 0x14076374   # At least ~0x400 free bytes block in RAM.
-	},
+	# Ok.
 	'R452F_G_08.03.08R': {
+		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="K1"'],
 		'opts_firmware':  ['-DR452F_G_08_03_08R', '-DFTR_PHONE_PLATFORM="LTE2"'],
@@ -127,22 +89,56 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		# Ram_l7e D [201490002000900190029003+0x01E8]+28
 		'addr_ram_block': 0x14501210   # At least ~0x400 free bytes block in RAM.
 	},
-	'R452H6_G_08.00.05R': {
+	# Ok.
+	'R4513_G_08.B7.ACR_RB': {
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
-		'opts_firmware':  ['-DR452H6_G_08_00_05R', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_phone':     ['-DFTR_L7', '-DFTR_PHONE_NAME="L7"'],
+		'opts_firmware':  ['-DR4513_G_08_B7_ACR_RB', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x0145B000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0118B0FC,  # Register patch address.
-		'addr_upd_disp':  0x002E6228,  # Update Display patch address.
-		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
-		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
-		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
+		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0027DD30,  # Register patch address.
+		'addr_upd_disp':  0x00014568,  # Update Display patch address.
+		'addr_ram_block': 0x124EBBA0   # At least ~0x400 free bytes block in RAM.
 	},
+	# Fail.
+	'R4513_G_08.B7.E0R_RB': {
+		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
+		'opts_main':      ['-DPATCH', '-DDEBUG'],
+		'opts_phone':     ['-DFTR_L7', '-DFTR_PHONE_NAME="L7"'],
+		'opts_firmware':  ['-DR4513_G_08_B7_E0R_RB', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
+		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
+		'addr_fw_start':  0x10092000,  # Firmware start address.
+		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address. TODO: ???
+		'addr_ep2_reg':   0x0027DD30,  # Register patch address. TODO: ???
+		'addr_upd_disp':  0x00014568,  # Update Display patch address. TODO: ???
+		'addr_ram_block': 0x124EBBA0  # At least ~0x400 free bytes block in RAM. TODO: ???
+	},
+	# Ok.
+	'R452D_G_08.01.0AR': {
+		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
+		'opts_main':      ['-DPATCH', '-DDEBUG'],
+		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="L7e"'],
+		'opts_firmware':  ['-DR452D_G_08_01_0AR', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  [],  # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
+		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
+		'addr_fw_start':  0x10092000,  # Firmware start address.
+		'addr_ep2_body':  0x01430000,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x01253FEC,  # Register patch address.
+		'addr_upd_disp':  0x0028E148,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145C96C8 value (Andy51).
+		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C.
+		'addr_ram_block': 0x140737B0  # At least ~0x400 free bytes block in RAM.
+	},
+	# Ok.
 	'R452J_G_08.22.05R': {
+		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_L9', '-DFTR_PHONE_NAME="L9"'],
 		'opts_firmware':  ['-DR452J_G_08_22_05R', '-DFTR_PHONE_PLATFORM="LTE2"'],
@@ -157,33 +153,39 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		# Ram_l7e D [7FFF0000011E00000122+0x0A]
 		'addr_ram_block': 0x1451C1C8   # At least ~0x400 free bytes block in RAM.
 	},
+	# Fail.
 	'R4441D_G_08.01.03R': {
+		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_V3i', '-DFTR_PHONE_NAME="V3i"'],
 		'opts_firmware':  ['-DR4441D_G_08_01_03R', '-DFTR_PHONE_PLATFORM="LTE2"'],
 		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10092000,  # Firmware start address.
+		'addr_fw_start':  0x100A0000,  # Firmware start address.
 		'addr_ep2_body':  0x00CDAE20,  # ElfPack v2.0 offset address.
 		'addr_ep2_reg':   0x0025C460,  # Register patch address.
 		'addr_upd_disp':  0x00014864,  # Update Display patch address.
 		'addr_ram_block': 0x1446428C   # At least ~0x400 free bytes block in RAM.
 	},
-	'R4441D_G_08.03.05R': {
+	# Ok.
+	'R4515_G_08.BD.D3R': {
+		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_V3i', '-DFTR_PHONE_NAME="V3i"'],
-		'opts_firmware':  ['-DR4441D_G_08_03_05R', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_phone':     ['-DFTR_V3r', '-DFTR_PHONE_NAME="V3r"'],
+		'opts_firmware':  ['-DR4515_G_08_BD_D3R', '-DFTR_PHONE_PLATFORM="LTE2"'],
 		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x00D00000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x00266BDC,  # Register patch address.
-		'addr_upd_disp':  0x00014BA4,  # Update Display patch address.
-		'addr_ram_block': 0x1446DDF4   # At least ~0x400 free bytes block in RAM.
+		'addr_ep2_body':  0x00C60EF0,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0025E6D8,  # Register patch address.
+		'addr_upd_disp':  0x0001CF2C,  # Update Display patch address.
+		'addr_ram_block': 0x144C7C68   # At least ~0x400 free bytes block in RAM.
 	},
+	# Ok.
 	'R4513_G_08.B7.ACR': {
+		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_V360', '-DFTR_PHONE_NAME="V360"'],
 		'opts_firmware':  ['-DR4513_G_08_B7_ACR', '-DFTR_PHONE_PLATFORM="LTE2"'],
@@ -196,44 +198,72 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_upd_disp':  0x00014568,  # Update Display patch address.
 		'addr_ram_block': 0x124EB7B0   # At least ~0x400 free bytes block in RAM.
 	},
-	'R4513_G_08.B7.ACR_RB': {
+	# Fail.
+	'TRIPLETS_G_0B.09.72R': {
+		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7', '-DFTR_PHONE_NAME="L7"'],
-		'opts_firmware':  ['-DR4513_G_08_B7_ACR_RB', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_phone':     ['-DFTR_V600', '-DFTR_PHONE_NAME="V600"'],
+		'opts_firmware':  ['-DTRIPLETS_G_0B_09_72R', '-DFTR_PHONE_PLATFORM="LTE"'],
 		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
-		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0027DD30,  # Register patch address.
-		'addr_upd_disp':  0x00014568,  # Update Display patch address.
-		'addr_ram_block': 0x124EBBA0  # At least ~0x400 free bytes block in RAM.
+		'addr_fw_start':  0x10080000,  # Firmware start address.
+		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0025A434,  # Register patch address.
+		'addr_upd_disp':  0x00028DF0,  # Update Display patch address.
+		# DataLogger block 0x12200000-0x122008CC (Andy51).
+		'addr_ram_block': 0x124FD320   # At least ~0x400 free bytes block in RAM, alternate: 0x122008E0.
 	},
-	'R4513_G_08.B7.E0R_RB': {
+	# Ok.
+	'R452B_G_08.02.0DR': {
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_L7', '-DFTR_PHONE_NAME="L7"'],
-		'opts_firmware':  ['-DR4513_G_08_B7_E0R_RB', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
+		'opts_firmware':  ['-DR452B_G_08_02_0DR', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address. TODO: ???
-		'addr_ep2_reg':   0x0027DD30,  # Register patch address. TODO: ???
-		'addr_upd_disp':  0x00014568,  # Update Display patch address. TODO: ???
-		'addr_ram_block': 0x124EBBA0  # At least ~0x400 free bytes block in RAM. TODO: ???
+		'addr_ep2_body':  0x01456000,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0118AD54,  # Register patch address.
+		'addr_upd_disp':  0x002E6328,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
+		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
+		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
 	},
-	'R4515_G_08.BD.D3R': {
+	# Ok.
+	'R452F1_G_08.04.09R': {
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
-		'opts_phone':     ['-DFTR_V3r', '-DFTR_PHONE_NAME="V3r"'],
-		'opts_firmware':  ['-DR4515_G_08_BD_D3R', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
+		'opts_firmware':  ['-DR452F1_G_08_04_09R', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x00C60EF0,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0025E6D8,  # Register patch address.
-		'addr_upd_disp':  0x0001CF2C,  # Update Display patch address.
-		'addr_ram_block': 0x144C7C68   # At least ~0x400 free bytes block in RAM.
+		'addr_ep2_body':  0x0153C000,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0118B0C8,  # Register patch address.
+		'addr_upd_disp':  0x002CD2B0,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1453EC28 value (Andy51).
+		# Ram_l7e D [14??????00003E580000FFFF]+0x4.
+		'addr_ram_block': 0x14076374   # At least ~0x400 free bytes block in RAM.
+	},
+	# Ok.
+	'R452H6_G_08.00.05R': {
+		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
+		'opts_main':      ['-DPATCH', '-DDEBUG'],
+		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="Z3"'],
+		'opts_firmware':  ['-DR452H6_G_08_00_05R', '-DFTR_PHONE_PLATFORM="LTE2"'],
+		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
+		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
+		'addr_fw_start':  0x10092000,  # Firmware start address.
+		'addr_ep2_body':  0x0145B000,  # ElfPack v2.0 offset address.
+		'addr_ep2_reg':   0x0118B0FC,  # Register patch address.
+		'addr_upd_disp':  0x002E6228,  # Update Display patch address.
+		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
+		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
+		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
 	}
 }
 
@@ -374,14 +404,14 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
-			'00000000000000000000001600020006'
+			'0000000000000000000000160002'
 		)
 		pn3: str = (
 			'0045006C006600320000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
 			'00000000000000000000000000000000'
-			'00000000000000000000001000010006'
+			'0000000000000000000000100001'
 		)
 		offset: int = forge.patch_binary_file(opts['fw_file'], po3, pn3, True)
 		if offset > 0:
@@ -439,6 +469,8 @@ class Args(argparse.ArgumentParser):
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
 
 		flags: list[str] = []
+		# ElfPack v2.0 must be compiled with ElfPack v1.0 define `EP1`, for some event constants in `ev_codes1.h` file.
+		flags.append('-DEP1')
 		flags.extend(variants['opts_main'])
 		flags.extend(variants['opts_phone'])
 		flags.extend(variants['opts_firmware'])
@@ -478,7 +510,23 @@ def parse_arguments() -> dict[str, any]:
 	epl: str = """examples:
 	# Build ElfPack v2.0 to the phone/firmware using source code (+'Elf' directory patch).
 	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.49R -o build
-	# TODO: Fill it with phones and models.
+	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.79R -o build
+	python ep2_portkit.py -c -pf E1_R373_G_0E.30.DAR -o build
+	python ep2_portkit.py -c -t -pf K1_R452F_G_08.03.08R -o build
+	python ep2_portkit.py -c -t -pf L7_R4513_G_08.B7.ACR_RB -o build
+	python ep2_portkit.py -c -t -pf L7_R4513_G_08.B7.E0R_RB -o build
+	python ep2_portkit.py -c -t -pf L7e_R452D_G_08.01.0AR -o build
+	python ep2_portkit.py -c -t -pf L9_R452J_G_08.22.05R -o build
+	python ep2_portkit.py -c -t -pf V3i_R4441D_G_08.01.03R -o build
+	python ep2_portkit.py -c -t -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep2_portkit.py -c -t -pf V360_R4513_G_08.B7.ACR -o build
+	python ep2_portkit.py -c -t -pf V600_TRIPLETS_G_0B.09.72R -o build
+	python ep2_portkit.py -c -t -pf Z3_R452B_G_08.02.0DR -o build
+	python ep2_portkit.py -c -t -pf Z3_R452F1_G_08.04.09R -o build
+	python ep2_portkit.py -c -t -pf Z3_R452H6_G_08.00.05R -o build
+
+	# Build ElfPack v2.0 to the phone/firmware using source code with patch offset override.
+	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
