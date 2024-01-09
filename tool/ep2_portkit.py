@@ -105,7 +105,7 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'o_kbd': ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0', '-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'o_dbg': ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'a_fw':  0x10092000,  # Firmware start address.
-		'a_ep2': 0x00C90D00,  # ElfPack v2.0 offset address.
+		'a_ep2': 0x00CD0D00,  # ElfPack v2.0 offset address.
 		# APP_SYNCMLMGR_MainRegister + 1.
 		'a_reg': 0x0027E6CC,  # Register patch address.
 		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
