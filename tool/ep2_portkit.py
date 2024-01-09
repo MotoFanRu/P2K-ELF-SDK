@@ -26,7 +26,6 @@ from argparse import Namespace
 FUNC_REGISTER: str = 'elfpackEntry_ven'
 
 EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
-	# Ok.
 	'R373_G_0E.30.49R': {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -37,12 +36,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10080000,  # Firmware start address.
 		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0025A434,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x00028DF0,  # Update Display patch address.
+		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
 		# DataLogger block 0x12200000-0x122008CC (Andy51).
 		'addr_ram_block': 0x124FD320   # At least ~0x400 free bytes block in RAM, alternate: 0x122008E0.
 	},
-	# Ok.
 	'R373_G_0E.30.79R': {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -53,11 +54,13 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10080000,  # Firmware start address.
 		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0025CC50,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x00029914,  # Update Display patch address.
+		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
 		'addr_ram_block': 0x12502538   # At least ~0x400 free bytes block in RAM.
 	},
-	# Fail.
 	'R373_G_0E.30.DAR': {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -67,12 +70,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10080000,  # Firmware start address.
-		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.             TODO: ???
-		'addr_ep2_reg':   0x0025CC50,  # Register patch address.                  TODO: ???
-		'addr_upd_disp':  0x00029914,  # Update Display patch address.            TODO: ???
-		'addr_ram_block': 0x12502538   # At least ~0x400 free bytes block in RAM. TODO: ???
+		'addr_ep2_body':  0x002C47C0,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
+		'addr_ep2_reg':   0x003190B4,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
+		'addr_upd_disp':  0x00315C94,  # Update Display patch address.
+		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
+		'addr_ram_block': 0x12318C5C   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R452F_G_08.03.08R': {
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -83,13 +88,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x01530000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x011EB174,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x00244310,  # Update Display patch address.
 		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1402B2A4 value (Andy51).
-		# Ram_l7e D [201490002000900190029003+0x01E8]+28
+		# Ram_l7e D [201490002000900190029003+0x01E8]+28.
 		'addr_ram_block': 0x14501210   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R4513_G_08.B7.ACR_RB': {
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -100,11 +106,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0027DD30,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
+		# loc_noname A 1 E1A02007E1A01005+0x8.
 		'addr_upd_disp':  0x00014568,  # Update Display patch address.
+		# Pattern: Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
 		'addr_ram_block': 0x124EBBA0   # At least ~0x400 free bytes block in RAM.
 	},
-	# Fail.
 	'R4513_G_08.B7.E0R_RB': {
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -114,29 +123,33 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
-		'addr_ep2_body':  0x00C8D630,  # ElfPack v2.0 offset address. TODO: ???
-		'addr_ep2_reg':   0x0027DD30,  # Register patch address. TODO: ???
-		'addr_upd_disp':  0x00014568,  # Update Display patch address. TODO: ???
-		'addr_ram_block': 0x124EBBA0  # At least ~0x400 free bytes block in RAM. TODO: ???
+		'addr_ep2_body':  0x00C90D00,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
+		'addr_ep2_reg':   0x0027E6CC,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
+		# loc_noname A 1 E1A02007E1A01005+0x8.
+		'addr_upd_disp':  0x000145BC,  # Update Display patch address.
+		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
+		'addr_ram_block': 0x124EC694  # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R452D_G_08.01.0AR': {
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
 		'opts_phone':     ['-DFTR_L7E', '-DFTR_PHONE_NAME="L7e"'],
 		'opts_firmware':  ['-DR452D_G_08_01_0AR', '-DFTR_PHONE_PLATFORM="LTE2"'],
-		'opts_keyboard':  [],  # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
+		'opts_keyboard':  [],          # ['-DFTR_KEYPAD_TYPE=KP_TWO_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0'],
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x01430000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x01253FEC,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x0028E148,  # Update Display patch address.
 		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145C96C8 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C.
 		'addr_ram_block': 0x140737B0  # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R452J_G_08.22.05R': {
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -147,13 +160,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x0153119C,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0121E0CC,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x00236C6C,  # Update Display patch address.
-		# 0x1451C1C8  0x3e9  uis_data_logger_buffer
-		# Ram_l7e D [7FFF0000011E00000122+0x0A]
+		# 0x1451C1C8 0x3e9 uis_data_logger_buffer (Andy51).
+		# Ram_l7e D [7FFF0000011E00000122+0x0A].
 		'addr_ram_block': 0x1451C1C8   # At least ~0x400 free bytes block in RAM.
 	},
-	# Fail.
 	'R4441D_G_08.01.03R': {
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -164,11 +178,13 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x100A0000,  # Firmware start address.
 		'addr_ep2_body':  0x00CDAE20,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0025C460,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x00014864,  # Update Display patch address.
+		# Ram_v3i D [80A842B0D1312006+0x1E]+0x10.
 		'addr_ram_block': 0x1446428C   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R4515_G_08.BD.D3R': {
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -179,11 +195,13 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x00C60EF0,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0025E6D8,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x0001CF2C,  # Update Display patch address.
+		# Ram_v3r D [80A842B0D12E2006+0x1C]+0x10.
 		'addr_ram_block': 0x144C7C68   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R4513_G_08.B7.ACR': {
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -194,11 +212,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x00C8D000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0027DD30,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
+		# loc_noname A 1 E1A02007E1A01005+0x8.
 		'addr_upd_disp':  0x00014568,  # Update Display patch address.
+		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x18.
 		'addr_ram_block': 0x124EB7B0   # At least ~0x400 free bytes block in RAM.
 	},
-	# Fail.
 	'TRIPLETS_G_0B.09.72R': {
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -208,13 +229,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_keyfast':   ['-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10080000,  # Firmware start address.
-		'addr_ep2_body':  0x00C73000,  # ElfPack v2.0 offset address.
-		'addr_ep2_reg':   0x0025A434,  # Register patch address.
-		'addr_upd_disp':  0x00028DF0,  # Update Display patch address.
-		# DataLogger block 0x12200000-0x122008CC (Andy51).
-		'addr_ram_block': 0x124FD320   # At least ~0x400 free bytes block in RAM, alternate: 0x122008E0.
+		'addr_ep2_body':  0x00D50000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
+		'addr_ep2_reg':   0x00391148,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
+		'addr_upd_disp':  0x00AC5248,  # Update Display patch address.
+		# Not sure about this one address, but looks like it works. Anyway EP2 for V600 is useless (EXL).
+		'addr_ram_block': 0x122008E0   # At least ~0x400 free bytes block in RAM, alternate: 0x122008E0.
 	},
-	# Ok.
 	'R452B_G_08.02.0DR': {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -225,13 +247,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x01456000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0118AD54,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x002E6328,  # Update Display patch address.
 		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
 		'addr_ram_block': 0x14073328   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R452F1_G_08.04.09R': {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -242,13 +265,14 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x0153C000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0118B0C8,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x002CD2B0,  # Update Display patch address.
 		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x1453EC28 value (Andy51).
 		# Ram_l7e D [14??????00003E580000FFFF]+0x4.
 		'addr_ram_block': 0x14076374   # At least ~0x400 free bytes block in RAM.
 	},
-	# Ok.
 	'R452H6_G_08.00.05R': {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
 		'opts_main':      ['-DPATCH', '-DDEBUG'],
@@ -259,7 +283,9 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_debug':     ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
 		'addr_fw_start':  0x10092000,  # Firmware start address.
 		'addr_ep2_body':  0x0145B000,  # ElfPack v2.0 offset address.
+		# APP_SYNCMLMGR_MainRegister + 1.
 		'addr_ep2_reg':   0x0118B0FC,  # Register patch address.
+		# DAL_WriteDisplayRegion xrefs, see UpdateDisplayInjection.asm listing.
 		'addr_upd_disp':  0x002E6228,  # Update Display patch address.
 		# Ram_l7e D [7FFF0000011E00000122+0x0A], probably wrong alternative 0x145D5200 value (Andy51).
 		# Ram_l7e D [2014900020009001900290039004480E+0x2A]+6C, 0x14073328 or 0x1407332C but probably first (Andy51).
