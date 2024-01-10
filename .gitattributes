@@ -6,3 +6,4 @@
 *.asm text eol=crlf
 *.inc text eol=crlf
 *.pat text eol=crlf
+*.tpl text eol=crlf
