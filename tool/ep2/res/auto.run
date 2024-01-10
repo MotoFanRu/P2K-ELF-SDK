@@ -1,0 +1,7 @@
+; Autorun file for ElfPack v2.0, written by EXL.
+;
+; PM ELF process manager, written by Andy51.
+file://c/Elf2/PM.elf 0xA2BBCC
+;
+; MotoCMD2 ELF file manager, written by G-XaD and tim_apple.
+file://c/Elf2/MotoCMD2.elf 0x03DC
