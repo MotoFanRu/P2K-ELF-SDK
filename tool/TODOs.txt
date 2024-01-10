@@ -12,7 +12,7 @@ ReadMe.md docs in every folder.
 
 Convert CP1251 to UTF-8 sources.
 
-Dos to UNIX for sources
+Dos to UNIX for sources?
 
 Additional patches like canvas debugging drop, etc? Check elfpack directory.
 
