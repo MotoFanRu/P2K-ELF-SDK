@@ -313,7 +313,7 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Create linker files from template.')
 	val_scatter_template: Path = forge.P2K_DIR_EP2_TPL / 'scatter.tpl'
-	val_scatter_file: Path = opts['output'] / 'scatter.txt'
+	val_scatter_file: Path = opts['output'] / 'scat.scf'
 	forge.patch_text_file_template(
 		val_scatter_template, val_scatter_file, {
 			'%addr_disp%': forge.int2hex(opts['addr_disp']),

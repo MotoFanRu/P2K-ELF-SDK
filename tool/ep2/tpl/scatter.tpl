@@ -24,9 +24,9 @@ patch %addr_main% 0x00011BBC
 	}
 }
 
-RAM %addr_block% 0x3e9
+RAM %addr_block% 0x000003E9
 {
-	RAM1 +0 0x200
+	RAM1 +0 0x00000200
 	{
 		*.o(+RW,+BSS,+ZI)
 	}

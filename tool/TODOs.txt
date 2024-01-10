@@ -10,14 +10,17 @@ IDC scripts!
 
 ReadMe.md docs in every folder.
 
-Convert CP1251 to UTF-8 sources
+Convert CP1251 to UTF-8 sources.
 
 Dos to UNIX for sources
 
-ARMLINK scatter check PDF file if it scater.txt, viafile.txt or other?
-
-Additional patches like canvas debugging drop, etc?
+Additional patches like canvas debugging drop, etc? Check elfpack directory.
 
 Compare EP2 sources!
 
 Add python unittest command to ReadMe.md
+
+Add binary files and configs to EP1, EP2!
+Addon FPA files.
+Compile Loader utility.
+Parser utility.
