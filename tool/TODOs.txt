@@ -24,3 +24,5 @@ Add binary files and configs to EP1, EP2!
 Addon FPA files.
 Compile Loader utility.
 Parser utility.
+
+PAT-comparator.

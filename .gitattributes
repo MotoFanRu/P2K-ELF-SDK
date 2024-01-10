@@ -1,7 +1,8 @@
-*.bat text eol=crlf
 *.sym text eol=crlf
 *.def text eol=crlf
 *.run text eol=crlf
+*.cfg text eol=crlf
+*.fpa text eol=crlf
 *.asm text eol=crlf
 *.inc text eol=crlf
 *.pat text eol=crlf
