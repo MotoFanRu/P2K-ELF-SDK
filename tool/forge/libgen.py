@@ -365,7 +365,7 @@ def ep2_libgen_const_entries(list_ci: list[int], list_cv: list[int], resolve_nam
 		for i in range(0, len_ci, 1):
 			c_index: int = list_ci[i]
 			c_value: int = list_cv[i]
-			name: str = 'WARNING_WARNING_WARNING_UNKNOWN_CONST_NAME_INDEX_'
+			name: str = 'WARNING_WARNING_WARNING_UNKNOWN_CONST_NAME_INDEX_' + int2hex(c_index)
 			if resolve_names:
 				for const_name, const_index in names.items():
 					if hex2int(hex2hex(const_index, 4), 4) == c_index:

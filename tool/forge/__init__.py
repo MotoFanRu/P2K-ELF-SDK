@@ -23,6 +23,9 @@ from .arguments import at_ep
 from .arguments import at_int
 from .arguments import args_dump
 
+from .comparator import sym_cmp_sym
+from .comparator import sym_cmp_def
+
 from .constants import *
 
 from .toolchain import gen_src_const_chars
