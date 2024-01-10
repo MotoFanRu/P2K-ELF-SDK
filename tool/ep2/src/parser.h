@@ -7,7 +7,7 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
-	#include "..\parser_win32\wrapper.h"
+	#include "wrapper.h"
 
 	#define WIN32_TEST_AUTORUN
 	//#define WIN32_TEST_CONFIG

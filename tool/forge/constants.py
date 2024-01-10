@@ -48,6 +48,7 @@ P2K_DIR_EP2: Path = P2K_DIR_TOOL / 'ep2'
 P2K_DIR_EP2_DEF: Path = P2K_DIR_EP2 / 'def'
 P2K_DIR_EP2_SRC: Path = P2K_DIR_EP2 / 'src'
 P2K_DIR_EP2_TPL: Path = P2K_DIR_EP2 / 'tpl'
+P2K_DIR_EP2_FPA: Path = P2K_DIR_EP2 / 'fpa'
 
 P2K_TOOL_PAT: Path = P2K_DIR_TOOL / e_app('pat')
 P2K_TOOL_POSTLINK: Path = P2K_DIR_TOOL / e_app('postlink')

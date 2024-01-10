@@ -1,0 +1,10 @@
+[Patch_Info]
+SW_Ver=R452F1_G_08.04.09R
+Description=Drop UIS_LogString buffer for additional RAM block.
+Author=tim_apple, port by Evgeniy89
+
+[Patch_Code]
+002E451C: E12FFF1E
+
+[Patch_Undo]
+002E451C: E92D000F

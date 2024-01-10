@@ -3,7 +3,7 @@
 #define __CONFIG_H__
 
 #ifdef WIN32
-	#include "..\parser_win32\wrapper.h"
+	#include "wrapper.h"
 #else
 	#include <typedefs.h>
 #endif

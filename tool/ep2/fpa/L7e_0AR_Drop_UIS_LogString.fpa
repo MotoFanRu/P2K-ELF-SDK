@@ -1,0 +1,11 @@
+[Patch_Info]
+SW_Ver=R452D_G_08.01.0AR
+Description=Drop UIS_LogString buffer for additional RAM block.
+Author=tim_apple, port by Evgeniy89
+
+; 1038F4DC:	E92D000F	STMFD	SP!, {R0-R3}	; UIS_LogString
+[Patch_Code]
+002FD4DC: E12FFF1E
+
+[Patch_Undo]
+002FD4DC: E92D000F

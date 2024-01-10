@@ -249,6 +249,30 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 }
 
 
+# Patches.
+def get_additional_pfw_patches(phone: str, firmware: str) -> list[Path]:
+	patches: list[Path] = []
+	fpa_dir: Path = forge.P2K_DIR_EP2_FPA
+	if phone == 'K1':
+		if firmware == 'R452F_G_08.03.08R':
+			patches.append(fpa_dir / 'K1_08R_Drop_UIS_LogString.fpa')
+	elif phone == 'L7e':
+		if firmware == 'R452D_G_08.01.0AR':
+			patches.append(fpa_dir / 'L7e_0AR_Drop_Additional_Logs.fpa')
+			patches.append(fpa_dir / 'L7e_0AR_Drop_UIS_LogString.fpa')
+	elif phone == 'L9':
+		if firmware == 'R452J_G_08.22.05R':
+			patches.append(fpa_dir / 'L9_05R_Drop_UIS_LogString.fpa')
+	elif phone == 'Z3':
+		if firmware == 'R452B_G_08.02.0DR':
+			patches.append(fpa_dir / 'Z3_0DR_Drop_UIS_LogString.fpa')
+		elif firmware == 'R452F1_G_08.04.09R':
+			patches.append(fpa_dir / 'Z3_09R_Drop_UIS_LogString.fpa')
+		elif firmware == 'R452H6_G_08.00.05R':
+			patches.append(fpa_dir / 'Z3_05R_Drop_UIS_LogString.fpa')
+	return patches
+
+
 # Various generators.
 def generate_register_patch(fw: str, author: str, desc: str, p_r: Path, reg_address: int, p_p: Path, cg: Path) -> bool:
 	if forge.check_files_if_exists([p_r]):
@@ -402,8 +426,9 @@ def start_ep2_portkit_work(opts: dict[str, any]) -> bool:
 			logging.info(f'Cannot find original patch data in "{opts["fw_file"]}" file.')
 			logging.info(f'Data: {po3}')
 			return False
-	all_authors: str = 'Andy51, tim_apple, EXL'
-	forge.unite_fpa_patches(opts['fw_name'], all_authors, 'Combined ElfPack v2.0 patch', patches, val_result_fpa)
+	all_authors: str = 'Andy51, tim_apple, EXL, fkcoder'
+	patches.extend(get_additional_pfw_patches(opts['phone'], opts['fw_name']))
+	forge.unite_fpa_patches(opts['fw_name'], all_authors, 'Combined ElfPack v2.0 patch.', patches, val_result_fpa)
 	logging.info('')
 
 	logging.info('ElfPack v2.0 building report.')

@@ -1,0 +1,10 @@
+[Patch_Info]
+SW_Ver=R452F_G_08.03.08R
+Description=Drop UIS_LogString buffer for additional RAM block.
+Author=tim_apple, port by Evgeniy89
+
+[Patch_Code]
+0025B218: E12FFF1E
+
+[Patch_Undo]
+0025B218: E92D000F
