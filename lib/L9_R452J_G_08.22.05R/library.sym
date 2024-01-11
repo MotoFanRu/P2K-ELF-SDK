@@ -810,3 +810,5 @@
 0x10336568 A utility_get_image_size
 0x11187230 T vsnprintf
 0x10C4E34C T vsprintf
+0x10A33FB8 A SrmPwrSetState
+0x104425E2 T RestartDisplayTimer
