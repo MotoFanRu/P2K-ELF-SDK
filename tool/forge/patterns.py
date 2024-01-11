@@ -19,6 +19,7 @@ from .hexer import int2hex
 from .hexer import hex2int
 from .types import LibraryModel
 from .types import MemoryRegion
+from .types import PatternModel
 from .firmware import determine_memory_region
 from .filesystem import check_files_if_exists
 from .filesystem import check_files_extensions
@@ -92,3 +93,33 @@ def sym2pat(sym_p: Path, pat_p: Path, fw_p: Path, offset: int, size: int, irom: 
 						logging.warning(f'Skip CONST entry: "{symbol}".')
 				return True
 	return False
+
+
+def combine_pat_str(name, mode, count, pattern) -> str:
+	return f'{name} {mode} {count} {pattern}'
+
+
+def generate_pattern_model(pat: Path, sort_by_name: bool) -> PatternModel | None:
+	if check_files_if_exists([pat]) and check_files_extensions([pat], ['pat']):
+		patterns: PatternModel = []
+		with pat.open(mode='r') as f_i:
+			for line in f_i.read().splitlines():
+				line = line.strip()
+				if line and (not line.startswith('#')):
+					try:
+						splits: list[str] = line.split()
+						if len(splits) == 3:
+							name, mode, pattern = splits
+							patterns.append((name, mode, '0', pattern))
+						elif len(splits) == 4:
+							name, mode, count, pattern = splits
+							patterns.append((name, mode, count, pattern))
+						else:
+							raise ValueError('Unknown pattern string.')
+					except ValueError as error:
+						logging.error(f'Cannot parse line: "{line}", error: {error}')
+		if sort_by_name:
+			patterns = sorted(patterns, key=lambda x: x[0].lower())
+		if patterns:
+			return patterns
+	return None

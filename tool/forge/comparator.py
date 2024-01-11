@@ -19,10 +19,13 @@ from .types import ElfPack
 from .types import ElfPacks
 from .types import LibrarySort
 from .types import LibraryModel
+from .types import PatternModel
 from .libgen import ep1_libgen_model
 from .libgen import ep2_libgen_model
 from .symbols import combine_sym_str
 from .symbols import split_and_validate_line
+from .patterns import combine_pat_str
+from .patterns import generate_pattern_model
 
 
 def get_library_model(p_sym: Path, elfpack: ElfPack) -> LibraryModel | None:
@@ -102,3 +105,39 @@ def sym_cmp_def(a_sym: Path, a_def: Path, elfpacks: ElfPacks) -> bool:
 	else:
 		logging.error(f'Library model of "{a_sym}" is empty.')
 	return False
+
+
+def pat_cmp_pat(s_pat: Path, c_pat: Path, names_only: bool) -> bool:
+	s_patterns: PatternModel = generate_pattern_model(s_pat, True)
+	c_patterns: PatternModel = generate_pattern_model(c_pat, True)
+
+	if not s_patterns:
+		logging.error(f'Patterns model of "{s_pat}" is empty.')
+		return False
+	if not c_patterns:
+		logging.error(f'Patterns model of "{c_pat}" is empty.')
+		return False
+
+	for c_name, c_mode, c_count, c_pattern in c_patterns:
+		name_not_found: bool = True
+		c_str: str = combine_pat_str(c_name, c_mode, c_count, c_pattern)
+		for s_name, s_mode, s_count, s_pattern in s_patterns:
+			if s_name == c_name:
+				name_not_found = False
+				if not names_only:
+					s_str: str = combine_pat_str(s_name, s_mode, s_count, s_pattern)
+					if s_str == c_str:
+						logging.debug(f'"{c_str}" found in "{s_pat}" file.')
+						continue
+					if s_mode != c_mode:
+						logging.info(f'Modes missmatch:')
+					if s_count != c_count:
+						logging.info(f'Counts missmatch:')
+					if s_pattern != c_pattern:
+						logging.info(f'Patterns missmatch:')
+					logging.info(f'\t"{c_str}" in "{c_pat}" file.')
+					logging.info(f'\t"{s_str}" in "{s_pat}" file.')
+		if name_not_found:
+			logging.info(f'"{c_str}" not found in "{s_pat}" file.')
+
+	return True

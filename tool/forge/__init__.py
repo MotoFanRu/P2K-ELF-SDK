@@ -25,6 +25,7 @@ from .arguments import args_dump
 
 from .comparator import sym_cmp_sym
 from .comparator import sym_cmp_def
+from .comparator import pat_cmp_pat
 
 from .constants import *
 
