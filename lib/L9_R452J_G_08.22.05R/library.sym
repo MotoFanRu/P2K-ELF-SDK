@@ -7,7 +7,7 @@
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
 # Version: 1101241
-# Timestamp: 11-Jan-2024 12:18:27
+# Timestamp: 11-Jan-2024 12:22:04
 
 0x00000069 C AUDIO_STATUS
 0x00000650 C BEGIN_4A__IN_DB
@@ -536,6 +536,7 @@
 0x10B29626 T jbNativeMethod_instantiateString
 0x10B2949A T jbNativeMethod_instantiateStringArray
 0x10B29682 T jbNativeMethod_instantiateStringAsUnicode
+0x11121B80 T JFP_lib_tan
 0x10D088EE T JkMediaMIDIDrvGetMIDIController
 0x10CEDF34 D jsapi_marquee_text
 0x2484E000 D kpp
