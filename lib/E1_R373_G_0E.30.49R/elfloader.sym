@@ -7,7 +7,7 @@
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
 # Version: 1101241
-# Timestamp: 11-Jan-2024 11:50:03
+# Timestamp: 11-Jan-2024 12:13:49
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
@@ -233,6 +233,7 @@
 0x10626E78 T DL_DBK_UpdateEventData
 0x106237B8 T DL_DbMessageGenericGetMessage
 0x10623444 T DL_DbMessageGenericGetMessageIDList
+0x10623604 T DL_DbMessageGenericGetTotalMessage
 0x10624EE4 T DL_DbPhoneBookDeleteAllRecords
 0x10624DB0 T DL_DbPhoneBookFindCachedRecordByTelno
 0x10624D66 T DL_DbPhoneBookFindRecordByTelno
@@ -282,6 +283,7 @@
 0x106344D6 T DL_FsGetVolumeDescr
 0x106316E8 T DL_FsICloseFile
 0x106336C8 T DL_FsICopyFile
+0x10633C3E T DL_FsISearch
 0x1063506C T DL_FsIWriteFile
 0x10639A0A T DL_FsLnkSGetTime
 0x106353C8 T DL_FsMkDir
@@ -289,6 +291,7 @@
 0x10631892 T DL_FsReadFile
 0x10633184 T DL_FsRenameFile
 0x1063545A T DL_FsRmDir
+0x10633ED4 T DL_FsSearch
 0x10634184 T DL_FsSearchClose
 0x10634046 T DL_FsSearchResults
 0x106329F4 T DL_FsSGetAttr
@@ -350,6 +353,7 @@
 0x104D1234 D EVENT_BT
 0x106958CE T FlashDevEraseBlock
 0x03FED7F8 T FlashDevWrite
+0x10B3AF40 A flushWallpaperOnScreen
 0x10374FD0 T FSS_SendFileViaObex
 0x1056A448 D GAIN_TABLE
 0x100CEB60 T get_connection_status
@@ -511,6 +515,7 @@
 0x03FF3FB8 A suSetInt
 0x03FEACC8 T suSleep
 0x12745ED8 D theStatusManager
+0x12744C70 D theWallpaper
 0x10098BD0 T tolower
 0x10098BF0 T toupper
 0x10B194CC A u_atol
@@ -594,6 +599,7 @@
 0x10B0D60C A UIS_CanvasSetForegroundColor
 0x10B0FBA4 A UIS_CanvasSetImageAttribute
 0x10B0D670 A UIS_CanvasSetLineWidth
+0x10B0B904 A UIS_CanvasSetWallpaperFlag
 0x10AFAE50 A UIS_ClearAndSetActionList
 0x10B0B5B0 A UIS_CreateCanvas
 0x10AF8358 A UIS_CreateCharacterEditor
@@ -647,9 +653,3 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x10623604 T DL_DbMessageGenericGetTotalMessage
-0x10633C3E T DL_FsISearch
-0x10633ED4 T DL_FsSearch
-0x10B3AF40 A flushWallpaperOnScreen
-0x12744C70 D theWallpaper
-0x10B0B904 A UIS_CanvasSetWallpaperFlag

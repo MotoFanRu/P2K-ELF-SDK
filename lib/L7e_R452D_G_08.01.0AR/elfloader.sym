@@ -7,7 +7,7 @@
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
 # Version: 1101241
-# Timestamp: 11-Jan-2024 11:50:03
+# Timestamp: 11-Jan-2024 12:13:49
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -399,6 +399,7 @@
 0x102AFBE0 T LdrStartApp
 0x102AFC62 T LdrUnloadELF
 0x111BD720 T localtime
+0x00001080 T memcmp
 0x000010D8 T memcpy
 0x00001100 T memset
 0x10927092 T MME_GC_capture_create
@@ -654,4 +655,3 @@
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x00001080 T memcmp
