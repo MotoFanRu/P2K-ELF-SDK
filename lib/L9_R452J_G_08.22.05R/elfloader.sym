@@ -7,7 +7,7 @@
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
 # Version: 1101241
-# Timestamp: 11-Jan-2024 08:30:44
+# Timestamp: 11-Jan-2024 11:50:03
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -68,6 +68,7 @@
 0x102CFB7C T AFW_CreateInternalQueuedSvcEvAuxD
 0x102CFBAE T AFW_FreeEventListData
 0x102CF342 T AFW_GenAppInstanceId
+0x102CEFB0 T AFW_GenAppRegistryId
 0x102CF638 T AFW_GetActiveSession
 0x102CF642 T AFW_GetAppsInSession
 0x102CED48 T AFW_GetEv
@@ -77,6 +78,9 @@
 0x102CF68A T AFW_GetNumSessions
 0x102CF690 T AFW_GetSessionList
 0x102CF69E T AFW_GetSessionOfApp
+0x1409C658 D AFW_gNumRegisteredApps
+0x1409C65C D AFW_gRegistrationTable
+0x1409C62C D AFW_gRunnerInstance
 0x102D0596 T AFW_InquireRoutingStackByRegId
 0x102CF7E4 T AFW_InquireToken
 0x102CF3A8 T AFW_IntAppGetInstData
@@ -218,6 +222,8 @@
 0x1022F5C4 A DAL_EnableDisplay
 0x10231F9C A DAL_FreeCache
 0x10231D4C A DAL_GetActiveATIDevMemConfiguration
+0x10231F7C A DAL_GetCachedSurface
+0x10231F90 A DAL_GetCacheSize
 0x10231EA4 A DAL_GetDeviceContext
 0x1022FAC0 A DAL_GetDisplayPixelAddress
 0x10231F6C A DAL_GetDrawingSurface
@@ -459,6 +465,7 @@
 0x10D031CC T JavaStartApp
 0x10D03990 T JavaStartMarquee
 0x10D0378E T JavaStopMarquee
+0x10CFC99C T JavaSuspendApp
 0x10B28D7C T jbNativeMethod_getClass
 0x10B28DCC T jbNativeMethod_getFieldIndex
 0x10B29626 T jbNativeMethod_instantiateString
@@ -561,6 +568,7 @@
 0x10D74868 T SEEM_MAX_RECORD_get_max_record
 0x104B0544 D SENDED_TRAFFIC
 0x1058C98E D SESSION_TIME
+0x103BA60C A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x10420E84 D SKIN_FOLDER
 0x11187098 T snprintf
@@ -608,6 +616,7 @@
 0x03FC6448 T suSleep
 0x1465A3A8 D TemporaryRoots
 0x1465A2CC D TemporaryRootsLength
+0x143BA56C D theStatusManager
 0x11187138 T tolower
 0x10C4E2E0 T toupper
 0x102585A8 A u_atol
@@ -754,12 +763,3 @@
 0x115C0268 T UtilLogStringData
 0x11187230 T vsnprintf
 0x10C4E34C T vsprintf
-0x102CEFB0 T AFW_GenAppRegistryId
-0x1409C658 D AFW_gNumRegisteredApps
-0x1409C65C D AFW_gRegistrationTable
-0x1409C62C D AFW_gRunnerInstance
-0x10231F7C A DAL_GetCachedSurface
-0x10231F90 A DAL_GetCacheSize
-0x10CFC99C T JavaSuspendApp
-0x103BA60C A setCanvasControl__13StatusManagerFScPUs
-0x143BA56C D theStatusManager
