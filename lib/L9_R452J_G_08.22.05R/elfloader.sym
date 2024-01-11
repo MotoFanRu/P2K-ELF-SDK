@@ -466,7 +466,7 @@
 0x10B29682 T jbNativeMethod_instantiateStringAsUnicode
 0x11121B80 T JFP_lib_tan
 0x10D088EE T JkMediaMIDIDrvGetMIDIController
-0x143471A8 D jsapi_marquee_text
+0x10CEDF34 D jsapi_marquee_text
 0x10505B94 D KEYPAD_STATE
 0x2484E000 D kpp
 0x115C096E T LdrGetFirmwareMajorVersion
@@ -754,3 +754,12 @@
 0x115C0268 T UtilLogStringData
 0x11187230 T vsnprintf
 0x10C4E34C T vsprintf
+0x102CEFB0 T AFW_GenAppRegistryId
+0x1409C658 D AFW_gNumRegisteredApps
+0x1409C65C D AFW_gRegistrationTable
+0x1409C62C D AFW_gRunnerInstance
+0x10231F7C A DAL_GetCachedSurface
+0x10231F90 A DAL_GetCacheSize
+0x10CFC99C T JavaSuspendApp
+0x103BA60C A setCanvasControl__13StatusManagerFScPUs
+0x143BA56C D theStatusManager

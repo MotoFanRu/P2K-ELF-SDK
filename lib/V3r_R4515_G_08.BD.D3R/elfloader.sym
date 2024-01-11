@@ -463,7 +463,7 @@
 0x000019C0 A setjmp
 0x10B8AF56 D SKIN_FOLDER
 0x10098EE4 T snprintf
-0x100989C4 T sprintf
+0x10098F3C T sprintf
 0x10098E3C T srand
 0x000015CC T strcat
 0x000015EC T strchr

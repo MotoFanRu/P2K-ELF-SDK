@@ -59,7 +59,7 @@
 0x1036C272 T AFW_TranslateEvEvD
 0x10D2D758 A AhiDevClose
 0x10D2D274 A AhiDevEnum
-0x10AF21E0 A AhiDevOpen
+0x10D2D510 A AhiDevOpen
 0x10D2E120 A AhiDispIsInVBlank
 0x10D2DD7C A AhiDispModeClip
 0x10D2DB00 A AhiDispModeEnum
@@ -87,7 +87,7 @@
 0x10AE26A0 A AhiDrawGlyph
 0x10E4896C A AhiDrawLines
 0x1099539C A AhiDrawLineStyleSet
-0x03FA3174 A AhiDrawMaskBltEx
+0x03FA6280 A AhiDrawMaskBltEx
 0x10991040 A AhiDrawMonoBltMulti
 0x10995128 A AhiDrawRopSet
 0x10990940 A AhiDrawRotateBlt

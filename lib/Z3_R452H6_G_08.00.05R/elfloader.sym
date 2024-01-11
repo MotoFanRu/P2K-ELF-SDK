@@ -87,7 +87,7 @@
 0x10AE2A28 A AhiDrawGlyph
 0x10E48CF4 A AhiDrawLines
 0x10995724 A AhiDrawLineStyleSet
-0x03FA3174 A AhiDrawMaskBltEx
+0x03FA6280 A AhiDrawMaskBltEx
 0x109913C8 A AhiDrawMonoBltMulti
 0x109954B0 A AhiDrawRopSet
 0x10990CC8 A AhiDrawRotateBlt

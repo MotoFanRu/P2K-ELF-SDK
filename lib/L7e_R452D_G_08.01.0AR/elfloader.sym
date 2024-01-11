@@ -74,7 +74,7 @@
 0x10E3FAC4 A AhiDispOverlaySurf
 0x10E3FD98 A AhiDispOverlaySurf2
 0x10E3FC2C A AhiDispOverlaySurfEx
-0x110B8A70 A AhiDispState
+0x10D31C00 A AhiDispState
 0x10D3157C A AhiDispSurfGet
 0x10D31468 A AhiDispSurfSet
 0x10D31880 A AhiDispUpdate
