@@ -623,3 +623,15 @@
 0x115AE5A8 T UtilLogStringData
 0x1112D6A8 T vsnprintf
 0x10DC96B4 T vsprintf
+0x109565E4 A AhiIntersect
+0x1022ADC0 A DAL_GetCachedSurface
+0x1022ADE0 A DAL_GetCacheSize
+0x108EA4C8 T DL_ClkDeleteIndividualEvent
+0x108E9D7A T DL_ClkSetClock
+0x108EA4F8 T DL_ClkSetWakeupEvent
+0x108EA4A8 T DL_ClkStoreIndividualEvent
+0x10F6C048 T get_number_of_active_calls
+0x10E76158 T JavaSuspendApp
+0x00001080 T memcmp
+0x10371690 A setCanvasControl__13StatusManagerFScPUs
+0x1443CAE4 D theStatusManager

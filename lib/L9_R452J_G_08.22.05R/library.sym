@@ -479,7 +479,6 @@
 0x105579C8 T MsgUtilFileUtilsReadLn
 0x10559C72 T MsgUtilGetUnreadMsgs
 0x10559D42 T MsgUtilGetUnreadMsgsInAllFolders
-0x115C02A4 T namecmp
 0x106E7786 T Nsscanf
 0x10C13336 T PFprintf
 0x113E3AD4 A png_check_sig

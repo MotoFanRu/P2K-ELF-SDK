@@ -637,3 +637,6 @@
 0x102AF4E8 T UtilLogStringData
 0x10C95C94 T vsnprintf
 0x111C0620 T vsprintf
+0x10D52A32 T JavaSuspendApp
+0x10413EF8 A setCanvasControl__13StatusManagerFScPUs
+0x143DA6E8 D theStatusManager

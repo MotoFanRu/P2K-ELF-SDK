@@ -342,7 +342,7 @@
 0x106F2562 T FlashDevEraseBlock
 0x03FEF3C8 T FlashDevWrite
 0x10378D94 T FSS_SendFileViaObex
-0x141F03FC D GAIN_TABLE
+0x105C3CD4 D GAIN_TABLE
 0x100CB940 T get_connection_status
 0x1024C1F8 T graph_decodePNG
 0x1024BD6A T graph_PngDecoder
@@ -637,3 +637,7 @@
 0x10CF21F8 T UtilLogStringData
 0x100990AC T vsnprintf
 0x100990F8 T vsprintf
+0x00001300 T __16__rt_memmove
+0x10643AE4 A DAL_GetCachedSurface
+0x10643B04 A DAL_GetCacheSize
+0x1022791E T JavaSuspendApp

@@ -633,3 +633,8 @@
 0x115BE418 T UtilLogStringData
 0x10C891A4 T vsnprintf
 0x111C0524 T vsprintf
+0x10231538 A DAL_GetCachedSurface
+0x10231558 A DAL_GetCacheSize
+0x10D450C4 T JavaSuspendApp
+0x103FB3D4 A setCanvasControl__13StatusManagerFScPUs
+0x143BAFA8 D theStatusManager

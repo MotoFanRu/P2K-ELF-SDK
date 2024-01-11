@@ -631,3 +631,7 @@
 0x10D22988 T UtilLogStringData
 0x1009917C T vsnprintf
 0x100991C8 T vsprintf
+0x1066E66C A DAL_GetCachedSurface
+0x1066E68C A DAL_GetCacheSize
+0x106E50B0 T DRM_GetFontInfo
+0x1023B7E8 T JavaSuspendApp

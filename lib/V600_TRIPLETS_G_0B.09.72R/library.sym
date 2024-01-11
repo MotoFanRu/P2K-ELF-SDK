@@ -249,7 +249,6 @@
 0x10087B18 T DL_FsSearchResults
 0x10086AF6 T DL_FsSGetFileSize
 0x100874A2 T DL_FsSRenameFile
-0x10087912 T DL_FsSSearch
 0x10087EA4 T DL_FsVolumeEnum
 0x10086716 T DL_FsWriteFile
 0x1009930E T DL_KeyKjavaGetKeyState

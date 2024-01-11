@@ -470,7 +470,6 @@
 0x105AD038 T MsgUtilFileUtilsReadLn
 0x105AF2AA T MsgUtilGetUnreadMsgs
 0x105AF37A T MsgUtilGetUnreadMsgsInAllFolders
-0x102AF524 T namecmp
 0x10735AE2 T Nsscanf
 0x10C54730 T PFprintf
 0x10CD8848 A png_check_sig

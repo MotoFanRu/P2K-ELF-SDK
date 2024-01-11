@@ -157,7 +157,7 @@
 0x103290E0 D BEGIN_4A__IN_DB
 0x10097B78 T bsearch
 0x1031AEC4 D CALL_ALERT
-0x1241C214 D Class_dal
+0x1232D714 D Class_dal
 0x105B25C0 D clipboard_data_buf
 0x104FBBD0 D connect_status_USB_CABLE
 0x10B0AF68 D current_usb_cfg_set
@@ -644,3 +644,6 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
+0x105E8274 A DAL_GetCachedSurface
+0x105E8294 A DAL_GetCacheSize
+0x10668D84 T DRM_GetFontInfo

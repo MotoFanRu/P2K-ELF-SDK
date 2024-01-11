@@ -22,94 +22,19 @@ DEF-comparator.
 SYM-comparator.
 L9-library!!!
 
-49R:
-11-Jan-2024 05:27:49 INFO: Addresses missmatch:
-11-Jan-2024 05:27:49 INFO: 	"0x1232D714 D Class_dal" in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
-11-Jan-2024 05:27:49 INFO: 	"0x1241C214 D Class_dal" in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
-11-Jan-2024 05:27:49 INFO: "0x105E8274 A DAL_GetCachedSurface" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
-11-Jan-2024 05:27:49 INFO: "0x105E8294 A DAL_GetCacheSize" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
-11-Jan-2024 05:27:49 INFO: "0x10668D84 T DRM_GetFontInfo" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
-
-79R:
-11-Jan-2024 05:29:43 INFO: "0x105F2B88 A DAL_GetCachedSurface" not found in "../lib/E1_R373_G_0E.30.79R/elfloader.sym" file.
-11-Jan-2024 05:29:43 INFO: "0x105F2BA8 A DAL_GetCacheSize" not found in "../lib/E1_R373_G_0E.30.79R/elfloader.sym" file.
-11-Jan-2024 05:29:43 INFO: "0x10670328 T DRM_GetFontInfo" not found in "../lib/E1_R373_G_0E.30.79R/elfloader.sym" file.
-11-Jan-2024 05:29:43 INFO: "0x102272AE T JavaSuspendApp" not found in "../lib/E1_R373_G_0E.30.79R/elfloader.sym" file.
-
-DAR:
-11-Jan-2024 05:31:03 INFO: "0x103D4408 T DL_AccIsExternalPowerActive" not found in "../lib/E1_R373_G_0E.30.DAR/elfloader.sym" file.
-11-Jan-2024 05:31:03 INFO: "0x1098ADE0 A SBCM_ATOD_temp" not found in "../lib/E1_R373_G_0E.30.DAR/elfloader.sym" file.
-
-K1:
-11-Jan-2024 05:32:34 INFO: "0x109565E4 A AhiIntersect" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x1022ADC0 A DAL_GetCachedSurface" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x1022ADE0 A DAL_GetCacheSize" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x108EA4C8 T DL_ClkDeleteIndividualEvent" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x108E9D7A T DL_ClkSetClock" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x108EA4F8 T DL_ClkSetWakeupEvent" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x108EA4A8 T DL_ClkStoreIndividualEvent" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x10F6C048 T get_number_of_active_calls" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x10E76158 T JavaSuspendApp" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x00001080 T memcmp" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x10371690 A setCanvasControl__13StatusManagerFScPUs" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-11-Jan-2024 05:32:34 INFO: "0x1443CAE4 D theStatusManager" not found in "../lib/K1_R452F_G_08.03.08R/elfloader.sym" file.
-
-L7ACR:
-11-Jan-2024 05:44:29 INFO: "0x00001300 T __16__rt_memmove" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/elfloader.sym" file.
-11-Jan-2024 05:44:29 INFO: "0x1066B2DC A DAL_GetCachedSurface" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/elfloader.sym" file.
-11-Jan-2024 05:44:29 INFO: "0x1066B2FC A DAL_GetCacheSize" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/elfloader.sym" file.
-11-Jan-2024 05:44:29 INFO: "0x106E1CE8 T DRM_GetFontInfo" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/elfloader.sym" file.
-11-Jan-2024 05:44:29 INFO: "0x1023B3B0 T JavaSuspendApp" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/elfloader.sym" file.
-11-Jan-2024 05:45:37 INFO: "0x102F880C T AhiDevNum" not found in "../lib/L7_R4513_G_08.B7.ACR_RB/library.sym" file.
-
-L7E0R:
-11-Jan-2024 05:46:21 INFO: "0x1066E66C A DAL_GetCachedSurface" not found in "../lib/L7_R4513_G_08.B7.E0R_RB/elfloader.sym" file.
-11-Jan-2024 05:46:21 INFO: "0x1066E68C A DAL_GetCacheSize" not found in "../lib/L7_R4513_G_08.B7.E0R_RB/elfloader.sym" file.
-11-Jan-2024 05:46:21 INFO: "0x106E50B0 T DRM_GetFontInfo" not found in "../lib/L7_R4513_G_08.B7.E0R_RB/elfloader.sym" file.
-11-Jan-2024 05:46:21 INFO: "0x1023B7E8 T JavaSuspendApp" not found in "../lib/L7_R4513_G_08.B7.E0R_RB/elfloader.sym" file.
-
-V3i:
-11-Jan-2024 05:47:21 INFO: "0x00001300 T __16__rt_memmove" not found in "../lib/V3i_R4441D_G_08.01.03R/elfloader.sym" file.
-11-Jan-2024 05:47:21 INFO: "0x106624CC A DAL_GetCachedSurface" not found in "../lib/V3i_R4441D_G_08.01.03R/elfloader.sym" file.
-11-Jan-2024 05:47:21 INFO: "0x106624EC A DAL_GetCacheSize" not found in "../lib/V3i_R4441D_G_08.01.03R/elfloader.sym" file.
-11-Jan-2024 05:47:21 INFO: "0x10223406 T JavaSuspendApp" not found in "../lib/V3i_R4441D_G_08.01.03R/elfloader.sym" file.
+E1:
+-11-Jan-2024 05:27:49 INFO: Addresses missmatch:
+-11-Jan-2024 05:27:49 INFO:     "0x1232D714 D Class_dal" in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+-11-Jan-2024 05:27:49 INFO:     "0x1241C214 D Class_dal" in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
 
 V3r:
-11-Jan-2024 05:48:44 INFO: "0x00001300 T __16__rt_memmove" not found in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-11-Jan-2024 05:48:44 INFO: "0x10643AE4 A DAL_GetCachedSurface" not found in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-11-Jan-2024 05:48:44 INFO: "0x10643B04 A DAL_GetCacheSize" not found in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-11-Jan-2024 05:48:44 INFO: Addresses missmatch:
-11-Jan-2024 05:48:44 INFO: 	"0x105C3CD4 D GAIN_TABLE" in "../lib/V3r_R4515_G_08.BD.D3R/library.sym" file.
-11-Jan-2024 05:48:44 INFO: 	"0x141F03FC D GAIN_TABLE" in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-11-Jan-2024 05:48:44 INFO: "0x1022791E T JavaSuspendApp" not found in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-11-Jan-2024 05:48:44 INFO: Addresses missmatch:
 11-Jan-2024 05:48:44 INFO: 	"0x10098F3C T sprintf" in "../lib/V3r_R4515_G_08.BD.D3R/library.sym" file.
 11-Jan-2024 05:48:44 INFO: 	"0x100989C4 T sprintf" in "../lib/V3r_R4515_G_08.BD.D3R/elfloader.sym" file.
-
-V360:
-11-Jan-2024 05:52:48 INFO: "0x1066B2DC A DAL_GetCachedSurface" not found in "../lib/V360_R4513_G_08.B7.ACR/elfloader.sym" file.
-11-Jan-2024 05:52:48 INFO: "0x1066B2FC A DAL_GetCacheSize" not found in "../lib/V360_R4513_G_08.B7.ACR/elfloader.sym" file.
-11-Jan-2024 05:52:48 INFO: "0x106E1CE8 T DRM_GetFontInfo" not found in "../lib/V360_R4513_G_08.B7.ACR/elfloader.sym" file.
-11-Jan-2024 05:52:48 INFO: "0x1023B3B0 T JavaSuspendApp" not found in "../lib/V360_R4513_G_08.B7.ACR/elfloader.sym" file.
-
-V600:
-WRONG!
-11-Jan-2024 05:53:53 INFO: "0x10087912 T DL_FsSSearch" not found in "../lib/V600_TRIPLETS_G_0B.09.72R/elfloader.sym" file.
 
 L7e:
 11-Jan-2024 05:56:37 INFO: Addresses missmatch:
 11-Jan-2024 05:56:37 INFO: 	"0x10D31C00 A AhiDispState" in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
 11-Jan-2024 05:56:37 INFO: 	"0x110B8A70 A AhiDispState" in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:56:37 INFO: "0x1026139C A DAL_GetCachedSurface" not found in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:56:37 INFO: "0x102613BC A DAL_GetCacheSize" not found in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:56:37 INFO: "0x10D51AC6 T JavaSuspendApp" not found in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:56:37 INFO: Modes missmatch:
-11-Jan-2024 05:56:37 INFO: 	"0x102AE3DC A keypad_columns" in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
-11-Jan-2024 05:56:37 INFO: 	"0x102AE3DC D keypad_columns" in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:56:37 INFO: Addresses missmatch:
-11-Jan-2024 05:56:37 INFO: 	"0x40532E7C D SESSION_TIME" in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
-11-Jan-2024 05:56:37 INFO: 	"0x10CFDEC4 D SESSION_TIME" in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
-11-Jan-2024 05:58:24 INFO: "0x10287D18 A UIS_SetClearKeyAction" not found in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
 
 Z3_ODR:
 11-Jan-2024 06:06:31 INFO: Addresses missmatch:
@@ -118,42 +43,11 @@ Z3_ODR:
 11-Jan-2024 06:06:31 INFO: Addresses missmatch:
 11-Jan-2024 06:06:31 INFO: 	"0x03FA6280 A AhiDrawMaskBltEx" in "../lib/Z3_R452B_G_08.02.0DR/library.sym" file.
 11-Jan-2024 06:06:31 INFO: 	"0x03FA3174 A AhiDrawMaskBltEx" in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x1025FD8C A DAL_GetActiveATIDevMemConfiguration" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x1025FFFC A DAL_GetCachedSurface" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x1026001C A DAL_GetCacheSize" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x10E34E30 T get_number_of_active_calls" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x10D526AA T JavaSuspendApp" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x00001080 T memcmp" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x10413FBC A setCanvasControl__13StatusManagerFScPUs" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-11-Jan-2024 06:06:31 INFO: "0x143DA6E8 D theStatusManager" not found in "../lib/Z3_R452B_G_08.02.0DR/elfloader.sym" file.
-
-Z3_09R:
-11-Jan-2024 06:07:28 INFO: "0x10231538 A DAL_GetCachedSurface" not found in "../lib/Z3_R452F1_G_08.04.09R/elfloader.sym" file.
-11-Jan-2024 06:07:28 INFO: "0x10231558 A DAL_GetCacheSize" not found in "../lib/Z3_R452F1_G_08.04.09R/elfloader.sym" file.
-11-Jan-2024 06:07:28 INFO: "0x10D450C4 T JavaSuspendApp" not found in "../lib/Z3_R452F1_G_08.04.09R/elfloader.sym" file.
-11-Jan-2024 06:07:28 INFO: "0x103FB3D4 A setCanvasControl__13StatusManagerFScPUs" not found in "../lib/Z3_R452F1_G_08.04.09R/elfloader.sym" file.
-11-Jan-2024 06:07:28 INFO: "0x143BAFA8 D theStatusManager" not found in "../lib/Z3_R452F1_G_08.04.09R/elfloader.sym" file.
 
 Z3_05R:
 11-Jan-2024 06:08:18 INFO: Addresses missmatch:
 11-Jan-2024 06:08:18 INFO: 	"0x03FA6280 A AhiDrawMaskBltEx" in "../lib/Z3_R452H6_G_08.00.05R/library.sym" file.
 11-Jan-2024 06:08:18 INFO: 	"0x03FA3174 A AhiDrawMaskBltEx" in "../lib/Z3_R452H6_G_08.00.05R/elfloader.sym" file.
-11-Jan-2024 06:08:19 INFO: "0x10D52A32 T JavaSuspendApp" not found in "../lib/Z3_R452H6_G_08.00.05R/elfloader.sym" file.
-11-Jan-2024 06:08:19 INFO: "0x10413EF8 A setCanvasControl__13StatusManagerFScPUs" not found in "../lib/Z3_R452H6_G_08.00.05R/elfloader.sym" file.
-11-Jan-2024 06:08:19 INFO: "0x143DA6E8 D theStatusManager" not found in "../lib/Z3_R452H6_G_08.00.05R/elfloader.sym" file.
-
-L7e:
-11-Jan-2024 06:26:45 INFO: "0x102AF5D4 T namecmp" found in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
-L9:
-11-Jan-2024 06:27:42 INFO: "0x115C02A4 T namecmp" found in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
-Z3_05R:
-11-Jan-2024 06:29:45 INFO: "0x102AF524 T namecmp" found in "../lib/Z3_R452H6_G_08.00.05R/library.sym" file.
-
-
-
-
-
-
 
 11-Jan-2024 06:43:59 INFO: "0x10097D70 A _ll_cmpu" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
 11-Jan-2024 06:45:18 INFO: "0x10097D70 A _ll_cmpu" not found in "../lib/E1_R373_G_0E.30.79R/library.sym" file.

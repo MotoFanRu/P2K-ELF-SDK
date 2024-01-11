@@ -639,3 +639,5 @@
 0x10393A0C T UtilLogStringData
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
+0x103D4408 T DL_AccIsExternalPowerActive
+0x1098ADE0 A SBCM_ATOD_temp
