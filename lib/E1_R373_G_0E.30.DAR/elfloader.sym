@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.DAR
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x107F0200 T __16__rt_divtest
 0x10A5D6A4 T __16__rt_sdiv
@@ -176,6 +176,7 @@
 0x1022BB24 D db_state_KP_LOCK_OFFSET
 0x100B4D4C T device_Get_SoftwareVersion
 0x12230F54 D display_source_buffer
+0x103D4408 T DL_AccIsExternalPowerActive
 0x103D4E88 T DL_AccIsHeadsetAvailable
 0x103D5B12 T DL_AudGetVolumeSetting
 0x103D51B8 T DL_AudPlayTone
@@ -444,6 +445,7 @@
 0x10A5F154 T rand
 0x10199578 T RestartDisplayTimer
 0x120099F0 D SBCM_ATOD_supply
+0x1098ADE0 A SBCM_ATOD_temp
 0x1098F1B4 D SBCM_ATOD_vltg
 0x1098A51C T SBCM_BATT_DATA_get_tbl_elmnt
 0x03FF5088 T sc_lock
@@ -639,5 +641,3 @@
 0x10393A0C T UtilLogStringData
 0x10A5D88C T vsnprintf
 0x10A5F438 T vsprintf
-0x103D4408 T DL_AccIsExternalPowerActive
-0x1098ADE0 A SBCM_ATOD_temp

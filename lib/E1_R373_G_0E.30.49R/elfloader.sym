@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
@@ -166,6 +166,8 @@
 0x105E7908 A DAL_EnableDisplay
 0x105E82B4 A DAL_FreeCache
 0x105E81BC A DAL_GetActiveATIDevMemConfiguration
+0x105E8274 A DAL_GetCachedSurface
+0x105E8294 A DAL_GetCacheSize
 0x105E8234 A DAL_GetDeviceContext
 0x105E7D60 A DAL_GetDisplayPixelAddress
 0x105E8254 A DAL_GetDrawingSurface
@@ -321,6 +323,7 @@
 0x106687EE T DRM_ClearResource
 0x10668766 T DRM_CreateResource
 0x1066816A T DRM_GetCurrentLanguage
+0x10668D84 T DRM_GetFontInfo
 0x10667F92 T DRM_GetResource
 0x10668132 T DRM_GetResourceLength
 0x106684CA T DRM_SetResource
@@ -644,6 +647,3 @@
 0x10C1D928 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x105E8274 A DAL_GetCachedSurface
-0x105E8294 A DAL_GetCacheSize
-0x10668D84 T DRM_GetFontInfo

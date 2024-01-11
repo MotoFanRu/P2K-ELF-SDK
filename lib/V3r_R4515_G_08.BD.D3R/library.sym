@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:40
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:31:06
 
 0x00000069 C AUDIO_STATUS
 0x0000060C C BEGIN_4A__IN_DB

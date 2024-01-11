@@ -6,10 +6,11 @@
 # ElfPack: EP1
 # Phone: V3i
 # Firmware: R4441D_G_08.01.03R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:45
 
 0x000003F8 T __16__rt_divtest
+0x00001300 T __16__rt_memmove
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
@@ -164,6 +165,8 @@
 0x10661B4C A DAL_EnableDisplay
 0x1066250C A DAL_FreeCache
 0x10662414 A DAL_GetActiveATIDevMemConfiguration
+0x106624CC A DAL_GetCachedSurface
+0x106624EC A DAL_GetCacheSize
 0x1066248C A DAL_GetDeviceContext
 0x10661FB8 A DAL_GetDisplayPixelAddress
 0x106624AC A DAL_GetDrawingSurface
@@ -369,6 +372,7 @@
 0x10221886 T JavaStartApp
 0x10223A28 T JavaStartMarquee
 0x102238C4 T JavaStopMarquee
+0x10223406 T JavaSuspendApp
 0x140AE4D2 D jsapi_marquee_text
 0x103D4F68 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -634,7 +638,3 @@
 0x10D7A118 T UtilLogStringData
 0x100A710C T vsnprintf
 0x100A7158 T vsprintf
-0x00001300 T __16__rt_memmove
-0x106624CC A DAL_GetCachedSurface
-0x106624EC A DAL_GetCacheSize
-0x10223406 T JavaSuspendApp

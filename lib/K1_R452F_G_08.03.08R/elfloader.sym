@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K1
 # Firmware: R452F_G_08.03.08R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -97,6 +97,7 @@
 0x10957E30 A AhiDrawSwapBlt
 0x10958744 A AhiDrawTileBlt
 0x10957B08 A AhiDrawTransBlt
+0x109565E4 A AhiIntersect
 0x10E59D34 A AhiSurfAlloc
 0x10E5B3BC A AhiSurfCopy
 0x10E5A904 A AhiSurfFree
@@ -161,6 +162,8 @@
 0x10227428 A DAL_EnableDisplay
 0x1022AE00 A DAL_FreeCache
 0x1022AB00 A DAL_GetActiveATIDevMemConfiguration
+0x1022ADC0 A DAL_GetCachedSurface
+0x1022ADE0 A DAL_GetCacheSize
 0x1022ACBC A DAL_GetDeviceContext
 0x10227A54 A DAL_GetDisplayPixelAddress
 0x1022ADA0 A DAL_GetDrawingSurface
@@ -184,16 +187,20 @@
 0x10E2A212 T DL_Char_convKOI8RtoUCS2String
 0x10E28F78 T DL_Char_convUCS2toUTF8String
 0x10E28FE6 T DL_Char_convUTF8toUCS2String
+0x108EA4C8 T DL_ClkDeleteIndividualEvent
 0x108E9D60 T DL_ClkGetClock
 0x108E9CD8 T DL_ClkGetDate
 0x108E9D94 T DL_ClkGetParsedClock
 0x108E9D28 T DL_ClkGetTime
+0x108E9D7A T DL_ClkSetClock
 0x108E9D0A T DL_ClkSetDate
 0x108E9DAE T DL_ClkSetParsedClock
 0x108E9D42 T DL_ClkSetTime
+0x108EA4F8 T DL_ClkSetWakeupEvent
 0x108EA566 T DL_ClkStartCyclicalTimer
 0x108EA512 T DL_ClkStartTimer
 0x108EA590 T DL_ClkStopTimer
+0x108EA4A8 T DL_ClkStoreIndividualEvent
 0x108E9F66 T DL_ClkUnpack
 0x10F1124A T DL_DbAlmclkCreateRecord
 0x10F11268 T DL_DbAlmclkDeleteAllRecords
@@ -340,6 +347,7 @@
 0x03FEF3C8 T FlashDevWrite
 0x1048A00E T FSS_SendFileViaObex
 0x10E1A3E0 T get_connection_status
+0x10F6C048 T get_number_of_active_calls
 0x10D9D868 T graph_decodePNG
 0x10D9D41A T graph_PngDecoder
 0x10D9D764 T graph_PngGetDimensionsAndAlphaTag
@@ -361,6 +369,7 @@
 0x10E7C87C T JavaStartApp
 0x10E7CF60 T JavaStartMarquee
 0x10E7CDF6 T JavaStopMarquee
+0x10E76158 T JavaSuspendApp
 0x143C9EE0 D jsapi_marquee_text
 0x104F3888 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -372,6 +381,7 @@
 0x115AEBF0 T LdrStartApp
 0x115AEC72 T LdrUnloadELF
 0x10DC9720 T localtime
+0x00001080 T memcmp
 0x000010D8 T memcpy
 0x00001100 T memset
 0x10DF569E T MME_GC_capture_create
@@ -443,6 +453,7 @@
 0x10EE39A4 T SEEM_MAX_RECORD_get_max_record
 0x104A0F0C D SENDED_TRAFFIC
 0x10581C24 D SESSION_TIME
+0x10371690 A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x103A32F0 D SKIN_FOLDER
 0x1112D53C T snprintf
@@ -487,6 +498,7 @@
 0x03FC8DBA T suSendMessage
 0x03FD4110 A suSetInt
 0x03FC9110 T suSleep
+0x1443CAE4 D theStatusManager
 0x10DC95F8 T tolower
 0x10DC9618 T toupper
 0x113AF7C8 A u_atol
@@ -623,15 +635,3 @@
 0x115AE5A8 T UtilLogStringData
 0x1112D6A8 T vsnprintf
 0x10DC96B4 T vsprintf
-0x109565E4 A AhiIntersect
-0x1022ADC0 A DAL_GetCachedSurface
-0x1022ADE0 A DAL_GetCacheSize
-0x108EA4C8 T DL_ClkDeleteIndividualEvent
-0x108E9D7A T DL_ClkSetClock
-0x108EA4F8 T DL_ClkSetWakeupEvent
-0x108EA4A8 T DL_ClkStoreIndividualEvent
-0x10F6C048 T get_number_of_active_calls
-0x10E76158 T JavaSuspendApp
-0x00001080 T memcmp
-0x10371690 A setCanvasControl__13StatusManagerFScPUs
-0x1443CAE4 D theStatusManager

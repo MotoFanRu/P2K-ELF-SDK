@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: Z3
 # Firmware: R452H6_G_08.00.05R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:45
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -374,6 +374,7 @@
 0x10D56E8C T JavaStartApp
 0x10D57570 T JavaStartMarquee
 0x10D57406 T JavaStopMarquee
+0x10D52A32 T JavaSuspendApp
 0x10D57624 D jsapi_marquee_text
 0x1055C51C D KEYPAD_STATE
 0x2484E000 D kpp
@@ -457,6 +458,7 @@
 0x10D90308 T SEEM_MAX_RECORD_get_max_record
 0x1050AD50 D SENDED_TRAFFIC
 0x10CFA87C D SESSION_TIME
+0x10413EF8 A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x1047CA80 D SKIN_FOLDER
 0x111C04A4 T snprintf
@@ -501,6 +503,7 @@
 0x03FC7D76 T suSendMessage
 0x03FD3068 A suSetInt
 0x03FC80CC T suSleep
+0x143DA6E8 D theStatusManager
 0x10C95B54 T tolower
 0x10C95B74 T toupper
 0x10287BE4 A u_atol
@@ -637,6 +640,3 @@
 0x102AF4E8 T UtilLogStringData
 0x10C95C94 T vsnprintf
 0x111C0620 T vsprintf
-0x10D52A32 T JavaSuspendApp
-0x10413EF8 A setCanvasControl__13StatusManagerFScPUs
-0x143DA6E8 D theStatusManager

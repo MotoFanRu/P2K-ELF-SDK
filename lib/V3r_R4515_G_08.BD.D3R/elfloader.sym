@@ -6,10 +6,11 @@
 # ElfPack: EP1
 # Phone: V3r
 # Firmware: R4515_G_08.BD.D3R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:45
 
 0x000003F8 T __16__rt_divtest
+0x00001300 T __16__rt_memmove
 0x000013BC T __16__rt_sdiv
 0x00001558 T __16__rt_sdiv10
 0x00001494 A __16__rt_udiv
@@ -163,6 +164,8 @@
 0x10643164 A DAL_EnableDisplay
 0x10643B24 A DAL_FreeCache
 0x10643A2C A DAL_GetActiveATIDevMemConfiguration
+0x10643AE4 A DAL_GetCachedSurface
+0x10643B04 A DAL_GetCacheSize
 0x10643AA4 A DAL_GetDeviceContext
 0x106435D0 A DAL_GetDisplayPixelAddress
 0x10643AC4 A DAL_GetDrawingSurface
@@ -367,6 +370,7 @@
 0x10225C1A T JavaStartApp
 0x10227F38 T JavaStartMarquee
 0x10227DD4 T JavaStopMarquee
+0x1022791E T JavaSuspendApp
 0x101FB9B4 T JkGraphicsCreateContext
 0x101FBC70 T JkGraphicsSetColor
 0x102078A2 T JkVideoDrawRect
@@ -637,7 +641,3 @@
 0x10CF21F8 T UtilLogStringData
 0x100990AC T vsnprintf
 0x100990F8 T vsprintf
-0x00001300 T __16__rt_memmove
-0x10643AE4 A DAL_GetCachedSurface
-0x10643B04 A DAL_GetCacheSize
-0x1022791E T JavaSuspendApp

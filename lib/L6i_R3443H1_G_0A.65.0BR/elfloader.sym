@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: L6i
 # Firmware: R3443H1_G_0A.65.0BR
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x1009C588 T __16__rt_divtest
 0x10CA271C T __16__rt_sdiv

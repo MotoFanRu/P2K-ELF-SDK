@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: L6
 # Firmware: R3511_G_0A.52.45R_A
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x1009C5BC T __16__rt_divtest
 0x10C466EC T __16__rt_sdiv

@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:40
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:31:06
 
 0x00000069 C AUDIO_STATUS
 0x00000612 C BEGIN_4A__IN_DB
@@ -452,7 +452,7 @@
 0x10D5633A T JavaStopMarquee
 0x10D51AC6 T JavaSuspendApp
 0x10D56558 D jsapi_marquee_text
-0x102AE3DC D keypad_columns
+0x102AE3DC A keypad_columns
 0x2484E000 D kpp
 0x111BD720 T localtime
 0x00001080 T memcmp
@@ -690,6 +690,7 @@
 0x10280FE0 A UIS_SetActionList
 0x10281460 A UIS_SetBacklightWithIntensity
 0x1028115C A UIS_SetCenterSelectAction
+0x10287D18 A UIS_SetClearKeyAction
 0x10281808 A UIS_SetNoticeStatus
 0x10282F38 A UIS_SetSkin
 0x10281994 A UIS_SetStatus
@@ -704,4 +705,3 @@
 0x1038E4CC A utility_get_image_size
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x10287D18 A UIS_SetClearKeyAction

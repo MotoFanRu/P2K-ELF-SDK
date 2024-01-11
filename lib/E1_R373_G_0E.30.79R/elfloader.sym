@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.79R
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x10097C0C T __16__rt_divtest
 0x10BE4610 T __16__rt_sdiv
@@ -164,6 +164,8 @@
 0x105F221C A DAL_EnableDisplay
 0x105F2BC8 A DAL_FreeCache
 0x105F2AD0 A DAL_GetActiveATIDevMemConfiguration
+0x105F2B88 A DAL_GetCachedSurface
+0x105F2BA8 A DAL_GetCacheSize
 0x105F2B48 A DAL_GetDeviceContext
 0x105F2674 A DAL_GetDisplayPixelAddress
 0x105F2B68 A DAL_GetDrawingSurface
@@ -319,6 +321,7 @@
 0x1066FD90 T DRM_ClearResource
 0x1066FD08 T DRM_CreateResource
 0x1066F70C T DRM_GetCurrentLanguage
+0x10670328 T DRM_GetFontInfo
 0x1066F508 T DRM_GetResource
 0x1066F6D4 T DRM_GetResourceLength
 0x1066FA66 T DRM_SetResource
@@ -373,6 +376,7 @@
 0x10225934 T JavaStartApp
 0x102278AA T JavaStartMarquee
 0x10227764 T JavaStopMarquee
+0x102272AE T JavaSuspendApp
 0x1204D3CA D jsapi_marquee_text
 0x10399240 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -638,7 +642,3 @@
 0x10C30618 T UtilLogStringData
 0x10098CA4 T vsnprintf
 0x10098CF0 T vsprintf
-0x105F2B88 A DAL_GetCachedSurface
-0x105F2BA8 A DAL_GetCacheSize
-0x10670328 T DRM_GetFontInfo
-0x102272AE T JavaSuspendApp

@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: Z3
 # Firmware: R452B_G_08.02.0DR
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:45
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -165,6 +165,9 @@
 0x1025C060 A DAL_DisableDisplay
 0x1025C160 A DAL_EnableDisplay
 0x1026003C A DAL_FreeCache
+0x1025FD8C A DAL_GetActiveATIDevMemConfiguration
+0x1025FFFC A DAL_GetCachedSurface
+0x1026001C A DAL_GetCacheSize
 0x1025FEF8 A DAL_GetDeviceContext
 0x1025C744 A DAL_GetDisplayPixelAddress
 0x1025FFDC A DAL_GetDrawingSurface
@@ -349,6 +352,7 @@
 0x03FEF3C8 T FlashDevWrite
 0x104F358E T FSS_SendFileViaObex
 0x109383EC T get_connection_status
+0x10E34E30 T get_number_of_active_calls
 0x10C626C0 T graph_decodePNG
 0x10C62262 T graph_PngDecoder
 0x10C625A4 T graph_PngGetDimensionsAndAlphaTag
@@ -370,6 +374,7 @@
 0x10D56B04 T JavaStartApp
 0x10D571E8 T JavaStartMarquee
 0x10D5707E T JavaStopMarquee
+0x10D526AA T JavaSuspendApp
 0x14369980 D jsapi_marquee_text
 0x1055C350 D KEYPAD_STATE
 0x2484E000 D kpp
@@ -381,6 +386,7 @@
 0x102AFB30 T LdrStartApp
 0x102AFBB2 T LdrUnloadELF
 0x10C962A8 T localtime
+0x00001080 T memcmp
 0x000010D8 T memcpy
 0x00001100 T memset
 0x1090CB3E T MME_GC_capture_create
@@ -452,6 +458,7 @@
 0x10D8FF80 T SEEM_MAX_RECORD_get_max_record
 0x1050AA64 D SENDED_TRAFFIC
 0x105E1074 D SESSION_TIME
+0x10413FBC A setCanvasControl__13StatusManagerFScPUs
 0x000019C0 A setjmp
 0x1047CB04 D SKIN_FOLDER
 0x111C010C T snprintf
@@ -496,6 +503,7 @@
 0x03FC7D76 T suSendMessage
 0x03FD3068 A suSetInt
 0x03FC80CC T suSleep
+0x143DA6E8 D theStatusManager
 0x10C957CC T tolower
 0x10C957EC T toupper
 0x10287CE4 A u_atol
@@ -632,11 +640,3 @@
 0x102AF4E8 T UtilLogStringData
 0x10C9590C T vsnprintf
 0x111C0288 T vsprintf
-0x1025FD8C A DAL_GetActiveATIDevMemConfiguration
-0x1025FFFC A DAL_GetCachedSurface
-0x1026001C A DAL_GetCacheSize
-0x10E34E30 T get_number_of_active_calls
-0x10D526AA T JavaSuspendApp
-0x00001080 T memcmp
-0x10413FBC A setCanvasControl__13StatusManagerFScPUs
-0x143DA6E8 D theStatusManager

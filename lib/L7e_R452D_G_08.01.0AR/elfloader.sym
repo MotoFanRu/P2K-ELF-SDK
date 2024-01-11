@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
-# Version: 0401241
-# Timestamp: 04-Jan-2024 07:16:19
+# Version: 1101241
+# Timestamp: 11-Jan-2024 08:30:44
 
 0x000003F8 T __16__rt_divtest
 0x000013BC T __16__rt_sdiv
@@ -175,6 +175,8 @@
 0x1025D4FC A DAL_EnableDisplay
 0x102613DC A DAL_FreeCache
 0x10261128 A DAL_GetActiveATIDevMemConfiguration
+0x1026139C A DAL_GetCachedSurface
+0x102613BC A DAL_GetCacheSize
 0x10261298 A DAL_GetDeviceContext
 0x1025DAE0 A DAL_GetDisplayPixelAddress
 0x1026137C A DAL_GetDrawingSurface
@@ -384,6 +386,7 @@
 0x10D55DC0 T JavaStartApp
 0x10D564A4 T JavaStartMarquee
 0x10D5633A T JavaStopMarquee
+0x10D51AC6 T JavaSuspendApp
 0x10D56558 D jsapi_marquee_text
 0x102AE3DC D keypad_columns
 0x1055B5DC D KEYPAD_STATE
@@ -651,6 +654,3 @@
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
-0x1026139C A DAL_GetCachedSurface
-0x102613BC A DAL_GetCacheSize
-0x10D51AC6 T JavaSuspendApp
