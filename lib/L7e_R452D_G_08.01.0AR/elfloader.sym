@@ -654,3 +654,4 @@
 0x102AF598 T UtilLogStringData
 0x111BD63C T vsnprintf
 0x10C93BF4 T vsprintf
+0x00001080 T memcmp

@@ -22,3 +22,41 @@ DEF-comparator.
 SYM-comparator.
 L9-library!!!
 
+11-Jan-2024 11:53:25 INFO: "0x10623604 T DL_DbMessageGenericGetTotalMessage" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+11-Jan-2024 11:53:25 INFO: "0x10633C3E T DL_FsISearch" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+11-Jan-2024 11:53:25 INFO: "0x10633ED4 T DL_FsSearch" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+11-Jan-2024 11:53:25 INFO: "0x10B3AF40 A flushWallpaperOnScreen" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+11-Jan-2024 11:53:25 INFO: "0x12744C70 D theWallpaper" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+11-Jan-2024 11:53:25 INFO: "0x10B0B904 A UIS_CanvasSetWallpaperFlag" not found in "../lib/E1_R373_G_0E.30.49R/elfloader.sym" file.
+
+11-Jan-2024 11:54:09 INFO: "0x102C336C A AhiPwrModeGet" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+11-Jan-2024 11:54:09 INFO: "0x102C33C8 A AhiPwrModeSet" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+11-Jan-2024 11:54:09 INFO: "0x10A55E3C T suAllocLowPowerFlag" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+11-Jan-2024 11:54:09 INFO: "0x10A55E64 T suDisableLowPowerFlag" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+11-Jan-2024 11:54:09 INFO: "0x10A55E64 T suEnableLowPowerFlag" not found in "../lib/E1_R373_G_0E.30.49R/library.sym" file.
+
+11-Jan-2024 11:58:44 INFO: Modes missmatch:
+11-Jan-2024 11:58:44 INFO: 	"0x102AE3DC A keypad_columns" in "../lib/L7e_R452D_G_08.01.0AR/library.sym" file.
+11-Jan-2024 11:58:44 INFO: 	"0x102AE3DC D keypad_columns" in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
+11-Jan-2024 11:58:44 INFO: "0x00001080 T memcmp" not found in "../lib/L7e_R452D_G_08.01.0AR/elfloader.sym" file.
+
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x03F90248 A GlobalState" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x03F90248 D GlobalState" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x106F750E A mma_default_file_name" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x106F750E D mma_default_file_name" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x106F752E A mma_dyn_index_file_name" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x106F752E D mma_dyn_index_file_name" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x106F7554 A mma_dyn_temp_ucp_file_name" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x106F7554 D mma_dyn_temp_ucp_file_name" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x1465A3A8 A TemporaryRoots" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x1465A3A8 D TemporaryRoots" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Modes missmatch:
+11-Jan-2024 12:00:18 INFO: 	"0x1465A2CC A TemporaryRootsLength" in "../lib/L9_R452J_G_08.22.05R/library.sym" file.
+11-Jan-2024 12:00:18 INFO: 	"0x1465A2CC D TemporaryRootsLength" in "../lib/L9_R452J_G_08.22.05R/elfloader.sym" file.
+11-Jan-2024 12:00:18 INFO: Done.
+

@@ -452,7 +452,7 @@
 0x10D5633A T JavaStopMarquee
 0x10D51AC6 T JavaSuspendApp
 0x10D56558 D jsapi_marquee_text
-0x102AE3DC A keypad_columns
+0x102AE3DC D keypad_columns
 0x2484E000 D kpp
 0x111BD720 T localtime
 0x00001080 T memcmp

@@ -506,7 +506,7 @@
 0x10499468 T FSS_SendFileViaObex
 0x10C96B44 T get_connection_status
 0x10A152FC T get_number_of_active_calls
-0x03F90248 A GlobalState
+0x03F90248 D GlobalState
 0x10C21C66 T graph_decodePNG
 0x10C2181E T graph_PngDecoder
 0x10C21B62 T graph_PngGetDimensionsAndAlphaTag
@@ -542,9 +542,9 @@
 0x11187310 T localtime
 0x000010D8 T memcpy
 0x00001100 T memset
-0x106F750E A mma_default_file_name
-0x106F752E A mma_dyn_index_file_name
-0x106F7554 A mma_dyn_temp_ucp_file_name
+0x106F750E D mma_default_file_name
+0x106F752E D mma_dyn_index_file_name
+0x106F7554 D mma_dyn_temp_ucp_file_name
 0x110327C2 T MME_CFG_DB_db_close
 0x11032AE6 T MME_CFG_DB_db_get_db_prop
 0x11032B7C T MME_CFG_DB_db_get_elem_prop
@@ -663,8 +663,8 @@
 0x03FC60F2 T suSendMessage
 0x03FD1640 A suSetInt
 0x03FC6448 T suSleep
-0x1465A3A8 A TemporaryRoots
-0x1465A2CC A TemporaryRootsLength
+0x1465A3A8 D TemporaryRoots
+0x1465A2CC D TemporaryRootsLength
 0x143BA56C D theStatusManager
 0x11187138 T tolower
 0x10C4E2E0 T toupper
