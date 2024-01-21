@@ -110,8 +110,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	python compare.py -s elfloader_1.sym -c library_2.sym -ec EP2 -n
 
 	# Compare symbols file with name definition file.
-	python compare.py -s elfloader.sym -c ep2/def/ElfLoaderAPI1.def
-	python compare.py -s elfloader.sym -c ep2/def/ElfLoaderAPI2.def -ec EP2
+	python compare.py -s elfloader.sym -c ../../ep1/def/ElfLoaderAPI1.def
+	python compare.py -s elfloader.sym -c ../../ep2/def/ElfLoaderAPI2.def -ec EP2
 	python compare.py -s library.sym -es EP2 -c ep2/def/EntriesNames.def -ec EP2
 
 	# Compare patterns files among themselves (+swap/reverse arguments, names only).

@@ -76,8 +76,8 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	}
 	epl: str = """examples:
 	# Generate a draft patterns file from symbols file (+irom).
-	python forge.py -s library.sym -f cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pat
-	python forge.py -i -s library.sym -f irom/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pat
+	python forge.py -s library.sym -f ../cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pat
+	python forge.py -i -s library.sym -f ../irom/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pat
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])

@@ -17,11 +17,11 @@ from pathlib import Path
 from datetime import datetime
 
 from .constants import P2K_DIR_LIB
-from .constants import P2K_DIR_TOOL
 from .constants import P2K_EP2_NMS_DEF
 from .constants import P2K_EP2_API_DEF
 from .constants import P2K_SDK_CONSTS_H
 from .constants import P2K_TOOL_POSTLINK
+from .constants import P2K_DIR_TOOL_KITCHEN
 from .hexer import int2hex
 from .hexer import hex2int
 from .hexer import hex2hex
@@ -259,8 +259,8 @@ def ep2_libgen_library(p_sym: Path, sort: LibrarySort, phone: str, firmware: str
 		if model is not None:
 			result: bool = False
 			sorted_sym_file: Path = get_temporary_directory_path() / 'Sorted.sym'
-			phone_bin_library: Path = P2K_DIR_TOOL / 'std.lib'
-			sdk_stub_sa_library: Path = P2K_DIR_TOOL / 'std.sa'
+			phone_bin_library: Path = P2K_DIR_TOOL_KITCHEN / 'std.lib'
+			sdk_stub_sa_library: Path = P2K_DIR_TOOL_KITCHEN / 'std.sa'
 			version: str = libgen_version()
 			if dump_library_model_to_sym_file(model, sorted_sym_file, phone, firmware, 'EP2', version):
 				if validate_sym_file(sorted_sym_file):

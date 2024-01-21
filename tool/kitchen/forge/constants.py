@@ -24,34 +24,36 @@ def e_app(executable_name: str) -> str:
 	return (executable_name + '.exe') if is_win() else executable_name
 
 
-P2K_TOOLCHAIN_ROOT: Path = Path(__file__).resolve().parent.parent.parent
+P2K_TOOLCHAIN_ROOT: Path = Path(__file__).resolve().parent.parent.parent.parent
 
-P2K_DIR_LIB: Path = P2K_TOOLCHAIN_ROOT / 'lib'
-P2K_DIR_EP_SDK: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'sdk'
-P2K_DIR_EP1_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep1' / 'inc'
-P2K_DIR_EP1_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep1' / 'lib'
-P2K_DIR_EP2_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep2' / 'inc'
-P2K_DIR_EP2_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep' / 'ep2' / 'lib'
+P2K_DIR_LIB: Path = P2K_TOOLCHAIN_ROOT / 'res'
+P2K_DIR_EP_SDK: Path = P2K_TOOLCHAIN_ROOT / 'sdk'
+P2K_DIR_EP1_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep1' / 'inc'
+P2K_DIR_EP1_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep1' / 'lib'
+P2K_DIR_EP2_INC: Path = P2K_TOOLCHAIN_ROOT / 'ep2' / 'inc'
+P2K_DIR_EP2_LIB: Path = P2K_TOOLCHAIN_ROOT / 'ep2' / 'lib'
 P2K_DIR_TOOL: Path = P2K_TOOLCHAIN_ROOT / 'tool'
+P2K_DIR_TOOL_BIN: Path = P2K_DIR_TOOL / 'bin'
+P2K_DIR_TOOL_KITCHEN: Path = P2K_DIR_TOOL / 'bin'
 P2K_DIR_CG: Path = P2K_DIR_TOOL / 'cg'
 P2K_DIR_COMPILER: Path = P2K_DIR_TOOL / 'compiler'
 P2K_DIR_EP1_ADS: Path = P2K_DIR_COMPILER / ('ep1_win_ADS' if is_win() else 'ep1_lin_ADS')
 P2K_DIR_EP1_ADS_BIN: Path = P2K_DIR_EP1_ADS / 'bin'
-P2K_DIR_EP1: Path = P2K_DIR_TOOL / 'ep1'
+P2K_DIR_EP1: Path = P2K_TOOLCHAIN_ROOT / 'ep1'
 P2K_DIR_EP1_DEF: Path = P2K_DIR_EP1 / 'def'
 P2K_DIR_EP1_PAT: Path = P2K_DIR_EP1 / 'pat'
 P2K_DIR_EP1_OBJ: Path = P2K_DIR_EP1 / 'obj'
 P2K_DIR_EP1_SRC: Path = P2K_DIR_EP1 / 'src'
 P2K_DIR_EP1_SYM: Path = P2K_DIR_EP1 / 'sym'
 P2K_DIR_EP1_OBJ_OLD: Path = P2K_DIR_EP1_OBJ / 'old'
-P2K_DIR_EP2: Path = P2K_DIR_TOOL / 'ep2'
+P2K_DIR_EP2: Path = P2K_TOOLCHAIN_ROOT / 'ep2'
 P2K_DIR_EP2_DEF: Path = P2K_DIR_EP2 / 'def'
 P2K_DIR_EP2_SRC: Path = P2K_DIR_EP2 / 'src'
 P2K_DIR_EP2_TPL: Path = P2K_DIR_EP2 / 'tpl'
 P2K_DIR_EP2_FPA: Path = P2K_DIR_EP2 / 'fpa'
 
-P2K_TOOL_PAT: Path = P2K_DIR_TOOL / e_app('pat')
-P2K_TOOL_POSTLINK: Path = P2K_DIR_TOOL / e_app('postlink')
+P2K_TOOL_PAT: Path = P2K_DIR_TOOL_BIN / e_app('pat')
+P2K_TOOL_POSTLINK: Path = P2K_DIR_TOOL_BIN / e_app('postlink')
 
 P2K_EP1_ADS_TCC: Path = P2K_DIR_EP1_ADS_BIN / e_app('tcc')
 P2K_EP1_ADS_TCPP: Path = P2K_DIR_EP1_ADS_BIN / e_app('tcpp')
