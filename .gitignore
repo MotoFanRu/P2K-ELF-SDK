@@ -1,14 +1,14 @@
-tool/.idea
-tool/.venv
+tool/kitchen/.idea
+tool/kitchen/.venv
 
-tool/forge/__pycache__
-tool/forge_test/__pycache__
+tool/kitchen/forge/__pycache__
+tool/kitchen/forge_test/__pycache__
 
 tool/cg/*.smg
 tool/cg/*.bin
 tool/irom/*.bin
 
-tool/build
+tool/kitchen/build
 
 tool/compiler/ep1_lin_ADS/*
 !tool/compiler/ep1_lin_ADS/ReadMe.md
