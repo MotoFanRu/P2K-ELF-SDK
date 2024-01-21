@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V600
 # Firmware: TRIPLETS_G_0B.09.72R
-# Version: 1101241
-# Timestamp: 11-Jan-2024 14:51:07
+# Version: 2101241
+# Timestamp: 21-Jan-2024 17:57:12
 
 0x000FBF70 T __16__rt_sdiv
 0x000FDC78 T __16__rt_sdiv10
