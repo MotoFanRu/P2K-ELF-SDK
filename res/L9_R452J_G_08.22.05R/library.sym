@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: L9
 # Firmware: R452J_G_08.22.05R
-# Version: 1101241
-# Timestamp: 11-Jan-2024 14:51:11
+# Version: 2101241
+# Timestamp: 21-Jan-2024 17:58:21
 
 0x00000069 C AUDIO_STATUS
 0x00000650 C BEGIN_4A__IN_DB
