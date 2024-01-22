@@ -425,7 +425,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			logging.info(f'Cannot find original patch data in "{opts["fw_file"]}" file.')
 			logging.info(f'Data: {po3}')
 			return False
-	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.0 patch', patches, val_result_fpa)
+	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.0 patch.', patches, val_result_fpa)
 	logging.info('')
 
 	logging.info('Creating ElfPack v1.0 library for Phone.')
