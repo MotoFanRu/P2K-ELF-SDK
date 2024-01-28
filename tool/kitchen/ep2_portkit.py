@@ -258,7 +258,9 @@ def get_additional_pfw_patches(phone: str, firmware: str) -> list[Path]:
 			patches.append(fpa_dir / 'K1_08R_Drop_UIS_LogString.fpa')
 	elif phone == 'L7e':
 		if firmware == 'R452D_G_08.01.0AR':
-			patches.append(fpa_dir / 'L7e_0AR_Drop_Additional_Logs.fpa')
+			# Change in EP1 library if apply this patch:
+			#	`0x10C5964A T PFprintf` => `0x10C5964C T PFprintf`
+			# patches.append(fpa_dir / 'L7e_0AR_Drop_Additional_Logs.fpa')
 			patches.append(fpa_dir / 'L7e_0AR_Drop_UIS_LogString.fpa')
 	elif phone == 'L9':
 		if firmware == 'R452J_G_08.22.05R':
