@@ -468,7 +468,7 @@
 0x10528C4E T MsgUtilGetUnreadMsgs
 0x10528D1E T MsgUtilGetUnreadMsgsInAllFolders
 0x106D9676 T Nsscanf
-0x10D8F2BC T PFprintf
+0x10D8F2BA T PFprintf
 0x108CD550 A png_check_sig
 0x108CD6D4 A png_create_info_struct
 0x108CE6B4 A png_create_read_struct
