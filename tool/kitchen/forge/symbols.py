@@ -209,6 +209,7 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 			if (addr is not None) and (mode is not None) and (name is not None):
 				model_patches.append((addr, mode, name))
 		if len(model_patches) > 0:
+			no_dublicates: bool = True
 			model_library_patched: LibraryModel = []
 			model_library_original: LibraryModel = dump_sym_file_to_library_model(in_p, True)
 
@@ -224,7 +225,12 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 						else:
 							logging.warning(f'Patch "{original_sym}" => "{patched_sym}" already applied.')
 					else:
-						model_library_patched.append((addr_original, mode_original, name_original))
+						name_is_present: bool = False
+						for addr_patched, mode_patched, name_patched in model_library_patched:
+							if name_original.strip() == name_patched.strip():
+								name_is_present = True
+						if not name_is_present:
+							model_library_patched.append((addr_original, mode_original, name_original))
 
 			# Add missing patches as symbols.
 			for addr_patch, mode_patch, name_patch in model_patches:
