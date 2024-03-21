@@ -70,28 +70,31 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 		logging.info(f'Will resort all EP1 symbols files in "{forge.P2K_DIR_LIB}" directory.')
 		return forge.log_result(forge.ep1_libgen_resort(sort))
 	else:
-		functions, library_model = forge.ep1_libgen_model(args.source, sort)
+		if forge.validate_sym_file(args.source):
+			functions, library_model = forge.ep1_libgen_model(args.source, sort)
 
-		if mode == Mode.PHONE_LIBRARY:
-			logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
-			return forge.log_result(forge.ep1_libgen_library(args.output, library_model, functions))
-		elif mode == Mode.ASSEMBLER_LISTING:
-			logging.info(f'Will create "{args.output}" assembly listing from "{args.source}" symbols file.')
-			return forge.log_result(forge.ep1_libgen_asm(args.output, library_model))
-		elif mode == Mode.OBJECT_LIBRARY:
-			return sym2obj(library_model, args.source, args.output)
-		elif mode == Mode.STATIC_LIBRARY:
-			return sym2lib(library_model, args.source, args.output)
-		elif mode == Mode.SYMBOLS_LISTING_ORDERED:
-			logging.info(f'Will create "{args.output}" ordered symbols file from "{args.source}" symbols file.')
-			phone, firmware = args.phone_fw
-			version: str = forge.libgen_version()
-			if forge.dump_library_model_to_sym_file(library_model, args.output, phone, firmware, 'EP1', version):
-				return forge.log_result(forge.validate_sym_file(args.output))
+			if mode == Mode.PHONE_LIBRARY:
+				logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
+				return forge.log_result(forge.ep1_libgen_library(args.output, library_model, functions))
+			elif mode == Mode.ASSEMBLER_LISTING:
+				logging.info(f'Will create "{args.output}" assembly listing from "{args.source}" symbols file.')
+				return forge.log_result(forge.ep1_libgen_asm(args.output, library_model))
+			elif mode == Mode.OBJECT_LIBRARY:
+				return sym2obj(library_model, args.source, args.output)
+			elif mode == Mode.STATIC_LIBRARY:
+				return sym2lib(library_model, args.source, args.output)
+			elif mode == Mode.SYMBOLS_LISTING_ORDERED:
+				logging.info(f'Will create "{args.output}" ordered symbols file from "{args.source}" symbols file.')
+				phone, firmware = args.phone_fw
+				version: str = forge.libgen_version()
+				if forge.dump_library_model_to_sym_file(library_model, args.output, phone, firmware, 'EP1', version):
+					return forge.log_result(forge.validate_sym_file(args.output))
+				else:
+					logging.error(f'Cannot generate "{args.output}" ordered symbols file.')
 			else:
-				logging.error(f'Cannot generate "{args.output}" ordered symbols file.')
+				logging.error(f'Unknown mode: {mode.name}')
 		else:
-			logging.error(f'Unknown mode: {mode.name}')
+			logging.error(f'Not valid symbols file: {args.source}')
 
 	return False
 
