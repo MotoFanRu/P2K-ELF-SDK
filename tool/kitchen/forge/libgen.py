@@ -15,6 +15,7 @@ import logging
 
 from pathlib import Path
 from datetime import datetime
+from argparse import Namespace
 
 from .constants import P2K_DIR_LIB
 from .constants import P2K_EP2_NMS_DEF
@@ -693,3 +694,13 @@ def ep1_libgen_names_sym(i: Path) -> list[str] | None:
 
 def ep2_libgen_names_sym(i: Path, ignore_consts: bool) -> list[str] | None:
 	return libgen_names_sym(i, ElfPack.EP2, ignore_consts)
+
+
+def determine_sort_mode(args: Namespace) -> LibrarySort:
+	if args.sort_name:
+		return LibrarySort.NAME
+	elif args.sort_address:
+		return LibrarySort.ADDR
+	elif args.sort_type:
+		return LibrarySort.MODE
+	return LibrarySort.NONE

@@ -209,7 +209,6 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 			if (addr is not None) and (mode is not None) and (name is not None):
 				model_patches.append((addr, mode, name))
 		if len(model_patches) > 0:
-			no_dublicates: bool = True
 			model_library_patched: LibraryModel = []
 			model_library_original: LibraryModel = dump_sym_file_to_library_model(in_p, True)
 

@@ -105,19 +105,9 @@ class Args(argparse.ArgumentParser):
 		self.print_help(sys.stderr)
 		self.exit(2, f'{self.prog}: error: {message}\n')
 
-	@staticmethod
-	def determine_sort_mode(args: Namespace) -> forge.LibrarySort:
-		if args.sort_name:
-			return forge.LibrarySort.NAME
-		elif args.sort_address:
-			return forge.LibrarySort.ADDR
-		elif args.sort_type:
-			return forge.LibrarySort.MODE
-		return forge.LibrarySort.NONE
-
 	def parse_check_arguments(self) -> tuple[Mode, forge.LibrarySort, Namespace]:
 		args: Namespace = self.parse_args()
-		sort: forge.LibrarySort = self.determine_sort_mode(args)
+		sort: forge.LibrarySort = forge.determine_sort_mode(args)
 
 		if args.all:
 			return Mode.REGENERATOR, sort, args

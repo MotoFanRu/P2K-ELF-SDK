@@ -69,6 +69,8 @@ from .hexer import str2hex
 
 from .libgen import libgen_version
 from .libgen import libgen_apply_patches
+from .libgen import libgen_chunk_sym
+from .libgen import libgen_names_sym
 from .libgen import ep1_libgen_asm
 from .libgen import ep1_libgen_model
 from .libgen import ep1_libgen_library
@@ -85,6 +87,7 @@ from .libgen import ep2_libgen_regenerator
 from .libgen import ep2_libgen_resort
 from .libgen import ep2_libgen_chunk_sym
 from .libgen import ep2_libgen_names_sym
+from .libgen import determine_sort_mode
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa
