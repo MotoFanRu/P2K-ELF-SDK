@@ -5,9 +5,9 @@
 # Source Code: https://github.com/MotoFanRu/P2K-ELF-SDK
 # ElfPack: EP1
 # Phone: E1
-# Firmware: R373_G_0E.30.49R
+# Firmware: R373_G_0E.30.DAR
 # Version: 3103241
-# Timestamp: 31-Mar-2024 13:20:58
+# Timestamp: 31-Mar-2024 13:51:20
 
 0x10A5C978 T __16__rt_divtest
 0x10A5B8C4 T __16__rt_sdiv
@@ -445,8 +445,8 @@
 0x10A5D374 T rand
 0x10199570 T RestartDisplayTimer
 0x120099F0 D SBCM_ATOD_supply
-0x127BBECB D SBCM_ATOD_temp
-0x120099F1 D SBCM_ATOD_vltg
+0x127BBECA A SBCM_ATOD_temp
+0x120099F0 D SBCM_ATOD_vltg
 0x109886DC T SBCM_BATT_DATA_get_tbl_elmnt
 0x03FF5088 T sc_lock
 0x03FF54DC T sc_unlock

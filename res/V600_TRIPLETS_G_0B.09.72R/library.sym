@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: V600
 # Firmware: TRIPLETS_G_0B.09.72R
-# Version: 0103241
-# Timestamp: 01-Mar-2024 18:51:03
+# Version: 3103241
+# Timestamp: 31-Mar-2024 13:51:25
 
 0x000020C9 C EV_CREATE_SHORTCUT
 0x0000214B C EV_PB_SET_NAME
