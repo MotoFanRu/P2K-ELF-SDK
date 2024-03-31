@@ -38,7 +38,7 @@ def start_forge_work(mode: Mode,  sort: forge.LibrarySort, args: Namespace) -> b
 			forge.sym2pat(args.source, args.output, args.firmware, args.offset, args.size, args.irom)
 		)
 	elif mode == Mode.SYM_TO_SYM:
-		names: list[str] | None = forge.libgen_names_sym(args.defines, args.elfpack, True)
+		names: list[str] | None = forge.libgen_names_sym(args.defines, args.elfpack, not args.const)
 		if names:
 			return forge.log_result(
 				forge.libgen_chunk_sym(args.source, args.output, sort, names, args.phone_fw, args.elfpack)
@@ -95,6 +95,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'sa': 'sort by addresses',
 		'st': 'sort by types',
 		'sn': 'sort by names',
+		'c': 'activate constants',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -104,6 +105,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 
 	# Rechunk symbols file from another one.
 	python forge.py -sn -s gsm_flash_dev.sym -d elfloader.sym -e EP1 -pf 'E1_R373_G_0E.30.49R' -o library.sym
+	python forge.py -sn -c -s gsm_flash_dev.sym -d elfloader.sym -e EP1 -pf 'E1_R373_G_0E.30.49R' -o library.sym
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])
@@ -118,6 +120,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-sa', '--sort-address', required=False, action='store_true', help=hlp['sa'])
 	parser_args.add_argument('-st', '--sort-type', required=False, action='store_true', help=hlp['st'])
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
+	parser_args.add_argument('-c', '--const', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
