@@ -199,6 +199,12 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 		if firmware == 'R373_G_0E.30.49R':
 			# Pattern: EV_BacklightContinueOn D 00000E10102E
 			patches.append('0x102FC120 D EV_BacklightContinueOn')
+		elif firmware == 'R373_G_0E.30.DAR':
+			patches.append('0x03FEB4E4 T suAllocMem')
+			patches.append('0x03FEB6EA T suFreeMem')
+			patches.append('0x03FEC954 A __rt_memclr')
+			patches.append('0x03FF0E40 A __rt_memset')
+			patches.append('0x03FF0E40 A _rt_memset')
 	elif phone == 'K1':
 		if firmware == 'R452F_G_08.03.08R':
 			# Pattern: [201490002000900190029003+0x01E8]+28
@@ -522,7 +528,7 @@ def parse_arguments() -> dict[str, any]:
 	# Build ElfPack v1.0 and libraries to the phone/firmware (+'Elf' directory patch).
 	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -o build
 	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.79R -o build
-	python ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -c -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat -pf E1_R373_G_0E.30.DAR -o build
 	python ep1_portkit.py -c -r -t -pf K1_R452F_G_08.03.08R -o build
 	python ep1_portkit.py -c -r -t -pf L6_R3511_G_0A.52.45R_A -o build
 	python ep1_portkit.py -c -r -t -pf L6i_R3443H1_G_0A.65.0BR -o build

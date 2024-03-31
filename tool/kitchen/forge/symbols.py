@@ -211,16 +211,20 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 		if len(model_patches) > 0:
 			model_library_patched: LibraryModel = []
 			model_library_original: LibraryModel = dump_sym_file_to_library_model(in_p, True)
+			if not model_library_original:
+				logging.error('Original library model is empty.')
+				return False
 
 			# Apply all patches.
 			for addr_original, mode_original, name_original in model_library_original:
+				index: int = 0
 				for addr_patch, mode_patch, name_patch in model_patches:
 					if name_patch.strip() == name_original.strip():
 						patched_sym: str = combine_sym_str(addr_patch, mode_patch, name_patch)
 						original_sym: str = combine_sym_str(addr_original, mode_original, name_original)
 						if (addr_patch != addr_original) or (mode_patch != mode_original):
 							logging.info(f'Will apply "{original_sym}" => "{patched_sym}" patch.')
-							model_library_patched.append((addr_patch, mode_patch, name_patch))
+							model_library_patched[index] = (addr_patch, mode_patch, name_patch)
 						else:
 							logging.warning(f'Patch "{original_sym}" => "{patched_sym}" already applied.')
 					else:
@@ -230,6 +234,7 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 								name_is_present = True
 						if not name_is_present:
 							model_library_patched.append((addr_original, mode_original, name_original))
+					index = len(model_library_patched) - 1
 
 			# Add missing patches as symbols.
 			for addr_patch, mode_patch, name_patch in model_patches:
