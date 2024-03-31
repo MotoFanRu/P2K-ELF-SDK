@@ -11,6 +11,7 @@ Date: 15-Dec-2023
 Version: 1.0
 """
 
+import re
 import logging
 
 from pathlib import Path
@@ -546,7 +547,9 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 				logging.error('Unknown ElfPack version.')
 				return False
 
-			phone, firmware = parse_phone_firmware(directory.name, False)
+			# Drop all "_testX", "_testXX" slugs from name.
+			pfw_chunk: str = re.sub(r'_test\d+', '', directory.name)
+			phone, firmware = parse_phone_firmware(pfw_chunk, False)
 
 			# Create Libraries.
 			if check_files_if_exists([sym_file], False):
@@ -599,7 +602,9 @@ def libgen_resort_syms(sort: LibrarySort, e: ElfPack) -> bool:
 				logging.error(f'Unknown ElfPack version: "{e.name}".')
 				return False
 
-			phone, firmware = parse_phone_firmware(directory.name, False)
+			# Drop all "_testX", "_testXX" slugs from name.
+			pfw_chunk: str = re.sub(r'_test\d+', '', directory.name)
+			phone, firmware = parse_phone_firmware(pfw_chunk, False)
 			version: str = libgen_version()
 
 			# Resort Symbols files.
