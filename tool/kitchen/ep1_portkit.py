@@ -397,13 +397,12 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		logging.info('')
 
 	val_register_sym: Path = opts['output'] / 'Register.sym'
-	if not opts['precached']:
-		logging.info('Generating register symbols file.')
-		val_register_pat: Path = opts['output'] / 'Register.pat'
-		if not generate_register_sym(val_combined_sym, opts['fw_file'], opts['inject'], val_register_pat, val_register_sym):
-			logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
-			return False
-		logging.info('')
+	logging.info('Generating register symbols file.')
+	val_register_pat: Path = opts['output'] / 'Register.pat'
+	if not generate_register_sym(val_combined_sym, opts['fw_file'], opts['inject'], val_register_pat, val_register_sym):
+		logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
+		return False
+	logging.info('')
 
 	logging.info('Generating system information C-source file.')
 	val_system_info_c: Path = opts['output'] / 'SysInfo.c'
@@ -419,8 +418,6 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
 	if opts['new_obj']:
 		val_object_path = forge.P2K_DIR_EP1_OBJ / 'new'
-	# if opts['compile']:
-	# 	val_object_path = opts['output']
 	# WARNING: Order is important here!
 	val_link_objects: list[Path] = [
 		val_object_path / 'AutoRun.o',
