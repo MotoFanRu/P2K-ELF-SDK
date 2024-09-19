@@ -380,8 +380,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 					val_combined_sym
 				)
 		logging.info('')
-
-	val_combined_sym = opts['precached']
+	else:
+		val_combined_sym = opts['precached']
 
 	if not opts['precached']:
 		logging.info('Applying phone specific patches.')
