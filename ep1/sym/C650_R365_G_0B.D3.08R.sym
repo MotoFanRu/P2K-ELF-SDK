@@ -1,65 +1,32 @@
 #<SYMDEFS>#symdef-file
 # Timestamp: 19-Sep-2024 11:40 AM
 # Motorola C650, C380, V180, V220: R365_G_0B.D3.08R
-# Found by EXL and dimonp25
+# Found by EXL, dimonp25, Viktor89
 
 # We can use APP_CALC_MainRegister just like APP_SyncML_MainRegister
 0x10115620 T APP_SyncML_MainRegister
 
-0x1011159C T APP_Register
-#0x100B05F6 T AFW_CreateInternalQueuedEvAux
-#0x100B062A T AFW_CreateInternalQueuedEvAuxD
-0x100B0578 T AFW_CreateInternalQueuedEvPriv
-0x100B0698 T AFW_GetEv
-0x10187604 T AFW_GenAppInstanceId
-0x10111194 T APP_HandleEventPrepost
-0x10110BFA T APP_ConsumeEv
-0x10110DA2 T APP_GetInstData
-0x10110D12 T APP_Exit
-0x101878F4 T AFW_InquireRoutingStackByRegId
-0x101874B4 T AFW_AddAppToRoutingStack
-0x10095230 T DL_FsOpenFile
-0x100952CC T DL_FsCloseFile
-0x10095442 T DL_FsReadFile
-0x10095528 T DL_FsFSeekFile
-0x100957CC T DL_FsGetFileSize
-0x10867508 T vsprintf
-0x10593444 T suLogData
-0x1056D642 T suFreeMem
-0x1056D494 T suAllocMem
-0x10867408 T strlen
 0x103C3AE0 T u_atou
+0x10095230 T DL_FsOpenFile
+0x100957CC T DL_FsGetFileSize
+0x1056D494 T suAllocMem
+0x10095442 T DL_FsReadFile
+0x100952CC T DL_FsCloseFile
+0x1056D642 T suFreeMem
+0x100B0698 T AFW_GetEv
+0x10110BFA T APP_ConsumeEv
+0x1011159C T APP_Register
+0x10111194 T APP_HandleEventPrepost
+0x101878F4 T AFW_InquireRoutingStackByRegId
+0x10187604 T AFW_GenAppInstanceId
+0x10110DA2 T APP_GetInstData
+0x101874B4 T AFW_AddAppToRoutingStack
+0x10110D12 T APP_Exit
+0x10867508 T vsprintf
+0x10867408 T strlen
+0x10593444 T suLogData
+0x10095528 T DL_FsFSeekFile
 0x10901230 A __rt_memclr
-
-0x100B06A4 T AFW_GetEvCode
-0x10111622 T APP_Start
-0x101116B2 T APP_StateExit
-0x10111464 T APP_InitAppData
-0x1011149C T APP_InitData
-0x101112BA T APP_HandleUITokenRevoked
-0x1011126C T APP_HandleUITokenGranted
-0x10110FA0 T APP_HandleEvent
-0x10110D70 T APP_ExitStateAndApp
-0x10110D12 T APP_Done
-0x10110B54 T APP_ChangeRoutingStack
-0x100B042A T AFW_AddEvNoD
-0x10187900 T AFW_IntAppGetInstData
-0x10095480 T DL_FsWriteFile
-0x100955D8 T DL_FsSeekFile
-0x100955F6 T DL_FsFDeleteFile
-0x10095660 T DL_FsDeleteFile
-0x1009570E T DL_FsFFileExist
-0x100957AA T DL_FsFileExist
-0x10095834 T DL_FsFGetFileSize
-0x109011C0 T memcmp
-0x10901218 T __16__rt_memclr
-
-0x10112A2A T APP_UtilUISDialogDelete
-0x10332F90 T UIS_Delete
-0x10332F10 T UIS_MakeContentFromString
-0x10332FA0 T UIS_CreateConfirmation
-0x100A0406 T DL_ClkGetTime
-0x100A03D0 T DL_ClkGetDate
-0x104D433C A __rt_udiv
-0x10111850 T APP_UtilChangeState
-0x10332F20 T UIS_CreateTransientNotice
+0x100B0578 T AFW_CreateInternalQueuedEvPriv
+# 0x100B05F6 T AFW_CreateInternalQueuedEvAux
+# 0x100B062A T AFW_CreateInternalQueuedEvAuxD
