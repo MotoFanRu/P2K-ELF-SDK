@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
-# Version: 2509241
-# Timestamp: 25-Sep-2024 08:08:26
+# Version: 1410241
+# Timestamp: 14-Oct-2024 10:29:37
 
 0x10901218 T __16__rt_memclr
 0x10902488 T __16_ll_cmpu
@@ -54,11 +54,19 @@
 0x10111850 T APP_UtilChangeState
 0x101118BC T APP_UtilStartTimer
 0x10112A2A T APP_UtilUISDialogDelete
+0x103A598E T DAL_UpdateDisplayRegion
+0x103A59C0 T DAL_UpdateRectangleDisplayRegion
+0x103A5958 T DAL_WriteDisplayRegion
+0x12190FF8 D display_source_buffer
+0x1009DD04 T DL_AudGetVolumeSetting
 0x1009D3B8 T DL_AudPlayTone
+0x1009DCDE T DL_AudSetVolumeSetting
 0x1009D3F0 T DL_AudStopTone
 0x100A03D0 T DL_ClkGetDate
 0x100A0406 T DL_ClkGetTime
+0x100A09CC T DL_ClkStartCyclicalTimer
 0x100A0978 T DL_ClkStartTimer
+0x100A09F6 T DL_ClkStopTimer
 0x100A0AC8 T DL_DbFeatureGetCurrentState
 0x100A0B04 T DL_DbFeatureGetValue
 0x100A0A90 T DL_DbGetFeatureAvailability
@@ -82,6 +90,7 @@
 0x100969A0 T DL_FsSSearch
 0x10096F52 T DL_FsVolumeEnum
 0x10095480 T DL_FsWriteFile
+0x100A8A58 T DL_KeyKjavaGetKeyState
 0x100B1F0A T DRM_ClearResource
 0x100B1E9E T DRM_CreateResource
 0x104D8EDC T DRM_GetCurrentLanguage
@@ -140,7 +149,15 @@
 0x103C32BA T u_strrchr
 0x103C3350 T u_strstr
 0x10901FC2 T u_utoa
+0x1058D8CE T UIS_CanvasDrawColorText
+0x1058DE8A T UIS_CanvasDrawRect
+0x1058D6E2 T UIS_CanvasGetDisplaySize
+0x1058C83A T UIS_CanvasGetWorkingArea
+0x1058D766 T UIS_CanvasSetFillColor
+0x1058D612 T UIS_CanvasSetFont
+0x1058D732 T UIS_CanvasSetForegroundColor
 0x105907D0 T UIS_CreateCharacterEditor
+0x1058C6B8 T UIS_CreateColorCanvas
 0x1059084A T UIS_CreateConfirmation
 0x10590BC0 T UIS_CreateList
 0x10590FF6 T UIS_CreateNamedList
