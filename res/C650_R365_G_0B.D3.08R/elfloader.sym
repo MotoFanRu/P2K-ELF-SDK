@@ -6,16 +6,17 @@
 # ElfPack: EP1
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
-# Version: 1410241
-# Timestamp: 14-Oct-2024 15:33:10
+# Version: 1510241
+# Timestamp: 15-Oct-2024 10:01:18
 
-0x10901218 T __16__rt_memclr
+0x03FEB6B0 T __16__rt_memclr
+0x03FEB87C T __16__rt_memset
 0x10902488 T __16_ll_cmpu
-0x10901230 A __rt_memclr
+0x03FEB6B4 A __rt_memclr
 0x03FEB6FC A __rt_memclr_w
-0x10187D0C T __rt_memcpy
-0x1090138C A __rt_memcpy_w
-0x109013FC A __rt_memset
+0x03FEB758 A __rt_memcpy
+0x03FEB810 A __rt_memcpy_w
+0x03FEB880 A __rt_memset
 0x104D4264 A __rt_sdiv
 0x104D433C A __rt_udiv
 0x10867300 A __rt_udiv10
@@ -108,7 +109,7 @@
 0x10901FDA T LdrLoadELF
 0x10901FA0 T LdrStartApp
 0x10902022 T LdrUnloadELF
-0x109011C0 T memcmp
+0x03FEB644 T memcmp
 0x1072D10C T MME_GC_playback_open_audio_play_forget
 0x10901994 T namecmp
 0x1055C964 T PFprintf

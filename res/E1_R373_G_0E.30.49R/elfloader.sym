@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 1410241
-# Timestamp: 14-Oct-2024 15:33:10
+# Version: 1510241
+# Timestamp: 15-Oct-2024 10:01:18
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
