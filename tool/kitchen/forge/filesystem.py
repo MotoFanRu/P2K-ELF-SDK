@@ -90,6 +90,8 @@ def check_files_if_exists(p_files: list[Path], log_output: bool = True) -> bool:
 
 
 def check_files_extensions(p_files: list[Path], extensions: list[str], log_output: bool = True) -> bool:
+	if any(element is None for element in p_files):
+		return False
 	checked_files: dict[Path, bool] = {}
 	for file_path in p_files:
 		checked_files[file_path] = False
