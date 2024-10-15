@@ -1,5 +1,5 @@
 #<SYMDEFS>#symdef-file
-# Timestamp: 19-Sep-2024 11:40 AM
+# Timestamp: 15-Oct-2024 10:01:18
 # Motorola C650, C380, V180, V220: R365_G_0B.D3.08R
 # Found by EXL, dimonp25, Viktor89
 
@@ -26,7 +26,7 @@
 0x10867408 T strlen
 0x10593444 T suLogData
 0x10095528 T DL_FsFSeekFile
-0x10901230 A __rt_memclr
+0x03FEB6B4 A __rt_memclr
 0x100B0578 T AFW_CreateInternalQueuedEvPriv
 # 0x100B05F6 T AFW_CreateInternalQueuedEvAux
 # 0x100B062A T AFW_CreateInternalQueuedEvAuxD
