@@ -7,11 +7,11 @@
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
 # Version: 1510241
-# Timestamp: 15-Oct-2024 10:01:18
+# Timestamp: 15-Oct-2024 10:49:53
 
 0x03FEB6B0 T __16__rt_memclr
 0x03FEB87C T __16__rt_memset
-0x10902488 T __16_ll_cmpu
+0x1090248C T __16_ll_cmpu
 0x03FEB6B4 A __rt_memclr
 0x03FEB6FC A __rt_memclr_w
 0x03FEB758 A __rt_memcpy
@@ -20,7 +20,7 @@
 0x104D4264 A __rt_sdiv
 0x104D433C A __rt_udiv
 0x10867300 A __rt_udiv10
-0x1090248C A _ll_cmpu
+0x10902490 A _ll_cmpu
 0x101874B4 T AFW_AddAppToRoutingStack
 0x100B046E T AFW_AddEvEvD
 0x100B042A T AFW_AddEvNoD
