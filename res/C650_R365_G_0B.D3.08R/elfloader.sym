@@ -7,11 +7,12 @@
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
 # Version: 1410241
-# Timestamp: 14-Oct-2024 10:29:37
+# Timestamp: 14-Oct-2024 15:33:10
 
 0x10901218 T __16__rt_memclr
 0x10902488 T __16_ll_cmpu
 0x10901230 A __rt_memclr
+0x03FEB6FC A __rt_memclr_w
 0x10187D0C T __rt_memcpy
 0x1090138C A __rt_memcpy_w
 0x109013FC A __rt_memset
@@ -149,20 +150,40 @@
 0x103C32BA T u_strrchr
 0x103C3350 T u_strstr
 0x10901FC2 T u_utoa
+0x1058E07A T UIS_CanvasDrawArc
+0x1058E362 T UIS_CanvasDrawColorSoftkey
 0x1058D8CE T UIS_CanvasDrawColorText
+0x1058DD88 T UIS_CanvasDrawLine
+0x1058DCE0 T UIS_CanvasDrawPixel
+0x1058E13E T UIS_CanvasDrawPoly
 0x1058DE8A T UIS_CanvasDrawRect
+0x1058E280 T UIS_CanvasDrawRoundRect
+0x1058F32C T UIS_CanvasDrawTitleBar
+0x1058F4FC T UIS_CanvasDrawTitleBarWithIcon
+0x1058DF58 T UIS_CanvasFillRect
+0x1058D742 T UIS_CanvasGetBackgroundColor
+0x1058E352 T UIS_CanvasGetColor
 0x1058D6E2 T UIS_CanvasGetDisplaySize
+0x1058D760 T UIS_CanvasGetFillColor
+0x1058D72C T UIS_CanvasGetForegroundColor
+0x1058D78C T UIS_CanvasGetLineWidth
+0x1058CBDA T UIS_CanvasGetStringSize
 0x1058C83A T UIS_CanvasGetWorkingArea
+0x1058D750 T UIS_CanvasSetBackgroundColor
 0x1058D766 T UIS_CanvasSetFillColor
 0x1058D612 T UIS_CanvasSetFont
 0x1058D732 T UIS_CanvasSetForegroundColor
+0x1058D794 T UIS_CanvasSetLineWidth
 0x105907D0 T UIS_CreateCharacterEditor
 0x1058C6B8 T UIS_CreateColorCanvas
+0x1058C7A0 T UIS_CreateColorCanvasWithWallpaper
 0x1059084A T UIS_CreateConfirmation
 0x10590BC0 T UIS_CreateList
 0x10590FF6 T UIS_CreateNamedList
+0x1059103E T UIS_CreateNotice
 0x10591436 T UIS_CreateSelectionEditor
 0x10590C18 T UIS_CreateStaticList
+0x1059252A T UIS_CreateStaticSelectionEditor
 0x10591562 T UIS_CreateTransientNotice
 0x105915B0 T UIS_CreateViewer
 0x10591754 T UIS_Delete
