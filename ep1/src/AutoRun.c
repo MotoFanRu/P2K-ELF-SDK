@@ -18,7 +18,7 @@ void AutorunMain(void)
     // Placeholder for replaced RegFn
     //UtilLogStringData("ElfLdr start pre");
     //DL_AudPlayTone(10, 3);
-    PFprintf(" ****** ELFPack test ******");
+    UtilLogStringData(" ****** ELFPack test ******");
 //    return;
     
     APP_SyncML_MainRegister();
