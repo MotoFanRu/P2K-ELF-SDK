@@ -237,7 +237,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
-		'opts_all':       ['-DFTR_K3'],
+		'opts_all':       ['-DFTR_K3', '-cpu', '5TEJ'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
@@ -422,11 +422,13 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Compiling C-source files using ADS compiler.')
-	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True, ['-DEP1'])
+	c_flags: list[str] = ['-DEP1']
+	c_flags.extend(opts['opts_all'])
+	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True, c_flags)
 	if opts['compile']:
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, ['-DEP1'])
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, ['-DEP1'])
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, ['-DEP1'])
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, c_flags)
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, c_flags)
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, c_flags)
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
@@ -584,6 +586,7 @@ class Args(argparse.ArgumentParser):
 
 		opts['precached'] = variants['precached']
 		opts['use_afw_wraps'] = variants['use_afw_wraps']
+		opts['opts_all'] = variants['opts_all']
 
 		opts['drive'] = variants['drive_patch']
 
