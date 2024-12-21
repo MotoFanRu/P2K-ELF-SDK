@@ -7,7 +7,7 @@
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
 # Version: 2112241
-# Timestamp: 21-Dec-2024 18:28:08
+# Timestamp: 21-Dec-2024 21:43:03
 
 0xA1531878 T __16_ll_cmpu
 0xA123E9CC A __ll_mullu
@@ -38,8 +38,13 @@
 0xA06CF884 T APP_Exit
 0xA06CF8E0 T APP_ExitStateAndApp
 0xA06CF90C T APP_GetInstData
+0xA06CFA7E T APP_HandleEvent
 0xA06CFCC0 T APP_HandleEventPrepost
+0xA06CFD98 T APP_HandleUITokenGranted
+0xA06CFDE2 T APP_HandleUITokenRevoked
+0xA06CFFAE T APP_InitAppData
 0xA06D00D4 T APP_Register
+0xA06D014E T APP_Start
 0xA0A531E8 T APP_UtilAddEvChangeListPosition
 0xA0A5336E T APP_UtilChangeState
 0xA0A533CE T APP_UtilStartTimer
