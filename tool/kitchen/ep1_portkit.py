@@ -429,11 +429,12 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
 	if opts['new_obj']:
 		val_object_path = forge.P2K_DIR_EP1_OBJ / 'new'
+	val_efl_path: Path = (val_object_path / 'argonlv' if opts['phone'] in forge.P2K_ARGONLV_PHONES else val_object_path)
 	# WARNING: Order is important here!
 	val_link_objects: list[Path] = [
 		val_object_path / 'AutoRun.o',
 		val_object_path / 'ElfLoaderApp.o',
-		val_object_path / 'ElfLoader.o',
+		val_efl_path / 'ElfLoader.o',
 		val_system_info_o,
 		forge.P2K_DIR_EP1_LIB / 'libarm_small.a',
 		val_combined_sym
