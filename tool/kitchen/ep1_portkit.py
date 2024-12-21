@@ -239,7 +239,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R261171LD_U_99.51.06R': {
 		'opts_all':       ['-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
 		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
