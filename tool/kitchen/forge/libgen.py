@@ -24,6 +24,7 @@ from .constants import P2K_EP2_API_DEF
 from .constants import P2K_SDK_CONSTS_H
 from .constants import P2K_TOOL_POSTLINK
 from .constants import P2K_DIR_TOOL_KITCHEN
+from .constants import P2K_ARGONLV_PHONES
 from .hexer import int2hex
 from .hexer import hex2int
 from .hexer import hex2hex
@@ -49,15 +50,16 @@ from .types import LibrarySort
 
 
 def libgen_version() -> str:
-	# TODO: What is '1' in the end?
+	# TODO: What is '1' in the end? Epoch?
 	return datetime.now().strftime('%d%m%y') + '1'
 
 
-def ep1_normalize_address(address: int, translate_data: bool) -> tuple[str, int]:
+def ep1_normalize_address(address: int, argonlv: bool) -> tuple[str, int]:
+	data_shift: int = 0xC0000000 if argonlv else 0x30000000
 	if address == 0xFFFFFFFF:
 		return 'D', 0xFFFFFFFF
-	if (address > 0x30000000) and translate_data:
-		return 'D', (address - 0x30000000)
+	if address > data_shift:
+		return 'D', (address - data_shift)
 	else:
 		if address % 2 == 0:
 			return 'A', address
@@ -86,8 +88,9 @@ def ep1_libgen_model(p_sym_lib: Path, sort: LibrarySort) -> tuple[str, LibraryMo
 	return None
 
 
-def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> bool:
+def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str, argonlv: bool) -> bool:
 	entry_count: int = len(model)
+	data_shift: int = 0xC0000000 if argonlv else 0x30000000
 	if entry_count > 0:
 		with p_bin_lib.open(mode='wb') as f_o:
 			f_o.write(entry_count.to_bytes(4, byteorder='big'))
@@ -99,7 +102,7 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str) -> 
 					if mode == 'T':
 						address_int += 0x00000001
 					elif mode == 'D':
-						address_int += 0x30000000
+						address_int += data_shift
 					f_o.write(offset.to_bytes(4, byteorder='big'))
 					try:
 						address_value_to_write = address_int.to_bytes(4, byteorder='big')
@@ -213,7 +216,7 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, phone: str, 
 				logging.info(f'Library is valid, "cnt={cnt}", "len_e={len_e}", "len_n={len_n}" are equal.')
 				model: LibraryModel = []
 				for i in range(0, cnt):
-					mode, address = ep1_normalize_address(ent[i][1], not phone.startswith('K3'))  # Second is address.
+					mode, address = ep1_normalize_address(ent[i][1], phone in P2K_ARGONLV_PHONES)  # Second is address.
 					entry: tuple[str, str, str] = (int2hex(address), mode, ent_names[i])
 					if address == 0xFFFFFFFF:
 						logging.warning(f'Overflowed value on "{entry}" entry.')
@@ -558,7 +561,7 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 					if e == ElfPack.EP1:
 						functions, library_model = ep1_libgen_model(sym_file, sort)
 						if functions and library_model:
-							if not ep1_libgen_library(lib_file, library_model, functions):
+							if not ep1_libgen_library(lib_file, library_model, functions, phone in P2K_ARGONLV_PHONES):
 								return False
 						else:
 							return False

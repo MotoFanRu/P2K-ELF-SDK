@@ -75,7 +75,10 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 
 			if mode == Mode.PHONE_LIBRARY:
 				logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
-				return forge.log_result(forge.ep1_libgen_library(args.output, library_model, functions))
+				phone, firmware = args.phone_fw
+				return forge.log_result(
+					forge.ep1_libgen_library(args.output, library_model, functions, phone in forge.P2K_ARGONLV_PHONES)
+				)
 			elif mode == Mode.ASSEMBLER_LISTING:
 				logging.info(f'Will create "{args.output}" assembly listing from "{args.source}" symbols file.')
 				return forge.log_result(forge.ep1_libgen_asm(args.output, library_model))

@@ -515,7 +515,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	)
 	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
 	forge.ep1_libgen_asm(val_library_asm, library_model)
-	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions)
+	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions, opts['phone'] in forge.P2K_ARGONLV_PHONES)
 	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, opts['phone'], opts['fw_name'])
 	logging.info('')
 
