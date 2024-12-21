@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: L7e
 # Firmware: R452D_G_08.01.0AR
-# Version: 2704241
-# Timestamp: 27-Apr-2024 01:42:32
+# Version: 2112241
+# Timestamp: 21-Dec-2024 10:45:14
 
 0x00000069 C AUDIO_STATUS
 0x00000612 C BEGIN_4A__IN_DB
