@@ -423,18 +423,23 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Compiling C-source files using ADS compiler.')
 	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True, ['-DEP1'])
+	if opts['compile']:
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, ['-DEP1'])
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, ['-DEP1'])
+		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, ['-DEP1'])
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
 	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
 	if opts['new_obj']:
 		val_object_path = forge.P2K_DIR_EP1_OBJ / 'new'
-	val_efl_path: Path = (val_object_path / 'argonlv' if opts['phone'] in forge.P2K_ARGONLV_PHONES else val_object_path)
+	if opts['compile']:
+		val_object_path = opts['output']
 	# WARNING: Order is important here!
 	val_link_objects: list[Path] = [
 		val_object_path / 'AutoRun.o',
 		val_object_path / 'ElfLoaderApp.o',
-		val_efl_path / 'ElfLoader.o',
+		val_object_path / 'ElfLoader.o',
 		val_system_info_o,
 		forge.P2K_DIR_EP1_LIB / 'libarm_small.a',
 		val_combined_sym
@@ -558,6 +563,7 @@ class Args(argparse.ArgumentParser):
 
 		opts['verbose'] = args.verbose
 		opts['clean'] = args.clean
+		opts['compile'] = args.compile
 		opts['ram_trans'] = args.ram_trans
 		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output
@@ -597,6 +603,7 @@ def parse_arguments() -> dict[str, any]:
 		'n': 'use new object files',
 		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
+		'z': 'compile objects from sources',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -620,7 +627,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -c -r -t -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -c -r -t -pf Z3_R452H6_G_08.00.05R -o build
 	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build
-	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build
+	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build -z
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -t -n -pf E1_R373_G_0E.30.49R -o build
@@ -639,6 +646,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
 	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
+	parser_args.add_argument('-z', '--compile', required=False, action='store_true', help=hlp['z'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 

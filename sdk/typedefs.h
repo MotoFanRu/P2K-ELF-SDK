@@ -94,7 +94,8 @@ typedef UINT32				UIS_COLOR_T;
 enum FREE_BUF_FLAG_ENUM
 {
 	FBF_FREE = 100,  // ОС должна освободить буффер
-	FBF_LEAVE        // Приложение должно следить за освобождением буффера
+	FBF_LEAVE,       // Приложение должно следить за освобождением буффера
+	FBF_INVALID      // Unknown
 } ;
 typedef UINT8 FREE_BUF_FLAG_T;
 

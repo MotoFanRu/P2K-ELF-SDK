@@ -27,3 +27,5 @@
 0xA123E010 A __rt_memclr
 0xA0F6D84C T AFW_CreateInternalQueuedEvAux
 0xA0F6D878 T AFW_CreateInternalQueuedEvAuxD
+
+0xA0FBB450 T DL_FsWriteFile
