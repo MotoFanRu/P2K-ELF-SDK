@@ -7,7 +7,7 @@
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
 # Version: 2112241
-# Timestamp: 21-Dec-2024 10:56:24
+# Timestamp: 21-Dec-2024 14:39:33
 
 0xA1EC0D98 T __16_ll_cmpu
 0xA123E9CC A __ll_mullu
@@ -17,9 +17,11 @@
 0xA124553C A __rt_udiv
 0xA1EC0D9C A _ll_cmpu
 0xA0F6DB08 T AFW_AddAppToRoutingStack
+0xA0F6D546 T AFW_AddEvNoD
 0xA0F6E30E T AFW_ConsumeEv
 0xA0F6D84C T AFW_CreateInternalQueuedEvAux
 0xA0F6D878 T AFW_CreateInternalQueuedEvAuxD
+0xA0F6D580 T AFW_FreeAppPortHandle
 0xA0F6DBEA T AFW_GenAppInstanceId
 0xA0F6D8A6 T AFW_GenAppRegistryId
 0xA0F6D616 T AFW_GetEv
@@ -27,9 +29,14 @@
 0xA0F6E556 T AFW_GetFromInternalQueue
 0xA0F6E570 T AFW_GetInternalQueueData
 0xA0F6ED5A T AFW_InquireRoutingStackByRegId
+0xA04D3230 T AmMemAlloc
 0xA04D31F0 T AmMemAllocPointer
+0xA04D3240 T AmMemFree
+0xA04D3210 T AmMemFreePointer
 0xA06CF796 T APP_ConsumeEv
+0xA06CF7AA T APP_Done
 0xA06CF884 T APP_Exit
+0xA06CF8E0 T APP_ExitStateAndApp
 0xA06CF90C T APP_GetInstData
 0xA06CFCC0 T APP_HandleEventPrepost
 0xA06D00D4 T APP_Register
@@ -87,8 +94,10 @@
 0xA0F93B72 T suSleep
 0xA0BF303E T u_atol
 0xA0BEF4D8 T u_atou
+0xA0BF2FA0 T u_itoa
 0xA0BF2FFC T u_itoh
 0xA0BEF354 T u_ltou
+0xA0BEA41C T u_strcat
 0xA0BF2AF0 T u_strchr
 0xA0BF2B0C T u_strcmp
 0xA0BEE086 T u_strcpy
@@ -103,6 +112,7 @@
 0xA0BF2EF6 T u_strrchr
 0xA0BF2F9C T u_strstr
 0xA0BF3758 T u_uint64tou
+0xA0BF2FA0 T u_uitoa
 0xA0BF36C0 T u_ultou
 0xA1EC08D2 T u_utoa
 0xA0BDB034 T UIS_CanvasDrawArc
