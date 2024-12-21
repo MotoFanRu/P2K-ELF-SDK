@@ -53,10 +53,10 @@ def libgen_version() -> str:
 	return datetime.now().strftime('%d%m%y') + '1'
 
 
-def ep1_normalize_address(address: int) -> tuple[str, int]:
+def ep1_normalize_address(address: int, translate_data: bool) -> tuple[str, int]:
 	if address == 0xFFFFFFFF:
 		return 'D', 0xFFFFFFFF
-	if address > 0x30000000:
+	if (address > 0x30000000) and translate_data:
 		return 'D', (address - 0x30000000)
 	else:
 		if address % 2 == 0:
@@ -213,7 +213,7 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, phone: str, 
 				logging.info(f'Library is valid, "cnt={cnt}", "len_e={len_e}", "len_n={len_n}" are equal.')
 				model: LibraryModel = []
 				for i in range(0, cnt):
-					mode, address = ep1_normalize_address(ent[i][1])  # Second is address.
+					mode, address = ep1_normalize_address(ent[i][1], not phone.startswith('K3'))  # Second is address.
 					entry: tuple[str, str, str] = (int2hex(address), mode, ent_names[i])
 					if address == 0xFFFFFFFF:
 						logging.warning(f'Overflowed value on "{entry}" entry.')

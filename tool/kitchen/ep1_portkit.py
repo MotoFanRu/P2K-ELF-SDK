@@ -235,7 +235,18 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
-	}
+	},
+	'R261171LD_U_99.51.06R': {
+		'opts_all':       ['-DFTR_K3'],
+		'addr_start':     0xA0080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'precached':      forge.P2K_DIR_EP1_SYM / 'K3_R261171LD_U_99.51.06R.sym', # Use prechached symbols file and disable any findings.
+		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
 }
 
 
@@ -608,6 +619,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -c -r -t -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -c -r -t -pf Z3_R452H6_G_08.00.05R -o build
 	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build
+	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -t -n -pf E1_R373_G_0E.30.49R -o build
