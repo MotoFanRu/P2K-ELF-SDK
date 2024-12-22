@@ -1,33 +1,11 @@
 #ifndef ELFLOADER_H
 #define ELFLOADER_H
 
-//#define EP1
-#include <apps.h>
-#include <loader.h>
-#include <utilities.h>
-#include <dl.h>
-#include <filesystem.h>
-#include <mem.h>
-#include <events.h>
-#define DL_FS_HANDLE_T FS_HANDLE_T
-#define DL_FS_COUNT_T FS_COUNT_T
-#define DL_FS_READ_MODE FILE_READ_MODE
-#define DL_FS_WRITE_MODE FILE_WRITE_MODE
-#define DL_FS_HANDLE_INVALID FS_HANDLE_INVALID
-#define DL_FS_RESULT_SUCCESS RESULT_OK
-#define DL_FS_SEEK_SET SEEK_WHENCE_SET
-#define AFW_AllocateMemory(x) suAllocMem(x, NULL)
-#define AFW_FreeAllocatedMemory suFreeMem
-#define AFW_EVENT_CODE_T EVENT_CODE_T
-#define SYN_RETURN_STATUS_T UINT32
-#define AFW_EVENT_DATA_T ADD_EVENT_DATA_T
-#define AFW_UNION_DATA_T data
-#define udata_id data_tag
-#define AFW_BUF_FLAG_INVALID FBF_INVALID
-#define AFW_BUF_FLAG_READ_ONLY FBF_LEAVE
-#define AFW_UNION_EV_DATA_ID_NULL 0
+//#include <SDK.h>
+//#include <DL_FS.h>
 
-#define LOG_FILE
+#include <typedefs.h>
+#include <mem.h>
 
 #define EVCODE_RESERVE    0x40
 #define EVCODE_BASE       0xA000
@@ -253,6 +231,7 @@ enum
 
 UINT32 loadELF( char *file_uri,  char *params,  void *Library,  UINT32 reserve );
 
+/* TODO */
 //extern int __rt_memclr(void *ptr, UINT32 cnt);
 //#define memclr(p, c) __rt_memclr(p, c)
 

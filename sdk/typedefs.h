@@ -114,6 +114,6 @@ typedef struct APPLICATION_T APPLICATION_T;
 typedef struct EVENT_STACK_T EVENT_STACK_T;
 typedef struct EVENT_T EVENT_T;
 
-
+#define WCHAR_PARAMS_MAX              (64)
 
 #endif // SDK_TYPEDEFS_H

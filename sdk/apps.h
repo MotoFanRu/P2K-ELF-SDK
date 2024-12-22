@@ -245,6 +245,14 @@ UINT32 APP_MMC_UtilRestartVariousTimers(void);
 
 UINT32 AlertStatusStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
 
+APP_ID_T AFW_GenAppInstanceId( void );
+
+UINT32 AFW_AddAppToRoutingStack(void *hefn, UINT8 fntype, AFW_APP_RSTACK_TYPE_T process_class, AFW_APP_RSTACK_POS_T pos,
+    UINT32 data_hdl, APP_ID_T app_id, REG_ID_T reg_id);
+
+APPLICATION_T *APP_GetInstData(UINT16 size, UINT8 state, REG_ID_T reg_id, APP_ID_T app_id,
+    const STATE_HANDLERS_ENTRY_T *p_state_trans_table);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

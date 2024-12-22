@@ -1,20 +1,35 @@
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Entry point and parsing "auto.run" file.
+ *
+ * Author:
+ *   Andy51, 01-Nov-2007
+ *
+ * Autorun format:
+ *   ; This is comment\r\n
+ *   <empty string>\r\n
+ *   file://a/Elf/Some.elf\r\n
+ *   file://a/Elf/Some.elf 0x1234\r\n
+ */
 
-#ifndef AUTORUN_H
-#define AUTORUN_H
+#ifndef AUTO_RUN_H
+#define AUTO_RUN_H
 
-#include "ElfLoader.h"
+#include <typedefs.h>
 
-#define PARS_DONE				0
-#define PARS_SKIP				1
-#define PARS_EOF				2
+#define PARS_DONE                      (0)
+#define PARS_SKIP                      (1)
+#define PARS_EOF                       (2)
 
-extern void  ElfLoaderStart(void);
+extern void AutorunMain(void);
+extern void ElfLoaderStart(void);
 
-void  AutorunMain(void);
+extern UINT32 ParseString(char *buf, UINT32 *pindex, W_CHAR *uri, W_CHAR *params);
+extern void SkipLine(char *buf, UINT32 *pindex);
 
-UINT32  ParseString(char* buf, UINT32* pindex, W_CHAR *uri, W_CHAR *params);
-void    SkipLine(char *buf, UINT32 *pindex);
+extern void APP_SyncML_MainRegister(void);
 
-UINT32 DL_AudPlayTone( UINT32 tone,  UINT8 volume );
-
-#endif
+#endif /* AUTO_RUN_H */

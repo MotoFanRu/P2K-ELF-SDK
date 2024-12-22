@@ -429,6 +429,11 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, c_flags)
 		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, c_flags)
 		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, c_flags)
+		forge.ep1_ads_tcc(
+			forge.P2K_DIR_EP1_SRC / 'AFW_CreateInternalQueuedEv_Wrappers.c',
+			opts['output'] / 'AFW_CreateInternalQueuedEv_Wrappers.o',
+			True, c_flags
+		)
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
