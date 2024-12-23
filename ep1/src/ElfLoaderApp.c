@@ -15,6 +15,7 @@
 #include <apps.h>
 #include <loader1.h>
 #include <utilities.h>
+#include <mem.h>
 
 static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd);
 static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd);
