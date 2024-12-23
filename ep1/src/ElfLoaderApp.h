@@ -3,7 +3,7 @@
  *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
  *
  * About:
- *   P2K wrapper for the ELF loader application.
+ *   P2K wrapper for the ELF Loader application.
  *
  * Author:
  *   Andy51, 26-Aug-2007

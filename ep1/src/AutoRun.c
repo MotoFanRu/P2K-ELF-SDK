@@ -3,12 +3,12 @@
  *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
  *
  * About:
- *   Entry point and parsing "auto.run" file.
+ *   Entry point + Autorun file parser.
  *
  * Author:
  *   Andy51, 28-Oct-2007
  *
- * Autorun format:
+ * Autorun file "auto.run" format:
  *   ; This is comment\r\n
  *   <empty string>\r\n
  *   file://a/Elf/Some.elf\r\n

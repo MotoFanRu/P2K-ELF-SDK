@@ -3,10 +3,10 @@
  *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
  *
  * About:
- *   A wrapper for AFW_CreateInternalQueuedEvAux and AFW_CreateInternalQueuedEvAuxD functions for old Motorola phones.
+ *   AFW_CreateInternalQueuedEvAux() and AFW_CreateInternalQueuedEvAuxD() functions wrapper for old Motorola P2K phones.
  *
  * Author:
- *   tim_apple, 11-Feb-2007
+ *   tim_apple, 11-Feb-2009
  */
 
 #include <apps.h>
