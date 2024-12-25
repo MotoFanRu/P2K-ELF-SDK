@@ -84,7 +84,7 @@ typedef struct {
 // Legal values for d_tag (dynamic entry type).
 #define DT_REL                         (17)                // Address of Rel relocs.
 #define DT_RELSZ                       (18)                // Total size of Rel relocs.
-#define	DT_BIND_NOW                    (24)                // Process relocations of object.
+#define DT_BIND_NOW                    (24)                // Process relocations of object.
 
 // Relocation table entry without addend (in section of type SHT_REL).
 typedef struct {

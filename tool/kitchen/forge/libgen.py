@@ -128,10 +128,10 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str, arg
 	return False
 
 
-def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
+def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel, gcc_asm: bool = False) -> bool:
 	offset_start: int = 0x10080000
 
-	header: str = """
+	header_ads: str = """
 	AREA Lib, CODE, READONLY
 	ALIGN 4
 
@@ -151,7 +151,26 @@ def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
 
 """
 
-	function_section: str = """
+	header_gcc: str = """
+.syntax unified
+.arm
+
+.align 4
+
+.section .text._start
+.global _start
+.type _start, %function
+_start:
+	stmfd   sp!, {r4-r11, lr}
+	ldr     r12, =Register
+	mov     lr, pc
+	bx      r12
+	ldmfd   sp!, {r4-r11, lr}
+	bx      lr
+	.ltorg
+"""
+
+	function_section_ads: str = """
 	AREA |f.{0}|, CODE, READONLY
 	CODE16
 {0}
@@ -163,11 +182,51 @@ def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
 	LTORG
 """
 
-	data_section: str = """
+	function_section_gcc: str = """
+.section .text.{0}
+.thumb
+.thumb_func
+.type {0}, %function
+{0}:
+	bx pc
+
+.arm
+.type {0}32, %function
+{0}32:
+	ldr   r12, ={1}
+	bx    r12
+	.ltorg
+"""
+
+	data_section_ads: str = """
 	AREA |a.{0}|, DATA, READONLY
 {0}
 	DCD    {1}
 """
+
+	data_section_gcc: str = """
+.section .data.{0}
+.type {0}, %common
+{0}:
+	.long {1}
+"""
+
+	import_section_ads: str = '\tEXPORT {0}\n'
+	import_section_gcc: str = '.global {0}\n'
+	end_section_ads: str = '\tEND\n'
+	end_section_gcc: str = '\t@END\n'
+
+	header: str = header_ads
+	function_section: str = function_section_ads
+	data_section: str = data_section_ads
+	import_section: str = import_section_ads
+	end_section: str = end_section_ads
+	if gcc_asm:
+		header = header_gcc
+		function_section = function_section_gcc
+		data_section = data_section_gcc
+		import_section = import_section_gcc
+		end_section = end_section_gcc
 
 	exports: list[str] = []
 	header: str = header.replace('\n', '', 1)
@@ -190,10 +249,10 @@ def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel) -> bool:
 			f_o.write('\n\n\n\n')
 
 			for export in exports:
-				f_o.write(f'\tEXPORT {export}\n')
+				f_o.write(import_section.format(export))
 
 			f_o.write('\n\n')
-			f_o.write('\tEND\n')
+			f_o.write(end_section)
 		return True
 	return False
 
