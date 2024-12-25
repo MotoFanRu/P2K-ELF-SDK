@@ -20,17 +20,12 @@
 #define EVCODE_LOADELF                 (EVCODE_BASE + 1)
 #define EVCODE_UNLOADELF               (EVCODE_BASE + 2)
 
-// TODO: Can I Delete this?
-// TODO: SYN_NULL
-//#define EVCODE_GETEVBASE               (EVCODE_BASE + 3)
-
 typedef struct {
 	UINT32 st_name;
 	UINT32 st_value;
 } Ldr_Sym;
 
-// TODO: ?
-#define NUM_HEADERS                    (8)
+#define MAX_PROG_HEADERS               (8)
 
 enum {
 	ELDR_SUCCESS = 0,

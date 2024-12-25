@@ -3,10 +3,10 @@
  *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
  *
  * About:
- *   A standard ELF header from the GNU C Library but truncated to the bare essentials.
+ *   A standard ELF header from the GNU C Library but truncated.
  *
  * Author:
- *   Free Software Foundation, 1995-2004
+ *   Free Software Foundation, 1995-2024
  */
 
 /* This file defines standard ELF types, structures, and macros.
@@ -39,8 +39,9 @@ typedef INT32                          Elf32_Sword;        // Signed large integ
 typedef UINT32                         Elf32_Word;         // Unsigned large integer.
 typedef UINT8                          Elf32_Byte;         // Unsigned char 8-bit integer.
 
-// The ELF file header.  This appears at the start of every ELF file.
+// The ELF file header. This appears at the start of every ELF file.
 #define EI_NIDENT                      (16)
+
 typedef struct {
 	UINT8                              e_ident[EI_NIDENT]; // Magic number and other info.
 	Elf32_Half                         e_type;             // Object file type.
@@ -121,5 +122,19 @@ typedef struct {
 	Elf32_Word                         sh_addralign;       // Section alignment.
 	Elf32_Word                         sh_entsize;         // Entry size if section holds table.
 } Elf32_Shdr;
+
+#define SHT_SYMTAB                     (2)                 // Symbol table.
+#define SHT_STRTAB                     (3)                 // String table.
+
+// How to extract and insert information held in the st_info field.
+#define ELF32_ST_BIND(val)             (((Elf32_Byte) (val)) >> 4)
+#define ELF32_ST_TYPE(val)             ((val) & 0x0F)
+
+// Legal values for ST_BIND subfield of st_info (symbol binding).
+#define STB_GLOBAL                     (1)                 // Global symbol.
+
+// Legal values for ST_TYPE subfield of st_info (symbol type).
+#define STT_OBJECT                     (1) // Symbol is a data object.
+#define STT_FUNC                       (2) // Symbol is a code object.
 
 #endif /* ELF_H */

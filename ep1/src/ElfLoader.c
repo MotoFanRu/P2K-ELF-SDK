@@ -24,10 +24,6 @@ extern const char n_platform[];
 extern const char n_majorfw[];
 extern const char n_minorfw[];
 
-// TODO delete this.
-#define AFW_AllocateMemory(x) suAllocMem(x, NULL)
-#define AFW_FreeAllocatedMemory suFreeMem
-
 UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	UINT32          i;
 	UINT32          j;
@@ -36,7 +32,8 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	FS_COUNT_T      read;
 
 	Elf32_Ehdr      elfHeader;
-	Elf32_Phdr      elfProgramHeaders[NUM_HEADERS];
+	// EXL, 25-Dec-2024: It's set to 8, but there are only 2 in ELFs compiled with ADS.
+	Elf32_Phdr      elfProgramHeaders[MAX_PROG_HEADERS];
 
 	Elf32_Addr      virtBase;           // = NULL;
 	Elf32_Addr      physBase;           // = NULL;
@@ -77,24 +74,19 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 	UtilLogStringData("ElfLdr Load Request %s", file_uri);
 
-	// EXL, 23-Dec-2024: Copy ELF uri to WCHAR string then open ELF file.
+	// EXL, 23-Dec-2024: Copy ELF uri to WCHAR string then open ELF and read ELF header.
 	u_atou((const char *) file_uri, wstr);
-
 	file = DL_FsOpenFile((WCHAR *) wstr, FILE_READ_MODE, 0);
 	if (file == FS_HANDLE_INVALID) {
 		return ELDR_OPEN_FAILED;
 	}
-
-	// EXL, 23-Dec-2024: First blood, read ELF header!
 	if (DL_FsReadFile((void *) &elfHeader, sizeof(Elf32_Ehdr), 1, file, &read) != RESULT_OK) {
 		return ELDR_READ_HEADER_FAILED;
 	}
 
 	UtilLogStringData(
 		"Elf is loading...\n\nELF header:\n  e_entry  0x%X\n  e_phoff  0x%X\n  e_phnum  %d\n\n",
-		elfHeader.e_entry,
-		elfHeader.e_phoff,
-		elfHeader.e_phnum
+		elfHeader.e_entry, elfHeader.e_phoff, elfHeader.e_phnum
 	);
 
 	// EXL, 24-Dec-2024: ~0 is 0xFFFFFFFF.
@@ -107,25 +99,20 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		if (DL_FsFSeekFile(file, elfHeader.e_phoff + (i * elfHeader.e_phentsize), SEEK_WHENCE_SET) != RESULT_OK) {
 			return ELDR_SEEK_FAILED;
 		}
-
 		if (DL_FsReadFile((void *) &elfProgramHeaders[i], sizeof(Elf32_Phdr), 1, file, &read) != RESULT_OK) {
 			return ELDR_READ_FAILED;
 		}
 
 		UtilLogStringData(
 			"Segment #%d:\n  p_type  %d\n  p_vaddr  0x%X\n  p_memsz  0x%X\n",
-			i,
-			elfProgramHeaders[i].p_type,
-			elfProgramHeaders[i].p_vaddr,
-			elfProgramHeaders[i].p_memsz
+			i, elfProgramHeaders[i].p_type, elfProgramHeaders[i].p_vaddr, elfProgramHeaders[i].p_memsz
 		);
 
-		// EXL, 24-Dec-2024: Set a lower [<======>] upper memory addresses for segments.
+		// EXL, 24-Dec-2024: Set a lower [<======>] upper memory addresses for program segments.
 		if (elfProgramHeaders[i].p_type == PT_LOAD) {
 			if (elfProgramHeaders[i].p_vaddr < virtBase) {
 				virtBase = elfProgramHeaders[i].p_vaddr;
 			}
-
 			if ((elfProgramHeaders[i].p_vaddr + elfProgramHeaders[i].p_memsz) > upperAddr) {
 				upperAddr = elfProgramHeaders[i].p_vaddr + elfProgramHeaders[i].p_memsz;
 			}
@@ -135,31 +122,28 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		sumSize += elfProgramHeaders[i].p_filesz;
 	}
 
-	// EXL, 24-Dec-2024: Allocate RAM memory for sections then clear it.
+	// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
 	physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
 	memclr((void *) physBase, upperAddr - virtBase);
 
 	UtilLogStringData(
 		"\nFinished analysis:\n  Virtual Base  0x%X\n  Mem Needed  0x%X\n  Upper Address  0x%X\n  "
 		"Summary Mem  0x%X\n  Summary Size  0x%X\n  Physical Base  0x%X\n\n",
-		virtBase,
-		upperAddr - virtBase,
-		upperAddr,
-		sumMem,
-		sumSize,
-		physBase
+		virtBase, upperAddr - virtBase, upperAddr, sumMem, sumSize, physBase
 	);
 
-	// EXL, 24-Dec-2024: Read and deploy segments to RAM.
+	// EXL, 24-Dec-2024: Read and deploy the program segments from ELF to RAM.
+	//   #define PT_LOAD                        (1)                 // Loadable program segment.
+	//   #define PT_DYNAMIC                     (2)                 // Dynamic linking information.
 	for (i = 0; i < elfHeader.e_phnum; i++) {
 		switch(elfProgramHeaders[i].p_type) {
 			case PT_LOAD:
-				// EXL, 24-Dec-2024: Read program segments with executable code to RAM.
+				// EXL, 24-Dec-2024: Seek and read program segments with executable code to RAM.
+				//   We interested in PT_LOAD and PT_DYNAMIC program sections.
 				if (DL_FsFSeekFile(file, elfProgramHeaders[i].p_offset, SEEK_WHENCE_SET) != RESULT_OK) {
 					suFreeMem((void *) physBase);
 					return ELDR_SEEK_FAILED;
 				}
-
 				if (
 					DL_FsReadFile(
 						(void *) (physBase + elfProgramHeaders[i].p_vaddr - virtBase),
@@ -172,21 +156,17 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 				UtilLogStringData(
 					"  Segment #%d loading  0x%X  0x%d\n\n",
-					i,
-					physBase + elfProgramHeaders[i].p_vaddr - virtBase,
-					elfProgramHeaders[i].p_filesz
+					i, physBase + elfProgramHeaders[i].p_vaddr - virtBase, elfProgramHeaders[i].p_filesz
 				);
 				break;
 			case PT_DYNAMIC:
-				// EXL, 24-Dec-2024: Read dynamic segment with tag functions and addresses.
+				// EXL, 24-Dec-2024: Seek and read dynamic section with tag functions and addresses.
 				dynSegment = (Elf32_Addr) suAllocMem(elfProgramHeaders[i].p_filesz, NULL);
-
 				if (DL_FsFSeekFile(file, elfProgramHeaders[i].p_offset, SEEK_WHENCE_SET) != RESULT_OK) {
 					suFreeMem((void *) physBase);
 					suFreeMem((void *) dynSegment);
 					return ELDR_SEEK_FAILED;
 				}
-
 				if (DL_FsReadFile((void *) dynSegment, elfProgramHeaders[i].p_filesz, 1, file, &read) != RESULT_OK) {
 					suFreeMem((void *) physBase);
 					suFreeMem((void *) dynSegment);
@@ -210,7 +190,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 				relTable = (Elf32_Rel *) (dynSegment + dynTags[DT_REL] - elfProgramHeaders[i].p_vaddr);
 
-				// EXL, 24-Dec-2024: Read dynamic segment with tag functions and addresses.
+				// EXL, 24-Dec-2024: Translate dynamic section with tag functions to a real memory addresses.
 				for (j = 0; j * sizeof(Elf32_Rel) < dynTags[DT_RELSZ]; j++) {
 					// EXL, 24-Dec-2024: Only last byte of UINT32 r_info is relType.
 					relType = ELF32_R_TYPE(relTable[j].r_info);
@@ -230,91 +210,74 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		}
 	}
 
-	if (dynSegment != NULL)	{
+	if (dynSegment != NULL) {
 		suFreeMem((void *) dynSegment);
 	}
 
-	// Правка API вызовов
+	// Andy51, 01-Nov-2007: editing API calls.
+	// EXL, 24-Dec-2024: Library format is following:
+	//   4-byte integer: record count
+	//   record array[] elements { offset_function_name_in_strings_array, function_address }
+	//   record array[] elements { function_name, '\0' }
 
-	/*/////WIN32 Chunk/////////
-	FILE		*flib;
-	flib = fopen("library.bin", "rb");
-	fread(&ldrNumSymbols, sizeof(int), 1, flib);
-	fread(&ldrStrTableSize, sizeof(int), 1, flib);
+	ldrNumSymbols = ((UINT32 *) Library)[0];
+	ldrSymTable   = (Ldr_Sym *) &((UINT32 *) Library)[1];
+	ldrStrTable   = (char *) &ldrSymTable[ldrNumSymbols]; // EXL, 24-Dec-2024: Empty for now.
 
-	ldrSymTable = (Ldr_Sym*)malloc(sizeof(Ldr_Sym)*ldrNumSymbols);
-	fread(ldrSymTable, sizeof(Ldr_Sym), ldrNumSymbols, flib);
-
-	ldrStrTable = (char*)malloc(sizeof(char)*ldrStrTableSize);
-	fread(ldrStrTable, sizeof(char), ldrStrTableSize, flib);
-	fclose(flib);
-*//////////////////////////
-
-	ldrNumSymbols = ((UINT32*)Library)[0];
-	//ldrStrTableSize = ((UINT32*)Library)[1];
-	ldrSymTable = (Ldr_Sym*)&((UINT32*)Library)[1];
-	ldrStrTable = (char*)&ldrSymTable[ldrNumSymbols];
-
-	///////////////////////////
-
-
-	// Загружаем elfSymTable и elfStrTable
-	for( i=0; i<elfHeader.e_shnum; i++ )
-	{
-		if( DL_FsFSeekFile(file, elfHeader.e_shoff + i*elfHeader.e_shentsize, SEEK_WHENCE_SET) != RESULT_OK)
-		{
-			AFW_FreeAllocatedMemory((void*)physBase);
+	// Andy51, 01-Nov-2007: Load elfSymTable and elfStrTable.
+	// EXL, 25-Dec-2024: Go to the ELF sections and parse them. We interested in SHT_SYMTAB and SHT_STRTAB only.
+	//   #define SHT_SYMTAB                     (2)                 // Symbol table.
+	//   #define SHT_STRTAB                     (3)                 // String table.
+	for (i = 0; i < elfHeader.e_shnum; i++) {
+		// EXL, 25-Dec-2024: Seek and read other ELF sections.
+		//   We interested in SHT_SYMTAB and SHT_STRTAB sections.
+		if (DL_FsFSeekFile(file, elfHeader.e_shoff + i * elfHeader.e_shentsize, SEEK_WHENCE_SET) != RESULT_OK) {
+			suFreeMem((void *) physBase);
 			return ELDR_SEEK_FAILED;
 		}
-		if( DL_FsReadFile((void*)&elfSectionHeader, sizeof(Elf32_Shdr), 1, file, &read) != RESULT_OK )
-		{
-			AFW_FreeAllocatedMemory((void*)physBase);
+		if (DL_FsReadFile((void *) &elfSectionHeader, sizeof(Elf32_Shdr), 1, file, &read) != RESULT_OK) {
+			suFreeMem((void *) physBase);
 			return ELDR_READ_FAILED;
 		}
 
-		UtilLogStringData("Section #%d:\n  sh_type %d\n  sh_offset 0x%X\n  sh_size  0x%X\n",
-						  i,
-						  elfSectionHeader.sh_type,
-						  elfSectionHeader.sh_offset,
-						  elfSectionHeader.sh_size );
+		UtilLogStringData(
+			"Section #%d:\n  sh_type %d\n  sh_offset 0x%X\n  sh_size  0x%X\n",
+			i, elfSectionHeader.sh_type, elfSectionHeader.sh_offset, elfSectionHeader.sh_size
+		);
 
-#define SHT_SYMTAB 2 //The section holds a symbol table.
-#define SHT_STRTAB 3 //The section holds a string table.
-		if(elfSectionHeader.sh_type == SHT_SYMTAB)
-		{
-			elfSymTable = (Elf32_Sym*)AFW_AllocateMemory(elfSectionHeader.sh_size);
-			if( DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK )
-			{
-				AFW_FreeAllocatedMemory((void*)physBase);
-				if(elfSymTable) AFW_FreeAllocatedMemory(elfSymTable);
-				if(elfStrTable) AFW_FreeAllocatedMemory(elfStrTable);
+		if (elfSectionHeader.sh_type == SHT_SYMTAB) {
+			// EXL, 25-Dec-2024: Alloc memory in RAM for Symbol table section then seek and read it.
+			elfSymTable = (Elf32_Sym *) suAllocMem(elfSectionHeader.sh_size, NULL);
+			if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				if (elfSymTable) { suFreeMem(elfSymTable); }
+				if (elfStrTable) { suFreeMem(elfStrTable); }
 				return ELDR_SEEK_FAILED;
 			}
-			if( DL_FsReadFile(elfSymTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK )
-			{
-				AFW_FreeAllocatedMemory((void*)physBase);
-				if(elfSymTable) AFW_FreeAllocatedMemory(elfSymTable);
-				if(elfStrTable) AFW_FreeAllocatedMemory(elfStrTable);
+			if (DL_FsReadFile(elfSymTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				if (elfSymTable) { suFreeMem(elfSymTable); }
+				if (elfStrTable) { suFreeMem(elfStrTable); }
 				return ELDR_READ_FAILED;
 			}
 
-			elfNumSymbols = elfSectionHeader.sh_size >> 4; // / sizeof(Elf32_Sym);
-		}
-		else if( (elfSectionHeader.sh_type == SHT_STRTAB) && (i != elfHeader.e_shstrndx) )
-		{
-			elfStrTable = (char*)AFW_AllocateMemory(elfSectionHeader.sh_size);
-			if( DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK )
-			{
-				AFW_FreeAllocatedMemory((void*)physBase);
-				if(elfSymTable) AFW_FreeAllocatedMemory(elfSymTable);
-				if(elfStrTable) AFW_FreeAllocatedMemory(elfStrTable);
+			// Andy51, 01-Nov-2007: sizeof(Elf32_Sym) here.
+			// EXL, 25-Dec-2024: Count of sizeof(Elf32_Sym) elements in SHT_SYMTAB section.
+			elfNumSymbols = elfSectionHeader.sh_size >> 4;
+		} else if ((elfSectionHeader.sh_type == SHT_STRTAB) && (i != elfHeader.e_shstrndx)) {
+			// EXL, 25-Dec-2024: Alloc memory in RAM for String table section then seek and read it.
+			//   We want to skip last SHT_STRTAB section because it containts not function names but ELF section names.
+			elfStrTable = (char *) suAllocMem(elfSectionHeader.sh_size, NULL);
+			if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				if (elfSymTable) { suFreeMem(elfSymTable); }
+				if (elfStrTable) { suFreeMem(elfStrTable); }
 				return ELDR_SEEK_FAILED;
 			}
-			if( DL_FsReadFile(elfStrTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK )
-			{
-				AFW_FreeAllocatedMemory((void*)physBase);
-				if(elfSymTable) AFW_FreeAllocatedMemory(elfSymTable);
-				if(elfStrTable) AFW_FreeAllocatedMemory(elfStrTable);
+			if (DL_FsReadFile(elfStrTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				if (elfSymTable) { suFreeMem(elfSymTable); }
+				if (elfStrTable) { suFreeMem(elfStrTable); }
 				return ELDR_READ_FAILED;
 			}
 
@@ -322,69 +285,57 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		}
 	}
 
-#define ELF32_ST_BIND(i) ((i)>>4)
-#define ELF32_ST_TYPE(i) ((i)&0xf)
-#define ELF32_ST_INFO(b,t) (((b)<<4)+((t)&0xf))
+	UtilLogStringData(
+		"API Calls Fix Start:  ldrStrTable 0x%X  ldrSymTable 0x%X  ldrNumSymbols %d",
+		ldrStrTable, ldrSymTable, ldrNumSymbols
+	);
 
-#define STB_LOCAL 0
-#define STB_GLOBAL 1
-#define STB_WEAK 2
+	// Andy51, 01-Nov-2007: We look for matches and replace addresses.
+	// EXL, 25-Dec-2024: We interested in global functions and data constants values.
+	for (i = 0; i < elfNumSymbols; i++) {
+		if (
+			(ELF32_ST_BIND(elfSymTable[i].st_info) == STB_GLOBAL) &&
+				((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_FUNC) ||
+				((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_OBJECT) && (elfSymTable[i].st_size == 0)))
+		) {
+			UtilLogStringData(
+				"Possible entry:  i %d  st_name %d  name %s",
+				i, elfSymTable[i].st_name, &elfStrTable[elfSymTable[i].st_name]
+			);
 
-#define STT_OBJECT 1
-#define STT_FUNC 2
+			// EXL, 25-Dec-2024: Iterate over library entities.
+			for (j = 0; j < ldrNumSymbols; j++) {
+				if (namecmp(&elfStrTable[elfSymTable[i].st_name], &ldrStrTable[ldrSymTable[j].st_name]) == TRUE) {
+					UtilLogStringData(
+						"API Call #%d:\n  addr 0x%X\n  old 0x%X\n  new 0x%X\n",
+						i, elfSymTable[i].st_value,
+						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)),
+						ldrSymTable[j].st_value
+					);
 
-
-	UtilLogStringData("API Calls Fix Start:  ldrStrTable 0x%X  ldrSymTable 0x%X  ldrNumSymbols %d",
-					  ldrStrTable,
-					  ldrSymTable,
-					  ldrNumSymbols);
-
-	// Ищем совпадения и подменяем адреса
-	for( i=0; i<elfNumSymbols; i++ )
-	{
-		if( (ELF32_ST_BIND(elfSymTable[i].st_info)==STB_GLOBAL) &&
-			( (ELF32_ST_TYPE(elfSymTable[i].st_info)==STT_FUNC) ||
-			 ( (ELF32_ST_TYPE(elfSymTable[i].st_info)==STT_OBJECT) && (elfSymTable[i].st_size==0) ) ) )
-		{
-			UtilLogStringData("Possible entry:  i %d  st_name %d  name %s", i, elfSymTable[i].st_name, &elfStrTable[elfSymTable[i].st_name]);
-			for(j=0; j<ldrNumSymbols; j++ )
-			{
-				//UtilLogStringData("FOR:  j %d st_name", j, ldrSymTable[j].st_name);
-				if(namecmp(&elfStrTable[elfSymTable[i].st_name], &ldrStrTable[ldrSymTable[j].st_name]) == 1)
-				{
-					UtilLogStringData("API Call #%d:\n  addr 0x%X\n  old 0x%X\n  new 0x%X\n",
-									  i,
-									  elfSymTable[i].st_value,
-									  *((UINT32*)(physBase + elfSymTable[i].st_value - virtBase)),
-									  ldrSymTable[j].st_value );
-
-					if(ldrSymTable[j].st_value>0x30000000) *((UINT32*)(physBase + elfSymTable[i].st_value - virtBase)) = ldrSymTable[j].st_value-0x30000000;
-					else *((UINT32*)(physBase + elfSymTable[i].st_value - virtBase + 0xC)) = ldrSymTable[j].st_value;
+					// EXL, 25-Dec-2024: Separate data constants from function addresses.
+					if (ldrSymTable[j].st_value > 0x30000000) {
+						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)) =
+							ldrSymTable[j].st_value - 0x30000000;
+					} else {
+						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase + 0x0C)) =
+							ldrSymTable[j].st_value;
+					}
 				}
 			}
 		}
 	}
 
-	AFW_FreeAllocatedMemory(elfStrTable);
-	AFW_FreeAllocatedMemory(elfSymTable);
+	// EXL, 25-Dec-2024: Free Symbol and String tables and close ELF file.
+	suFreeMem(elfStrTable);
+	suFreeMem(elfSymTable);
 	DL_FsCloseFile(file);
 
-	/*/////WIN32 Chunk/////////
-    f = fopen("loaded.bin", "wb");
-    fwrite((void*)physBase, upperAddr-virtBase, 1, f);
-    fclose(f);
-
-    free((void*)physBase);
-*/////////////////////////
-	// START IT!
-
 	UtilLogStringData(" Starting ELF at 0x%X with reserve = 0x%X", physBase + elfHeader.e_entry - virtBase, reserve);
-	((Entry)(physBase + elfHeader.e_entry - virtBase))( file_uri, params, reserve );
 
-	/*if( ((Entry)(physBase + elfHeader.e_entry - virtBase))(file_uri, *reserve, param) == 1)
-    { //Start immediately
-        AFW_AddEvNoD(p_evg, *evcode_base);
-    }*/
+	// EXL, 25-Dec-2024: Start ELF from the "e_entry" address, "start" stub which call "Register" ELF entry point.
+	((Entry) (physBase + elfHeader.e_entry - virtBase))(file_uri, params, reserve);
+
 	UtilLogStringData(" ELF returned");
 
 	return ELDR_SUCCESS;
@@ -482,7 +433,7 @@ char *u_utoa(const W_CHAR *from_utf16be_str, char *to_ansi_str) {
 }
 
 // EXL, 23-Dec-2024: Send log to P2K Data Logger utility.
-void UtilLogStringData(const char*  format, ...) {
+void UtilLogStringData(const char *format, ...) {
 	char buffer[255];
 	va_list vars;
 
@@ -490,8 +441,10 @@ void UtilLogStringData(const char*  format, ...) {
 	vsprintf(buffer, format, vars);
 	va_end(vars);
 
-	// TODO:???
-	// EXL, 23-Dec-2024: 0x5151 is????
+	// EXL, 23-Dec-2024:
+	//   0      - SU_PORT_LOG_ALWAYS
+	//   0x5151 - MESSAGE ID
+	//   1      - MESSAGE COUNT
 	suLogData(0, 0x5151, 1, strlen(buffer) + 1, buffer);
 }
 
