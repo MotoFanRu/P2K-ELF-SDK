@@ -25,7 +25,9 @@
 const W_CHAR autorun_uri[] = L"file://b/Elf/auto.run";
 
 // EXL, 22-Dec-2024: This pragma is needed for proper sorting.
+#if !defined(__GNUC__)
 #pragma arm section code = "Header"
+#endif
 void AutorunMain(void) {
 	FS_HANDLE_T file;
 	FS_COUNT_T count;

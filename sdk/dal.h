@@ -8,11 +8,21 @@
 #include "canvas.h"
 
 
+#if defined(FTR_C650)
+#define DISPLAY_WIDTH		128
+#define DISPLAY_HEIGHT		128
+#elif defined(FTR_L6)
+#define DISPLAY_WIDTH		128
+#define DISPLAY_HEIGHT		160
+#else
 #define DISPLAY_WIDTH		176
 #define DISPLAY_HEIGHT		220
+#endif
+#define DISPLAY_BPP			16
+#define DISPLAY_BYTESPP		2
 
-// Макрос для преобразования трёх 8-битных компонент цвета в формат 565
-#define ATI_565RGB(r,g,b) (UINT32)((r&0xf8)<<8 | (g&0xFC)<<3 | (b&0xf8)>>3)
+// Макрос для преобразования трёх 8-битных компонент цвета в формат RGB565
+#define ATI_565RGB(r, g, b) (UINT32) ((r & 0xf8) << 8 | (g & 0xFC) << 3 | (b & 0xf8) >> 3)
 
 enum DISPLAY_TYPE_ENUM
 {
@@ -53,13 +63,16 @@ AHIDEVCONTEXT_T DAL_GetDeviceContext( DISPLAY_TYPE_T display );
 /* Возвращает текущую системную поверхность рисования */
 AHISURFACE_T DAL_GetDrawingSurface( DISPLAY_TYPE_T display );
 
-
-
-// рисовать bitmap 444 на экране
+// рисовать bitmap на экране
 BOOL DAL_WriteDisplayRegion(	GRAPHIC_REGION_T*	upd_region,
-								UINT16				*src_buf,	// RGB444
+								UINT16				*src_buf,	// RGB444, RGB565
 								DISPLAY_TYPE_T		display,	// тип экрана
 								BOOL				check_mask);
+
+/* C650 Additional DAL functions. */
+BOOL DAL_UpdateDisplayRegion(GRAPHIC_REGION_T *upd_region, UINT16 *src_buf);
+/* This one is can be used to relative bitmap displaing on the screen. */
+BOOL DAL_UpdateRectangleDisplayRegion(GRAPHIC_REGION_T *upd_region, UINT16 *src_buf, DISPLAY_TYPE_T display);
 
 // получить пиксел
 UINT16 *DAL_GetDisplayPixelAddress(	UINT8			buf_type,	//тип буффера = NULL
