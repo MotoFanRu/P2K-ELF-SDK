@@ -88,6 +88,8 @@ from .libgen import ep2_libgen_resort
 from .libgen import ep2_libgen_chunk_sym
 from .libgen import ep2_libgen_names_sym
 from .libgen import determine_sort_mode
+from .libgen import ep1_libgen_get_library_sym
+from .libgen import ep2_libgen_get_library_sym
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa
@@ -108,7 +110,6 @@ from .symbols import split_and_validate_line
 from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
 from .symbols import dump_library_model_to_sym_file
-from .symbols import split_syms
 
 from .types import ElfPack
 from .types import ElfPacks

@@ -747,3 +747,18 @@ def determine_sort_mode(args: Namespace) -> LibrarySort:
 	elif args.sort_type:
 		return LibrarySort.MODE
 	return LibrarySort.NONE
+
+
+def libgen_get_library_sym(pfw: tuple[str, str], library_name: str) -> Path | None:
+	library: Path = P2K_DIR_LIB / '_'.join(pfw) / library_name
+	if check_files_if_exists([library]):
+		return library
+	return None
+
+
+def ep1_libgen_get_library_sym(pfw: tuple[str, str]) -> Path | None:
+	return libgen_get_library_sym(pfw, 'elfloader.sym')
+
+
+def ep2_libgen_get_library_sym(pfw: tuple[str, str]) -> Path | None:
+	return libgen_get_library_sym(pfw, 'library.sym')

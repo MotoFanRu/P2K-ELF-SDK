@@ -392,12 +392,16 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 				)
 		logging.info('')
 	else:
-		forge.split_syms(
-			opts['precached'],
-			forge.P2K_DIR_EP1_DEF / ('NeededFunctionsWraps.def' if opts['use_afw_wraps'] else 'NeededFunctions.def'),
-			val_combined_sym,
-			opts['phone'], opts['fw_name'], 'EP1', forge.libgen_version()
-		)
+		val_source_file: Path = forge.ep1_libgen_get_library_sym(opts['pfw'])
+		if not forge.check_files_if_exists([val_source_file]):
+			self.error(f'cannot find {sym_source_file} file with entity addresses')
+		selection: list[str] = forge.ep1_libgen_names_sym(forge.P2K_DIR_EP1_DEF / 'NeededFunctions.def')
+		if opts['use_afw_wraps']:
+			selection.append('AFW_CreateInternalQueuedEvPriv')
+		else:
+			selection.append('AFW_CreateInternalQueuedEvAux')
+			selection.append('AFW_CreateInternalQueuedEvAuxD')
+		forge.ep1_libgen_chunk_sym(val_source_file, val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
 
 	if not opts['precached']:
 		logging.info('Applying phone specific patches.')
@@ -592,6 +596,7 @@ class Args(argparse.ArgumentParser):
 		opts['soc'] = forge.determine_soc(opts['start'])
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
+		opts['pfw'] = args.phone_fw
 
 		opts['inject'] = variants['func_inject']
 

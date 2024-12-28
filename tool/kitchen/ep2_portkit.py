@@ -459,7 +459,7 @@ class Args(argparse.ArgumentParser):
 		variants: dict[str, any] = EP2_PFW_VARIANTS.get(firmware, None)
 		if not variants:
 			self.error(f'unknown {phone} phone and {firmware} firmware')
-		sym_source_file: Path = forge.P2K_DIR_LIB / '_'.join(args.phone_fw) / 'elfloader.sym'
+		sym_source_file: Path = forge.ep2_libgen_get_library_sym(args.phone_fw)
 		if not forge.check_files_if_exists([sym_source_file]):
 			self.error(f'cannot find {sym_source_file} file with entity addresses')
 
