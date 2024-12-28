@@ -245,7 +245,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'precached':      forge.P2K_DIR_LIB / 'K3_R261171LD_U_99.51.06R' / 'elfloader.sym',
-		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 }
 
@@ -522,16 +522,18 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Patch resulting binaries.')
 	d: str = forge.str2hex(opts["drive"])
-	# file://b/Elf/elfloader.lib
+	# "file://b/Elf/elfloader.lib" or "/b/Elf/elfloader.lib" for the Argon.
 	# Pattern: 66696C653A2F2F622F456C662F656C666C6F616465722E6C6962
 	po1: str = '66696C653A2F2F622F456C662F656C666C6F616465722E6C6962'
 	pn1: str = f'66696C653A2F2F{d}2F456C662F656C666C6F616465722E6C6962'
-	forge.patch_binary_file_res(val_elfpack_bin, po1, pn1)
-	# f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n.
+	pa1: str = f'2F{d}2F456C662F656C666C6F616465722E6C6962000000000000'
+	forge.patch_binary_file_res(val_elfpack_bin, po1, pa1 if opts['argon'] else pn1)
+	# "f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n." or "/.b./.E.l.f./.a.u.t.o...r.u.n." for the Argon.
 	# Pattern: 660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00
 	po2: str = '660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00'
 	pn2: str = f'660069006C0065003A002F002F00{d}002F0045006C0066002F006100750074006F002E00720075006E00'
-	forge.patch_binary_file_res(val_elfpack_bin, po2, pn2)
+	pa2: str = f'2F00{d}002F0045006C0066002F006100750074006F002E00720075006E00000000000000000000000000'
+	forge.patch_binary_file_res(val_elfpack_bin, po2, pa2 if opts['argon'] else pn2)
 	logging.info('')
 
 	logging.info('Creating Flash&Backup 3 patches.')
@@ -643,6 +645,8 @@ class Args(argparse.ArgumentParser):
 		opts['clean'] = args.clean
 		opts['compile'] = args.compile
 		opts['gcc'] = args.gcc
+		if args.gcc and not args.compile:
+			self.error(f'cannot use "-y" flag (GCC) without "-z" flag (Compile)')
 		opts['ram_trans'] = args.ram_trans
 		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output

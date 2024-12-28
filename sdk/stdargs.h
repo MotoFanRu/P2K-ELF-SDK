@@ -22,10 +22,9 @@ typedef __builtin_va_list *va_list;
 #define va_start(a, b)                 { __builtin_va_list tmp; __builtin_va_start(tmp, b); a = &tmp; }
 #define va_end(a)                      __builtin_va_end(*a)
 
-//
-//#if defined(EA1 || USE_GCC_VA_ARGS)
-//#include <stdarg2.h>
-//#endif
+#if defined(EA1) || defined(USE_GCC_VA_ARGS)
+#include <stdarg2.h>
+#endif
 
 // Windows (EmuElf)
 #elif defined( WIN32 )
