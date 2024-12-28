@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 2112241
-# Timestamp: 21-Dec-2024 21:43:03
+# Version: 2812241
+# Timestamp: 28-Dec-2024 23:26:04
 
 0xA1531878 T __16_ll_cmpu
 0xA123E9CC A __ll_mullu
@@ -45,6 +45,7 @@
 0xA06CFFAE T APP_InitAppData
 0xA06D00D4 T APP_Register
 0xA06D014E T APP_Start
+0xA08F0C0E T APP_SyncML_MainRegister
 0xA0A531E8 T APP_UtilAddEvChangeListPosition
 0xA0A5336E T APP_UtilChangeState
 0xA0A533CE T APP_UtilStartTimer
@@ -165,4 +166,3 @@
 0xA0BE4776 T uisFreeMemory
 0xA1530D70 T UtilLogStringData
 0xA123D158 T vsprintf
-0xA08F0C0E T APP_SyncML_MainRegister

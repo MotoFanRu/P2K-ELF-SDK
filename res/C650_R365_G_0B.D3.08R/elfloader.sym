@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
-# Version: 2112241
-# Timestamp: 21-Dec-2024 21:43:03
+# Version: 2812241
+# Timestamp: 28-Dec-2024 23:26:04
 
 0x03FEB6B0 T __16__rt_memclr
 0x03FEB87C T __16__rt_memset
@@ -50,6 +50,7 @@
 0x1011159C T APP_Register
 0x10111622 T APP_Start
 0x101116B2 T APP_StateExit
+0x10115620 T APP_SyncML_MainRegister
 0x101116CC T APP_UtilAddEvChangeListPosition
 0x10111756 T APP_UtilAddEvUISListChange
 0x101117B2 T APP_UtilAddEvUISListData
@@ -196,4 +197,3 @@
 0x105CC206 T uisFreeMemory
 0x10901958 T UtilLogStringData
 0x10867508 T vsprintf
-0x10115620 T APP_SyncML_MainRegister
