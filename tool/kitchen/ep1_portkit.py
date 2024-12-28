@@ -576,6 +576,7 @@ class Args(argparse.ArgumentParser):
 		opts['verbose'] = args.verbose
 		opts['clean'] = args.clean
 		opts['compile'] = args.compile
+		opts['gcc'] = args.gcc
 		opts['ram_trans'] = args.ram_trans
 		opts['new_obj'] = args.new_obj
 		opts['output'] = args.output
@@ -617,6 +618,7 @@ def parse_arguments() -> dict[str, any]:
 		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'z': 'compile objects from sources',
+		'y': 'use GCC for compilation',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -640,7 +642,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -c -r -t -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -c -r -t -pf Z3_R452H6_G_08.00.05R -o build
 	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build
-	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build -z
+	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build -z -y
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -c -r -t -n -pf E1_R373_G_0E.30.49R -o build
@@ -660,6 +662,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
 	parser_args.add_argument('-z', '--compile', required=False, action='store_true', help=hlp['z'])
+	parser_args.add_argument('-y', '--gcc', required=False, action='store_true', help=hlp['y'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
