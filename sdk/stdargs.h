@@ -11,7 +11,9 @@
 
 // GCC (ElfPack v2.0)
 #elif defined( __GNUC__ )
-
+#if defined(EA1) || defined(USE_GCC_VA_ARGS)
+#include <stdarg2.h>
+#else
 // TODO!
 //typedef int *va_list[1];
 //#define va_start(ap, parmN) (void)(*(ap) = (int*)(&parmN + 1))
@@ -21,9 +23,6 @@
 typedef __builtin_va_list *va_list;
 #define va_start(a, b)                 { __builtin_va_list tmp; __builtin_va_start(tmp, b); a = &tmp; }
 #define va_end(a)                      __builtin_va_end(*a)
-
-#if defined(EA1) || defined(USE_GCC_VA_ARGS)
-#include <stdarg2.h>
 #endif
 
 // Windows (EmuElf)
