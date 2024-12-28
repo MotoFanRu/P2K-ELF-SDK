@@ -12,11 +12,12 @@ Version: 1.0
 """
 
 
-def hex2int(hex_value: str, size: int = 8) -> int:
-	if not hex_value.startswith('0x'):
-		raise ValueError(f'value "{hex_value}" should starts with a "0x" prefix')
-	if len(hex_value) != (size + 2):
-		raise ValueError(f'value "{hex_value}" should be in the "{size} + 2" format like "0x000012FF", "0x12FF" digit')
+def hex2int(hex_value: str, size: int = 8, strict: bool = True) -> int:
+	if strict:
+		if not hex_value.startswith('0x'):
+			raise ValueError(f'value "{hex_value}" should starts with a "0x" prefix')
+		if len(hex_value) != (size + 2):
+			raise ValueError(f'value "{hex_value}" should be in "{size} + 2" format like "0x000012FF", "0x12FF" digit')
 	try:
 		return int(hex_value, 16)
 	except ValueError:

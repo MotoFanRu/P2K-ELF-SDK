@@ -36,6 +36,12 @@ from .toolchain import ep1_ads_fromelf
 from .toolchain import ep1_ads_armasm
 from .toolchain import ep1_ads_armar
 from .toolchain import ep1_ads_armlink_scatter
+from .toolchain import ep2_gcc_gcc
+from .toolchain import ep2_gcc_link
+from .toolchain import ep2_gcc_objcopy
+from .toolchain import ep2_gcc_nm
+from .toolchain import ep2_gcc_ar
+from .toolchain import toolchain_compile
 
 from .filesystem import delete_all_files_in_directory
 from .filesystem import check_files_if_exists
@@ -110,6 +116,8 @@ from .symbols import split_and_validate_line
 from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
 from .symbols import dump_library_model_to_sym_file
+from .symbols import dump_sym_file_to_library_model
+from .symbols import convert_nm_to_sym
 
 from .types import ElfPack
 from .types import ElfPacks

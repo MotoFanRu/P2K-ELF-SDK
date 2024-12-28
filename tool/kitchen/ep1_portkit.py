@@ -287,14 +287,24 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 
 
 # Various generators.
-def generate_lib_sym(p_i_f: Path, p_i_e: Path, p_o_l: Path, names_skip: list[str], patterns_add: list[str]) -> bool:
+def generate_lib_sym(
+	p_i_f: Path, p_i_e: Path, p_o_l: Path,
+	names_skip: list[str], patterns_add: list[str],
+	names_skip_pattern: bool = False
+) -> bool:
 	if forge.check_files_if_exists([p_i_f, p_i_e]):
 		with (p_i_f.open(mode='r') as i_f, p_i_e.open(mode='r') as i_s, p_o_l.open(mode='w', newline='\r\n') as o_l):
 			o_l.write(f'{forge.ADS_SYM_FILE_HEADER}\n')
 			o_l.write('# SYMDEFS ADS HEADER\n\n')
 			for line in i_f.read().splitlines():
 				address, mode, name = forge.split_and_validate_line(line)
-				if (name is not None) and (name not in names_skip):
+				found: bool = False
+				if names_skip_pattern:
+					if name is not None:
+						for add in names_skip:
+							if name.find(add) != -1:
+								found = True
+				if (name is not None) and (not found) if names_skip_pattern else (name not in names_skip):
 					o_l.write(f'{line}\n')
 			o_l.write('\n\n')
 			for line in i_s.read().splitlines():
@@ -402,6 +412,9 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			selection.append('AFW_CreateInternalQueuedEvAux')
 			selection.append('AFW_CreateInternalQueuedEvAuxD')
 		forge.ep1_libgen_chunk_sym(val_source_file, val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
+		if opts['gcc']:
+			functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
+			forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True)
 
 	if not opts['precached']:
 		logging.info('Applying phone specific patches.')
@@ -430,18 +443,37 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	generate_system_information_source(opts['phone'], opts['fw_name'], opts['soc'], val_system_info_c)
 	logging.info('')
 
-	logging.info('Compiling C-source files using ADS compiler.')
-	c_flags: list[str] = ['-DEP1']
+	c_flags: list[str] =  ['-DEA1'] if opts['argon'] else ['-DEP1']
 	c_flags.extend(opts['opts_all'])
-	forge.ep1_ads_tcc(val_system_info_c, val_system_info_o, True, c_flags)
+	gcc: bool = opts['gcc']
+	if gcc:
+		logging.info('Compiling S-source and C-source files using GCC compiler.')
+	else:
+		logging.info('Compiling C-source files using ADS compiler.')
+	forge.toolchain_compile(val_system_info_c, val_system_info_o, True, c_flags, opts['gcc'], opts['argon'])
 	if opts['compile']:
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, c_flags)
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, c_flags)
-		forge.ep1_ads_tcc(forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, c_flags)
-		forge.ep1_ads_tcc(
+		if opts['gcc']:
+			forge.toolchain_compile(
+				opts['output'] / 'Lib.S', opts['output'] / 'Lib.o', True, c_flags,
+				opts['gcc'], opts['argon']
+			)
+		forge.toolchain_compile(
+			forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, c_flags,
+			opts['gcc'], opts['argon']
+		)
+		forge.toolchain_compile(
+			forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, c_flags,
+			opts['gcc'], opts['argon']
+		)
+		forge.toolchain_compile(
+			forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, c_flags,
+			opts['gcc'], opts['argon']
+		)
+		forge.toolchain_compile(
 			forge.P2K_DIR_EP1_SRC / 'AFW_CreateInternalQueuedEv_Wrappers.c',
 			opts['output'] / 'AFW_CreateInternalQueuedEv_Wrappers.o',
-			True, c_flags
+			True, c_flags,
+			opts['gcc'], opts['argon']
 		)
 	logging.info('')
 
@@ -457,18 +489,35 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_object_path / 'ElfLoaderApp.o',
 		val_object_path / 'ElfLoader.o',
 		val_system_info_o,
-		forge.P2K_DIR_EP1_LIB / 'libarm_small.a',
-		val_combined_sym
 	]
+	if not opts['gcc']:
+		val_link_objects.append(forge.P2K_DIR_EP1_LIB / 'libarm_small.a')
+		val_link_objects.append(val_combined_sym)
+	else:
+		val_link_objects.append(val_object_path / 'Lib.o')
 	if opts['use_afw_wraps']:
 		val_link_objects.insert(3, Path(val_object_path / 'AFW_CreateInternalQueuedEv_Wrappers.o'))
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
 	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
-	if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym):
-		logging.error(f'Cannot link "{val_elfpack_elf}" executable file.')
-		return False
-	forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
+	if not opts['gcc']:
+		if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym):
+			logging.error(f'Cannot link "{val_elfpack_elf}" executable file using ADS.')
+			return False
+		forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
+	else:
+		val_ld_script_tpl = forge.P2K_DIR_EP1_TPL / 'ElfPack.tpl'
+		val_ld_script_org = opts['output'] / 'ElfPack.ld'
+		forge.patch_text_file_template(
+			val_ld_script_tpl, val_ld_script_org,
+			{'%addr_entry%' : forge.int2hex(opts['address']) }
+		)
+		if not forge.ep2_gcc_link(val_link_objects, val_elfpack_elf, True, val_ld_script_org, None, opts['argon']):
+			logging.error(f'Cannot link "{val_elfpack_elf}" executable file using GCC.')
+			return False
+		forge.ep2_gcc_objcopy(val_elfpack_elf, val_elfpack_bin)
+		forge.ep2_gcc_nm(val_elfpack_elf, opts['output'] / 'ElfPack.nm')
+		forge.convert_nm_to_sym(opts['output'] / 'ElfPack.nm', opts['output'] / 'ElfPack.sym')
 	logging.info('')
 
 	logging.info('Patch resulting binaries.')
@@ -528,24 +577,37 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Creating ElfPack v1.0 library for Phone.')
 	val_library_sym: Path = opts['output'] / 'Lib.sym'
-	val_library_asm: Path = opts['output'] / 'Lib.asm'
+	val_library_asm: Path = opts['output'] / ('LibGCC.S' if opts['gcc'] else 'Lib.asm')
 	val_elfloader_lib: Path = opts['output'] / 'elfloader.lib'
-	generate_lib_sym(
-		val_combined_sym, val_elfpack_sym, val_library_sym,
-		[opts['inject'], 'APP_CALC_MainRegister', '_region_table'],
-		['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
-	)
+	if not opts['gcc']:
+		generate_lib_sym(
+			val_combined_sym, val_elfpack_sym, val_library_sym,
+			[opts['inject'], 'APP_CALC_MainRegister', '_region_table'],
+			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
+		)
+	else:
+		generate_lib_sym(
+			forge.ep1_libgen_get_library_sym(opts['pfw']), val_elfpack_sym, val_library_sym,
+			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'],
+			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'],
+			True
+		)
 	functions, library_model = forge.ep1_libgen_model(val_library_sym, forge.LibrarySort.NAME)
-	forge.ep1_libgen_asm(val_library_asm, library_model)
-	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions, opts['phone'] in forge.P2K_ARGONLV_PHONES)
+	forge.ep1_libgen_asm(val_library_asm, library_model, opts['gcc'])
+	forge.ep1_libgen_library(val_elfloader_lib, library_model, functions, opts['argon'])
 	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, opts['phone'], opts['fw_name'])
 	logging.info('')
 
 	logging.info('Compiling ElfPack v1.0 library for SDK.')
-	val_library_obj: Path = opts['output'] / 'Lib.o'
-	val_libstd_static_lib: Path = opts['output'] / 'libstd.a'
-	forge.ep1_ads_armasm(val_library_asm, val_library_obj)
-	forge.ep1_ads_armar([val_library_obj], val_libstd_static_lib)
+	val_library_obj: Path = opts['output'] / ('LibGCC.o' if opts['gcc'] else 'Lib.o')
+	val_libstd_static_lib: Path = opts['output'] / ('libstdgcc.a' if opts['gcc'] else 'libstd.a')
+	if not opts['gcc']:
+		forge.ep1_ads_armasm(val_library_asm, val_library_obj)
+		forge.ep1_ads_armar([val_library_obj], val_libstd_static_lib)
+	else:
+		forge.toolchain_compile(val_library_asm, val_library_obj, True, c_flags, opts['gcc'], opts['argon'])
+		forge.ep2_gcc_ar([val_library_obj], val_libstd_static_lib)
+
 	logging.info('')
 
 	logging.info('ElfPack v1.0 building report:')
@@ -597,6 +659,7 @@ class Args(argparse.ArgumentParser):
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
 		opts['pfw'] = args.phone_fw
+		opts['argon'] = phone in forge.P2K_ARGONLV_PHONES
 
 		opts['inject'] = variants['func_inject']
 

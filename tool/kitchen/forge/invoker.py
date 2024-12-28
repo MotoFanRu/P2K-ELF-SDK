@@ -19,14 +19,20 @@ from pathlib import Path
 from .filesystem import check_files_if_exists
 
 
-def invoke_external_system_command(arguments: list[str]) -> int:
+def invoke_external_system_command(arguments: list[str], stdout_output: Path = None) -> int:
 	command: str = ' '.join(arguments)
 
 	logging.info('Will execute external system command:')
 	logging.info(f'{command}')
 	logging.info('')
 
-	result: int = subprocess.run(arguments).returncode
+	if stdout_output:
+		status = subprocess.run(arguments, stdout=subprocess.PIPE)
+		stdout_output.write_text(status.stdout.decode('utf-8'))
+	else:
+		status = subprocess.run(arguments)
+
+	result: int = status.returncode
 
 	logging.info('Result:')
 	logging.info(f'{result}')
@@ -40,7 +46,7 @@ def invoke_custom_arguments(custom_flags: list[str] | None = None) -> list[str]:
 	return custom_flags
 
 
-def invoke_external_command_res(p_in: list[Path], arguments: list[str]) -> bool:
+def invoke_external_command_res(p_in: list[Path], arguments: list[str], stdout_output: Path = None) -> bool:
 	if check_files_if_exists(p_in):
-		return invoke_external_system_command(arguments) == 0
+		return invoke_external_system_command(arguments, stdout_output) == 0
 	return False

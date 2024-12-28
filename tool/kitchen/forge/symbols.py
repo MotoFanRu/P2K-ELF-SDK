@@ -25,21 +25,22 @@ from .filesystem import check_files_extensions
 from .utilities import get_current_datetime_formatted
 
 
-def split_and_validate_line(line: str) -> Symbol:
+def split_and_validate_line(line: str, strict: bool = True) -> Symbol:
 	try:
 		modes: set[str] = {'A', 'C', 'D', 'T'}
 		line: str = line.strip()
 		if len(line) != 0 and not line.startswith('#'):
 			address, mode, name = line.split()
 			if mode != 'C':
-				hex2int(address)
+				hex2int(address, strict=strict)
 			if mode in modes:
 				if len(name.strip()) >= 1:
 					return address, mode, name
 				else:
 					raise ValueError(f'Too short or empty function name of "{address} {mode} {name}" entry.')
 			else:
-				raise ValueError(f'Unknown mode here: "{address} {mode} {name}", available only "{modes}" modes.')
+				if strict:
+					raise ValueError(f'Unknown mode here: "{address} {mode} {name}", available only "{modes}" modes.')
 	except ValueError as error:
 		logging.debug(f'Parse error: "{error}".')
 	return None, None, None
@@ -133,7 +134,7 @@ def dump_library_model_to_sym_file(model: LibraryModel, out_p: Path, phone: str,
 	return False
 
 
-def dump_sym_file_to_library_model(in_p: Path, validate: bool = False) -> LibraryModel | None:
+def dump_sym_file_to_library_model(in_p: Path, validate: bool = False, strict: bool = True) -> LibraryModel | None:
 	if not check_files_if_exists([in_p], False):
 		return None
 	if validate:
@@ -143,7 +144,7 @@ def dump_sym_file_to_library_model(in_p: Path, validate: bool = False) -> Librar
 		model: LibraryModel = []
 		with in_p.open(mode='r') as f_i:
 			for line in f_i.read().splitlines():
-				address, mode, name = split_and_validate_line(line)
+				address, mode, name = split_and_validate_line(line, strict)
 				if (address is not None) and (mode is not None) and (name is not None):
 					model.append((hex2hex(address, 8), mode, name))
 			return model
@@ -255,3 +256,22 @@ def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: 
 			logging.error('List of patches is empty.')
 
 	return False
+
+
+def convert_nm_to_sym(in_p: Path, out_p: Path) -> bool:
+	if not check_files_if_exists([in_p], False):
+		return False
+	try:
+		model: LibraryModel = []
+		with in_p.open(mode='r') as f_i, out_p.open(mode='w', newline='\r\n') as f_o:
+			for line in f_i.read().splitlines():
+				address, mode, name = split_and_validate_line(line, False)
+				if (address is not None) and (mode is not None) and (name is not None):
+					model.append((hex2hex(address, 8), mode, name))
+			if model:
+				for addr, mode, name in model:
+						line: str = f'{addr} {mode} {name}'
+						f_o.write(line + '\n')
+	except OSError as error:
+		logging.error(f'Cannot parse "{in_p}" symbols file and write "{out_p}" file: {error}')
+	return None
