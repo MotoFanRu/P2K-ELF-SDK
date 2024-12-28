@@ -108,6 +108,7 @@ from .symbols import split_and_validate_line
 from .symbols import validate_sym_file
 from .symbols import get_function_address_from_sym_file
 from .symbols import dump_library_model_to_sym_file
+from .symbols import split_syms
 
 from .types import ElfPack
 from .types import ElfPacks

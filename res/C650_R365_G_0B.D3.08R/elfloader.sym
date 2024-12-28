@@ -196,3 +196,4 @@
 0x105CC206 T uisFreeMemory
 0x10901958 T UtilLogStringData
 0x10867508 T vsprintf
+0x10115620 T APP_SyncML_MainRegister

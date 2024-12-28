@@ -201,6 +201,25 @@ def combine_sym_str(addr: str, mode: str, name: str) -> str:
 	return f'{addr} {mode} {name}'
 
 
+def split_syms(in_p: Path, what_p: Path, out_p: Path, phone: str, fw: str, ep: str, ver: str) -> bool:
+	if check_files_if_exists([in_p, what_p]) and check_files_extensions([in_p, what_p], ['sym', 'def']):
+		library: LibraryModel = dump_sym_file_to_library_model(in_p, True)
+		symbols: LibraryModel = dump_sym_file_to_library_model(what_p, False)
+		output:  LibraryModel = []
+		for addr, mode, name in symbols:
+			found: bool = False
+			for a, m, n in library:
+				if name == n:
+					output.append((a, m, n))
+					found = True
+			if not found:
+				logging.error(f'Cannot find "{name}" in library!')
+				return False
+		dump_library_model_to_sym_file(output, out_p, phone, fw, ep, ver)
+		return True
+	return False
+
+
 def replace_syms(patches: list[str], in_p: Path, phone: str, firmware: str, ep: str, version: str) -> bool:
 	if check_files_if_exists([in_p]) and check_files_extensions([in_p], ['sym']):
 		model_patches: LibraryModel = []
