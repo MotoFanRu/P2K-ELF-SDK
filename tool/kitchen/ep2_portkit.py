@@ -55,8 +55,8 @@ EP2_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		# Ram_398_l7 D [80A842B0D1062006+0x26]+0x10.
 		'a_ram': 0x12502538   # At least ~0x400 free bytes block in RAM.
 	},
-	'R373_G_0E.30.DAR': {
-		'fw':    forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
+	'R373_G_0E.30.DAR_test16': {
+		'fw':    forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test16.smg',
 		'o_gen': ['-DDEBUG', '-DFTR_E1', '-DFTR_PHONE_NAME="E1"', '-DFTR_PHONE_PLATFORM="LTE"'],
 		'o_kbd': ['-DFTR_KEYPAD_TYPE=KP_THREE_POLE', '-DFTR_NOAUTORUN_KEY=KEY_0', '-DFTR_FAST_KEY=KEY_FAST_ACCESS'],
 		'o_dbg': ['-DDEBUG', '-DLOG_TO_FILE', '-DDUMP_ELF', '-DFTR_LOG_FILE_URI=L"file://a/ep2.log"'],
@@ -516,7 +516,7 @@ def parse_arguments() -> dict[str, any]:
 	# Build ElfPack v2.0 to the phone/firmware using source code (+'Elf' directory patch).
 	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.49R -o build
 	python ep2_portkit.py -c -t -pf E1_R373_G_0E.30.79R -o build
-	python ep2_portkit.py -c -pf E1_R373_G_0E.30.DAR -o build
+	python ep2_portkit.py -c -pf E1_R373_G_0E.30.DAR_test16 -o build
 	python ep2_portkit.py -c -t -pf K1_R452F_G_08.03.08R -o build
 	python ep2_portkit.py -c -t -pf L7_R4513_G_08.B7.ACR_RB -o build
 	python ep2_portkit.py -c -t -pf L7_R4513_G_08.B7.E0R_RB -o build
