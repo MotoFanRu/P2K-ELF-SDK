@@ -75,10 +75,7 @@ def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) 
 
 			if mode == Mode.PHONE_LIBRARY:
 				logging.info(f'Will create "{args.output}" library from "{args.source}" symbols file.')
-				phone, firmware = args.phone_fw
-				return forge.log_result(
-					forge.ep1_libgen_library(args.output, library_model, functions, phone in forge.P2K_ARGONLV_PHONES)
-				)
+				return forge.log_result(forge.ep1_libgen_library(args.output, library_model, functions, args.argon))
 			elif mode == Mode.ASSEMBLER_LISTING:
 				logging.info(f'Will create "{args.output}" assembly listing from "{args.source}" symbols file.')
 				return forge.log_result(forge.ep1_libgen_asm(args.output, library_model))
@@ -159,6 +156,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 		'sn': 'sort by names',
 		'a': 're-generate all libraries by symbol files in library directory',
 		'r': 'resort symbols in file',
+		'z': 'generate library for ArgonLV phones',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -195,6 +193,7 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	parser_args.add_argument('-sn', '--sort-name', required=False, action='store_true', help=hlp['sn'])
 	parser_args.add_argument('-a', '--all', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-r', '--resort', required=False, action='store_true', help=hlp['r'])
+	parser_args.add_argument('-z', '--argon', required=False, action='store_true', help=hlp['z'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
