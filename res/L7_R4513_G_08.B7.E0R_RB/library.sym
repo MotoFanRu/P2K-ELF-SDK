@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: L7
 # Firmware: R4513_G_08.B7.E0R_RB
-# Version: 2112241
-# Timestamp: 21-Dec-2024 10:45:14
+# Version: 2912241
+# Timestamp: 29-Dec-2024 08:16:31
 
 0x00000069 C AUDIO_STATUS
 0x00000604 C BEGIN_4A__IN_DB
