@@ -17,6 +17,12 @@
 #include <utilities.h>
 #include <mem.h>
 
+#if defined(EP1)
+#define DATA_SHIFT_OFFSET              (0x30000000)
+#elif defined(EA1)
+#define DATA_SHIFT_OFFSET              (0xC0000000)
+#endif
+
 typedef UINT32 (*Entry)(char *, char *, UINT32);
 
 extern const char n_phone[];
@@ -314,9 +320,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					);
 
 					// EXL, 25-Dec-2024: Separate data constants from function addresses.
-					if (ldrSymTable[j].st_value > 0x30000000) {
+					if (ldrSymTable[j].st_value > DATA_SHIFT_OFFSET) {
 						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)) =
-							ldrSymTable[j].st_value - 0x30000000;
+							ldrSymTable[j].st_value - DATA_SHIFT_OFFSET;
 					} else {
 						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase + 0x0C)) =
 							ldrSymTable[j].st_value;
@@ -441,11 +447,29 @@ void UtilLogStringData(const char *format, ...) {
 	vsprintf(buffer, format, vars);
 	va_end(vars);
 
-	// EXL, 23-Dec-2024:
+#if defined(LOG_TO_FILE)
+	// EXL, 30-Dec-2024: Log output to the file.
+	{
+		FS_HANDLE_T file;
+		UINT32 size;
+		UINT32 written;
+		size = strlen(buffer);
+		buffer[size] = '\r';
+		buffer[size + 1] = '\n';
+		file = DL_FsOpenFile(L"/b/Elf/elfpack.log", FILE_APPEND_PLUS_MODE, 0x0E);
+		if (file == FS_HANDLE_INVALID) {
+			return;
+		}
+		DL_FsWriteFile((void *) buffer, size + 2, 1, file, &written);
+		DL_FsCloseFile(file);
+	}
+#else
+	// EXL, 23-Dec-2024: Log output to the debug port.
 	//   0      - SU_PORT_LOG_ALWAYS
 	//   0x5151 - MESSAGE ID
 	//   1      - MESSAGE COUNT
 	suLogData(0, 0x5151, 1, strlen(buffer) + 1, buffer);
+#endif
 }
 
 // EXL, 23-Dec-2024: ELF Loader API functions, proper values in machine generated "SysInfo.c" file.
