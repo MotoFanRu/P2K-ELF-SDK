@@ -31,11 +31,10 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_C650'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'C650_R365_G_0B.D3.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  True,        # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      forge.P2K_DIR_LIB / 'C650_R365_G_0B.D3.08R' / 'elfloader.sym', # Use prechached symbols file.
 		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.49R': {
@@ -46,7 +45,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.79R': {
@@ -57,7 +55,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.DAR': {
@@ -68,7 +65,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452F_G_08.03.08R': {
@@ -79,7 +75,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3511_G_0A.52.45R_A': {
@@ -90,7 +85,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3443H1_G_0A.65.0BR': {
@@ -101,7 +95,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR_RB': {
@@ -112,7 +105,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.E0R_RB': {
@@ -123,7 +115,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452D_G_08.01.0AR': {
@@ -134,7 +125,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452J_G_08.22.05R': {
@@ -145,7 +135,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4441D_G_08.01.03R': {
@@ -156,7 +145,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4515_G_08.BD.D3R': {
@@ -167,7 +155,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R3512_G_0A.30.6CR': {
@@ -178,7 +165,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R4513_G_08.B7.ACR': {
@@ -189,7 +175,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'TRIPLETS_G_0B.09.72R': {
@@ -200,7 +185,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452B_G_08.02.0DR': {
@@ -211,7 +195,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452F1_G_08.04.09R': {
@@ -222,7 +205,6 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R452H6_G_08.00.05R': {
@@ -233,18 +215,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      None,        # Use prechached symbols file and disable any findings.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
 		'opts_all':       ['-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
-		'precached':      forge.P2K_DIR_LIB / 'K3_R261171LD_U_99.51.06R' / 'elfloader.sym',
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 }
@@ -380,12 +360,10 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			logging.warning('Unknown SoC platform, will skip generating platform symbols file.')
 		logging.info('')
 
-	if not opts['precached']:
 		logging.info('Finding general functions from patterns.')
 		forge.pat_find(opts['patterns'], opts['fw_file'], opts['start'], opts['ram_trans'], val_functions_sym)
 		logging.info('')
 
-	if not opts['precached']:
 		logging.info('Combining all functions into one symbols file.')
 		if opts['soc'] == 'LTE':
 			forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
@@ -401,9 +379,19 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 					val_combined_sym
 				)
 		logging.info('')
+
+		logging.info('Applying phone specific patches.')
+		apply_patches(opts['phone'], opts['fw_name'], val_combined_sym)
+		logging.info('')
+
+		logging.info('Validating combined symbols file.')
+		if not forge.validate_sym_file(val_combined_sym):
+			return False
+		else:
+			logging.info(f'The "{val_combined_sym}" sym file is validated.')
+		logging.info('')
 	else:
-		val_source_file: Path = forge.ep1_libgen_get_library_sym(opts['pfw'])
-		if not forge.check_files_if_exists([val_source_file]):
+		if not forge.check_files_if_exists([opts['precached']]):
 			self.error(f'cannot find {sym_source_file} file with entity addresses')
 		selection: list[str] = forge.ep1_libgen_names_sym(forge.P2K_DIR_EP1_DEF / 'NeededFunctions.def')
 		if opts['use_afw_wraps']:
@@ -411,23 +399,11 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		else:
 			selection.append('AFW_CreateInternalQueuedEvAux')
 			selection.append('AFW_CreateInternalQueuedEvAuxD')
-		forge.ep1_libgen_chunk_sym(val_source_file, val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
-		if opts['gcc']:
-			functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
-			forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True)
+		forge.ep1_libgen_chunk_sym(opts['precached'], val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
 
-	if not opts['precached']:
-		logging.info('Applying phone specific patches.')
-		apply_patches(opts['phone'], opts['fw_name'], val_combined_sym)
-		logging.info('')
-
-	if not opts['precached']:
-		logging.info('Validating combined symbols file.')
-		if not forge.validate_sym_file(val_combined_sym):
-			return False
-		else:
-			logging.info(f'The "{val_combined_sym}" sym file is validated.')
-		logging.info('')
+	if opts['gcc']:
+		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
+		forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True)
 
 	val_register_sym: Path = opts['output'] / 'Register.sym'
 	logging.info('Generating register symbols file.')
@@ -522,13 +498,13 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Patch resulting binaries.')
 	d: str = forge.str2hex(opts["drive"])
-	# "file://b/Elf/elfloader.lib" or "/b/Elf/elfloader.lib" for the Argon.
+	# "file://b/Elf/elfloader.lib" or "/b/Elf/elfloader.lib" for the new P2K phones.
 	# Pattern: 66696C653A2F2F622F456C662F656C666C6F616465722E6C6962
 	po1: str = '66696C653A2F2F622F456C662F656C666C6F616465722E6C6962'
 	pn1: str = f'66696C653A2F2F{d}2F456C662F656C666C6F616465722E6C6962'
 	pa1: str = f'2F{d}2F456C662F656C666C6F616465722E6C6962000000000000'
 	forge.patch_binary_file_res(val_elfpack_bin, po1, pa1 if opts['argon'] else pn1)
-	# "f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n." or "/.b./.E.l.f./.a.u.t.o...r.u.n." for the Argon.
+	# "f.i.l.e.:././.b./.E.l.f./.a.u.t.o...r.u.n." or "/.b./.E.l.f./.a.u.t.o...r.u.n." for the new P2K phones.
 	# Pattern: 660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00
 	po2: str = '660069006C0065003A002F002F0062002F0045006C0066002F006100750074006F002E00720075006E00'
 	pn2: str = f'660069006C0065003A002F002F00{d}002F0045006C0066002F006100750074006F002E00720075006E00'
@@ -667,7 +643,7 @@ class Args(argparse.ArgumentParser):
 
 		opts['inject'] = variants['func_inject']
 
-		opts['precached'] = variants['precached']
+		opts['precached'] = forge.ep1_libgen_get_library_sym(opts['pfw']) if not variants['patterns'] else None
 		opts['use_afw_wraps'] = variants['use_afw_wraps']
 		opts['opts_all'] = variants['opts_all']
 
@@ -721,6 +697,12 @@ def parse_arguments() -> dict[str, any]:
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware with patch offset override.
 	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
+
+	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code.
+	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build -z
+
+	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code and GCC compiler.
+	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build -z -y
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
