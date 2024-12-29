@@ -392,7 +392,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		logging.info('')
 	else:
 		if not forge.check_files_if_exists([opts['precached']]):
-			self.error(f'cannot find {sym_source_file} file with entity addresses')
+			logging.error(f'cannot find {opts["precached"]} file with entity addresses')
+			return False
 		selection: list[str] = forge.ep1_libgen_names_sym(forge.P2K_DIR_EP1_DEF / 'NeededFunctions.def')
 		if opts['use_afw_wraps']:
 			selection.append('AFW_CreateInternalQueuedEvPriv')
@@ -403,7 +404,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	if opts['gcc']:
 		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
-		forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True)
+		forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True, False)
 
 	val_register_sym: Path = opts['output'] / 'Register.sym'
 	logging.info('Generating register symbols file.')

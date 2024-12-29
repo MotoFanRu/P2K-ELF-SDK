@@ -96,6 +96,7 @@ from .libgen import ep2_libgen_names_sym
 from .libgen import determine_sort_mode
 from .libgen import ep1_libgen_get_library_sym
 from .libgen import ep2_libgen_get_library_sym
+from .libgen import libgen_gcc_sym
 
 from .patcher import bin2fpa
 from .patcher import hex2fpa

@@ -128,9 +128,11 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str, arg
 	return False
 
 
-def ep1_libgen_asm(p_asm_src: Path, model: LibraryModel, gcc_asm: bool = False, gcc_equ: bool = False) -> bool:
-	offset_start: int = 0x10080000
-
+def ep1_libgen_asm(
+	p_asm_src: Path,
+	model: LibraryModel,
+	gcc_asm: bool = False, gcc_equ: bool = False, fake_adresses = True
+) -> bool:
 	header_ads: str = """
 	AREA Lib, CODE, READONLY
 	ALIGN 4
@@ -205,6 +207,7 @@ _start:
 
 	function_section_gcc_equ: str = """
 .global {0}
+.type {0}, function
 .equ {0}, {1} | {2}
 """
 
@@ -221,7 +224,11 @@ _start:
 	.long {1}
 """
 
-	data_section_gcc: str = function_section_gcc
+	data_section_gcc_equ: str = """
+.global {0}
+.type {0}, %common
+.equ {0}, {1}
+"""
 
 	import_section_ads: str = '\tEXPORT {0}\n'
 	import_section_gcc: str = '.global {0}\n'
@@ -243,8 +250,9 @@ _start:
 	if gcc_equ:
 		header = header_gcc_equ
 		function_section = function_section_gcc_equ
-		data_section = function_section_gcc_equ  # It's okay.
+		data_section = data_section_gcc_equ
 
+	offset_start: int = 0x10080000
 	exports: list[str] = []
 	header: str = header.replace('\n', '', 1)
 	offset_start += 1
@@ -254,19 +262,17 @@ _start:
 			f_o.write(header)
 
 			for address, mode, name in model:
+				entity_address: int = int2hex(offset_start) if fake_adresses else address
 				if mode == 'D':
 					exports.append(name)
-					if gcc_equ:
-						f_o.write(data_section.format(name, address, 0))
-					else:
-						f_o.write(data_section.format(name, int2hex(offset_start)))
+					f_o.write(data_section.format(name, entity_address))
 				else:
 					exports.append(name)
 					exports.append(name + '32')
 					if gcc_equ:
-						f_o.write(function_section.format(name, address, 1 if mode == 'T' else 0))
+						f_o.write(function_section.format(name, entity_address, 1 if mode == 'T' else 0))
 					else:
-						f_o.write(function_section.format(name, int2hex(offset_start)))
+						f_o.write(function_section.format(name, entity_address))
 				offset_start += 4
 
 			if not gcc_equ:
@@ -808,3 +814,14 @@ def ep1_libgen_get_library_sym(pfw: tuple[str, str]) -> Path | None:
 
 def ep2_libgen_get_library_sym(pfw: tuple[str, str]) -> Path | None:
 	return libgen_get_library_sym(pfw, 'library.sym')
+
+
+def libgen_gcc_sym(model: LibraryModel, p_out: Path, c_source: False) -> bool:
+	entry: str = '#define ADDR_{0:<40} = ({1} | {2}) /* {3} */' if c_source else '{0:<40} = ({1} | {2}); /* {3} */'
+	entry_count: int = len(model)
+	if entry_count > 0:
+		with p_out.open(mode='w', newline='\r\n') as f_o:
+			for address, mode, name in model:
+				f_o.write(entry.format(name, address, mode))
+		return True
+	return False
