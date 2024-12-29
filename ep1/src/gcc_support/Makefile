@@ -8,6 +8,7 @@ OPTIMIZ    = -O2
 DEFINES    = -D__P2K__ -DEP1
 WARNINGS   = -Wall
 CPUFLAGS   = -mbig-endian -march=armv4t -mtune=arm7tdmi-s -mthumb -mthumb-interwork
+#CPUFLAGS   = -mbig-endian -mbe32 -march=armv6j -mtune=arm1136jf-s -mthumb -mthumb-interwork
 FEATURES   = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
 INCLUDES   = -I../../../sdk
 CFLAGS     =  $(OPTIMIZ) $(WARNINGS) $(CPUFLAGS) $(FEATURES) $(DEFINES) $(INCLUDES)
