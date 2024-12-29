@@ -735,7 +735,7 @@ def libgen_chunk_sym(i: Path, o: Path, sort: LibrarySort, symbols: list[str], pf
 		for addr, mode, name in library_model:
 			if name in symbols:
 				entry: tuple[str, str, str] = (addr, mode, name)
-				logging.debug(f'Will append "{name}" => "{entry}".')
+				logging.debug(f'Will append "({addr}, {mode}, {name})" => "{entry}".')
 				chunk_model.append(entry)
 
 		if chunk_model:
