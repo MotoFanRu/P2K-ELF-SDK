@@ -48,7 +48,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.79R': {
-		'opts_all':       ['-DFTR_E1'],
+		'opts_all':       ['-DFTR_E1', '-DLOG_TO_FILE'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
@@ -220,7 +220,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R261171LD_U_99.51.06R': {
 		'opts_all':       ['-DFTR_K3', '-DLOG_TO_FILE'],
 		'addr_start':     0xA0080000,  # Firmware start address.
-		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address.
 		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',

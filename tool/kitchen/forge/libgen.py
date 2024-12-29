@@ -207,7 +207,7 @@ _start:
 
 	function_section_gcc_equ: str = """
 .global {0}
-.type {0}, function
+.type {0}, %function
 .equ {0}, {1} | {2}
 """
 
@@ -226,7 +226,6 @@ _start:
 
 	data_section_gcc_equ: str = """
 .global {0}
-.type {0}, %common
 .equ {0}, {1}
 """
 
