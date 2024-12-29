@@ -6,16 +6,16 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 2912241
-# Timestamp: 29-Dec-2024 08:16:16
+# Version: 3012241
+# Timestamp: 30-Dec-2024 04:18:29
 
-0xA1531878 T __16_ll_cmpu
+0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
 0xA123E010 A __rt_memclr
 0xA123DFB8 A __rt_memclr_w
 0xA123DD5C A __rt_memcpy
+0xA123DD4C A __rt_memset
 0xA124553C A __rt_udiv
-0xA153187C A _ll_cmpu
 0xA0F6DB08 T AFW_AddAppToRoutingStack
 0xA0F6D546 T AFW_AddEvNoD
 0xA0F6E30E T AFW_ConsumeEv
@@ -63,19 +63,27 @@
 0xA0FBD478 T DL_FsGetVolumeDescr
 0xA0FBB10C T DL_FsOpenFile
 0xA0FBB3E2 T DL_FsReadFile
+0xA0FBD30A T DL_FsSearchClose
+0xA0FBD0F8 T DL_FsSearchResults
 0xA0FBBD26 T DL_FsSGetFileName
 0xA0FBC0FA T DL_FsSGetFileType
+0xA0FBCE12 T DL_FsSSearch
 0xA0FBD68A T DL_FsVolumeEnum
 0xA0FBB450 T DL_FsWriteFile
-0xA1531476 T LdrGetFirmwareMajorVersion
-0xA153147A T LdrGetFirmwareMinorVersion
-0xA153146E T LdrGetPhoneName
-0xA1531472 T LdrGetPlatformName
-0xA15313F2 T LdrLoadELF
-0xA15313B8 T LdrStartApp
-0xA153143A T LdrUnloadELF
-0xA1530DAC T namecmp
+0xA0FC4B0E T DRM_ClearResource
+0xA0FC4A92 T DRM_CreateResource
+0xA0FC4848 T DRM_SetResource
+0xA1531580 T LdrGetFirmwareMajorVersion
+0xA1531588 T LdrGetFirmwareMinorVersion
+0xA1531570 T LdrGetPhoneName
+0xA1531578 T LdrGetPlatformName
+0xA15314E0 T LdrLoadELF
+0xA15314BC T LdrStartApp
+0xA1531538 T LdrUnloadELF
+0xA1530E58 T namecmp
 0xB578006C T PFprintf
+0xA123DB10 T qsort
+0xA123D2A8 T sprintf
 0xA123E1A8 T strcmp
 0xA123E160 T strlen
 0xA0F9475C T suAcquireSem
@@ -120,7 +128,7 @@
 0xA0BF3758 T u_uint64tou
 0xA0BF2FA0 T u_uitoa
 0xA0BF36C0 T u_ultou
-0xA15313DA T u_utoa
+0xA1530E74 T u_utoa
 0xA0BDB034 T UIS_CanvasDrawArc
 0xA0BDB658 T UIS_CanvasDrawColorSoftkey
 0xA0BDA562 T UIS_CanvasDrawColorText
@@ -164,5 +172,5 @@
 0xA0BF003A T UIS_SetStatus
 0xA0BE4A68 T uisAllocateMemory
 0xA0BE4776 T uisFreeMemory
-0xA1530D70 T UtilLogStringData
+0xA1530E8C T UtilLogStringData
 0xA123D158 T vsprintf
