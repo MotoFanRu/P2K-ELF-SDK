@@ -407,7 +407,6 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	if opts['gcc']:
 		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
 		forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True, False)
-		forge.libgen_gcc_sym(library_model, opts['output'] / 'LibGCC_GEN.sym', False)
 
 	val_register_sym: Path = opts['output'] / 'Register.sym'
 	logging.info('Generating register symbols file.')
@@ -473,8 +472,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	if not opts['gcc']:
 		val_link_objects.append(forge.P2K_DIR_EP1_LIB / 'libarm_small.a')
 		val_link_objects.append(val_combined_sym)
-#	else:
-#		val_link_objects.append(val_object_path / 'Lib.o')
+	else:
+		val_link_objects.append(val_object_path / 'Lib.o')
 	if opts['use_afw_wraps']:
 		val_link_objects.insert(3, Path(val_object_path / 'AFW_CreateInternalQueuedEv_Wrappers.o'))
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
@@ -492,8 +491,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			val_ld_script_tpl, val_ld_script_org,
 			{'%addr_entry%' : forge.int2hex(opts['address']) }
 		)
-		cust_args: list[str] = [f'-Wl,-R{str(opts["output"] / "LibGCC_GEN.sym")}']
-		if not forge.ep2_gcc_link(val_link_objects, val_elfpack_elf, True, val_ld_script_org, cust_args, opts['argon']):
+		if not forge.ep2_gcc_link(val_link_objects, val_elfpack_elf, True, val_ld_script_org, None, opts['argon']):
 			logging.error(f'Cannot link "{val_elfpack_elf}" executable file using GCC.')
 			return False
 		forge.ep2_gcc_objcopy(val_elfpack_elf, val_elfpack_bin)
