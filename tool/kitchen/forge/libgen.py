@@ -821,6 +821,6 @@ def libgen_gcc_sym(model: LibraryModel, p_out: Path, c_source: False) -> bool:
 	if entry_count > 0:
 		with p_out.open(mode='w', newline='\r\n') as f_o:
 			for address, mode, name in model:
-				f_o.write(entry.format(name, address, mode))
+				f_o.write(entry.format(name, address, 1 if mode == 'T' else 0, mode) + '\n')
 		return True
 	return False
