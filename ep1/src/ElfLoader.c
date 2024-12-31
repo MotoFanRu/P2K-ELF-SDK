@@ -34,6 +34,8 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	UINT32          i;
 	UINT32          j;
 
+	BOOL            is_ads_elf;
+
 	FS_HANDLE_T     file;
 	FS_COUNT_T      read;
 
@@ -90,9 +92,11 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		return ELDR_READ_HEADER_FAILED;
 	}
 
+	is_ads_elf = (elfHeader.e_type == ET_EXEC); // ET_DYN is GCC elf.
+
 	UtilLogStringData(
-		"Elf is loading...\n\nELF header:\n  e_entry  0x%X\n  e_phoff  0x%X\n  e_phnum  %d\n\n",
-		elfHeader.e_entry, elfHeader.e_phoff, elfHeader.e_phnum
+		"Elf is loading...\n\nELF header:\n  e_entry  0x%X\n  e_phoff  0x%X\n  e_phnum  %d\n  e_type  %d\n\n",
+		elfHeader.e_entry, elfHeader.e_phoff, elfHeader.e_phnum, elfHeader.e_type
 	);
 
 	// EXL, 24-Dec-2024: ~0 is 0xFFFFFFFF.
@@ -167,16 +171,20 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 				break;
 			case PT_DYNAMIC:
 				// EXL, 24-Dec-2024: Seek and read dynamic section with tag functions and addresses.
-				dynSegment = (Elf32_Addr) suAllocMem(elfProgramHeaders[i].p_filesz, NULL);
-				if (DL_FsFSeekFile(file, elfProgramHeaders[i].p_offset, SEEK_WHENCE_SET) != RESULT_OK) {
-					suFreeMem((void *) physBase);
-					suFreeMem((void *) dynSegment);
-					return ELDR_SEEK_FAILED;
-				}
-				if (DL_FsReadFile((void *) dynSegment, elfProgramHeaders[i].p_filesz, 1, file, &read) != RESULT_OK) {
-					suFreeMem((void *) physBase);
-					suFreeMem((void *) dynSegment);
-					return ELDR_READ_FAILED;
+				if (is_ads_elf) {
+					dynSegment = (Elf32_Addr) suAllocMem(elfProgramHeaders[i].p_filesz, NULL);
+					if (DL_FsFSeekFile(file, elfProgramHeaders[i].p_offset, SEEK_WHENCE_SET) != RESULT_OK) {
+						suFreeMem((void *) physBase);
+						suFreeMem((void *) dynSegment);
+						return ELDR_SEEK_FAILED;
+					}
+					if (DL_FsReadFile((void *) dynSegment, elfProgramHeaders[i].p_filesz, 1, file, &read) != RESULT_OK) {
+						suFreeMem((void *) physBase);
+						suFreeMem((void *) dynSegment);
+						return ELDR_READ_FAILED;
+					}
+				} else {
+					dynSegment = physBase + elfProgramHeaders[i].p_vaddr - virtBase;
 				}
 
 				j = 0;
@@ -194,7 +202,11 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					"Relocation start\n DT_REL  0x%X\n DT_RELSZ  %d\n", dynTags[DT_REL], dynTags[DT_RELSZ]
 				);
 
-				relTable = (Elf32_Rel *) (dynSegment + dynTags[DT_REL] - elfProgramHeaders[i].p_vaddr);
+				if (is_ads_elf) {
+					relTable = (Elf32_Rel *) (dynSegment + dynTags[DT_REL] - elfProgramHeaders[i].p_vaddr);
+				} else {
+					relTable = (Elf32_Rel *) (dynTags[DT_REL] + physBase - virtBase);
+				}
 
 				// EXL, 24-Dec-2024: Translate dynamic section with tag functions to a real memory addresses.
 				for (j = 0; j * sizeof(Elf32_Rel) < dynTags[DT_RELSZ]; j++) {
@@ -203,7 +215,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 					UtilLogStringData(" Reloc #%d\n  Type  %d\n  Off  0x%X\n", j, relType, relTable[j].r_offset);
 
-					if (relType == R_ARM_RABS32) {
+					if (relType == R_ARM_RABS32 || relType == R_ARM_RELATIVE) {
 						UtilLogStringData(
 							" R_ARM_RABS32\n  Old  0x%X\n  New  0x%X\n",
 							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)),
@@ -211,13 +223,34 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
 					}
+					if (relType == R_ARM_ABS32) {
+						char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
+
+						UtilLogStringData(
+							" R_ARM_ABS32\n  Old  0x%X\n  New  0x%X\n",
+							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)),
+							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase);
+
+						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = physBase - virtBase;
+
+						for (j = 0; j < ldrNumSymbols; j++) {
+							UINT32 ldr_st_name = ldrSymTable[j].st_name;
+							UINT32 ldr_st_addr = ldrSymTable[j].st_value;
+							if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
+								UtilLogStringData(
+									"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
+									i, elfSymTable[i].st_value,
+									*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)),
+									ldr_st_addr
+								);
+
+								*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
+							}
+						}
+					}
 				}
 				break;
 		}
-	}
-
-	if (dynSegment != NULL) {
-		suFreeMem((void *) dynSegment);
 	}
 
 	// Andy51, 01-Nov-2007: editing API calls.
@@ -230,111 +263,149 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	ldrSymTable   = (Ldr_Sym *) &((UINT32 *) Library)[1];
 	ldrStrTable   = (char *) &ldrSymTable[ldrNumSymbols]; // EXL, 24-Dec-2024: Empty for now.
 
-	// Andy51, 01-Nov-2007: Load elfSymTable and elfStrTable.
-	// EXL, 25-Dec-2024: Go to the ELF sections and parse them. We interested in SHT_SYMTAB and SHT_STRTAB only.
-	//   #define SHT_SYMTAB                     (2)                 // Symbol table.
-	//   #define SHT_STRTAB                     (3)                 // String table.
-	for (i = 0; i < elfHeader.e_shnum; i++) {
-		// EXL, 25-Dec-2024: Seek and read other ELF sections.
-		//   We interested in SHT_SYMTAB and SHT_STRTAB sections.
-		if (DL_FsFSeekFile(file, elfHeader.e_shoff + i * elfHeader.e_shentsize, SEEK_WHENCE_SET) != RESULT_OK) {
-			suFreeMem((void *) physBase);
-			return ELDR_SEEK_FAILED;
+	if (is_ads_elf) {
+		// EXL, 31-Dec-2024: Delete PT_DYNAMIC segment.
+		if (dynSegment != NULL) {
+			suFreeMem((void *) dynSegment);
 		}
-		if (DL_FsReadFile((void *) &elfSectionHeader, sizeof(Elf32_Shdr), 1, file, &read) != RESULT_OK) {
-			suFreeMem((void *) physBase);
-			return ELDR_READ_FAILED;
+
+		// Andy51, 01-Nov-2007: Load elfSymTable and elfStrTable.
+		// EXL, 25-Dec-2024: Go to the ELF sections and parse them. We interested in SHT_SYMTAB and SHT_STRTAB only.
+		//   #define SHT_SYMTAB                     (2)                 // Symbol table.
+		//   #define SHT_STRTAB                     (3)                 // String table.
+		for (i = 0; i < elfHeader.e_shnum; i++) {
+			// EXL, 25-Dec-2024: Seek and read other ELF sections.
+			//   We interested in SHT_SYMTAB and SHT_STRTAB sections.
+			if (DL_FsFSeekFile(file, elfHeader.e_shoff + i * elfHeader.e_shentsize, SEEK_WHENCE_SET) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				return ELDR_SEEK_FAILED;
+			}
+			if (DL_FsReadFile((void *) &elfSectionHeader, sizeof(Elf32_Shdr), 1, file, &read) != RESULT_OK) {
+				suFreeMem((void *) physBase);
+				return ELDR_READ_FAILED;
+			}
+
+			UtilLogStringData(
+				"Section #%d:\n  sh_type %d\n  sh_offset 0x%X\n  sh_size  0x%X\n",
+				i, elfSectionHeader.sh_type, elfSectionHeader.sh_offset, elfSectionHeader.sh_size
+			);
+
+			if (elfSectionHeader.sh_type == SHT_SYMTAB) {
+				// EXL, 25-Dec-2024: Alloc memory in RAM for Symbol table section then seek and read it.
+				elfSymTable = (Elf32_Sym *) suAllocMem(elfSectionHeader.sh_size, NULL);
+				if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
+					suFreeMem((void *) physBase);
+					if (elfSymTable) { suFreeMem(elfSymTable); }
+					if (elfStrTable) { suFreeMem(elfStrTable); }
+					return ELDR_SEEK_FAILED;
+				}
+				if (DL_FsReadFile(elfSymTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
+					suFreeMem((void *) physBase);
+					if (elfSymTable) { suFreeMem(elfSymTable); }
+					if (elfStrTable) { suFreeMem(elfStrTable); }
+					return ELDR_READ_FAILED;
+				}
+
+				// Andy51, 01-Nov-2007: sizeof(Elf32_Sym) here.
+				// EXL, 25-Dec-2024: Count of sizeof(Elf32_Sym) elements in SHT_SYMTAB section.
+				elfNumSymbols = elfSectionHeader.sh_size >> 4;
+			} else if ((elfSectionHeader.sh_type == SHT_STRTAB) && (i != elfHeader.e_shstrndx)) {
+				// EXL, 25-Dec-2024: Alloc memory in RAM for String table section then seek and read it.
+				//   We want to skip last SHT_STRTAB section, it containts not function names but ELF section names.
+				elfStrTable = (char *) suAllocMem(elfSectionHeader.sh_size, NULL);
+				if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
+					suFreeMem((void *) physBase);
+					if (elfSymTable) { suFreeMem(elfSymTable); }
+					if (elfStrTable) { suFreeMem(elfStrTable); }
+					return ELDR_SEEK_FAILED;
+				}
+				if (DL_FsReadFile(elfStrTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
+					suFreeMem((void *) physBase);
+					if (elfSymTable) { suFreeMem(elfSymTable); }
+					if (elfStrTable) { suFreeMem(elfStrTable); }
+					return ELDR_READ_FAILED;
+				}
+
+				elfStrTableSize = elfSectionHeader.sh_size;
+			}
 		}
 
 		UtilLogStringData(
-			"Section #%d:\n  sh_type %d\n  sh_offset 0x%X\n  sh_size  0x%X\n",
-			i, elfSectionHeader.sh_type, elfSectionHeader.sh_offset, elfSectionHeader.sh_size
+			"API Calls Fix Start:  ldrStrTable 0x%X  ldrSymTable 0x%X  ldrNumSymbols %d",
+			ldrStrTable, ldrSymTable, ldrNumSymbols
 		);
 
-		if (elfSectionHeader.sh_type == SHT_SYMTAB) {
-			// EXL, 25-Dec-2024: Alloc memory in RAM for Symbol table section then seek and read it.
-			elfSymTable = (Elf32_Sym *) suAllocMem(elfSectionHeader.sh_size, NULL);
-			if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
-				suFreeMem((void *) physBase);
-				if (elfSymTable) { suFreeMem(elfSymTable); }
-				if (elfStrTable) { suFreeMem(elfStrTable); }
-				return ELDR_SEEK_FAILED;
-			}
-			if (DL_FsReadFile(elfSymTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
-				suFreeMem((void *) physBase);
-				if (elfSymTable) { suFreeMem(elfSymTable); }
-				if (elfStrTable) { suFreeMem(elfStrTable); }
-				return ELDR_READ_FAILED;
-			}
+		// Andy51, 01-Nov-2007: We look for matches and replace addresses.
+		// EXL, 25-Dec-2024: We interested in global functions and data constants values.
+		for (i = 0; i < elfNumSymbols; i++) {
+			if (
+				(ELF32_ST_BIND(elfSymTable[i].st_info) == STB_GLOBAL) &&
+					((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_FUNC) ||
+					((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_OBJECT) && (elfSymTable[i].st_size == 0)))
+			) {
+				UtilLogStringData(
+					"Possible entry:  i %d  st_name %d  name %s",
+					i, elfSymTable[i].st_name, &elfStrTable[elfSymTable[i].st_name]
+				);
 
-			// Andy51, 01-Nov-2007: sizeof(Elf32_Sym) here.
-			// EXL, 25-Dec-2024: Count of sizeof(Elf32_Sym) elements in SHT_SYMTAB section.
-			elfNumSymbols = elfSectionHeader.sh_size >> 4;
-		} else if ((elfSectionHeader.sh_type == SHT_STRTAB) && (i != elfHeader.e_shstrndx)) {
-			// EXL, 25-Dec-2024: Alloc memory in RAM for String table section then seek and read it.
-			//   We want to skip last SHT_STRTAB section because it containts not function names but ELF section names.
-			elfStrTable = (char *) suAllocMem(elfSectionHeader.sh_size, NULL);
-			if (DL_FsFSeekFile(file, elfSectionHeader.sh_offset, SEEK_WHENCE_SET) != RESULT_OK) {
-				suFreeMem((void *) physBase);
-				if (elfSymTable) { suFreeMem(elfSymTable); }
-				if (elfStrTable) { suFreeMem(elfStrTable); }
-				return ELDR_SEEK_FAILED;
-			}
-			if (DL_FsReadFile(elfStrTable, elfSectionHeader.sh_size, 1, file, &read) != RESULT_OK) {
-				suFreeMem((void *) physBase);
-				if (elfSymTable) { suFreeMem(elfSymTable); }
-				if (elfStrTable) { suFreeMem(elfStrTable); }
-				return ELDR_READ_FAILED;
-			}
+				// EXL, 25-Dec-2024: Iterate over library entities.
+				for (j = 0; j < ldrNumSymbols; j++) {
+					if (namecmp(&elfStrTable[elfSymTable[i].st_name], &ldrStrTable[ldrSymTable[j].st_name]) == TRUE) {
+						UtilLogStringData(
+							"API Call #%d:\n  addr 0x%X\n  old 0x%X\n  new 0x%X\n",
+							i, elfSymTable[i].st_value,
+							*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)),
+							ldrSymTable[j].st_value
+						);
 
-			elfStrTableSize = elfSectionHeader.sh_size;
-		}
-	}
-
-	UtilLogStringData(
-		"API Calls Fix Start:  ldrStrTable 0x%X  ldrSymTable 0x%X  ldrNumSymbols %d",
-		ldrStrTable, ldrSymTable, ldrNumSymbols
-	);
-
-	// Andy51, 01-Nov-2007: We look for matches and replace addresses.
-	// EXL, 25-Dec-2024: We interested in global functions and data constants values.
-	for (i = 0; i < elfNumSymbols; i++) {
-		if (
-			(ELF32_ST_BIND(elfSymTable[i].st_info) == STB_GLOBAL) &&
-				((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_FUNC) ||
-				((ELF32_ST_TYPE(elfSymTable[i].st_info) == STT_OBJECT) && (elfSymTable[i].st_size == 0)))
-		) {
-			UtilLogStringData(
-				"Possible entry:  i %d  st_name %d  name %s",
-				i, elfSymTable[i].st_name, &elfStrTable[elfSymTable[i].st_name]
-			);
-
-			// EXL, 25-Dec-2024: Iterate over library entities.
-			for (j = 0; j < ldrNumSymbols; j++) {
-				if (namecmp(&elfStrTable[elfSymTable[i].st_name], &ldrStrTable[ldrSymTable[j].st_name]) == TRUE) {
-					UtilLogStringData(
-						"API Call #%d:\n  addr 0x%X\n  old 0x%X\n  new 0x%X\n",
-						i, elfSymTable[i].st_value,
-						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)),
-						ldrSymTable[j].st_value
-					);
-
-					// EXL, 25-Dec-2024: Separate data constants from function addresses.
-					if (ldrSymTable[j].st_value > DATA_SHIFT_OFFSET) {
-						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)) =
-							ldrSymTable[j].st_value - DATA_SHIFT_OFFSET;
-					} else {
-						*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase + 0x0C)) =
-							ldrSymTable[j].st_value;
+						// EXL, 25-Dec-2024: Separate data constants from function addresses.
+						if (ldrSymTable[j].st_value > DATA_SHIFT_OFFSET) {
+							*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase)) =
+								ldrSymTable[j].st_value - DATA_SHIFT_OFFSET;
+						} else {
+							*((UINT32 *) (physBase + elfSymTable[i].st_value - virtBase + 0x0C)) =
+								ldrSymTable[j].st_value;
+						}
 					}
 				}
 			}
 		}
-	}
 
-	// EXL, 25-Dec-2024: Free Symbol and String tables and close ELF file.
-	suFreeMem(elfStrTable);
-	suFreeMem(elfSymTable);
+		// EXL, 25-Dec-2024: Free Symbol and String tables and close ELF file.
+		suFreeMem(elfStrTable);
+		suFreeMem(elfSymTable);
+	} else { // GCC ELF!
+		Elf32_Addr elfStrTableAddr;
+
+		elfSymTable = (Elf32_Sym *) (physBase + dynTags[DT_SYMTAB] - virtBase);
+		relTable = (Elf32_Rel *) (physBase + dynTags[DT_JMPREL] - virtBase);
+		elfStrTableAddr = physBase + dynTags[DT_STRTAB] - virtBase;
+
+		for (i = 0; i * sizeof(Elf32_Rel) < dynTags[DT_PLTRELSZ]; ++i) {
+			int sym_idx = ELF32_R_SYM(relTable[i].r_info);
+			char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
+			Elf32_Sym *sym = &elfSymTable[sym_idx];
+			Elf32_Byte func_bind = ELF32_ST_BIND(sym->st_info);
+
+			UtilLogStringData("Req Func: %d, %s\n", func_bind, sym_str);
+
+			// EXL, 25-Dec-2024: Iterate over library entities.
+			for (j = 0; j < ldrNumSymbols; j++) {
+				UINT32 ldr_st_name = ldrSymTable[j].st_name;
+				UINT32 ldr_st_addr = ldrSymTable[j].st_value;
+				if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
+					UtilLogStringData(
+						"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
+						i, elfSymTable[i].st_value,
+						*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)),
+						ldr_st_addr
+					);
+
+					*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
+				}
+			}
+		}
+	}
 	DL_FsCloseFile(file);
 
 	UtilLogStringData(" Starting ELF at 0x%X with reserve = 0x%X", physBase + elfHeader.e_entry - virtBase, reserve);

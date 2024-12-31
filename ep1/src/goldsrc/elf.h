@@ -134,7 +134,7 @@ typedef struct {
 #define STB_GLOBAL                     (1)                 // Global symbol.
 
 // Legal values for ST_TYPE subfield of st_info (symbol type).
-#define STT_OBJECT                     (1) // Symbol is a data object.
-#define STT_FUNC                       (2) // Symbol is a code object.
+#define STT_OBJECT                     (1)                 // Symbol is a data object.
+#define STT_FUNC                       (2)                 // Symbol is a code object.
 
 #endif /* ELF_H */

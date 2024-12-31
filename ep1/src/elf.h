@@ -59,6 +59,9 @@ typedef struct {
 	Elf32_Half                         e_shstrndx;         // Section header string table index.
 } Elf32_Ehdr;
 
+#define ET_EXEC                        (2)                 // Executable file.
+#define ET_DYN                         (3)                 // Shared object file.
+
 // Program segment header.
 typedef struct {
 	Elf32_Word                         p_type;             // Segment type.
@@ -82,8 +85,12 @@ typedef struct {
 } Elf32_Dyn;
 
 // Legal values for d_tag (dynamic entry type).
+#define DT_PLTRELSZ                    (2)                 // Size in bytes of PLT relocs.
+#define DT_STRTAB                      (5)                 // Address of string table.
+#define DT_SYMTAB                      (6)                 // Address of symbol table.
 #define DT_REL                         (17)                // Address of Rel relocs.
 #define DT_RELSZ                       (18)                // Total size of Rel relocs.
+#define DT_JMPREL                      (23)                // Address of PLT relocs.
 #define DT_BIND_NOW                    (24)                // Process relocations of object.
 
 // Relocation table entry without addend (in section of type SHT_REL).
@@ -93,11 +100,13 @@ typedef struct {
 } Elf32_Rel;
 
 // How to extract and insert information held in the r_info field.
+#define ELF32_R_SYM(val)               ((val) >> 8)
 #define ELF32_R_TYPE(val)              ((val) & 0xFF)
 
 // ARM relocation types.
-// R_ARM_RABS32 - Word ?S + A For the address of a location in the target segment.
-#define R_ARM_RABS32                   (253)
+#define R_ARM_ABS32                    (2)                 // Direct 32 bit.
+#define R_ARM_RELATIVE                 (23)                // Adjust by program base.
+#define R_ARM_RABS32                   (253)               // Word ?S + A For the address of a location in the target segment.
 
 // Symbol table entry.
 typedef struct {
@@ -134,7 +143,7 @@ typedef struct {
 #define STB_GLOBAL                     (1)                 // Global symbol.
 
 // Legal values for ST_TYPE subfield of st_info (symbol type).
-#define STT_OBJECT                     (1) // Symbol is a data object.
-#define STT_FUNC                       (2) // Symbol is a code object.
+#define STT_OBJECT                     (1)                 // Symbol is a data object.
+#define STT_FUNC                       (2)                 // Symbol is a code object.
 
 #endif /* ELF_H */
