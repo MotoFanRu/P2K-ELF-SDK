@@ -240,7 +240,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						INT32 sym_idx = ELF32_R_SYM(relTable[j].r_info);
 						char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
 						Elf32_Sym *sym = &elfSymTable[sym_idx];
-						int bind_type = ELF32_ST_BIND(sym->st_info);
+						INT32 bind_type = ELF32_ST_BIND(sym->st_info);
 
 						UtilLogStringData(
 							" Reloc #%d\n  Type  %d\n  Off  0x%X Bind %d Str %s\n",
@@ -402,10 +402,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 		// EXL, 25-Dec-2024: Iterate over "R_ARM_JUMP_SLOT" relocations in '.rel.plt' section.
 		for (i = 0; i * sizeof(Elf32_Rel) < dynTags[DT_PLTRELSZ]; ++i) {
-			int sym_idx = ELF32_R_SYM(relTable[i].r_info);
+			INT32 sym_idx = ELF32_R_SYM(relTable[i].r_info);
 			char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
 			Elf32_Sym *sym = &elfSymTable[sym_idx];
-			Elf32_Byte func_bind = ELF32_ST_BIND(sym->st_info);
+			INT32 func_bind = ELF32_ST_BIND(sym->st_info);
 
 			UtilLogStringData("Req Func: %d, %s\n", func_bind, sym_str);
 
