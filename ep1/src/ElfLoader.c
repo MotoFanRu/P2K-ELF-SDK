@@ -182,7 +182,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 				j = 0;
 
 				// Andy51, 01-Nov-2007: Load tags from dynamic segment.
-				// EXL, 24-Dec-2024: Only part of table until 00 00 00 00 as d_tag. 00 00 00 00 00 00 00 00 is divider?
+				// EXL, 24-Dec-2024: Only part of table until 00 00 00 00 as d_tag. 00 00 00 00 00 00 00 00 is divider.
 				do {
 					tag = ((Elf32_Dyn *) dynSegment)[j++];
 					if (tag.d_tag <= DT_BIND_NOW) {
