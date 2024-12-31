@@ -142,6 +142,16 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		virtBase, upperAddr - virtBase, upperAddr, sumMem, sumSize, physBase
 	);
 
+	// Andy51, 01-Nov-2007: editing API calls.
+	// EXL, 24-Dec-2024: Library format is following:
+	//   4-byte integer: record count
+	//   record array[] elements { offset_function_name_in_strings_array, function_address }
+	//   record array[] elements { function_name, '\0' }
+
+	ldrNumSymbols = ((UINT32 *) Library)[0];
+	ldrSymTable   = (Ldr_Sym *) &((UINT32 *) Library)[1];
+	ldrStrTable   = (char *) &ldrSymTable[ldrNumSymbols]; // EXL, 24-Dec-2024: Empty for now.
+
 	// EXL, 24-Dec-2024: Read and deploy the program segments from ELF to RAM.
 	//   #define PT_LOAD                        (1)                 // Loadable program segment.
 	//   #define PT_DYNAMIC                     (2)                 // Dynamic linking information.
@@ -206,6 +216,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					relTable = (Elf32_Rel *) (dynSegment + dynTags[DT_REL] - elfProgramHeaders[i].p_vaddr);
 				} else {
 					relTable = (Elf32_Rel *) (dynTags[DT_REL] + physBase - virtBase);
+					elfSymTable = (Elf32_Sym *) (physBase + dynTags[DT_SYMTAB] - virtBase);
 				}
 
 				// EXL, 24-Dec-2024: Translate dynamic section with tag functions to a real memory addresses.
@@ -222,49 +233,55 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase);
 
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
-					}
-					if (relType == R_ARM_ABS32) {
+					} else if (relType == R_ARM_ABS32 && !is_ads_elf) {
+						// EXL, 01-Jan-2025:
+						UINT32 k;
+						Elf32_Addr elfStrTableAddr = physBase + dynTags[DT_STRTAB] - virtBase;
+						INT32 sym_idx = ELF32_R_SYM(relTable[j].r_info);
 						char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
+						Elf32_Sym *sym = &elfSymTable[sym_idx];
+						int bind_type = ELF32_ST_BIND(sym->st_info);
 
 						UtilLogStringData(
-							" R_ARM_ABS32\n  Old  0x%X\n  New  0x%X\n",
-							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)),
-							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase);
+							" Reloc #%d\n  Type  %d\n  Off  0x%X Bind %d Str %s\n",
+							j, relType, relTable[j].r_offset, bind_type, sym_str
+						);
 
-						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = physBase - virtBase;
+						// EXL, 01-Jan-2025: Point symbol to the ELF entry point aka first PT_LOAD segment if it not
+						//   found in the library. Workaround for the Lib entry symbol is here.
+						*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)) = physBase - virtBase;
 
-						for (j = 0; j < ldrNumSymbols; j++) {
-							UINT32 ldr_st_name = ldrSymTable[j].st_name;
-							UINT32 ldr_st_addr = ldrSymTable[j].st_value;
-							if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
-								UtilLogStringData(
-									"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
-									i, elfSymTable[i].st_value,
-									*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)),
-									ldr_st_addr
-								);
+							// EXL, 01-Jan-2025: Iterate over library entities and set all relocations paying
+							//    attention to the DATA, 'D' symbols with shifting.
+							for (k = 0; k < ldrNumSymbols; k++) {
+								UINT32 ldr_st_name = ldrSymTable[k].st_name;
+								UINT32 ldr_st_addr = ldrSymTable[k].st_value;
+								if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
+									UtilLogStringData(
+										"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
+										j, elfSymTable[j].st_value,
+										*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)),
+										(ldr_st_addr > DATA_SHIFT_OFFSET) ?
+											(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr
+									);
 
-								*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
+									*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)) =
+										(ldr_st_addr > DATA_SHIFT_OFFSET) ?
+											(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr;
+								}
 							}
-						}
+					} else {
+						// EXL, 01-Jan-2025: Unknown relocation type, set it to 0x00000000.
+						UtilLogStringData(" UNK Reloc #%d\n  Type  %d\n  Off 0x%X\n", j, relType, relTable[j].r_offset);
+						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = 0x00000000;
 					}
 				}
 				break;
 		}
 	}
 
-	// Andy51, 01-Nov-2007: editing API calls.
-	// EXL, 24-Dec-2024: Library format is following:
-	//   4-byte integer: record count
-	//   record array[] elements { offset_function_name_in_strings_array, function_address }
-	//   record array[] elements { function_name, '\0' }
-
-	ldrNumSymbols = ((UINT32 *) Library)[0];
-	ldrSymTable   = (Ldr_Sym *) &((UINT32 *) Library)[1];
-	ldrStrTable   = (char *) &ldrSymTable[ldrNumSymbols]; // EXL, 24-Dec-2024: Empty for now.
-
 	if (is_ads_elf) {
-		// EXL, 31-Dec-2024: Delete PT_DYNAMIC segment.
+		// EXL, 31-Dec-2024: Delete a separate PT_DYNAMIC segment if present.
 		if (dynSegment != NULL) {
 			suFreeMem((void *) dynSegment);
 		}
@@ -374,13 +391,16 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		// EXL, 25-Dec-2024: Free Symbol and String tables and close ELF file.
 		suFreeMem(elfStrTable);
 		suFreeMem(elfSymTable);
-	} else { // GCC ELF!
+	} else {
+		// EXL, 01-Jan-2025: DT_JMPREL symbols handling for ELFs generated by GCC. The GCC uses
+		//   DT_JMPREL + DT_SYMTAB/DT_STRTAB section instead of SHT_SYMTAB/SHT_STRTAB sections in ELFs generated by ADS.
 		Elf32_Addr elfStrTableAddr;
 
 		elfSymTable = (Elf32_Sym *) (physBase + dynTags[DT_SYMTAB] - virtBase);
 		relTable = (Elf32_Rel *) (physBase + dynTags[DT_JMPREL] - virtBase);
 		elfStrTableAddr = physBase + dynTags[DT_STRTAB] - virtBase;
 
+		// EXL, 25-Dec-2024: Iterate over "R_ARM_JUMP_SLOT" relocations in '.rel.plt' section.
 		for (i = 0; i * sizeof(Elf32_Rel) < dynTags[DT_PLTRELSZ]; ++i) {
 			int sym_idx = ELF32_R_SYM(relTable[i].r_info);
 			char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
@@ -397,11 +417,11 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					UtilLogStringData(
 						"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
 						i, elfSymTable[i].st_value,
-						*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)),
+						*((Elf32_Word *) (physBase + relTable[i].r_offset - virtBase)),
 						ldr_st_addr
 					);
 
-					*((Elf32_Word*)(physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
+					*((Elf32_Word *) (physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
 				}
 			}
 		}
