@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 3012241
-# Timestamp: 30-Dec-2024 04:18:29
+# Version: 0201251
+# Timestamp: 02-Jan-2025 06:57:27
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu

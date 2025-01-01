@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 2912241
-# Timestamp: 29-Dec-2024 08:16:30
+# Version: 0201251
+# Timestamp: 02-Jan-2025 06:57:55
 
 0x00000069 C AUDIO_STATUS
 0x00000582 C BEGIN_4A__IN_DB
