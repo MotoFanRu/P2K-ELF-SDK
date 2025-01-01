@@ -597,8 +597,11 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		forge.ep2_gcc_ar([val_a_library_obj], val_libp2k_static_lib)
 		logging.info(f'Creating "{val_libp2k_shared_lib}" shared stub library...')
 		forge.ep1_libgen_asm(val_so_library_asm, library_model, True, False, True, True)
+		c_flags.extend(['-fPIC'])
 		forge.toolchain_compile(val_so_library_asm, val_so_library_obj, True, c_flags, opts['gcc'], opts['argon'])
-		forge.ep2_gcc_link([val_so_library_obj], val_libp2k_shared_lib, True, None, ['-Wl,-shared'], opts['argon'])
+		c_flags.extend(['-shared', '-fPIC', f'-Wl,--soname,{val_libp2k_shared_lib.name}'])
+		forge.ep2_gcc_link([val_so_library_obj], val_libp2k_shared_lib, True, None, c_flags, opts['argon'])
+		forge.ep2_gcc_strip(val_libp2k_shared_lib)
 	logging.info('')
 
 	logging.info('ElfPack v1.0 building report:')

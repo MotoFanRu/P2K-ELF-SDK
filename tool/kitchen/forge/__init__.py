@@ -41,6 +41,7 @@ from .toolchain import ep2_gcc_link
 from .toolchain import ep2_gcc_objcopy
 from .toolchain import ep2_gcc_nm
 from .toolchain import ep2_gcc_ar
+from .toolchain import ep2_gcc_strip
 from .toolchain import toolchain_compile
 
 from .filesystem import delete_all_files_in_directory

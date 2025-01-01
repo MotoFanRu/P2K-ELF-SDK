@@ -26,6 +26,7 @@ from .constants import P2K_EP2_GCC_GCC
 from .constants import P2K_EP2_GCC_OBJCOPY
 from .constants import P2K_EP2_GCC_NM
 from .constants import P2K_EP2_GCC_AR
+from .constants import P2K_EP2_GCC_STRIP
 from .invoker import invoke_external_command_res
 from .invoker import invoke_custom_arguments
 from .filesystem import check_files_if_exists
@@ -235,6 +236,15 @@ def ep2_gcc_ar(p_in: list[Path], p_out: Path) -> bool:
 	for obj in p_in:
 		args.append(str(obj))
 	return invoke_external_command_res(p_in, args)
+
+
+def ep2_gcc_strip(p_in: Path, use_s: bool = True) -> bool:
+	logging.info(f'Stripping "{p_in}"...')
+	args: list[str] = [ str(P2K_EP2_GCC_STRIP) ]
+	if use_s:
+		args.append('-s')
+	args.append(str(p_in))
+	return invoke_external_command_res([p_in], args)
 
 
 def toolchain_compile(
