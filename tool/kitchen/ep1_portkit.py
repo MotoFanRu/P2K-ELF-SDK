@@ -406,7 +406,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	if opts['gcc']:
 		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
-		forge.ep1_libgen_asm(opts['output'] / 'Lib.S', library_model, False, True, False)
+		forge.ep1_libgen_asm(opts['output'] / 'LibStubGCC.S', library_model, False, True, False)
 
 	val_register_sym: Path = opts['output'] / 'Register.sym'
 	logging.info('Generating register symbols file.')
@@ -433,7 +433,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	if opts['compile']:
 		if opts['gcc']:
 			forge.toolchain_compile(
-				opts['output'] / 'Lib.S', opts['output'] / 'Lib.o', True, c_flags,
+				opts['output'] / 'LibStubGCC.S', opts['output'] / 'LibStubGCC.o', True, c_flags,
 				opts['gcc'], opts['argon']
 			)
 		forge.toolchain_compile(
@@ -473,7 +473,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_link_objects.append(forge.P2K_DIR_EP1_LIB / 'libarm_small.a')
 		val_link_objects.append(val_combined_sym)
 	else:
-		val_link_objects.append(val_object_path / 'Lib.o')
+		val_link_objects.append(val_object_path / 'LibStubGCC.o')
 	if opts['use_afw_wraps']:
 		val_link_objects.insert(3, Path(val_object_path / 'AFW_CreateInternalQueuedEv_Wrappers.o'))
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
