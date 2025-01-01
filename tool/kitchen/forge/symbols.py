@@ -270,8 +270,8 @@ def convert_nm_to_sym(in_p: Path, out_p: Path) -> bool:
 					model.append((hex2hex(address, 8), mode, name))
 			if model:
 				for addr, mode, name in model:
-						line: str = f'{addr} {mode} {name}'
-						f_o.write(line + '\n')
+					line: str = f'{addr} {mode} {name}'
+					f_o.write(line + '\n')
 	except OSError as error:
 		logging.error(f'Cannot parse "{in_p}" symbols file and write "{out_p}" file: {error}')
 	return None

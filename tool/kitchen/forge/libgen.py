@@ -131,7 +131,7 @@ def ep1_libgen_library(p_bin_lib: Path, model: LibraryModel, functions: str, arg
 def ep1_libgen_asm(
 	p_asm_src: Path,
 	model: LibraryModel,
-	gcc_asm: bool = False, gcc_equ: bool = False, fake_adresses = True
+	gcc_asm: bool = False, gcc_equ: bool = False, fake_adresses = True, gcc_solib = False
 ) -> bool:
 	header_ads: str = """
 	AREA Lib, CODE, READONLY
@@ -171,6 +171,15 @@ _start:
 	bx      lr
 	.ltorg
 
+"""
+
+	header_gcc_solib: str = """
+.syntax unified
+
+.section .data.Lib
+.type Lib, %common
+Lib:
+	.long 0x10080000
 """
 
 	header_gcc_equ: str = """
@@ -243,7 +252,7 @@ _start:
 		import_section = import_section_gcc
 		end_section = end_section_gcc
 	if gcc_asm:
-		header = header_gcc
+		header = header_gcc if not gcc_solib else header_gcc_solib
 		function_section = function_section_gcc
 		data_section = data_section_gcc
 	if gcc_equ:

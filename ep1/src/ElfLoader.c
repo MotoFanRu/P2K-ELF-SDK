@@ -242,10 +242,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						Elf32_Sym *sym = &elfSymTable[sym_idx];
 						INT32 bind_type = ELF32_ST_BIND(sym->st_info);
 
-						UtilLogStringData(
-							" Reloc #%d\n  Type  %d\n  Off  0x%X Bind %d Str %s\n",
-							j, relType, relTable[j].r_offset, bind_type, sym_str
-						);
+						UtilLogStringData("  Bind Type %d Str: %s\n", bind_type, sym_str);
 
 						// EXL, 01-Jan-2025: Point symbol to the ELF entry point aka first PT_LOAD segment if it not
 						//   found in the library. Workaround for the Lib entry symbol is here.

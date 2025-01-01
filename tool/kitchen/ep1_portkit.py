@@ -557,14 +557,18 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Creating ElfPack v1.0 library for Phone.')
-	val_library_sym: Path = opts['output'] / 'Lib.sym'
-	val_library_asm: Path = opts['output'] / ('LibGCC.S' if opts['gcc'] else 'Lib.asm')
+	val_library_sym: Path = opts['output'] / 'Library.sym'
+	val_library_asm: Path = opts['output'] / ('LibStaticGCC.S' if opts['gcc'] else 'LibStaticADS.asm')
+	val_so_library_asm: Path = opts['output'] / 'LibSharedGCC.S'
 	val_elfloader_lib: Path = opts['output'] / 'elfloader.lib'
 	if not opts['gcc']:
 		generate_lib_sym(
-			val_combined_sym, val_elfpack_sym, val_library_sym,
-			[opts['inject'], 'APP_CALC_MainRegister', '_region_table'],
-			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu']
+			forge.ep1_libgen_get_library_sym(opts['pfw']) if opts['precached'] else val_combined_sym,
+			val_elfpack_sym, val_library_sym,
+			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'] if opts['precached'] else
+				[opts['inject'], 'APP_CALC_MainRegister', '_region_table'],
+			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'],
+			opts['precached']
 		)
 	else:
 		generate_lib_sym(
@@ -580,26 +584,32 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Compiling ElfPack v1.0 library for SDK.')
-	val_library_obj: Path = opts['output'] / ('LibGCC.o' if opts['gcc'] else 'Lib.o')
-	val_libstd_static_lib: Path = opts['output'] / ('libstdgcc.a' if opts['gcc'] else 'libstd.a')
+	val_a_library_obj: Path = opts['output'] / ('libp2k_gcc.o' if opts['gcc'] else 'libp2k_ads.o')
+	val_so_library_obj: Path = opts['output'] / 'libp2k_gcc_stub.o'
+	val_libp2k_static_lib: Path = opts['output'] / ('libp2k_gcc.a' if opts['gcc'] else 'libp2k_ads.a')
+	val_libp2k_shared_lib: Path = opts['output'] / 'libp2k_gcc_stub.so'
+	val_important_dev_lib: Path = val_libp2k_static_lib if not opts['gcc'] else val_libp2k_shared_lib
 	if not opts['gcc']:
-		forge.ep1_ads_armasm(val_library_asm, val_library_obj)
-		forge.ep1_ads_armar([val_library_obj], val_libstd_static_lib)
+		forge.ep1_ads_armasm(val_library_asm, val_a_library_obj)
+		forge.ep1_ads_armar([val_a_library_obj], val_libp2k_static_lib)
 	else:
-		forge.toolchain_compile(val_library_asm, val_library_obj, True, c_flags, opts['gcc'], opts['argon'])
-		forge.ep2_gcc_ar([val_library_obj], val_libstd_static_lib)
-
+		forge.toolchain_compile(val_library_asm, val_a_library_obj, True, c_flags, opts['gcc'], opts['argon'])
+		forge.ep2_gcc_ar([val_a_library_obj], val_libp2k_static_lib)
+		logging.info(f'Creating "{val_libp2k_shared_lib}" shared stub library...')
+		forge.ep1_libgen_asm(val_so_library_asm, library_model, True, False, True, True)
+		forge.toolchain_compile(val_so_library_asm, val_so_library_obj, True, c_flags, opts['gcc'], opts['argon'])
+		forge.ep2_gcc_link([val_so_library_obj], val_libp2k_shared_lib, True, None, ['-Wl,-shared'], opts['argon'])
 	logging.info('')
 
 	logging.info('ElfPack v1.0 building report:')
 	logging.info('')
 	logging.info('Important files:')
-	logging.info(f'\t{val_elfloader_lib}\t-\tCompiled library for "{opts["phone"]}" on "{opts["fw_name"]}" firmware.')
-	logging.info(f'\t{val_result_fpa}\t-\tGenerated ElfPack v1.0 combined patch for Flash&Backup.')
+	logging.info(f'\t{str(val_elfloader_lib):<40} - Library for "{opts["phone"]}" on "{opts["fw_name"]}" firmware.')
+	logging.info(f'\t{str(val_result_fpa):<40} - Generated ElfPack v1.0 combined patch for Flash&Backup.')
 	logging.info('')
 	logging.info('Developer files:')
-	logging.info(f'\t{val_libstd_static_lib}\t-\tCompiled library for SDK.')
-	logging.info(f'\t{val_library_sym}\t-\tGenerated library entities list.')
+	logging.info(f'\t{str(val_important_dev_lib):<40} - Compiled library for SDK.')
+	logging.info(f'\t{str(val_library_sym):<40} - Generated library entities list.')
 	logging.info('')
 
 	return True
