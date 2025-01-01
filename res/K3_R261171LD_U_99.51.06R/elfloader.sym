@@ -7,15 +7,18 @@
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
 # Version: 0201251
-# Timestamp: 02-Jan-2025 06:57:27
+# Timestamp: 02-Jan-2025 06:59:01
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
 0xA123E010 A __rt_memclr
 0xA123DFB8 A __rt_memclr_w
 0xA123DD5C A __rt_memcpy
+0xA123DEC4 A __rt_memcpy_w
 0xA123DD4C A __rt_memset
+0xA123E6DC A __rt_sdiv
 0xA124553C A __rt_udiv
+0xA1242C80 A __rt_udiv10
 0xA0F6DB08 T AFW_AddAppToRoutingStack
 0xA0F6D546 T AFW_AddEvNoD
 0xA0F6E30E T AFW_ConsumeEv
@@ -83,6 +86,7 @@
 0xA1530E58 T namecmp
 0xB578006C T PFprintf
 0xA123DB10 T qsort
+0xA123DC42 T rand
 0xA123D2A8 T sprintf
 0xA123E1A8 T strcmp
 0xA123E160 T strlen
