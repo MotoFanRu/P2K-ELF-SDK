@@ -4,17 +4,15 @@ tool/kitchen/.venv
 tool/kitchen/forge/__pycache__
 tool/kitchen/forge_test/__pycache__
 
-tool/cg/*.smg
 tool/cg/*.bin
+tool/cg/*.smg
 tool/irom/*.bin
+tool/irom/*.smg
 
 tool/kitchen/build
 
-tool/compiler/ep1_lin_ADS/*
-!tool/compiler/ep1_lin_ADS/ReadMe.md
-tool/compiler/ep1_win_ADS/*
-!tool/compiler/ep1_win_ADS/ReadMe.md
-tool/compiler/ep2_lin_devkitARM/*
-!tool/compiler/ep2_lin_devkitARM/ReadMe.md
-tool/compiler/ep2_win_devkitARM/*
-!tool/compiler/ep2_win_devkitARM/ReadMe.md
+tool/compiler/*
+!tool/compiler/ep1_lin_ADS.md
+!tool/compiler/ep1_win_ADS.md
+!tool/compiler/ep2_lin_devkitARM.md
+!tool/compiler/ep2_win_devkitARM.md
