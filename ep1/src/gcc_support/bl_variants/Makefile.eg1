@@ -1,0 +1,54 @@
+# Script: Motorola P2K Makefile
+# Flavor: ElfPack v1.x, EG1 (ARM GCC on Linux)
+# Author: EXL, 03-Jan-2025
+
+CC            = arm-none-eabi-gcc
+OBJDUMP       = arm-none-eabi-objdump
+OBJCOPY       = arm-none-eabi-objcopy
+
+INCLUDES      = -nostdinc -I../../../../sdk/
+DEFINES       = -D__P2K___ -DEG1
+WARNINGS      = -Wall -Wpedantic
+OPTIMIZATIONS = -O2
+FEATURES      = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
+ifeq ($(ARGON), 1)
+	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
+else
+	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
+endif
+CFLAGS        = $(INCLUDES) $(DEFINES) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
+CXXFLAGS      = $(CFLAGS)
+LDFLAGS       = $(CFLAGS) -Wl,--gc-sections
+LIBS          = -nostdlib -T bl.ld
+
+TARGET1_ELF   = bl_equ.elf
+TARGET2_ELF   = bl_sym.elf
+TARGET3_ELF   = bl_arm.elf
+TARGET4_ELF   = bl_def.elf
+
+all:
+	sed 's/%addr_entry%/0x10901700/g' ../../../tpl/ElfPack.tpl > bl.ld
+	$(CC) $(CFLAGS) -c lib_arm.S -o lib_arm.o
+	$(CC) $(CFLAGS) -c lib_equ.S -o lib_equ.o
+	$(CC) $(CFLAGS) -c bl.c -o bl.o
+	$(CC) $(CFLAGS) -DLIB_DEFINES -c bl.c -o bld.o
+	$(CC) $(LDFLAGS) bl.o lib_equ.o $(LIBS) -o $(TARGET1_ELF)
+	$(CC) $(LDFLAGS) -Wl,-R lib.syms bl.o $(LIBS) -o $(TARGET2_ELF)
+	$(CC) $(LDFLAGS) bl.o lib_arm.o $(LIBS) -o $(TARGET3_ELF)
+	$(CC) $(LDFLAGS) bld.o $(LIBS) -o $(TARGET4_ELF)
+	$(OBJCOPY) -O binary -j .text* $(TARGET1_ELF) $(TARGET1_ELF).bin
+	$(OBJCOPY) -O binary -j .text* $(TARGET2_ELF) $(TARGET2_ELF).bin
+	$(OBJCOPY) -O binary -j .text* $(TARGET3_ELF) $(TARGET3_ELF).bin
+	$(OBJCOPY) -O binary -j .text* $(TARGET4_ELF) $(TARGET4_ELF).bin
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET1_ELF)
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET2_ELF)
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET3_ELF)
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET4_ELF)
+	ls -alh *.bin
+	@for file in *.bin; do echo "===== $$file ====="; hexdump -C "$$file"; done
+
+clean:
+	-rm -f *.o
+	-rm -f *.elf
+	-rm -f *.bin
+	-rm -f *.ld

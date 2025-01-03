@@ -1,33 +1,43 @@
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Auto-generated stub library.
+ *
+ * Author:
+ *   EXL, 30-Dec-2024
+ */
+
 .syntax unified
 
-.section .text.funcT
+.section .text.funcTS
 .thumb
 .thumb_func
-.type funcT, %function
-funcT:
+.type funcTS, %function
+funcTS:
 	bx pc
 
 .arm
-.type funcT32, %function
-funcT32:
+.type funcTS32, %function
+funcTS32:
 	ldr   r12, =0x10867509
 	bx    r12
 	.ltorg
 
-.section .text.funcA
+.section .text.funcAS
 .thumb
 .thumb_func
-.type funcA, %function
-funcA:
+.type funcAS, %function
+funcAS:
 	bx pc
 
 .arm
-.type funcA32, %function
-funcA32:
+.type funcAS32, %function
+funcAS32:
 	ldr   r12, =0x10867500
 	bx    r12
 	.ltorg
-
 
 .section .text.funcTL
 .thumb
@@ -57,11 +67,10 @@ funcAL32:
 	bx    r12
 	.ltorg
 
-
-.global funcT
-.global funcT32
-.global funcA
-.global funcA32
+.global funcTS
+.global funcTS32
+.global funcAS
+.global funcAS32
 .global funcTL
 .global funcTL32
 .global funcAL

@@ -1,21 +1,33 @@
-void funcT(unsigned int num_pairs, unsigned int cnt);
-void funcA(unsigned int num_pairs, unsigned int cnt);
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Various experiments with ARM/Thumb Branch Links.
+ *
+ * Author:
+ *   EXL, 30-Dec-2024
+ */
+
+void funcTS(unsigned int num_pairs, unsigned int cnt);
+void funcAS(unsigned int num_pairs, unsigned int cnt);
 void funcTL(unsigned int num_pairs, unsigned int cnt);
 void funcAL(unsigned int num_pairs, unsigned int cnt);
 
-#ifdef DEFINES
-#define funcT  ((void (*)(unsigned int, unsigned int)) (0x10867508 | 1))
-#define funcA  ((void (*)(unsigned int, unsigned int)) (0x10867500 | 0))
+#if defined(LIB_DEFINES)
+#define funcTS ((void (*)(unsigned int, unsigned int)) (0x10867508 | 1))
+#define funcAS ((void (*)(unsigned int, unsigned int)) (0x10867500 | 0))
 #define funcTL ((void (*)(unsigned int, unsigned int)) (0x00000100 | 1))
 #define funcAL ((void (*)(unsigned int, unsigned int)) (0x00000200 | 0))
 #endif
 
-void UtilLogStringData(void) {
+void AutorunMain(void) {
 	int a;
+
 	a = 0;
-	funcT(a, 0x5151);
+	funcTS(a, 0x5151);
 	a = 1;
-	funcA(a, 0x5151);
+	funcAS(a, 0x5151);
 	a = 2;
 	funcTL(a, 0x5151);
 	a = 3;

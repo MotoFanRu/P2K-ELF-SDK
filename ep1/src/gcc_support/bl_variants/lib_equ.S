@@ -1,12 +1,23 @@
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Auto-generated stub library with .equ directives.
+ *
+ * Author:
+ *   EXL, 30-Dec-2024
+ */
+
 .syntax unified
 
-.global funcA
-.type funcA, function
-.equ funcA, 0x10867500 | 0
+.global funcAS
+.type funcAS, function
+.equ funcAS, 0x10867500 | 0
 
-.global funcT
-.type funcT, function
-.equ funcT, 0x10867508 | 1
+.global funcTS
+.type funcTS, function
+.equ funcTS, 0x10867508 | 1
 
 .global funcTL
 .type funcTL, function

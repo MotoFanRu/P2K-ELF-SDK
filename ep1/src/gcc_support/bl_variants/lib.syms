@@ -1,0 +1,15 @@
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Auto-generated stub symbols file.
+ *
+ * Author:
+ *   EXL, 30-Dec-2024
+ */
+
+funcTS                                 = (0x10867508 | 1); /* T */
+funcAS                                 = (0x10867500 | 0); /* A */
+funcTL                                 = (0x00000100 | 1); /* T */
+funcAL                                 = (0x00000200 | 0); /* A */
