@@ -144,7 +144,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	//   #define PT_LOAD                        (1)                 // Loadable program segment.
 	//   #define PT_DYNAMIC                     (2)                 // Dynamic linking information.
 	for (i = 0; i < elfHeader.e_phnum; i++) {
-		switch(elfProgramHeaders[i].p_type) {
+		switch (elfProgramHeaders[i].p_type) {
 			case PT_LOAD:
 				// EXL, 24-Dec-2024: Seek and read program segments with executable code to RAM.
 				//   We interested in PT_LOAD and PT_DYNAMIC program sections.
@@ -209,8 +209,8 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						UtilLogStringData(
 							" R_ARM_RABS32\n  Old  0x%X\n  New  0x%X\n",
 							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)),
-							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase);
-
+							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase
+						);
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
 					}
 				}
@@ -418,7 +418,7 @@ UINT32 namecmp(const char *ansi_str_1, const char *ansi_str_2) {
 	i = 0;
 
 	while (ansi_str_1[i] == ansi_str_2[i]) {
-		if(ansi_str_1[i++] == 0) {
+		if (ansi_str_1[i++] == 0) {
 			return TRUE;
 		}
 	}

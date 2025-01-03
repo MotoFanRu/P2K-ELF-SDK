@@ -158,7 +158,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	//   #define PT_LOAD                        (1)                 // Loadable program segment.
 	//   #define PT_DYNAMIC                     (2)                 // Dynamic linking information.
 	for (i = 0; i < elfHeader.e_phnum; i++) {
-		switch(elfProgramHeaders[i].p_type) {
+		switch (elfProgramHeaders[i].p_type) {
 			case PT_LOAD:
 				// EXL, 24-Dec-2024: Seek and read program segments with executable code to RAM.
 				//   We interested in PT_LOAD and PT_DYNAMIC program sections.
@@ -232,8 +232,8 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						UtilLogStringData(
 							" R_ARM_RABS32\n  Old  0x%X\n  New  0x%X\n",
 							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)),
-							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase);
-
+							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase
+						);
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
 					} else if (relType == R_ARM_ABS32 && !is_ads_elf) {
 						// EXL, 01-Jan-2025:
@@ -250,25 +250,25 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						//   found in the library. Workaround for the Lib entry symbol is here.
 						*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)) = physBase - virtBase;
 
-							// EXL, 01-Jan-2025: Iterate over library entities and set all relocations paying
-							//    attention to the DATA, 'D' symbols with shifting.
-							for (k = 0; k < ldrNumSymbols; k++) {
-								UINT32 ldr_st_name = ldrSymTable[k].st_name;
-								UINT32 ldr_st_addr = ldrSymTable[k].st_value;
-								if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
-									UtilLogStringData(
-										"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
-										j, elfSymTable[j].st_value,
-										*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)),
-										(ldr_st_addr > DATA_SHIFT_OFFSET) ?
-											(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr
-									);
+						// EXL, 01-Jan-2025: Iterate over library entities and set all relocations paying
+						//    attention to the DATA, 'D' symbols with shifting.
+						for (k = 0; k < ldrNumSymbols; k++) {
+							UINT32 ldr_st_name = ldrSymTable[k].st_name;
+							UINT32 ldr_st_addr = ldrSymTable[k].st_value;
+							if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
+								UtilLogStringData(
+									"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
+									j, elfSymTable[j].st_value,
+									*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)),
+									(ldr_st_addr > DATA_SHIFT_OFFSET) ?
+										(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr
+								);
 
-									*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)) =
-										(ldr_st_addr > DATA_SHIFT_OFFSET) ?
-											(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr;
-								}
+								*((Elf32_Word *) (physBase + relTable[j].r_offset - virtBase)) =
+									(ldr_st_addr > DATA_SHIFT_OFFSET) ?
+										(ldr_st_addr - DATA_SHIFT_OFFSET) : ldr_st_addr;
 							}
+						}
 					} else {
 						// EXL, 01-Jan-2025: Unknown relocation type, set it to 0x00000000.
 						UtilLogStringData(" UNK Reloc #%d\n  Type  %d\n  Off 0x%X\n", j, relType, relTable[j].r_offset);
@@ -506,7 +506,7 @@ UINT32 namecmp(const char *ansi_str_1, const char *ansi_str_2) {
 	i = 0;
 
 	while (ansi_str_1[i] == ansi_str_2[i]) {
-		if(ansi_str_1[i++] == 0) {
+		if (ansi_str_1[i++] == 0) {
 			return TRUE;
 		}
 	}
