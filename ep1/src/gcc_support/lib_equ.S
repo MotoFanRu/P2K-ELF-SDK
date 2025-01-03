@@ -1,3 +1,14 @@
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Auto-generated stub library with .equ directives.
+ *
+ * Author:
+ *   EXL, 29-Dec-2024
+ */
+
 .syntax unified
 
 .global __rt_memclr
