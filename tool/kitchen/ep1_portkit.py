@@ -351,9 +351,9 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_platform_sym: Path = opts['output'] / 'Platform.sym'
 		val_functions_sym: Path = opts['output'] / 'Functions.sym'
 		val_functions_modern_lte2: Path = opts['output'] / 'Functions_LTE2_Modern.sym'
-		if (opts['soc'] == 'LTE') and not opts['skip_platform_search']:
+		if (opts['soc'] == 'LTE') and not opts['skip_platform']:
 			forge.pat_find(val_lte1_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
-		elif (opts['soc'] == 'LTE2') and not opts['skip_platform_search']:
+		elif (opts['soc'] == 'LTE2') and not opts['skip_platform']:
 			forge.pat_find(val_lte2_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
 			if forge.is_modern_lte2(opts['phone']):
 				forge.pat_find(val_lte2_modern_pat, opts['fw_file'], opts['start'], False, val_functions_modern_lte2)
@@ -366,7 +366,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		forge.pat_find(opts['patterns'], opts['fw_file'], opts['start'], opts['ram_trans'], val_functions_sym)
 		logging.info('')
 
-		if not opts['skip_platform_search']:
+		if not opts['skip_platform']:
 			logging.info('Combining all functions into one symbols file.')
 			if opts['soc'] == 'LTE':
 				forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
@@ -639,7 +639,7 @@ class Args(argparse.ArgumentParser):
 
 		opts['verbose'] = args.verbose
 		opts['search'] = args.search
-		opts['skip_platform_search'] = args.skip_platform_search
+		opts['skip_platform'] = args.skip_platform
 		opts['compile'] = not args.obj
 		opts['gcc'] = args.gcc
 		if opts['gcc'] and not opts['compile']:
@@ -671,7 +671,7 @@ class Args(argparse.ArgumentParser):
 
 		opts['inject'] = variants['func_inject']
 
-		if opts['skip_platform_search'] and not opts['search']:
+		if opts['skip_platform'] and not opts['search']:
 			self.error('cannot use "-a" flag (Skip Platform Searching) without "-i" flag (Binary Pattern Search)')
 		if not opts['patterns'] and opts['search']:
 			self.error('patterns file is not provided, use "-p phone_fw.pat" option')
@@ -747,7 +747,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
 	parser_args.add_argument('-i', '--search', required=False, action='store_true', help=hlp['i'])
 	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
-	parser_args.add_argument('-a', '--skip-platform-search', required=False, action='store_true', help=hlp['a'])
+	parser_args.add_argument('-a', '--skip-platform', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
 	parser_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
