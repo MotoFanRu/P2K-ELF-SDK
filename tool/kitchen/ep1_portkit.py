@@ -422,6 +422,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	generate_system_information_source(opts['phone'], opts['fw_name'], opts['soc'], val_system_info_c)
 	logging.info('')
 
+	val_src_dir: Path = (forge.P2K_DIR_EP1_SRC / 'goldsrc') if opts['original'] else forge.P2K_DIR_EP1_SRC
 	c_flags: list[str] =  ['-DEG1'] if opts['argon'] else ['-DEP1']
 	c_flags.extend(opts['opts_all'])
 	gcc: bool = opts['gcc']
@@ -433,33 +434,30 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	if opts['compile']:
 		if opts['gcc']:
 			forge.toolchain_compile(
-				opts['output'] / 'LibStubGCC.S', opts['output'] / 'LibStubGCC.o', True, c_flags,
-				opts['gcc'], opts['argon']
+				opts['output'] / 'LibStubGCC.S', opts['output'] / 'LibStubGCC.o',
+				True, c_flags, opts['gcc'], opts['argon']
 			)
 		forge.toolchain_compile(
-			forge.P2K_DIR_EP1_SRC / 'AutoRun.c', opts['output'] / 'AutoRun.o', True, c_flags,
-			opts['gcc'], opts['argon']
+			val_src_dir / 'AutoRun.c', opts['output'] / 'AutoRun.o',
+			True, c_flags, opts['gcc'], opts['argon']
 		)
 		forge.toolchain_compile(
-			forge.P2K_DIR_EP1_SRC / 'ElfLoader.c', opts['output'] / 'ElfLoader.o', True, c_flags,
-			opts['gcc'], opts['argon']
+			val_src_dir / 'ElfLoader.c', opts['output'] / 'ElfLoader.o',
+			True, c_flags, opts['gcc'], opts['argon']
 		)
 		forge.toolchain_compile(
-			forge.P2K_DIR_EP1_SRC / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o', True, c_flags,
-			opts['gcc'], opts['argon']
+			val_src_dir / 'ElfLoaderApp.c', opts['output'] / 'ElfLoaderApp.o',
+			True, c_flags, opts['gcc'], opts['argon']
 		)
 		forge.toolchain_compile(
-			forge.P2K_DIR_EP1_SRC / 'AFW_CreateInternalQueuedEv_Wrappers.c',
+			val_src_dir / 'AFW_CreateInternalQueuedEv_Wrappers.c',
 			opts['output'] / 'AFW_CreateInternalQueuedEv_Wrappers.o',
-			True, c_flags,
-			opts['gcc'], opts['argon']
+			True, c_flags, opts['gcc'], opts['argon']
 		)
 	logging.info('')
 
 	logging.info('Linking object files to binary.')
-	val_object_path: Path = forge.P2K_DIR_EP1_OBJ
-	if opts['new_obj']:
-		val_object_path = forge.P2K_DIR_EP1_OBJ / 'new'
+	val_object_path: Path = (forge.P2K_DIR_EP1_OBJ / 'new') if opts['new_obj'] else forge.P2K_DIR_EP1_OBJ
 	if opts['compile']:
 		val_object_path = opts['output']
 	# WARNING: Order is important here!
@@ -584,24 +582,24 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	logging.info('Compiling ElfPack v1.0 library for SDK.')
-	val_a_library_obj: Path = opts['output'] / ('libp2k_gcc.o' if opts['gcc'] else 'libp2k_ads.o')
-	val_so_library_obj: Path = opts['output'] / 'libp2k_gcc_stub.o'
-	val_libp2k_static_lib: Path = opts['output'] / ('libp2k_gcc.a' if opts['gcc'] else 'libp2k_ads.a')
-	val_libp2k_shared_lib: Path = opts['output'] / 'libp2k_gcc_stub.so'
-	val_important_dev_lib: Path = val_libp2k_static_lib if not opts['gcc'] else val_libp2k_shared_lib
+	val_a_library_obj: Path = opts['output'] / ('libeg1_gcc.o' if opts['gcc'] else 'libep1_ads.o')
+	val_so_library_obj: Path = opts['output'] / 'libeg1_gcc_stub.o'
+	val_libep1_static_lib: Path = opts['output'] / ('libeg1_gcc.a' if opts['gcc'] else 'libep1_ads.a')
+	val_libep1_shared_lib: Path = opts['output'] / 'libeg1_gcc_stub.so'
+	val_important_dev_lib: Path = val_libep1_static_lib if not opts['gcc'] else val_libep1_shared_lib
 	if not opts['gcc']:
 		forge.ep1_ads_armasm(val_library_asm, val_a_library_obj)
-		forge.ep1_ads_armar([val_a_library_obj], val_libp2k_static_lib)
+		forge.ep1_ads_armar([val_a_library_obj], val_libep1_static_lib)
 	else:
 		forge.toolchain_compile(val_library_asm, val_a_library_obj, True, c_flags, opts['gcc'], opts['argon'])
-		forge.ep2_gcc_ar([val_a_library_obj], val_libp2k_static_lib)
-		logging.info(f'Creating "{val_libp2k_shared_lib}" shared stub library...')
+		forge.ep2_gcc_ar([val_a_library_obj], val_libep1_static_lib)
+		logging.info(f'Creating "{val_libep1_shared_lib}" shared stub library...')
 		forge.ep1_libgen_asm(val_so_library_asm, library_model, True, False, True, True)
 		c_flags.extend(['-fPIC'])
 		forge.toolchain_compile(val_so_library_asm, val_so_library_obj, True, c_flags, opts['gcc'], opts['argon'])
-		c_flags.extend(['-shared', '-fPIC', f'-Wl,--soname,{val_libp2k_shared_lib.name}'])
-		forge.ep2_gcc_link([val_so_library_obj], val_libp2k_shared_lib, True, None, c_flags, opts['argon'])
-		forge.ep2_gcc_strip(val_libp2k_shared_lib)
+		c_flags.extend(['-shared', '-fPIC', f'-Wl,--soname,{val_libep1_shared_lib.name}'])
+		forge.ep2_gcc_link([val_so_library_obj], val_libep1_shared_lib, True, None, c_flags, opts['argon'])
+		forge.ep2_gcc_strip(val_libep1_shared_lib)
 	logging.info('')
 
 	logging.info('ElfPack v1.0 building report:')
@@ -664,13 +662,14 @@ class Args(argparse.ArgumentParser):
 		opts['opts_all'] = variants['opts_all']
 
 		opts['drive'] = variants['drive_patch']
+		opts['original'] = args.original
 
 		return opts
 
 
 def parse_arguments() -> dict[str, any]:
 	hlp: dict[str, str] = {
-		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 15-Dec-2023',
+		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 01-Jan-2025',
 		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
@@ -683,6 +682,7 @@ def parse_arguments() -> dict[str, any]:
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'z': 'compile objects from sources',
 		'y': 'use GCC for compilation',
+		'w': 'use orginal source code without modifications',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -734,6 +734,7 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-z', '--compile', required=False, action='store_true', help=hlp['z'])
 	parser_args.add_argument('-y', '--gcc', required=False, action='store_true', help=hlp['y'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
+	parser_args.add_argument('-w', '--original', required=False, action='store_true', help=hlp['w'])
 	return parser_args.parse_check_arguments()
 
 
