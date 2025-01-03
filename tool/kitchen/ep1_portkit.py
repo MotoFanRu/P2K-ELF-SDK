@@ -400,6 +400,9 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		else:
 			selection.append('AFW_CreateInternalQueuedEvAux')
 			selection.append('AFW_CreateInternalQueuedEvAuxD')
+		if opts['new_obj']:
+			selection.append('DL_FsFFileExist')
+			selection.append('u_strcpy')
 		if '-DLOG_TO_FILE' in opts['opts_all']:
 			selection.append('DL_FsWriteFile')
 		forge.ep1_libgen_chunk_sym(opts['precached'], val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
@@ -422,7 +425,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	generate_system_information_source(opts['phone'], opts['fw_name'], opts['soc'], val_system_info_c)
 	logging.info('')
 
-	val_src_dir: Path = (forge.P2K_DIR_EP1_SRC / 'goldsrc') if opts['original'] else forge.P2K_DIR_EP1_SRC
+	val_src_dir: Path = (forge.P2K_DIR_EP1_SRC / 'goldsrc') if opts['goldsrc'] else forge.P2K_DIR_EP1_SRC
 	c_flags: list[str] =  ['-DEG1'] if opts['argon'] else ['-DEP1']
 	c_flags.extend(opts['opts_all'])
 	gcc: bool = opts['gcc']
@@ -473,7 +476,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	else:
 		val_link_objects.append(val_object_path / 'LibStubGCC.o')
 	if opts['use_afw_wraps']:
-		val_link_objects.insert(3, Path(val_object_path / 'AFW_CreateInternalQueuedEv_Wrappers.o'))
+		val_link_objects.insert(3, Path(forge.P2K_DIR_EP1_OBJ / 'AFW_CreateInternalQueuedEv_Wrappers.o'))
 	val_elfpack_elf: Path = opts['output'] / 'ElfPack.elf'
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
 	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
@@ -632,12 +635,17 @@ class Args(argparse.ArgumentParser):
 			self.error(f'unknown {phone} phone and {firmware} firmware')
 
 		opts['verbose'] = args.verbose
-		opts['compile'] = args.compile
+		opts['compile'] = not args.obj
 		opts['gcc'] = args.gcc
-		if args.gcc and not args.compile:
-			self.error(f'cannot use "-y" flag (GCC) without "-z" flag (Compile)')
-		opts['ram_trans'] = args.ram_trans
+		if opts['gcc'] and not opts['compile']:
+			self.error('cannot use "-y" flag (Compile using GCC) with "-b" flag (Use Precompiled Objects)')
+		opts['goldsrc'] = args.goldsrc
+		if opts['goldsrc'] and not opts['compile']:
+			self.error('cannot use "-w" flag (Compile Original Sources) with "-b" flag (Use Precompiled Objects)')
 		opts['new_obj'] = args.new_obj
+		if opts['new_obj'] and opts['compile']:
+			self.error('cannot use "-n" flag (Compile Original Sources) without "-b" flag (Use Precompiled Objects)')
+		opts['ram_trans'] = args.ram_trans
 		opts['output'] = args.output
 		opts['directory'] = args.directory
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
@@ -661,7 +669,6 @@ class Args(argparse.ArgumentParser):
 		opts['opts_all'] = variants['opts_all']
 
 		opts['drive'] = variants['drive_patch']
-		opts['original'] = args.original
 
 		return opts
 
@@ -675,12 +682,12 @@ def parse_arguments() -> dict[str, any]:
 		'p': 'override path to patterns file',
 		'f': 'override path to CG0+CG1 firmware file',
 		'o': 'output artifacts directory',
-		'n': 'use new object files',
+		'b': 'use precompiled object files',
+		'n': 'use new precompiled object files',
 		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
-		'z': 'compile objects from sources',
-		'y': 'use GCC for compilation',
 		'w': 'use orginal source code without modifications',
+		'y': 'use GCC for compilation',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
@@ -704,7 +711,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -r -t -pf Z3_R452F1_G_08.04.09R -o build
 	python ep1_portkit.py -r -t -pf Z3_R452H6_G_08.00.05R -o build
 	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build
-	python ep1_portkit.py -r -t -pf K3_R261171LD_U_99.51.06R -o build -z -y
+	python ep1_portkit.py -r -t -pf K3_R261171LD_U_99.51.06R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
 	python ep1_portkit.py -r -t -n -pf E1_R373_G_0E.30.49R -o build
@@ -713,10 +720,10 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code.
-	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build -z
+	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code and GCC compiler.
-	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build -z -y
+	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build ??
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
@@ -725,13 +732,13 @@ def parse_arguments() -> dict[str, any]:
 	parser_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
+	parser_args.add_argument('-b', '--obj', required=False, action='store_true', help=hlp['b'])
 	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
 	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
-	parser_args.add_argument('-z', '--compile', required=False, action='store_true', help=hlp['z'])
 	parser_args.add_argument('-y', '--gcc', required=False, action='store_true', help=hlp['y'])
+	parser_args.add_argument('-w', '--goldsrc', required=False, action='store_true', help=hlp['w'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
-	parser_args.add_argument('-w', '--original', required=False, action='store_true', help=hlp['w'])
 	return parser_args.parse_check_arguments()
 
 
