@@ -335,7 +335,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	forge.args_dump(opts)
 	logging.info('')
 	logging.info('Prepare PortKit environment.')
-	forge.prepare_clean_output_directory(opts["output"], opts['clean'])
+	forge.prepare_clean_output_directory(opts["output"], True)
 	logging.info('')
 
 	val_combined_sym: Path = opts['output'] / 'Combined.sym'
@@ -632,7 +632,6 @@ class Args(argparse.ArgumentParser):
 			self.error(f'unknown {phone} phone and {firmware} firmware')
 
 		opts['verbose'] = args.verbose
-		opts['clean'] = args.clean
 		opts['compile'] = args.compile
 		opts['gcc'] = args.gcc
 		if args.gcc and not args.compile:
@@ -670,7 +669,6 @@ class Args(argparse.ArgumentParser):
 def parse_arguments() -> dict[str, any]:
 	hlp: dict[str, str] = {
 		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 01-Jan-2025',
-		'c': 'clean output directory before processing',
 		'r': 'resolve precached iRAM function addresses',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
 		's': 'override start address of CG0+CG1 firmware (in HEX)',
@@ -687,41 +685,40 @@ def parse_arguments() -> dict[str, any]:
 	}
 	epl: str = """examples:
 	# Build ElfPack v1.0 and libraries to the phone/firmware (+'Elf' directory patch).
-	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -o build
-	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.79R -o build
-	python ep1_portkit.py -c -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat -pf E1_R373_G_0E.30.DAR -o build
-	python ep1_portkit.py -c -r -t -pf K1_R452F_G_08.03.08R -o build
-	python ep1_portkit.py -c -r -t -pf L6_R3511_G_0A.52.45R_A -o build
-	python ep1_portkit.py -c -r -t -pf L6i_R3443H1_G_0A.65.0BR -o build
-	python ep1_portkit.py -c -r -t -pf L7_R4513_G_08.B7.ACR_RB -o build
-	python ep1_portkit.py -c -r -t -pf L7_R4513_G_08.B7.E0R_RB -o build
-	python ep1_portkit.py -c -r -t -pf L7e_R452D_G_08.01.0AR -o build
-	python ep1_portkit.py -c -r -t -pf L9_R452J_G_08.22.05R -o build
-	python ep1_portkit.py -c -r -t -pf V3i_R4441D_G_08.01.03R -o build
-	python ep1_portkit.py -c -r -t -pf V3r_R4515_G_08.BD.D3R -o build
-	python ep1_portkit.py -c -r -t -pf V235_R3512_G_0A.30.6CR -o build
-	python ep1_portkit.py -c -r -t -pf V360_R4513_G_08.B7.ACR -o build
-	python ep1_portkit.py -c -r -t -pf V600_TRIPLETS_G_0B.09.72R -o build
-	python ep1_portkit.py -c -r -t -pf Z3_R452B_G_08.02.0DR -o build
-	python ep1_portkit.py -c -r -t -pf Z3_R452F1_G_08.04.09R -o build
-	python ep1_portkit.py -c -r -t -pf Z3_R452H6_G_08.00.05R -o build
-	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build
-	python ep1_portkit.py -c -r -t -pf K3_R261171LD_U_99.51.06R -o build -z -y
+	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.79R -o build
+	python ep1_portkit.py -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat -pf E1_R373_G_0E.30.DAR -o build
+	python ep1_portkit.py -r -t -pf K1_R452F_G_08.03.08R -o build
+	python ep1_portkit.py -r -t -pf L6_R3511_G_0A.52.45R_A -o build
+	python ep1_portkit.py -r -t -pf L6i_R3443H1_G_0A.65.0BR -o build
+	python ep1_portkit.py -r -t -pf L7_R4513_G_08.B7.ACR_RB -o build
+	python ep1_portkit.py -r -t -pf L7_R4513_G_08.B7.E0R_RB -o build
+	python ep1_portkit.py -r -t -pf L7e_R452D_G_08.01.0AR -o build
+	python ep1_portkit.py -r -t -pf L9_R452J_G_08.22.05R -o build
+	python ep1_portkit.py -r -t -pf V3i_R4441D_G_08.01.03R -o build
+	python ep1_portkit.py -r -t -pf V3r_R4515_G_08.BD.D3R -o build
+	python ep1_portkit.py -r -t -pf V235_R3512_G_0A.30.6CR -o build
+	python ep1_portkit.py -r -t -pf V360_R4513_G_08.B7.ACR -o build
+	python ep1_portkit.py -r -t -pf V600_TRIPLETS_G_0B.09.72R -o build
+	python ep1_portkit.py -r -t -pf Z3_R452B_G_08.02.0DR -o build
+	python ep1_portkit.py -r -t -pf Z3_R452F1_G_08.04.09R -o build
+	python ep1_portkit.py -r -t -pf Z3_R452H6_G_08.00.05R -o build
+	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build
+	python ep1_portkit.py -r -t -pf K3_R261171LD_U_99.51.06R -o build -z -y
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
-	python ep1_portkit.py -c -r -t -n -pf E1_R373_G_0E.30.49R -o build
+	python ep1_portkit.py -r -t -n -pf E1_R373_G_0E.30.49R -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware with patch offset override.
-	python ep1_portkit.py -c -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
+	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code.
-	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build -z
+	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build -z
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code and GCC compiler.
-	python ep1_portkit.py -c -r -t -pf C650_R365_G_0B.D3.08R -o build -z -y
+	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build -z -y
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser_args.add_argument('-c', '--clean', required=False, action='store_true', help=hlp['c'])
 	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
 	parser_args.add_argument('-pf', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
 	parser_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
