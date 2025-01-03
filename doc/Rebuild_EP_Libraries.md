@@ -1,9 +1,9 @@
-Rebuild Librarie for the New Combiled Firmware
-==============================================
+Rebuild EP Libraries
+====================
 
 ## R373_G_0E.30.DAR ElfLoader EP1/EP2 libraries rebuilding recipe
 
-Get `release/gsm_flash_dev.sym` symbols file from building system.
+1. Get `release/gsm_flash_dev.sym` symbols file from building system.
 
 ```bash
 # Create building directory.
@@ -40,7 +40,7 @@ cat prepared/ep2_gsm.sym prepared/ep2_chunk.sym prepared/ep2_const.sym > prepare
 ./compare.py -s prepared/ep2_combined.sym -c ../../res/E1_R373_G_0E.30.DAR/library.sym -ec EP2 -n
 ```
 
-Add `Class_dal` and `_region_table` function to the `ep1_combined.sym` and `ep2_combined.sym` symbol files manually.
+2. Add `Class_dal` and `_region_table` function to the `ep1_combined.sym` and `ep2_combined.sym` symbol files manually.
 
 ```bash
 # EP1:
@@ -57,7 +57,7 @@ Add `Class_dal` and `_region_table` function to the `ep1_combined.sym` and `ep2_
 0x10A5B8A4 D _region_table
 ```
 
-Generate final EP1/EP2 libraries and clean listings.
+3. Generate final EP1/EP2 libraries and clean listings.
 
 ```bash
 ./ep1_libgen.py -sn -s prepared/ep1_combined.sym -o prepared/elfloader.lib
@@ -67,7 +67,7 @@ Generate final EP1/EP2 libraries and clean listings.
 ./ep2_libgen.py -sn -s prepared/library.bin -p 'E1' -o prepared/library.sym
 ```
 
-Fix `SBCM_ATOD_temp` and `SBCM_ATOD_vltg` addresses and modes in `library.sym` listing.
+4. Fix `SBCM_ATOD_temp` and `SBCM_ATOD_vltg` addresses and modes in `library.sym` listing.
 
 ```bash
 ./compare.py -es EP2 -s ep2_combined.sym -c library.sym -ec EP2
@@ -81,3 +81,5 @@ Fix `SBCM_ATOD_temp` and `SBCM_ATOD_vltg` addresses and modes in `library.sym` l
 31-Mar-2024 13:24:36 INFO: 	"0x120099F0 D SBCM_ATOD_vltg" in "prepared/library.sym" file.
 31-Mar-2024 13:24:36 INFO: Done.
 ```
+
+5. All done!
