@@ -19,8 +19,10 @@
 
 #if defined(EP1)
 #define DATA_SHIFT_OFFSET              (0x30000000)
-#elif defined(EA1)
+#elif defined(EG1)
 #define DATA_SHIFT_OFFSET              (0xC0000000)
+#else
+#error "Unknown ElfPack flavor! Try to set EP1 or EG1"
 #endif
 
 typedef UINT32 (*Entry)(char *, char *, UINT32);

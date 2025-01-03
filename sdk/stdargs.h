@@ -11,7 +11,7 @@
 
 // GCC (ElfPack v2.0)
 #elif defined( __GNUC__ )
-#if defined(EA1) || defined(USE_GCC_VA_ARGS)
+#if defined(EG1) || defined(USE_GCC_VA_ARGS)
 #include <stdarg2.h>
 #else
 // TODO!
