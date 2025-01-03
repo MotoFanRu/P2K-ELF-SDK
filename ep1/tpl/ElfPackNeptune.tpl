@@ -1,4 +1,15 @@
-/* Motorola P2K phones on Neptune LTE1 SoC memory map like Motorola E398 or Motorola ROKR E1. */
+/*
+ * Project:
+ *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *
+ * About:
+ *   Linker script for Motorola P2K phones on the Neptune LTE SoC, including a memory map.
+ *   Supports models: Motorola E398, Motorola ROKR E1, Motorola RAZR V3, etc.
+ *
+ * Author:
+ *   EXL, 29-Dec-2024
+ */
+
 MEMORY {
 	IROM  (RX)  : ORIGIN = 0x00000000, LENGTH = 0x001C0000 /* 1.75 MiB     */
 	IRAM  (RWX) : ORIGIN = 0x03FC0000, LENGTH = 0x00040000 /* 256  KiB     */

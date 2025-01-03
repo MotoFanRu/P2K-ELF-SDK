@@ -485,7 +485,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			return False
 		forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	else:
-		val_ld_script_tpl = forge.P2K_DIR_EP1_TPL / ('ElfPackArgonLV.tpl' if opts['argon'] else 'ElfPackLTE.tpl')
+		val_ld_script_tpl = forge.P2K_DIR_EP1_TPL / ('ElfPackArgon.tpl' if opts['argon'] else 'ElfPackNeptune.tpl')
 		val_ld_script_org = opts['output'] / 'ElfPack.ld'
 		forge.patch_text_file_template(
 			val_ld_script_tpl, val_ld_script_org,

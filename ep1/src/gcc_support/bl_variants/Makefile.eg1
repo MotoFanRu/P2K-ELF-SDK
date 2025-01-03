@@ -2,24 +2,28 @@
 # Flavor: ElfPack v1.x, EG1 (ARM GCC on Linux)
 # Author: EXL, 03-Jan-2025
 
-CC            = arm-none-eabi-gcc
-OBJDUMP       = arm-none-eabi-objdump
-OBJCOPY       = arm-none-eabi-objcopy
+CC                = arm-none-eabi-gcc
+OBJDUMP           = arm-none-eabi-objdump
+OBJCOPY           = arm-none-eabi-objcopy
 
-INCLUDES      = -nostdinc -I../../../../sdk/
-DEFINES       = -D__P2K___ -DEG1
-WARNINGS      = -Wall -Wpedantic
-OPTIMIZATIONS = -O2
-FEATURES      = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
+INCLUDES          = -nostdinc -I../../../sdk/
+DEFINES           = -D__P2K___ -DEG1
+WARNINGS          = -Wall -Wextra
+OPTIMIZATIONS     = -O2
+FEATURES          = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
 ifeq ($(ARGON), 1)
-	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
+	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
+	LD_SCRIPT_TPL = ElfPackArgon.tpl
+	ENTRY_POINT   = 0xA1530B18
 else
-	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
+	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
+	LD_SCRIPT_TPL = ElfPackNeptune.tpl
+	ENTRY_POINT   = 0x10901700
 endif
-CFLAGS        = $(INCLUDES) $(DEFINES) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
-CXXFLAGS      = $(CFLAGS)
-LDFLAGS       = $(CFLAGS) -Wl,--gc-sections
-LIBS          = -nostdlib -T bl.ld
+CFLAGS            = $(INCLUDES) $(DEFINES) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
+CXXFLAGS          = $(CFLAGS)
+LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
+LIBS              = -nostdlib -T bl.ld
 
 TARGET1_ELF   = bl_equ.elf
 TARGET2_ELF   = bl_sym.elf
@@ -27,7 +31,7 @@ TARGET3_ELF   = bl_arm.elf
 TARGET4_ELF   = bl_def.elf
 
 all:
-	sed 's/%addr_entry%/0x10901700/g' ../../../tpl/ElfPack.tpl > bl.ld
+	sed 's/%addr_entry%/$(ENTRY_POINT)/g' ../../../tpl/$(LD_SCRIPT_TPL) > bl.ld
 	$(CC) $(CFLAGS) -c lib_arm.S -o lib_arm.o
 	$(CC) $(CFLAGS) -c lib_equ.S -o lib_equ.o
 	$(CC) $(CFLAGS) -c bl.c -o bl.o

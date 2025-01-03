@@ -2,31 +2,35 @@
 # Flavor: ElfPack v1.x, EG1 (ARM GCC on Linux)
 # Author: EXL, 03-Jan-2025
 
-CC            = arm-none-eabi-gcc
-OBJDUMP       = arm-none-eabi-objdump
-OBJCOPY       = arm-none-eabi-objcopy
+CC                = arm-none-eabi-gcc
+OBJDUMP           = arm-none-eabi-objdump
+OBJCOPY           = arm-none-eabi-objcopy
 
-INCLUDES      = -nostdinc -I../../../sdk/
-DEFINES       = -D__P2K___ -DEG1
-WARNINGS      = -Wall -Wextra
-OPTIMIZATIONS = -O2
-FEATURES      = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
+INCLUDES          = -nostdinc -I../../../sdk/
+DEFINES           = -D__P2K___ -DEG1
+WARNINGS          = -Wall -Wextra
+OPTIMIZATIONS     = -O2
+FEATURES          = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
 ifeq ($(ARGON), 1)
-	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
+	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
+	LD_SCRIPT_TPL = ElfPackArgon.tpl
+	ENTRY_POINT   = 0xA1530B18
 else
-	CPU_FLAGS = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
+	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
+	LD_SCRIPT_TPL = ElfPackNeptune.tpl
+	ENTRY_POINT   = 0x10901700
 endif
-CFLAGS        = $(INCLUDES) $(DEFINES) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
-CXXFLAGS      = $(CFLAGS)
-LDFLAGS       = $(CFLAGS) -Wl,--gc-sections
-LIBS          = -nostdlib -T ElfPack.ld
+CFLAGS            = $(INCLUDES) $(DEFINES) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
+CXXFLAGS          = $(CFLAGS)
+LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
+LIBS              = -nostdlib -T ElfPack.ld
 
-TARGET        = ElfPackGcc1
-TARGET_ELF    = $(TARGET).elf
-TARGET_BIN    = $(TARGET).bin
+TARGET            = ElfPackGcc1
+TARGET_ELF        = $(TARGET).elf
+TARGET_BIN        = $(TARGET).bin
 
 all:
-	sed 's/%addr_entry%/0x10901700/g' ../../tpl/ElfPackLTE.tpl > ElfPack.ld
+	sed 's/%addr_entry%/$(ENTRY_POINT)/g' ../../tpl/$(LD_SCRIPT_TPL) > ElfPack.ld
 	$(CC) $(CFLAGS) -c lib_equ.S -o lib_equ.o
 	$(CC) $(CFLAGS) -c SysInfo.c -o SysInfo.o
 	$(CC) $(CFLAGS) -c ../AFW_CreateInternalQueuedEv_Wrappers.c -o AFW_CreateInternalQueuedEv_Wrappers.o
