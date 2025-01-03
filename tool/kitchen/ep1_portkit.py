@@ -263,7 +263,7 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 		if firmware == 'R452F1_G_08.04.09R':
 			# Pattern: [14??????00003E580000FFFF]+0x4
 			patches.append('0x14076374 D Ram_l7e')
-	return forge.libgen_apply_patches(patches, lib_sym, phone, firmware, 'EP1')
+	return forge.libgen_apply_patches(patches, lib_sym, phone, firmware, 'EP1') if patches else False
 
 
 # Various generators.
@@ -324,6 +324,8 @@ def generate_register_sym(combined_sym: Path, cgs_path: Path, register_func: str
 		forge.pat_find(pat, cgs_path, 0x00000000, False, sym)
 		if forge.ep1_libgen_model(sym, forge.LibrarySort.NAME) is not None:
 			return True
+	else:
+		logging.error(f'Cannot find address of "{register_func}" function')
 	return False
 
 
@@ -349,36 +351,37 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		val_platform_sym: Path = opts['output'] / 'Platform.sym'
 		val_functions_sym: Path = opts['output'] / 'Functions.sym'
 		val_functions_modern_lte2: Path = opts['output'] / 'Functions_LTE2_Modern.sym'
-		if opts['soc'] == 'LTE':
+		if (opts['soc'] == 'LTE') and not opts['skip_platform_search']:
 			forge.pat_find(val_lte1_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
-		elif opts['soc'] == 'LTE2':
+		elif (opts['soc'] == 'LTE2') and not opts['skip_platform_search']:
 			forge.pat_find(val_lte2_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
 			if forge.is_modern_lte2(opts['phone']):
 				forge.pat_find(val_lte2_modern_pat, opts['fw_file'], opts['start'], False, val_functions_modern_lte2)
 		else:
 			val_functions_sym = val_combined_sym
-			logging.warning('Unknown SoC platform, will skip generating platform symbols file.')
+			logging.warning('Will skip generating platform symbols file.')
 		logging.info('')
 
 		logging.info('Finding general functions from patterns.')
 		forge.pat_find(opts['patterns'], opts['fw_file'], opts['start'], opts['ram_trans'], val_functions_sym)
 		logging.info('')
 
-		logging.info('Combining all functions into one symbols file.')
-		if opts['soc'] == 'LTE':
-			forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
-		elif opts['soc'] == 'LTE2':
-			if forge.is_modern_lte2(opts['phone']):
-				forge.create_combined_sym_file(
-					[val_functions_sym, val_platform_sym, val_functions_modern_lte2, val_lte2_irom_sym],
-					val_combined_sym
-				)
-			else:
-				forge.create_combined_sym_file(
-					[val_functions_sym, val_platform_sym, val_lte2_irom_sym],
-					val_combined_sym
-				)
-		logging.info('')
+		if not opts['skip_platform_search']:
+			logging.info('Combining all functions into one symbols file.')
+			if opts['soc'] == 'LTE':
+				forge.create_combined_sym_file([val_functions_sym, val_platform_sym], val_combined_sym)
+			elif opts['soc'] == 'LTE2':
+				if forge.is_modern_lte2(opts['phone']):
+					forge.create_combined_sym_file(
+						[val_functions_sym, val_platform_sym, val_functions_modern_lte2, val_lte2_irom_sym],
+						val_combined_sym
+					)
+				else:
+					forge.create_combined_sym_file(
+						[val_functions_sym, val_platform_sym, val_lte2_irom_sym],
+						val_combined_sym
+					)
+			logging.info('')
 
 		logging.info('Applying phone specific patches.')
 		apply_patches(opts['phone'], opts['fw_name'], val_combined_sym)
@@ -411,8 +414,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
 		forge.ep1_libgen_asm(opts['output'] / 'LibStubGCC.S', library_model, False, True, False)
 
-	val_register_sym: Path = opts['output'] / 'Register.sym'
 	logging.info('Generating register symbols file.')
+	val_register_sym: Path = opts['output'] / 'Register.sym'
 	val_register_pat: Path = opts['output'] / 'Register.pat'
 	if not generate_register_sym(val_combined_sym, opts['fw_file'], opts['inject'], val_register_pat, val_register_sym):
 		logging.error(f'Cannot generate "{val_register_pat}" and "{val_register_sym}" files.')
@@ -635,6 +638,8 @@ class Args(argparse.ArgumentParser):
 			self.error(f'unknown {phone} phone and {firmware} firmware')
 
 		opts['verbose'] = args.verbose
+		opts['search'] = args.search
+		opts['skip_platform_search'] = args.skip_platform_search
 		opts['compile'] = not args.obj
 		opts['gcc'] = args.gcc
 		if opts['gcc'] and not opts['compile']:
@@ -646,7 +651,9 @@ class Args(argparse.ArgumentParser):
 		if opts['new_obj'] and opts['compile']:
 			self.error('cannot use "-n" flag (Compile Original Sources) without "-b" flag (Use Precompiled Objects)')
 		opts['ram_trans'] = args.ram_trans
-		opts['output'] = args.output
+		if opts['ram_trans'] and not opts['search']:
+			self.error('cannot use "-r" flag (RAM Translation) without "-i" flag (Binary Pattern Search)')
+		opts['output'] = args.output if args.output else Path('build')
 		opts['directory'] = args.directory
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
@@ -664,7 +671,12 @@ class Args(argparse.ArgumentParser):
 
 		opts['inject'] = variants['func_inject']
 
-		opts['precached'] = forge.ep1_libgen_get_library_sym(opts['pfw']) if not variants['patterns'] else None
+		if opts['skip_platform_search'] and not opts['search']:
+			self.error('cannot use "-a" flag (Skip Platform Searching) without "-i" flag (Binary Pattern Search)')
+		if not opts['patterns'] and opts['search']:
+			self.error('patterns file is not provided, use "-p phone_fw.pat" option')
+		opts['precached'] = \
+			forge.ep1_libgen_get_library_sym(opts['pfw']) if (not opts['patterns'] or not opts['search']) else None
 		opts['use_afw_wraps'] = variants['use_afw_wraps']
 		opts['opts_all'] = variants['opts_all']
 
@@ -676,68 +688,71 @@ class Args(argparse.ArgumentParser):
 def parse_arguments() -> dict[str, any]:
 	hlp: dict[str, str] = {
 		'd': 'A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform, 01-Jan-2025',
-		'r': 'resolve precached iRAM function addresses',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',
+		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
+		'y': 'use ARM GCC for compilation',
+		'w': 'use orginal source code without modifications',
+		'b': 'use precompiled object files',
+		'n': 'use new precompiled object files',
+		'i': 'search binary function patterns in firmware file',
+		'r': 'resolve precached IRAM function addresses',
+		'a': 'skip platform pattern searching',
 		's': 'override start address of CG0+CG1 firmware (in HEX)',
 		'p': 'override path to patterns file',
 		'f': 'override path to CG0+CG1 firmware file',
-		'o': 'output artifacts directory',
-		'b': 'use precompiled object files',
-		'n': 'use new precompiled object files',
-		't': 'generate patch with replacing "mixedmedia" to "Elf" directory',
 		'g': 'override result patch offset in CG0+CG1 file (in HEX)',
-		'w': 'use orginal source code without modifications',
-		'y': 'use GCC for compilation',
+		'o': 'output artifacts directory',
 		'v': 'verbose output'
 	}
 	epl: str = """examples:
 	# Build ElfPack v1.0 and libraries to the phone/firmware (+'Elf' directory patch).
-	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.49R -o build
-	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.79R -o build
-	python ep1_portkit.py -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat -pf E1_R373_G_0E.30.DAR -o build
-	python ep1_portkit.py -r -t -pf K1_R452F_G_08.03.08R -o build
-	python ep1_portkit.py -r -t -pf L6_R3511_G_0A.52.45R_A -o build
-	python ep1_portkit.py -r -t -pf L6i_R3443H1_G_0A.65.0BR -o build
-	python ep1_portkit.py -r -t -pf L7_R4513_G_08.B7.ACR_RB -o build
-	python ep1_portkit.py -r -t -pf L7_R4513_G_08.B7.E0R_RB -o build
-	python ep1_portkit.py -r -t -pf L7e_R452D_G_08.01.0AR -o build
-	python ep1_portkit.py -r -t -pf L9_R452J_G_08.22.05R -o build
-	python ep1_portkit.py -r -t -pf V3i_R4441D_G_08.01.03R -o build
-	python ep1_portkit.py -r -t -pf V3r_R4515_G_08.BD.D3R -o build
-	python ep1_portkit.py -r -t -pf V235_R3512_G_0A.30.6CR -o build
-	python ep1_portkit.py -r -t -pf V360_R4513_G_08.B7.ACR -o build
-	python ep1_portkit.py -r -t -pf V600_TRIPLETS_G_0B.09.72R -o build
-	python ep1_portkit.py -r -t -pf Z3_R452B_G_08.02.0DR -o build
-	python ep1_portkit.py -r -t -pf Z3_R452F1_G_08.04.09R -o build
-	python ep1_portkit.py -r -t -pf Z3_R452H6_G_08.00.05R -o build
-	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build
-	python ep1_portkit.py -r -t -pf K3_R261171LD_U_99.51.06R -o build
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -t
+	python ep1_portkit.py -pf E1_R373_G_0E.30.79R -t
+	python ep1_portkit.py -pf E1_R373_G_0E.30.DAR -i -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat
+	python ep1_portkit.py -pf K1_R452F_G_08.03.08R -t
+	python ep1_portkit.py -pf L6_R3511_G_0A.52.45R_A -t
+	python ep1_portkit.py -pf L6i_R3443H1_G_0A.65.0BR -t
+	python ep1_portkit.py -pf L7_R4513_G_08.B7.ACR_RB -t
+	python ep1_portkit.py -pf L7_R4513_G_08.B7.E0R_RB -t
+	python ep1_portkit.py -pf L7e_R452D_G_08.01.0AR -t
+	python ep1_portkit.py -pf L9_R452J_G_08.22.05R -t
+	python ep1_portkit.py -pf V3i_R4441D_G_08.01.03R -t
+	python ep1_portkit.py -pf V3r_R4515_G_08.BD.D3R -t
+	python ep1_portkit.py -pf V235_R3512_G_0A.30.6CR -t
+	python ep1_portkit.py -pf V360_R4513_G_08.B7.ACR -t
+	python ep1_portkit.py -pf V600_TRIPLETS_G_0B.09.72R -t
+	python ep1_portkit.py -pf Z3_R452B_G_08.02.0DR -t
+	python ep1_portkit.py -pf Z3_R452F1_G_08.04.09R -t
+	python ep1_portkit.py -pf Z3_R452H6_G_08.00.05R -t
+	python ep1_portkit.py -pf C650_R365_G_0B.D3.08R -t
+	python ep1_portkit.py -pf K3_R261171LD_U_99.51.06R -t -y
 
-	# Build ElfPack v1.0 and libraries to the phone/firmware using new object files.
-	python ep1_portkit.py -r -t -n -pf E1_R373_G_0E.30.49R -o build
+	# Find functions and build ElfPack v1.0 and libraries to the phone/firmware (+RAM Translation).
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -i
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -i -r
+
+	# Build ElfPack v1.0 and libraries to the phone/firmware using object files (+'New' objects).
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -b
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -b -n
 
 	# Build ElfPack v1.0 and libraries to the phone/firmware with patch offset override.
-	python ep1_portkit.py -r -t -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0 -o build
-
-	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code.
-	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build
-
-	# Build ElfPack v1.0 and libraries to the phone/firmware using the source code and GCC compiler.
-	python ep1_portkit.py -r -t -pf C650_R365_G_0B.D3.08R -o build ??
+	python ep1_portkit.py -pf E1_R373_G_0E.30.49R -g 0x00C3C1B0
 	"""
 	parser_args: Args = Args(description=hlp['d'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
-	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
 	parser_args.add_argument('-pf', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['pf'])
+	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
+	parser_args.add_argument('-y', '--gcc', required=False, action='store_true', help=hlp['y'])
+	parser_args.add_argument('-w', '--goldsrc', required=False, action='store_true', help=hlp['w'])
+	parser_args.add_argument('-b', '--obj', required=False, action='store_true', help=hlp['b'])
+	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
+	parser_args.add_argument('-i', '--search', required=False, action='store_true', help=hlp['i'])
+	parser_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
+	parser_args.add_argument('-a', '--skip-platform-search', required=False, action='store_true', help=hlp['a'])
 	parser_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
 	parser_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
 	parser_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
-	parser_args.add_argument('-o', '--output', required=True, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
-	parser_args.add_argument('-b', '--obj', required=False, action='store_true', help=hlp['b'])
-	parser_args.add_argument('-n', '--new-obj', required=False, action='store_true', help=hlp['n'])
-	parser_args.add_argument('-t', '--directory', required=False, action='store_true', help=hlp['t'])
 	parser_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])
-	parser_args.add_argument('-y', '--gcc', required=False, action='store_true', help=hlp['y'])
-	parser_args.add_argument('-w', '--goldsrc', required=False, action='store_true', help=hlp['w'])
+	parser_args.add_argument('-o', '--output', required=False, type=forge.at_path, metavar='DIRECTORY', help=hlp['o'])
 	parser_args.add_argument('-v', '--verbose', required=False, action='store_true', help=hlp['v'])
 	return parser_args.parse_check_arguments()
 
