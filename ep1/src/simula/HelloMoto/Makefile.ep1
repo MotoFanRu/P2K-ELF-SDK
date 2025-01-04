@@ -1,0 +1,37 @@
+# Script: Motorola P2K Makefile
+# Flavor: EP1, EA1 (ElfPack v1.x, ARM ADS, Linux)
+# Author: EXL, 04-Jan-2025
+
+P2K_ELF_SDK       = ../../../..
+EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
+EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
+
+CC                = $(shell command -v tcc || echo $(EP1_TOOLCHAIN_BIN)/tcc)
+LD                = $(shell command -v armlink || echo $(EP1_TOOLCHAIN_BIN)/armlink)
+
+INCLUDES          = -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
+DEFINES           = -D__P2K__
+WARNINGS          =
+OPTIMIZATIONS     = -O2
+FEATURES          = -apcs /interwork
+ifeq ($(ARGON), 1)
+	FLAVOR        = -DEA1
+	CPU_FLAGS     = -bigend -cpu 5TEJ
+else
+	FLAVOR        = -DEP1
+	CPU_FLAGS     = -bigend
+endif
+CFLAGS            = $(CPU_FLAGS) $(FEATURES) $(WARNINGS) $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS)
+CXXFLAGS          = $(CFLAGS)
+LDFLAGS           = -nolocals -reloc -first libep1_ads.o\(Lib\)
+LIBS              = $(P2K_ELF_SDK)/ep1/lib/ads/libep1_ads.a
+
+TARGET_ELF        = HelloMoto_ADS.elf
+
+all:
+	$(CC) $(CFLAGS) -c HelloMoto.c -o HelloMoto.o
+	$(LD) $(LDFLAGS) HelloMoto.o $(LIBS) -o $(TARGET_ELF)
+
+clean:
+	-rm -f *.o
+	-rm -f *.elf
