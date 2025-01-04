@@ -498,7 +498,10 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	val_elfpack_sym: Path = opts['output'] / 'ElfPack.sym'
 	val_elfpack_bin: Path = opts['output'] / 'ElfPack.bin'
 	if not opts['gcc']:
-		if not forge.ep1_ads_armlink(val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym):
+		val_link_res = forge.ep1_ads_armlink(
+			val_link_objects, val_elfpack_elf, opts['address'], val_elfpack_sym, ['-entry', FUNC_AUTORUN ]
+		)
+		if not val_link_res:
 			logging.error(f'Cannot link "{val_elfpack_elf}" executable file using ADS.')
 			return False
 		forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)

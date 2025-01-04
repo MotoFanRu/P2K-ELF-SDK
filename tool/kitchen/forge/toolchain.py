@@ -101,7 +101,12 @@ def check_is_one_sym_here(p_i: list[Path]) -> bool:
 	return True
 
 
-def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym: Path | None = None) -> bool:
+def ep1_ads_armlink(
+	p_i: list[Path], p_o: Path,
+	addr: int | None = None,
+	p_o_sym: Path | None = None,
+	custom_flags: list[str] | None = None
+) -> bool:
 	if not check_is_one_sym_here(p_i):
 		return False
 
@@ -114,6 +119,8 @@ def ep1_ads_armlink(p_i: list[Path], p_o: Path, addr: int | None = None, p_o_sym
 		args.append(str(p_o_sym))
 	for path in p_i:
 		args.append(str(path))
+	if custom_flags:
+		args.extend(invoke_custom_arguments(custom_flags))
 	args.append('-o')
 	args.append(str(p_o))
 	return invoke_external_command_res(p_i, args)
