@@ -2,11 +2,14 @@
 # Flavor: EG1, EA1 (ElfPack v1.x, ARM GCC, Linux)
 # Author: EXL, 03-Jan-2025
 
-CC                = arm-none-eabi-gcc
-OBJDUMP           = arm-none-eabi-objdump
-OBJCOPY           = arm-none-eabi-objcopy
+P2K_ELF_SDK       = ../../..
+TOOLCHAIN_BIN     = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
 
-INCLUDES          = -nostdinc -I../../../sdk/  -I../../../ep1/inc
+CC                = $(shell command -v arm-none-eabi-gcc || echo $(TOOLCHAIN_BIN)/arm-none-eabi-gcc)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(TOOLCHAIN_BIN)/arm-none-eabi-objdump)
+OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(TOOLCHAIN_BIN)/arm-none-eabi-objcopy)
+
+INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
 DEFINES           = -D__P2K__
 WARNINGS          = -Wall -Wextra
 OPTIMIZATIONS     = -O2
@@ -25,7 +28,7 @@ endif
 CFLAGS            = $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
 CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
-LIBS              = -nostdlib -T ElfPack.ld
+LIBS              = -nostdlib -nodefaultlibs -T ElfPack.ld
 
 TARGET            = ElfPackGcc1
 TARGET_ELF        = $(TARGET).elf

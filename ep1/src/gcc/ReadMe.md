@@ -1,11 +1,12 @@
-ElfPack v1.x ARM GCC
-====================
+ElfPack v1.x Standalone
+=======================
 
-This is an example of how to build an ElfPack patch using ARM GCC compiler outside of a **[kitchen](../../../tool/kitchen/)** environment.
+This is an example of how to build an ElfPack patch using ARM ADS and ARM GCC compilers outside of a **[kitchen](../../../tool/kitchen/)** environment.
 
 ## Requirements
 
-* `arm-none-eabi-gcc`, `arm-none-eabi-objdump`, `arm-none-eabi-objcopy`
+* ARM ADS: `tcc`, `armlink`, `fromelf`
+* ARM GCC: `arm-none-eabi-gcc`, `arm-none-eabi-objdump`, `arm-none-eabi-objcopy`
 
 ## Build
 

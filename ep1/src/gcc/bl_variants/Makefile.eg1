@@ -2,11 +2,15 @@
 # Flavor: EG1, EA1 (ElfPack v1.x, ARM GCC, Linux)
 # Author: EXL, 03-Jan-2025
 
-CC                = arm-none-eabi-gcc
-OBJDUMP           = arm-none-eabi-objdump
-OBJCOPY           = arm-none-eabi-objcopy
+P2K_ELF_SDK       = ../../../..
+EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
+EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
 
-INCLUDES          = -nostdinc -I../../../../sdk/  -I../../../../ep1/inc
+CC                = $(shell command -v arm-none-eabi-gcc || echo $(EP1_TOOLCHAIN_BIN)/arm-none-eabi-gcc)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(EP1_TOOLCHAIN_BIN)/arm-none-eabi-objdump)
+OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(EP1_TOOLCHAIN_BIN)/arm-none-eabi-objcopy)
+
+INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
 DEFINES           = -D__P2K__
 WARNINGS          = -Wall -Wextra
 OPTIMIZATIONS     = -O2
@@ -25,22 +29,22 @@ endif
 CFLAGS            = $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
 CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
-LIBS              = -nostdlib -T bl.ld
+LIBS              = -nostdlib -nodefaultlibs -T bl.ld
 
-TARGET1_ELF       = bl_equ.elf
-TARGET2_ELF       = bl_sym.elf
-TARGET3_ELF       = bl_arm.elf
-TARGET4_ELF       = bl_def.elf
+TARGET1_ELF       = bl_gcc_equ.elf
+TARGET2_ELF       = bl_gcc_sym.elf
+TARGET3_ELF       = bl_gcc_gcc.elf
+TARGET4_ELF       = bl_gcc_def.elf
 
 all:
 	sed 's/%addr_entry%/$(ENTRY_POINT)/g' ../../../tpl/$(LD_SCRIPT_TPL) > bl.ld
-	$(CC) $(CFLAGS) -c lib_arm.S -o lib_arm.o
-	$(CC) $(CFLAGS) -c lib_equ.S -o lib_equ.o
+	$(CC) $(CFLAGS) -c lib_gcc.S -o lib_gcc.o
+	$(CC) $(CFLAGS) -c lib_gcc_equ.S -o lib_gcc_equ.o
 	$(CC) $(CFLAGS) -c bl.c -o bl.o
 	$(CC) $(CFLAGS) -DLIB_DEFINES -c bl.c -o bld.o
-	$(CC) $(LDFLAGS) bl.o lib_equ.o $(LIBS) -o $(TARGET1_ELF)
-	$(CC) $(LDFLAGS) -Wl,-R lib.syms bl.o $(LIBS) -o $(TARGET2_ELF)
-	$(CC) $(LDFLAGS) bl.o lib_arm.o $(LIBS) -o $(TARGET3_ELF)
+	$(CC) $(LDFLAGS) bl.o lib_gcc_equ.o $(LIBS) -o $(TARGET1_ELF)
+	$(CC) $(LDFLAGS) -Wl,-R lib_gcc.syms bl.o $(LIBS) -o $(TARGET2_ELF)
+	$(CC) $(LDFLAGS) bl.o lib_gcc.o $(LIBS) -o $(TARGET3_ELF)
 	$(CC) $(LDFLAGS) bld.o $(LIBS) -o $(TARGET4_ELF)
 	$(OBJCOPY) -O binary -j .text* $(TARGET1_ELF) $(TARGET1_ELF).bin
 	$(OBJCOPY) -O binary -j .text* $(TARGET2_ELF) $(TARGET2_ELF).bin

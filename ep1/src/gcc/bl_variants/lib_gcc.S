@@ -3,7 +3,7 @@
  *   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
  *
  * About:
- *   Auto-generated stub library.
+ *   Auto-generated stub library for ARM GCC.
  *
  * Author:
  *   EXL, 30-Dec-2024

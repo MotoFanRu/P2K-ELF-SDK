@@ -1,0 +1,18 @@
+#<SYMDEFS>#symdef-file
+# SYMDEFS ADS HEADER
+
+#
+# Project:
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
+#
+# About:
+#   Auto-generated stub symbols file for ARM ADS.
+#
+# Author:
+#   EXL, 04-Jan-2025
+#
+
+0x10867508 T funcTS
+0x10867500 A funcAS
+0x00000100 T funcTL
+0x00000200 A funcAL

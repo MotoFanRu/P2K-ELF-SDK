@@ -1,0 +1,65 @@
+# Script: Motorola P2K Makefile
+# Flavor: EP1, EA1 (ElfPack v1.x, ARM ADS, Linux)
+# Author: EXL, 04-Jan-2025
+
+P2K_ELF_SDK       = ../../../..
+EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
+EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
+
+AS                = $(shell command -v armasm || echo $(EP1_TOOLCHAIN_BIN)/armasm)
+AR                = $(shell command -v armar || echo $(EP1_TOOLCHAIN_BIN)/armar)
+CC                = $(shell command -v tcc || echo $(EP1_TOOLCHAIN_BIN)/tcc)
+LD                = $(shell command -v armlink || echo $(EP1_TOOLCHAIN_BIN)/armlink)
+FROMELF           = $(shell command -v fromelf || echo $(EP1_TOOLCHAIN_BIN)/fromelf)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objdump)
+
+INCLUDES          = -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
+DEFINES           = -D__P2K__
+WARNINGS          =
+OPTIMIZATIONS     = -O2
+FEATURES          = -apcs /interwork
+ifeq ($(ARGON), 1)
+	FLAVOR        = -DEA1
+	CPU_FLAGS     = -bigend -cpu 5TEJ
+	ENTRY_POINT   = 0xA1530B18
+else
+	FLAVOR        = -DEP1
+	CPU_FLAGS     = -bigend
+	ENTRY_POINT   = 0x10901700
+endif
+AFLAGS            = -16 $(CPU_FLAGS) $(FEATURES)
+ARFLAGS           = --create -cr
+CFLAGS            = $(CPU_FLAGS) $(FEATURES) $(WARNINGS) $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS)
+CXXFLAGS          = $(CFLAGS)
+LDFLAGS           = -ro-base $(ENTRY_POINT) -entry AutorunMain -nolocals -reloc
+LIBS              = lib_ads.a
+SYMBOLS           = lib_ads.sym
+
+TARGET1_ELF       = bl_ads_sym.elf
+TARGET2_ELF       = bl_ads_ads.elf
+TARGET3_ELF       = bl_ads_def.elf
+
+all:
+	$(CC) $(CFLAGS) -c bl.c -o bl.o
+	$(LD) $(LDFLAGS) bl.o $(SYMBOLS) -o $(TARGET1_ELF)
+	$(AS) $(AFLAGS) lib_ads.asm -o lib_ads.o
+	$(AR) $(ARFLAGS) lib_ads.a lib_ads.o
+	$(LD) $(LDFLAGS) bl.o $(LIBS) -o $(TARGET2_ELF)
+	$(CC) $(CFLAGS) -DLIB_DEFINES -c bl.c -o bld.o
+	$(AS) $(AFLAGS) lib_arm.asm -o lib_arm.o
+	$(AR) $(ARFLAGS) lib_arm.a lib_arm.o
+	$(LD) $(LDFLAGS) bld.o lib_arm.a -o $(TARGET3_ELF)
+	$(FROMELF) $(TARGET1_ELF) -bin -output $(TARGET1_ELF).bin
+	$(FROMELF) $(TARGET2_ELF) -bin -output $(TARGET2_ELF).bin
+	$(FROMELF) $(TARGET3_ELF) -bin -output $(TARGET3_ELF).bin
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET1_ELF)
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET2_ELF)
+	$(OBJDUMP) --disassemble=AutorunMain $(TARGET3_ELF)
+	ls -alh *.bin
+	@for file in *.bin; do echo "===== $$file ====="; hexdump -C "$$file"; done
+
+clean:
+	-rm -f *.o
+	-rm -f *.a
+	-rm -f *.elf
+	-rm -f *.bin
