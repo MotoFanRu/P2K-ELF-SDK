@@ -76,8 +76,8 @@ class Args(argparse.ArgumentParser):
 		s_sym = forge.check_files_extensions([s], ['sym'], False)
 		c_def = forge.check_files_extensions([c], ['def'], False)
 		c_sym = forge.check_files_extensions([c], ['sym'], False)
-		s_pat = forge.check_files_extensions([s], ['pat'], False)
-		c_pat = forge.check_files_extensions([c], ['pat'], False)
+		s_pat = forge.check_files_extensions([s], ['pts'], False)
+		c_pat = forge.check_files_extensions([c], ['pts'], False)
 
 		if s_sym and c_def:
 			return Mode.SYM_TO_DEF, args
@@ -115,9 +115,9 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	python compare.py -s library.sym -es EP2 -c ep2/def/EntriesNames.def -ec EP2
 
 	# Compare patterns files among themselves (+swap/reverse arguments, names only).
-	python compare.py -s patterns_1.pat -c patterns_2.pat
-	python compare.py -s patterns_1.pat -c patterns_2.pat -r
-	python compare.py -s patterns_1.pat -c patterns_2.pat -n
+	python compare.py -s patterns_1.pts -c patterns_2.pts
+	python compare.py -s patterns_1.pts -c patterns_2.pts -r
+	python compare.py -s patterns_1.pts -c patterns_2.pts -n
 	"""
 	parser_args: Args = Args(description=hlp['h'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser_args.add_argument('-s', '--source', required=True, type=forge.at_file, metavar='INPUT', help=hlp['s'])

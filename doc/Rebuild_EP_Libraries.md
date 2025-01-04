@@ -10,7 +10,7 @@ Rebuild EP Libraries
 mkdir prepared
 
 # Generate EP1 library from patterns.
-./ep1_portkit.py -c -r -pf E1_R373_G_0E.30.DAR -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat -f E1_R373_G_0E.30.DAR.smg -o build
+./ep1_portkit.py -pf E1_R373_G_0E.30.DAR -t -i -r -a -p ../../ep1/pts/E1_R373_G_0E.30.DAR.pts -f E1_R373_G_0E.30.DAR.smg
 cp build/Lib.sym prepared/portkit.sym
 
 # Get from `gsm_flash_dev.sym` only the necessary entities.

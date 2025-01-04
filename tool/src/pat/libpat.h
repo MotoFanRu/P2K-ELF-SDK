@@ -78,11 +78,11 @@ extern "C" {
 LIBPAT_API void* __stdcall libpatLoadBinary( const char *path, u32 *size );
 
 
-/* Открывает и файл с паттернами в уже известном формате *.pat и загружает оттуда данные */
+/* Открывает и файл с паттернами в уже известном формате *.pts и загружает оттуда данные */
 LIBPAT_API BOOL __stdcall libpatLoadPatterns( const char *path );
 
 
-/* Функция для добавления паттерны вручную, формат - как в *.pat файле */
+/* Функция для добавления паттерны вручную, формат - как в *.pts файле */
 LIBPAT_API BOOL __stdcall libpatAddPattern( const char *pattern );
 
 

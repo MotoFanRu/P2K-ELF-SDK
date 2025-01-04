@@ -5,5 +5,5 @@
 *.fpa text eol=crlf
 *.asm text eol=crlf
 *.inc text eol=crlf
-*.pat text eol=crlf
+*.pts text eol=crlf
 *.tpl text eol=crlf

@@ -1,4 +1,17 @@
-# Patterns for K1_R452F_G_08.03.08R by DmT: https://forum.motofan.ru/index.php?s=&showtopic=129128&view=findpost&p=1149741
+#
+# Project:
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
+#
+# About:
+#   General firmware binary patterns for Motorola P2K phones on Neptune LTE2 SoC platform.
+#   Support models: Motorola SLVR L7e, Motorola KRZR K1, Motorola RIZR Z3, Motorola SLVR L9, etc.
+#   Merged from patterns for K1_R452F_G_08.03.08R by DmT, see:
+#     https://forum.motofan.ru/index.php?s=&showtopic=129128&view=findpost&p=1149741
+#
+# Author:
+#   DmT, 12-Jul-2008
+#   EXL, 31-Dec-2023
+#
 
 # suPalReadTime T B5704A0A68146850681142A1D1FA1C06
 # suPalTicksToMsec T B5FE1C04A014C80C1C0D1C204010227D
@@ -26,7 +39,6 @@ suLogData A EAFFF6E2
 # DL_FsFSeekFile T B5F01C0438401C??1C0D2820B085D206
 # DL_FsGetFileSize T B5304D??2200B0991C0423021C01
 
-# Added missing functions by EXL:
-# 31-Dec-2023
+# EXL, 31-Dec-2023: Add missing functions for K1 build.
 DL_FsFFileExist T B5FE2202????????22001C0423001C01
 APP_ConsumeEv T B5806949????????2800D0032001BC80BC0847182000E7FAB5701C0625001C0C

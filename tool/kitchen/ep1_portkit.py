@@ -31,7 +31,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_C650'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       None,
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'C650_R365_G_0B.D3.08R.pts',
 		'firmware':       forge.P2K_DIR_CG / 'C650_R365_G_0B.D3.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  True,        # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -41,7 +41,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -51,7 +51,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -61,7 +61,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    0x003137B4,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -71,7 +71,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_K1'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0151C350,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -81,7 +81,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L6'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -91,7 +91,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L6I'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -101,7 +101,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x00CA01B0,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -111,7 +111,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x00C90730,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -121,7 +121,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L7E'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D340,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -131,7 +131,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_L9'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0152E010,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -141,7 +141,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -151,7 +151,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V3R'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -161,7 +161,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V235'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -171,7 +171,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V360'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -181,7 +181,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_V600'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    0x00C3C1B0,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -191,7 +191,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -201,7 +201,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -211,7 +211,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
 		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'General.pat',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -346,13 +346,13 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	if not opts['precached']:
 		logging.info('Finding SoC related functions from patterns.')
-		val_lte1_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE.pat'
-		val_lte2_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE2.pat'
-		val_lte2_modern_pat: Path = forge.P2K_DIR_EP1_PAT / 'LTE2_Modern.pat'
-		val_lte2_irom_sym: Path = forge.P2K_DIR_EP1_SYM / 'LTE2_IROM.sym'
+		val_lte1_pat: Path = forge.P2K_DIR_EP1_PAT / 'General_P2K_LTE.pts'
+		val_lte2_pat: Path = forge.P2K_DIR_EP1_PAT / 'General_P2K_LTE2.pts'
+		val_lte2_modern_pat: Path = forge.P2K_DIR_EP1_PAT / 'General_P2K_LTE2_Modern.pts'
+		val_lte2_irom_sym: Path = forge.P2K_DIR_EP1_SYM / 'General_P2K_LTE2_IROM.sym'
 		val_platform_sym: Path = opts['output'] / 'Platform.sym'
 		val_functions_sym: Path = opts['output'] / 'Functions.sym'
-		val_functions_modern_lte2: Path = opts['output'] / 'Functions_LTE2_Modern.sym'
+		val_functions_modern_lte2: Path = opts['output'] / 'Functions_P2K_LTE2_Modern.sym'
 		if (opts['soc'] == 'LTE') and not opts['skip_platform']:
 			forge.pat_find(val_lte1_pat, opts['fw_file'], opts['start'], False, val_platform_sym)
 		elif (opts['soc'] == 'LTE2') and not opts['skip_platform']:
@@ -427,7 +427,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 
 	logging.info('Generating register symbols file.')
 	val_register_sym: Path = opts['output'] / 'Register.sym'
-	val_register_pat: Path = opts['output'] / 'Register.pat'
+	val_register_pat: Path = opts['output'] / 'Register.pts'
 	val_found: bool = generate_register_sym(
 		val_combined_sym, opts['fw_file'], opts['inject'], val_register_pat, val_register_sym, opts['hook']
 	)
@@ -673,7 +673,8 @@ class Args(argparse.ArgumentParser):
 			self.error('cannot use "-a" flag (Append Patterns) without "-p" flag (Override Patterns Path)')
 		opts['patterns'] = args.patterns if args.patterns else variants['patterns']
 		if args.append:
-			opts['patterns'] = variants['patterns'] if variants['patterns'] else forge.P2K_DIR_EP1_PAT / 'General.pat'
+			opts['patterns'] = \
+				variants['patterns'] if variants['patterns'] else forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts'
 			opts['append'] = args.patterns
 		else:
 			opts['append'] = None
@@ -696,7 +697,7 @@ class Args(argparse.ArgumentParser):
 		if opts['skip_platform'] and not opts['search']:
 			self.error('cannot use "-a" flag (Skip Platform Searching) without "-i" flag (Binary Pattern Search)')
 		if not opts['patterns'] and opts['search']:
-			self.error('patterns file is not provided, use "-p phone_fw.pat" option')
+			self.error('patterns file is not provided, use "-p phone_fw.pts" option')
 		opts['precached'] = \
 			forge.ep1_libgen_get_library_sym(opts['pfw']) if (not opts['patterns'] or not opts['search']) else None
 		opts['use_afw_wraps'] = variants['use_afw_wraps']
@@ -732,7 +733,7 @@ def parse_arguments() -> dict[str, any]:
 	# Build ElfPack v1.0 and libraries to the phone/firmware.
 	python ep1_portkit.py -pf E1_R373_G_0E.30.49R
 	python ep1_portkit.py -pf E1_R373_G_0E.30.79R
-	python ep1_portkit.py -pf E1_R373_G_0E.30.DAR -i -r -p ../../ep1/pat/E1_R373_G_0E.30.DAR.pat
+	python ep1_portkit.py -pf E1_R373_G_0E.30.DAR -t -i -r -a -p ../../ep1/pts/E1_R373_G_0E.30.DAR.pts
 	python ep1_portkit.py -pf K1_R452F_G_08.03.08R
 	python ep1_portkit.py -pf L6_R3511_G_0A.52.45R_A
 	python ep1_portkit.py -pf L6i_R3443H1_G_0A.65.0BR
@@ -773,7 +774,7 @@ def parse_arguments() -> dict[str, any]:
 	p_args.add_argument('-r', '--ram-trans', required=False, action='store_true', help=hlp['r'])
 	p_args.add_argument('-k', '--skip-platform', required=False, action='store_true', help=hlp['k'])
 	p_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
-	p_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pat', help=hlp['p'])
+	p_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pts', help=hlp['p'])
 	p_args.add_argument('-a', '--append', required=False, action='store_true', help=hlp['a'])
 	p_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	p_args.add_argument('-g', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['g'])

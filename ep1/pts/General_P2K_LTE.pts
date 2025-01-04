@@ -1,3 +1,14 @@
+#
+# Project:
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
+#
+# About:
+#   General firmware binary patterns for Motorola P2K phones on Neptune LTE SoC platform.
+#
+# Author:
+#   EXL, 21-Jan-2024
+#
+
 __rt_memclr_w A E3A02000E92D4000E1A03002E1A0C002
 __rt_memclr A E3A02000E35100043A000008E210C003
 __rt_memcpy_w A E92D4010E25220203A00000528B15018

@@ -77,11 +77,11 @@ void __stdcall callback(PATTERN_T *curPat, u32 count)
 void printHelp()
 {
 	printf(
-		"pat v1.1 by Andy51, EXL, (c) 2010-2023\r\n\r\n"
-		"Usage:\r\n\tpat [-ram-trans|-no-ram-trans] <CG1.smg> <functions.pat> <functions.sym> [<CG1 offset>]\r\n\r\n"
-		"Example:\r\n\tpat -ram-trans E1_R373_G_0E.30.49R.smg functions.pat functions.sym 0x10080000\r\n"
-		"\tpat -no-ram-trans L7_R4513_G_08.B7.ACR_RB.smg functions.pat functions.sym 0x10092000\r\n"
-		"\tpat -no-ram-trans V3i_R4441D_G_08.01.03R.smg functions.pat functions.sym 0x100A0000\r\n\r\n"
+		"pat v1.1 by Andy51, EXL, (c) 2010-2025\r\n\r\n"
+		"Usage:\r\n\tpat [-ram-trans|-no-ram-trans] <CG1.smg> <functions.pts> <functions.sym> [<CG1 offset>]\r\n\r\n"
+		"Example:\r\n\tpat -ram-trans E1_R373_G_0E.30.49R.smg functions.pts functions.sym 0x10080000\r\n"
+		"\tpat -no-ram-trans L7_R4513_G_08.B7.ACR_RB.smg functions.pts functions.sym 0x10092000\r\n"
+		"\tpat -no-ram-trans V3i_R4441D_G_08.01.03R.smg functions.pts functions.sym 0x100A0000\r\n\r\n"
 	);
 }
 

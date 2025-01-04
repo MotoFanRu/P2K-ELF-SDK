@@ -2,7 +2,7 @@
 
 [ ] 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
 
-[ ] Update postlink on Windows!
+[ ] Update postlink on Windows and Linux! Probably using MSVC?
 
 [ ] Optimize and reorder python imports.
 

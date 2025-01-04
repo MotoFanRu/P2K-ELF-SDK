@@ -68,7 +68,7 @@ class Args(argparse.ArgumentParser):
 		pf: tuple[str, str] = args.phone_fw
 
 		s_sym: bool = forge.check_files_extensions([s], ['sym'], False)
-		o_pat: bool = forge.check_files_extensions([o], ['pat'], False)
+		o_pat: bool = forge.check_files_extensions([o], ['pts'], False)
 		o_sym: bool = forge.check_files_extensions([o], ['sym'], False)
 		d_sym: bool = forge.check_files_extensions([d], ['sym', 'def'], False)
 
@@ -100,8 +100,8 @@ def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	}
 	epl: str = """examples:
 	# Generate a draft patterns file from symbols file (+irom).
-	python forge.py -s library.sym -f ../cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pat
-	python forge.py -i -s library.sym -f ../irom/0300-irom-LTE2.bin -g 0x00000000 -z 32 -o patterns.pat
+	python forge.py -s library.sym -f ../cg/E1_R373_G_0E.30.49R.smg -g 0x10080000 -z 32 -o patterns.pts
+	python forge.py -i -s library.sym -f ../irom/0300-irom-LTE2.bin -g 0x00000000 -z 32 -o patterns.pts
 
 	# Rechunk symbols file from another one.
 	python forge.py -sn -s gsm_flash_dev.sym -d elfloader.sym -e EP1 -pf 'E1_R373_G_0E.30.49R' -o library.sym

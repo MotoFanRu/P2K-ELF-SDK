@@ -100,7 +100,7 @@ def combine_pat_str(name, mode, count, pattern) -> str:
 
 
 def generate_pattern_model(pat: Path, sort_by_name: bool) -> PatternModel | None:
-	if check_files_if_exists([pat]) and check_files_extensions([pat], ['pat']):
+	if check_files_if_exists([pat]) and check_files_extensions([pat], ['pts']):
 		patterns: PatternModel = []
 		with pat.open(mode='r') as f_i:
 			for line in f_i.read().splitlines():
