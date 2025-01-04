@@ -218,7 +218,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
-		'opts_all':       ['-DFTR_K3'],
+		'opts_all':       ['-DEA1', '-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address.
 		'patterns':       None,
@@ -443,7 +443,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	logging.info('')
 
 	val_src_dir: Path = (forge.P2K_DIR_EP1_SRC / 'goldsrc') if opts['goldsrc'] else forge.P2K_DIR_EP1_SRC
-	c_flags: list[str] =  ['-DEG1'] if opts['argon'] else ['-DEP1']
+	c_flags: list[str] =  ['-DEG1'] if opts['gcc'] else ['-DEP1']
 	c_flags.extend(opts['opts_all'])
 	gcc: bool = opts['gcc']
 	if gcc:

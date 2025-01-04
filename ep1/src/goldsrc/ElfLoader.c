@@ -17,12 +17,12 @@
 #include <utilities.h>
 #include <mem.h>
 
-#if defined(EP1)
+#if defined(EP1) || defined(EG1)
 #define DATA_SHIFT_OFFSET              (0x30000000)
-#elif defined(EG1)
+#elif defined(EA1)
 #define DATA_SHIFT_OFFSET              (0xC0000000)
 #else
-#error "Unknown ElfPack flavor! Try to set EP1 or EG1"
+#error "Unknown ElfPack flavor! Try to set EP1, EG1, or EA1"
 #endif
 
 typedef UINT32 (*Entry)(char *, char *, UINT32);
