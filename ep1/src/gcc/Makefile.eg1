@@ -3,11 +3,12 @@
 # Author: EXL, 03-Jan-2025
 
 P2K_ELF_SDK       = ../../..
-TOOLCHAIN_BIN     = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
+EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
+EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
 
-CC                = $(shell command -v arm-none-eabi-gcc || echo $(TOOLCHAIN_BIN)/arm-none-eabi-gcc)
-OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(TOOLCHAIN_BIN)/arm-none-eabi-objdump)
-OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(TOOLCHAIN_BIN)/arm-none-eabi-objcopy)
+CC                = $(shell command -v arm-none-eabi-gcc || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-gcc)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objdump)
+OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objcopy)
 
 INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
 DEFINES           = -D__P2K__
@@ -36,18 +37,19 @@ TARGET_BIN        = $(TARGET).bin
 
 all:
 	sed 's/%addr_entry%/$(ENTRY_POINT)/g' ../../tpl/$(LD_SCRIPT_TPL) > ElfPack.ld
-	$(CC) $(CFLAGS) -c lib_equ.S -o lib_equ.o
+	$(CC) $(CFLAGS) -c lib_gcc_equ.S -o lib_gcc_equ.o
 	$(CC) $(CFLAGS) -c SysInfo.c -o SysInfo.o
 	$(CC) $(CFLAGS) -c ../AFW_CreateInternalQueuedEv_Wrappers.c -o AFW_CreateInternalQueuedEv_Wrappers.o
 	$(CC) $(CFLAGS) -c ../AutoRun.c -o AutoRun.o
 	$(CC) $(CFLAGS) -c ../ElfLoader.c -o ElfLoader.o
 	$(CC) $(CFLAGS) -c ../ElfLoaderApp.c -o ElfLoaderApp.o
 	$(CC) $(LDFLAGS) $(LIBS) \
-		AutoRun.o ElfLoaderApp.o ElfLoader.o AFW_CreateInternalQueuedEv_Wrappers.o SysInfo.o lib_equ.o \
+		AutoRun.o ElfLoaderApp.o ElfLoader.o AFW_CreateInternalQueuedEv_Wrappers.o SysInfo.o lib_gcc_equ.o \
 		-o $(TARGET_ELF)
 	$(OBJCOPY) -O binary -j .text* $(TARGET_ELF) $(TARGET_BIN)
 	$(OBJDUMP) -x $(TARGET_ELF) | grep -E 'AutorunMain|Ldr|Util|u_u|namecmp'
 	md5sum $(TARGET_ELF) $(TARGET_BIN)
+	ls -al *.bin *.elf
 
 clean:
 	-rm -f *.o

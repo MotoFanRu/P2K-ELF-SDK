@@ -9,15 +9,6 @@
 ;   EXL, 04-Dec-2025
 ;
 
-	AREA Lib, CODE, READONLY
-	ALIGN 4
-
-	AREA |f.__call_via_r2|, CODE, READONLY
-	CODE16
-__call_via_r2
-	BX		R2
-	LTORG
-
 	AREA |f.funcTS|, CODE, READONLY
 	CODE16
 funcTS

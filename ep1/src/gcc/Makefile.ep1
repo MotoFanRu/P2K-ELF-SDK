@@ -2,12 +2,11 @@
 # Flavor: EP1, EA1 (ElfPack v1.x, ARM ADS, Linux)
 # Author: EXL, 04-Jan-2025
 
-P2K_ELF_SDK       = ../../../..
+P2K_ELF_SDK       = ../../..
 EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
 EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
 
 AS                = $(shell command -v armasm || echo $(EP1_TOOLCHAIN_BIN)/armasm)
-AR                = $(shell command -v armar || echo $(EP1_TOOLCHAIN_BIN)/armar)
 CC                = $(shell command -v tcc || echo $(EP1_TOOLCHAIN_BIN)/tcc)
 LD                = $(shell command -v armlink || echo $(EP1_TOOLCHAIN_BIN)/armlink)
 FROMELF           = $(shell command -v fromelf || echo $(EP1_TOOLCHAIN_BIN)/fromelf)
@@ -28,35 +27,29 @@ else
 	ENTRY_POINT   = 0x10901700
 endif
 AFLAGS            = -16 $(CPU_FLAGS) $(FEATURES)
-ARFLAGS           = --create -cr
 CFLAGS            = $(CPU_FLAGS) $(FEATURES) $(WARNINGS) $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS)
 CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = -ro-base $(ENTRY_POINT) -entry AutorunMain -nolocals -reloc
-LIBS              = lib_ads.a
 SYMBOLS           = lib_ads.sym
 
-TARGET1_ELF       = bl_ads_sym.elf
-TARGET2_ELF       = bl_ads_ads.elf
-TARGET3_ELF       = bl_ads_def.elf
+TARGET            = ElfPackAds1
+TARGET_ELF        = $(TARGET).elf
+TARGET_BIN        = $(TARGET).bin
 
 all:
-	$(CC) $(CFLAGS) -c bl.c -o bl.o
-	$(LD) $(LDFLAGS) bl.o $(SYMBOLS) -o $(TARGET1_ELF)
-	$(AS) $(AFLAGS) lib_ads.asm -o lib_ads.o
-	$(AR) $(ARFLAGS) lib_ads.a lib_ads.o
-	$(LD) $(LDFLAGS) bl.o $(LIBS) -o $(TARGET2_ELF)
-	$(CC) $(CFLAGS) -DLIB_DEFINES -c bl.c -o bld.o
 	$(AS) $(AFLAGS) lib_arm.asm -o lib_arm.o
-	$(AR) $(ARFLAGS) lib_arm.a lib_arm.o
-	$(LD) $(LDFLAGS) bld.o lib_arm.a -o $(TARGET3_ELF)
-	$(FROMELF) $(TARGET1_ELF) -bin -output $(TARGET1_ELF).bin
-	$(FROMELF) $(TARGET2_ELF) -bin -output $(TARGET2_ELF).bin
-	$(FROMELF) $(TARGET3_ELF) -bin -output $(TARGET3_ELF).bin
-	$(OBJDUMP) --disassemble=AutorunMain $(TARGET1_ELF)
-	$(OBJDUMP) --disassemble=AutorunMain $(TARGET2_ELF)
-	$(OBJDUMP) --disassemble=AutorunMain $(TARGET3_ELF)
-	ls -al *.bin
-	@for file in *.bin; do echo "===== $$file ====="; hexdump -C "$$file"; done
+	$(CC) $(CFLAGS) -c SysInfo.c -o SysInfo.o
+	$(CC) $(CFLAGS) -c ../AFW_CreateInternalQueuedEv_Wrappers.c -o AFW_CreateInternalQueuedEv_Wrappers.o
+	$(CC) $(CFLAGS) -c ../AutoRun.c -o AutoRun.o
+	$(CC) $(CFLAGS) -c ../ElfLoader.c -o ElfLoader.o
+	$(CC) $(CFLAGS) -c ../ElfLoaderApp.c -o ElfLoaderApp.o
+	$(LD) $(LDFLAGS) \
+		AutoRun.o ElfLoaderApp.o ElfLoader.o AFW_CreateInternalQueuedEv_Wrappers.o SysInfo.o lib_arm.o \
+		$(SYMBOLS) -o $(TARGET_ELF)
+	$(FROMELF) $(TARGET_ELF) -bin -output $(TARGET_BIN)
+	$(OBJDUMP) -x $(TARGET_ELF) | grep -E 'AutorunMain|Ldr|Util|u_u|namecmp'
+	md5sum $(TARGET_ELF) $(TARGET_BIN)
+	ls -al *.bin *.elf
 
 clean:
 	-rm -f *.o

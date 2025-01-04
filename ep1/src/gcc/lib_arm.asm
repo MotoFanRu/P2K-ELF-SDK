@@ -9,12 +9,12 @@
 ;   EXL, 04-Dec-2025
 ;
 
-	AREA |f.__call_via_r2|, CODE, READONLY
+	AREA |f.__call_via_r4|, CODE, READONLY
 	CODE16
-__call_via_r2
-	BX		R2
+__call_via_r4
+	BX		R4
 	LTORG
 
-	EXPORT __call_via_r2
+	EXPORT __call_via_r4
 
 	END

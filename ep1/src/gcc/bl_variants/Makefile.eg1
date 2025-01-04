@@ -54,7 +54,7 @@ all:
 	$(OBJDUMP) --disassemble=AutorunMain $(TARGET2_ELF)
 	$(OBJDUMP) --disassemble=AutorunMain $(TARGET3_ELF)
 	$(OBJDUMP) --disassemble=AutorunMain $(TARGET4_ELF)
-	ls -alh *.bin
+	ls -al *.bin
 	@for file in *.bin; do echo "===== $$file ====="; hexdump -C "$$file"; done
 
 clean:

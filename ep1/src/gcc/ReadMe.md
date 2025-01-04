@@ -14,4 +14,6 @@ This is an example of how to build an ElfPack patch using ARM ADS and ARM GCC co
 # Linux
 make -f Makefile.eg1
 make ARGON=1 -f Makefile.eg1
+make -f Makefile.ep1
+make ARGON=1 -f Makefile.ep1
 ```
