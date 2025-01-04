@@ -1,9 +1,15 @@
 #
 # Project:
-#   ElfLoader / ElfPack for Motorola P2K platform, version 1.x (EP1, EG1).
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
 #
 # About:
-#   The minimum set of firmware functions required for ElfPack.
+#   The minimum set of firmware functions required by ElfPack.
+#
+#   If the phone's firmware does not provide the `AFW_CreateInternalQueuedEvAux()` + `AFW_CreateInternalQueuedEvAuxD()`
+#   functions, then `AFW_CreateInternalQueuedEvPriv()` should be used with the `AFW_CreateInternalQueuedEv_Wrappers.c`
+#   wrapper.
+#
+#   The `DL_FsWriteFile()` function is required for saving ElfPack logs to a file.
 #
 # Author:
 #   EXL, 28-Dec-2024

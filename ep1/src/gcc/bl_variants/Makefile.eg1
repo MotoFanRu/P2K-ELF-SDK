@@ -1,5 +1,5 @@
 # Script: Motorola P2K Makefile
-# Flavor: ElfPack v1.x, EG1 (ARM GCC on Linux)
+# Flavor: EG1 (ElfPack v1.x, ARM GCC, Linux)
 # Author: EXL, 03-Jan-2025
 
 CC                = arm-none-eabi-gcc
@@ -25,10 +25,10 @@ CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
 LIBS              = -nostdlib -T bl.ld
 
-TARGET1_ELF   = bl_equ.elf
-TARGET2_ELF   = bl_sym.elf
-TARGET3_ELF   = bl_arm.elf
-TARGET4_ELF   = bl_def.elf
+TARGET1_ELF       = bl_equ.elf
+TARGET2_ELF       = bl_sym.elf
+TARGET3_ELF       = bl_arm.elf
+TARGET4_ELF       = bl_def.elf
 
 all:
 	sed 's/%addr_entry%/$(ENTRY_POINT)/g' ../../../tpl/$(LD_SCRIPT_TPL) > bl.ld

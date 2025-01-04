@@ -1,5 +1,5 @@
 # Script: Motorola P2K Makefile
-# Flavor: ElfPack v1.x, EG1 (ARM GCC on Linux)
+# Flavor: EG1 (ElfPack v1.x, ARM GCC, Linux)
 # Author: EXL, 03-Jan-2025
 
 CC                = arm-none-eabi-gcc

@@ -1,0 +1,37 @@
+Andy51 is happy to release FBrowser ELF v0.6!
+
+What's new since v0.5:
++ Fixed all known bugs from v0.5 release, thanks all the testers!
++ Fixed menu & soft order
++ FBrowser moved to 'MotoMixer' menu entry (instead of 'SyncML')
++ Added prompts and notices
++ Added bookmark functionality (only one). Select 'Add Bookmark' to make
+  the current directory bookmarked, and 'Bookmark' to make the bookmarked
+  directory current.
++ Added 'Delete' file operation (for files only)
++ 'Back' button is now works as 'directory up'
++ 'Back' buton in the root folder will exit FBrowser
++ Red button press will now exit FBrowser and get you to the previous menu
+  (instead of exit to idle screen)
++ ELF launch will now exit FBrowser, to avoid conflicts
++ Empty 'Installed' list is now shown as an 'Empty' list entry (instead of
+  no-reaction)
++ Config file is now created in the same dir as elf
++ Added compatibility with 'Delete unwanted folders from phone' patch (empty
+  spaces in files list fix)
+
+- Long filename truncation bugs
+- Bug: if you'll exit FBrowser in the folder with ~100+ files, it wouldn't
+  start. To fix: delete the file 'FBrowser.cfg' in the FBrowser's dir
+
+Some notes for v0.5:
+  FBrowser is an ELF, originally intended to launch other ELFs, not to do file
+  ops! File operations is a secondary functionality!
+
+Installed list functionality:
+  To make the ELF manageent more convenient, 'Installed' ELF list is developed.
+  Adding to that list is not actually 'Installing', it gives nothing except
+  the useful ELF list. Once again, installing is not necessary, make it if you
+  want to have a full list of ELFs in your phone. 'Delete' in the 'Installed'
+  list only removes the ELF from it, it doesn't delete the file. Also you can
+  view some file properties from the list.

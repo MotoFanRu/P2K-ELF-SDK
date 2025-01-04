@@ -1,9 +1,10 @@
 /*
  * Project:
- *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
  *
  * About:
- *   Linker script for Motorola P2K phones on the Argon LV SoC including a memory map.
+ *   Linker script for Motorola P2K phones on the Argon LV SoC, including a memory map.
+ *   The PATCH/ORIGIN start address must be replaced with a valid one.
  *   Supports models: Motorola RAZR V3xx, Motorola KRZR K3, Motorola RAZR V6 maxx, etc.
  *
  * Author:

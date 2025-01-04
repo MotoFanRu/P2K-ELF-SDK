@@ -1,10 +1,10 @@
 #
 # Project:
-#   ElfLoader / ElfPack for Motorola P2K platform, version 1.x (EP1, EG1).
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
 #
 # About:
-#   ElfPack v1.x API compiled by ARM ADS.
-#   Please note, there are no `__16_ll_cmpu`, `__call_via_rX`, and `_ll_cmpu` functions in ARM GCC builds.
+#   The ElfPack API export function listing for the ARM ADS builds.
+#   The `__16_ll_cmpu()`, `__call_via_rX()`, and `_ll_cmpu()` functions are not present in ARM GCC builds.
 #
 # Author:
 #   EXL, 21-Jan-2024

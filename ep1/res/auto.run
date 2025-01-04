@@ -1,4 +1,9 @@
-; Autorun file for ElfPack v1.0, written by EXL.
+; EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
 ;
-; FBrowser ELF launcher, written by Andy51.
+; Autorun file format:
+; [path] [args]
+; file://c/Elf/FBrowser.elf
+; file://c/Elf/FBrowser.elf 0x0E398
+;
+; FBrowser ELF launcher application, written by Andy51.
 file://c/Elf/FBrowser.elf

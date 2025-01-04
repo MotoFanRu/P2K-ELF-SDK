@@ -1,6 +1,6 @@
 /*
  * Project:
- *   ElfLoader / ElfPack for Motorola P2K platform, ver 1 (EP1).
+ *   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
  *
  * About:
  *   Auto-generated ElfPack phone system information C-file.

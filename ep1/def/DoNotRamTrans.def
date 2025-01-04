@@ -1,9 +1,9 @@
 #
 # Project:
-#   ElfLoader / ElfPack for Motorola P2K platform, version 1.x (EP1, EG1).
+#   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
 #
 # About:
-#   Do not RAM-translate these functions for compatibility reasons.
+#   These functions should not be RAM-translated for compatibility reasons.
 #
 # Author:
 #   EXL, 21-Jan-2024

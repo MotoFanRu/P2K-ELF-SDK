@@ -7,7 +7,7 @@ This project explores ARM/Thumb Branch Links to provide insights into how GCC co
 
 * `arm-none-eabi-gcc`, `arm-none-eabi-objdump`, `arm-none-eabi-objcopy`
 
-## Build and Run
+## Build
 
 ```bash
 # Linux
