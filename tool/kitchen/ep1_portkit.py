@@ -396,7 +396,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			logging.info('')
 
 		if opts['append']:
-			logging.info('Append additional patterns files if any.')
+			logging.info('Append additional patterns file if any.')
 			val_append_sym: Path = opts['output'] / 'Append.sym'
 			val_combined_append_sym: Path = opts['output'] / 'Combined_Append.sym'
 			forge.pat_find(opts['append'], opts['fw_file'], opts['start'], opts['ram_trans'], val_append_sym)
@@ -430,6 +430,13 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		if '-DLOG_TO_FILE' in opts['opts_all']:
 			selection.append('DL_FsWriteFile')
 		forge.ep1_libgen_chunk_sym(opts['precached'], val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
+
+	if opts['append_sym']:
+		logging.info('Append additional symbols file if any.')
+		val_combined_append_added_sym: Path = opts['output'] / 'Combined_Append_Added.sym'
+		forge.create_combined_sym_file([opts['append_sym'], val_combined_sym], val_combined_append_added_sym)
+		val_combined_sym = val_combined_append_added_sym
+		logging.info('')
 
 	if opts['gcc']:
 		functions, library_model = forge.ep1_libgen_model(val_combined_sym, forge.LibrarySort.NAME)
@@ -691,6 +698,7 @@ class Args(argparse.ArgumentParser):
 			opts['append'] = args.patterns
 		else:
 			opts['append'] = None
+		opts['append_sym'] = args.append_sym
 		opts['fw_file'] = args.firmware if args.firmware else variants['firmware']
 
 		opts['start'] = args.start if args.start else variants['addr_start']
@@ -715,7 +723,6 @@ class Args(argparse.ArgumentParser):
 			forge.ep1_libgen_get_library_sym(opts['pfw']) if (not opts['patterns'] or not opts['search']) else None
 		opts['use_afw_wraps'] = variants['use_afw_wraps']
 		opts['opts_all'] = variants['opts_all']
-
 		opts['drive'] = variants['drive_patch']
 
 		return opts
@@ -736,6 +743,7 @@ def parse_arguments() -> dict[str, any]:
 		'f': 'override path to CG0+CG1 firmware file',
 		'p': 'override path to patterns file',
 		'a': 'append patterns file instead of overriding it (use with -p)',
+		'y': 'append additional symbols file',
 		's': 'override start address of CG0+CG1 firmware (in HEX)',
 		'x': 'override result patch offset in CG0+CG1 file (in HEX)',
 		'u': 'override inject hook register function address (in HEX)',
@@ -771,14 +779,6 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -m
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -p FILE.pts
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -a -p FILE.pts
-
-	# Build ElfPack v1.x and libraries for target with overriding options:
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -f FIRMWARE.smg
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -p PATTERNS.pts
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -a -p PATTERNS.pts
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -s 0xA0000000
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -x 0x00C3C1B0
-	python ep1_portkit.py -P E1_R373_G_0E.30.49R -u 0x10999991
 	"""
 	p_args: Args = Args(description=hlp['D'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	p_args.add_argument('-P', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['P'])
@@ -793,6 +793,7 @@ def parse_arguments() -> dict[str, any]:
 	p_args.add_argument('-f', '--firmware', required=False, type=forge.at_ffw, metavar='FILE.smg', help=hlp['f'])
 	p_args.add_argument('-p', '--patterns', required=False, type=forge.at_file, metavar='FILE.pts', help=hlp['p'])
 	p_args.add_argument('-a', '--append-pts', required=False, action='store_true', help=hlp['a'])
+	p_args.add_argument('-y', '--append-sym', required=False, type=forge.at_file, metavar='FILE.sym', help=hlp['y'])
 	p_args.add_argument('-s', '--start', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['s'])
 	p_args.add_argument('-x', '--offset', required=False, type=forge.at_hex, metavar='OFFSET', help=hlp['x'])
 	p_args.add_argument('-u', '--hook', required=False, type=forge.at_hex, metavar='ADDRESS', help=hlp['u'])
