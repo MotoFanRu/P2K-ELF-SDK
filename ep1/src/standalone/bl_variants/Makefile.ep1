@@ -3,15 +3,15 @@
 # Author: EXL, 04-Jan-2025
 
 P2K_ELF_SDK       = ../../../..
-EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
-EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
+ARM_ADS_LIN_BIN   = $(P2K_ELF_SDK)/tool/compiler/ARM-ADS-LIN/bin
+ARM_GCC_LIN_BIN   = $(P2K_ELF_SDK)/tool/compiler/ARM-GCC-LIN/bin
 
-AS                = $(shell command -v armasm || echo $(EP1_TOOLCHAIN_BIN)/armasm)
-AR                = $(shell command -v armar || echo $(EP1_TOOLCHAIN_BIN)/armar)
-CC                = $(shell command -v tcc || echo $(EP1_TOOLCHAIN_BIN)/tcc)
-LD                = $(shell command -v armlink || echo $(EP1_TOOLCHAIN_BIN)/armlink)
-FROMELF           = $(shell command -v fromelf || echo $(EP1_TOOLCHAIN_BIN)/fromelf)
-OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objdump)
+AS                = $(shell command -v armasm || echo $(ARM_ADS_LIN_BIN)/armasm)
+AR                = $(shell command -v armar || echo $(ARM_ADS_LIN_BIN)/armar)
+CC                = $(shell command -v tcc || echo $(ARM_ADS_LIN_BIN)/tcc)
+LD                = $(shell command -v armlink || echo $(ARM_ADS_LIN_BIN)/armlink)
+FROMELF           = $(shell command -v fromelf || echo $(ARM_ADS_LIN_BIN)/fromelf)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-objdump)
 
 INCLUDES          = -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
 DEFINES           = -D__P2K__

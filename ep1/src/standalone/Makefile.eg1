@@ -3,12 +3,11 @@
 # Author: EXL, 03-Jan-2025
 
 P2K_ELF_SDK       = ../../..
-EP1_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep1_lin_ADS/bin
-EP2_TOOLCHAIN_BIN = $(P2K_ELF_SDK)/tool/compiler/ep2_lin_GCC/bin
+ARM_GCC_LIN_BIN   = $(P2K_ELF_SDK)/tool/compiler/ARM-GCC-LIN/bin
 
-CC                = $(shell command -v arm-none-eabi-gcc || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-gcc)
-OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objdump)
-OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(EP2_TOOLCHAIN_BIN)/arm-none-eabi-objcopy)
+CC                = $(shell command -v arm-none-eabi-gcc || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-gcc)
+OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-objdump)
+OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-objcopy)
 
 INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
 DEFINES           = -D__P2K__
