@@ -14,6 +14,14 @@
 
 #include "elf.h"
 
+#if defined(EP1) || defined(EG1)
+#define DATA_SHIFT_OFFSET              (0x30000000)
+#elif defined(EA1)
+#define DATA_SHIFT_OFFSET              (0xC0000000)
+#else
+#error "Unknown ElfPack flavor! Try to set EP1, EG1, or EA1"
+#endif
+
 #define EVCODE_RESERVE                 (0x40)
 #define EVCODE_BASE                    (0xA000)
 #define EVCODE_STARTLDR                (EVCODE_BASE)
@@ -34,6 +42,13 @@ enum {
 	ELDR_READ_FAILED,
 	ELDR_SEEK_FAILED
 };
+
+extern const char n_phone[];
+extern const char n_platform[];
+extern const char n_majorfw[];
+extern const char n_minorfw[];
+
+typedef UINT32 (*Entry)(char *, char *, UINT32);
 
 extern UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve);
 
