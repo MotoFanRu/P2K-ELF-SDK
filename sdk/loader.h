@@ -8,3 +8,11 @@
 	#define cprint dbg
 	#define cprintf dbgf
 #endif
+
+#if defined(__arm)                     /* ADS */
+#define                                GET_DATA_FROM_LIB(x) (x)
+#elif defined(__GNUC__)                /* GCC */
+#define                                GET_DATA_FROM_LIB(x) (&x)
+#else                                  /* ??? */
+#error                                 "Sorry, unknown or undetermined compiler."
+#endif
