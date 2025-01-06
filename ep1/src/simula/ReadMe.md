@@ -18,11 +18,11 @@ make                        # Linux
 The `-r` flag is used to enable relocations.
 
 ```bash
-./Simula TestData/elfloader.lib TestData/HelloMoto_ADS.elf
-./Simula TestData/elfloader.lib TestData/HelloMoto_ADS.elf -r
+./simula TestData/elfloader.lib TestData/HelloMoto_ADS.elf
+./simula TestData/elfloader.lib TestData/HelloMoto_ADS.elf -r
 vbindiff TestData/ELF_MEMORY_DUMP_ADS.bin ELF_MEMORY_DUMP.bin
 
-./Simula TestData/elfloader.lib TestData/HelloMoto_GCC.elf
-./Simula TestData/elfloader.lib TestData/HelloMoto_GCC.elf -r
+./simula TestData/elfloader.lib TestData/HelloMoto_GCC.elf
+./simula TestData/elfloader.lib TestData/HelloMoto_GCC.elf -r
 vbindiff TestData/ELF_MEMORY_DUMP_GCC.bin ELF_MEMORY_DUMP.bin
 ```

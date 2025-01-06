@@ -525,8 +525,8 @@ int main(int argc, char *argv[]) {
 	if (argc < 3) {
 		fprintf(stderr, "Simula: The ELF Loader Simulator, EXL, 06-Jan-2025\n\n");
 		fprintf(stderr, "Usage (use '-r' for relocations):\n\n");
-		fprintf(stderr, "\t./Simula elfloader.lib HelloMoto.elf\n");
-		fprintf(stderr, "\t./Simula elfloader.lib HelloMoto.elf -r\n");
+		fprintf(stderr, "\t./simula elfloader.lib HelloMoto.elf\n");
+		fprintf(stderr, "\t./simula elfloader.lib HelloMoto.elf -r\n");
 		fprintf(stderr, "\n");
 		return 1;
 	}

@@ -21,7 +21,7 @@ CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -s -Wl,--gc-sections
 LIBS              =
 
-TARGET            = Simula
+TARGET            = simula
 
 all:
 	$(CC) $(CFLAGS) -c Simula.c -o Simula.o
