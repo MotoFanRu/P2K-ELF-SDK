@@ -5,4 +5,4 @@ The original precompiled object files, released by **Andy51** on 24-Nov-2007. Th
 
 ## Additional information
 
-* **[Porting Elfpack v1.0, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**
+* **[Porting Elfpack v1.x, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**

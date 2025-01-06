@@ -169,7 +169,7 @@ def parse_arguments() -> tuple[Mode, Namespace]:
 	}
 	epl: str = """examples:
 	# Create patch from binary file (+UNDOs).
-	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.0" -s 0x00080000 -b ElfPack.bin -o Result.fpa
+	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "ElfPack v1.x" -s 0x00080000 -b ElfPack.bin -o Result.fpa
 	python patch.py -f "R373_G_0E.30.49R" -a "EXL" -d "Description" -s 0x00080000 -b File.bin -u CG1.smg -o Result.fpa
 
 	# Create patch from hex data string (+UNDOs).

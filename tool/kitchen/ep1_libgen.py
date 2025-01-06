@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A Library Generator utility for ElfPack v1.0 and Motorola phones on P2K platform.
+A Library Generator utility for ElfPack v1.x and Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
@@ -57,7 +57,7 @@ def sym2lib(library_model: forge.LibraryModel, p_i: Path, p_o: Path) -> bool:
 
 # LibGen EP1 working flow.
 def start_ep1_libgen_work(mode: Mode, sort: forge.LibrarySort, args: Namespace) -> bool:
-	logging.info(f'Start ElfPack v1.0 LibGen utility, mode: {mode.name}.')
+	logging.info(f'Start ElfPack v1.x LibGen utility, mode: {mode.name}.')
 
 	if mode == Mode.SYMBOLS_LISTING:
 		phone, firmware = args.phone_fw
@@ -147,7 +147,7 @@ class Args(argparse.ArgumentParser):
 
 def parse_arguments() -> tuple[Mode, forge.LibrarySort, Namespace]:
 	hlp: dict[str, str] = {
-		'h': 'A Library Generator utility for ElfPack v1.0 and Motorola phones on P2K platform, 15-Dec-2023',
+		'h': 'A Library Generator utility for ElfPack v1.x and Motorola phones on P2K platform, 15-Dec-2023',
 		's': 'source input library or symbols file',
 		'o': 'output resulting file with "*.lib", "*.a", ".asm", "*.o", and "*.sym" extensions',
 		'pf': 'phone and firmware, e.g. "E1_R373_G_0E.30.49R"',

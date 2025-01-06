@@ -14,5 +14,5 @@ Addressing remains unchanged, ensuring compatibility between these object files,
 ## Additional information
 
 * libgen update 6.5 (16642/16504)
-* **[Porting Elfpack v1.0, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**
+* **[Porting Elfpack v1.x, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**
 * **[libgen_by_macho.zip](https://wap-tolik.narod.ru/libgen_by_macho.zip)** (archive download link)

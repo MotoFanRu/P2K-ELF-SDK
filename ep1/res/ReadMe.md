@@ -24,5 +24,5 @@ The icons in both variants of the FBrowser launcher have been changed to match t
 
 ## Additional information
 
-* **[Porting Elfpack v1.0, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**
+* **[Porting Elfpack v1.x, Build your own ElfPack!](https://forum.motofan.ru/index.php?showtopic=129128)**
 * **[FBrowser, Bugs and Discussion](https://forum.motofan.ru/index.php?showtopic=131658)**

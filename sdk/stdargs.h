@@ -4,12 +4,12 @@
 ** передача аргументов (...) отличается для ADS и GNU C
 */
 
-// ADS (ElfPack v1.0)
+// ADS (ElfPack v1.x)
 #if defined( __arm )
 
 	#include <stdarg1.h>
 
-// GCC (ElfPack v2.0)
+// GCC (ElfPack v2.x)
 #elif defined( __GNUC__ )
 #if defined(EA1) || defined(USE_GCC_VA_ARGS)
 #include <stdarg2.h>

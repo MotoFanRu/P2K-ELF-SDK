@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A PortKit Utility for building ElfPack v1.0 for Motorola phones on P2K platform.
+A PortKit Utility for building ElfPack v1.x for Motorola phones on P2K platform.
 
 Python: 3.10+
 License: MIT
@@ -30,7 +30,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R365_G_0B.D3.08R': {
 		'opts_all':       ['-DFTR_C650'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'C650_R365_G_0B.D3.08R.pts',
 		'firmware':       forge.P2K_DIR_CG / 'C650_R365_G_0B.D3.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -40,7 +40,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.49R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.49R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -50,7 +50,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.79R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.79R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -60,7 +60,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.DAR_test16': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x003137B4,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x003137B4,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test16.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -70,7 +70,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.DAR_test17': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x003137B4,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x003137B4,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test17.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -80,7 +80,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452F_G_08.03.08R': {
 		'opts_all':       ['-DFTR_K1'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0151C350,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x0151C350,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'K1_R452F_G_08.03.08R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -90,7 +90,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R3511_G_0A.52.45R_A': {
 		'opts_all':       ['-DFTR_L6'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6_R3511_G_0A.52.45R_A.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L6_R3511_G_0A.52.45R_A.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -100,7 +100,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R3443H1_G_0A.65.0BR': {
 		'opts_all':       ['-DFTR_L6I'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'L6i_R3443H1_G_0A.65.0BR.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L6i_R3443H1_G_0A.65.0BR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -110,7 +110,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4513_G_08.B7.ACR_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x00CA01B0,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x00CA01B0,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.ACR_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -120,7 +120,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4513_G_08.B7.E0R_RB': {
 		'opts_all':       ['-DFTR_L7'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x00C90730,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x00C90730,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7_R4513_G_08.B7.E0R_RB.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -130,7 +130,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452D_G_08.01.0AR': {
 		'opts_all':       ['-DFTR_L7E'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0021D340,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x0021D340,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L7e_R452D_G_08.01.0AR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -140,7 +140,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452J_G_08.22.05R': {
 		'opts_all':       ['-DFTR_L9'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0152E010,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x0152E010,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'L9_R452J_G_08.22.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -150,7 +150,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4441D_G_08.01.03R': {
 		'opts_all':       ['-DFTR_V3I'],
 		'addr_start':     0x100A0000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V3i_R4441D_G_08.01.03R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -160,7 +160,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4515_G_08.BD.D3R': {
 		'opts_all':       ['-DFTR_V3R'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V3r_R4515_G_08.BD.D3R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -170,7 +170,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R3512_G_0A.30.6CR': {
 		'opts_all':       ['-DFTR_V235'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V235_R3512_G_0A.30.6CR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -180,7 +180,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R4513_G_08.B7.ACR': {
 		'opts_all':       ['-DFTR_V360'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V360_R4513_G_08.B7.ACR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -190,7 +190,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'TRIPLETS_G_0B.09.72R': {
 		'opts_all':       ['-DFTR_V600'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x00C3C1B0,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x00C3C1B0,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'V600_TRIPLETS_G_0B.09.72R.pts',
 		'firmware':       forge.P2K_DIR_CG / 'V600_TRIPLETS_G_0B.09.72R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -200,7 +200,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452B_G_08.02.0DR': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x0021D290,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452B_G_08.02.0DR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -210,7 +210,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452F1_G_08.04.09R': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    None,        # ElfPack v1.0 patch address, will be calculated.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452F1_G_08.04.09R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -220,7 +220,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R452H6_G_08.00.05R': {
 		'opts_all':       ['-DFTR_Z3'],
 		'addr_start':     0x10092000,  # Firmware start address.
-		'addr_offset':    0x0021D290,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x0021D290,  # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'Z3_R452H6_G_08.00.05R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -230,7 +230,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R261171LD_U_99.51.06R': {
 		'opts_all':       ['-DEA1', '-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
-		'addr_offset':    0x014B0B18,  # ElfPack v1.0 patch address.
+		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
 		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -341,9 +341,9 @@ def generate_register_sym(
 	return False
 
 
-# PortKit ARM v1.0 working flow.
+# PortKit ARM v1.x working flow.
 def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
-	logging.info('Start building ElfPack v1.0 for Motorola P2K.')
+	logging.info('Start building ElfPack v1.x for the Motorola P2K phone.')
 	logging.info('')
 	logging.info('Parameters:')
 	forge.args_dump(opts)
@@ -559,15 +559,15 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	val_elfdir_fpa: Path = opts['output'] / 'ElfDirectory.fpa'
 	val_result_fpa: Path = opts['output'] / 'Result.fpa'
 	forge.bin2fpa(
-		opts['fw_name'], 'Andy51', 'ElfPack v1.0', opts['offset'], val_elfpack_bin, val_elfpack_fpa, opts['fw_file']
+		opts['fw_name'], 'Andy51', 'ElfPack v1.x', opts['offset'], val_elfpack_bin, val_elfpack_fpa, opts['fw_file']
 	)
 	generate_register_patch(
-		opts['fw_name'], 'Andy51', 'ElfPack v1.0 Register patch',
+		opts['fw_name'], 'Andy51', 'ElfPack v1.x Register patch',
 		val_elfpack_sym, val_register_sym, val_register_fpa, opts['fw_file']
 	)
 	patches: list[Path] = [val_register_fpa, val_elfpack_fpa]
 	if opts['directory']:
-		desc: str = 'ElfPack v1.0 Directory patch'
+		desc: str = 'ElfPack v1.x Directory patch'
 		logging.info(f'Generate {desc} for "mixedmedia" => "Elf" directory: "{val_elfdir_fpa}".')
 		po3: str = (
 			'006D0069007800650064006D00650064'
@@ -591,10 +591,10 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			logging.info(f'Cannot find original patch data in "{opts["fw_file"]}" file.')
 			logging.info(f'Data: {po3}')
 			return False
-	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.0 patch.', patches, val_result_fpa)
+	forge.unite_fpa_patches(opts['fw_name'], 'Andy51, EXL', 'Combined ElfPack v1.x patch.', patches, val_result_fpa)
 	logging.info('')
 
-	logging.info('Creating ElfPack v1.0 library for Phone.')
+	logging.info('Creating ElfPack v1.x library for Phone.')
 	val_library_sym: Path = opts['output'] / 'Library.sym'
 	val_library_asm: Path = opts['output'] / ('LibStaticGCC.S' if opts['gcc'] else 'LibStaticADS.asm')
 	val_so_library_asm: Path = opts['output'] / 'LibSharedGCC.S'
@@ -621,7 +621,7 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 	forge.ep1_libgen_symbols(val_elfloader_lib, val_library_sym, forge.LibrarySort.NAME, opts['phone'], opts['fw_name'])
 	logging.info('')
 
-	logging.info('Compiling ElfPack v1.0 library for SDK.')
+	logging.info('Compiling ElfPack v1.x library for SDK.')
 	val_a_library_obj: Path = opts['output'] / ('libeg1_gcc.o' if opts['gcc'] else 'libep1_ads.o')
 	val_so_library_obj: Path = opts['output'] / 'libeg1_gcc_stub.o'
 	val_libep1_static_lib: Path = opts['output'] / ('libeg1_gcc.a' if opts['gcc'] else 'libep1_ads.a')
@@ -642,11 +642,11 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		forge.ep2_gcc_strip(val_libep1_shared_lib)
 	logging.info('')
 
-	logging.info('ElfPack v1.0 building report:')
+	logging.info('ElfPack v1.x building report:')
 	logging.info('')
 	logging.info('Important files:')
 	logging.info(f'\t{str(val_elfloader_lib):<40} - Library for "{opts["phone"]}" on "{opts["fw_name"]}" firmware.')
-	logging.info(f'\t{str(val_result_fpa):<40} - Generated ElfPack v1.0 combined patch for Flash&Backup.')
+	logging.info(f'\t{str(val_result_fpa):<40} - Generated ElfPack v1.x combined patch for Flash&Backup.')
 	logging.info('')
 	logging.info('Developer files:')
 	logging.info(f'\t{str(val_important_dev_lib):<40} - Compiled library for SDK.')

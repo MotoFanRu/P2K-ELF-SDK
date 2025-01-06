@@ -477,7 +477,7 @@ class Args(argparse.ArgumentParser):
 		opts['fw_file'] = args.firmware if args.firmware else variants['fw']
 
 		flags: list[str] = []
-		# ElfPack v2.0 must be compiled with ElfPack v1.0 define `EP1`, for some event constants in `ev_codes1.h` file.
+		# ElfPack v2.0 must be compiled with ElfPack v1.x define `EP1`, for some event constants in `ev_codes1.h` file.
 		flags.append('-DEP1')
 		flags.extend(variants['o_gen'])
 		flags.extend(variants['o_kbd'])
