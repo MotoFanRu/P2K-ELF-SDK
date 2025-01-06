@@ -11,9 +11,8 @@ This project explores ARM/Thumb Branch Links to provide insights into how ARM GC
 ## Build
 
 ```bash
-# Linux
-make -f Makefile.eg1
-make ARGON=1 -f Makefile.eg1
-make -f Makefile.ep1
-make ARGON=1 -f Makefile.ep1
+make -f Makefile.eg1          # Linux, EG1
+make ARGON=1 -f Makefile.eg1  # Linux, EG1, EA1
+make -f Makefile.ep1          # Linux, EP1
+make ARGON=1 -f Makefile.ep1  # Linux, EP1, EA1
 ```

@@ -10,7 +10,8 @@ The **Simula** project is designed to debug the ElfLoader part of ElfPack, which
 ## Build
 
 ```bash
-make                        # Linux
+make          # Linux, EG1
+make ARGON=1  # Linux, EG1, EA1
 ```
 
 ## Run & Test
