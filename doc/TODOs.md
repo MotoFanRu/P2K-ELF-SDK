@@ -2,9 +2,9 @@
 
 [ ] 0x00001494 A __16__rt_udiv and __16__rt_udiv10? WTF?
 
-[ ] Update postlink on Windows and Linux! Probably using MSVC?
+[ ] Update postlink on Windows and Linux! Probably using MSVC? + pat
 
-[ ] Optimize and reorder python imports.
+[ ] Optimize and reorder python imports. Use PyCharm for it.
 
 [ ] Add IDC scripts!
 
@@ -14,11 +14,11 @@
 
 [ ] Check Dos to UNIX for sources?
 
-[ ] Add python unittest command to ReadMe.md in folder.
+[ ] Add python unittest command to ReadMe.md in the 'forge' folder.
 
-[ ] Reformat all sources using formatters.
+[ ] Reformat all sources using clang-format formatter.
 
-[ ] Improve libraries structure...
+[ ] Improve libraries structure...?
     Now:
         ep1/lib/libname
         ep1/inc/libname

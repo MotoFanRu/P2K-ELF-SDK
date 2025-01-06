@@ -779,6 +779,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -m
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -p FILE.pts
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -a -p FILE.pts
+	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B -a -p FILE.pts -y FILE.sym
 	"""
 	p_args: Args = Args(description=hlp['D'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	p_args.add_argument('-P', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['P'])

@@ -12,7 +12,7 @@ mkdir prepared
 # Generate EP1 library from patterns.
 ./ep1_portkit.py -P E1_R373_G_0E.30.DAR_test16 -B -t -a -p ../../ep1/pts/E1_R373_G_0E.30.DAR.pts
 ./ep1_portkit.py -P E1_R373_G_0E.30.DAR_test17 -B -t -a -p ../../ep1/pts/E1_R373_G_0E.30.DAR.pts
-cp build/Lib.sym prepared/portkit.sym
+cp build/Library.sym prepared/portkit.sym
 
 # Get from `gsm_flash_dev.sym` only the necessary entities.
 ./forge.py -sn -s prepared/gsm_flash_dev.sym -d ../../res/E1_R373_G_0E.30.DAR/elfloader.sym -e EP1 -pf 'E1_R373_G_0E.30.DAR' -o prepared/ep1_gsm.sym
