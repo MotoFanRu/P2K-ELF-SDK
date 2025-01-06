@@ -15,7 +15,7 @@
 #include "elf.h"
 
 // EXL, 06-Jan-2025: The order is important here. Be careful when editing.
-#elif defined(EA1)
+#if defined(EA1)
 #define DATA_SHIFT_OFFSET              (0xC0000000)
 #elif defined(EP1) || defined(EG1)
 #define DATA_SHIFT_OFFSET              (0x30000000)
