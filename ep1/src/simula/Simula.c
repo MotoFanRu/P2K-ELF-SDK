@@ -319,8 +319,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 							}
 						}
 					} else {
-						// EXL, 01-Jan-2025: Unknown relocation type, just skip it.
+						// EXL, 01-Jan-2025: Unknown relocation type, just debug and skip it.
 						UtilLogStringData(" UNK Reloc #%d\n  Type  %d\n  Off 0x%X\n", j, relType, relTable[j].r_offset);
+						// *((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = 0x00000000;
 					}
 				}
 				break;

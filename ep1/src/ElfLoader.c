@@ -221,7 +221,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 						);
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
 					} else if (relType == R_ARM_ABS32 && !is_ads_elf) {
-						// EXL, 01-Jan-2025:
+						// EXL, 01-Jan-2025: Add "R_ARM_ABS32" relocations handling for GCC ELFs.
 						UINT32 k;
 						Elf32_Addr elfStrTableAddr = physBase + dynTags[DT_STRTAB] - virtBase;
 						INT32 sym_idx = ELF32_R_SYM(relTable[j].r_info);
@@ -255,9 +255,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 							}
 						}
 					} else {
-						// EXL, 01-Jan-2025: Unknown relocation type, set it to 0x00000000.
+						// EXL, 01-Jan-2025: Unknown relocation type, just debug and skip it.
 						UtilLogStringData(" UNK Reloc #%d\n  Type  %d\n  Off 0x%X\n", j, relType, relTable[j].r_offset);
-						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = 0x00000000;
+						// *((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) = 0x00000000;
 					}
 				}
 				break;
