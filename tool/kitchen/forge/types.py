@@ -26,11 +26,13 @@ PatternModel: TypeAlias = list[tuple[str, str, str, str]]
 
 
 class ElfPack(Enum):
-	EP1: int = 0  # ElfPack v1.0, ARM.
-	EP2: int = 1  # ElfPack v2.0, ARM.
-	EM1: int = 2  # ElfPack v1.0, M*CORE.
-	EM2: int = 3  # ElfPack v2.0, M*CORE.
-	UNK: int = 4  # Unknown ElfPack version.
+	EP1: int = 0  # ElfPack v1.x, ARM ADS, Neptune, ARMv4T / ARM7TDMI-S.
+	EP2: int = 1  # ElfPack v2.x, ARM GCC, Neptune, ARMv4T / ARM7TDMI-S.
+	EM1: int = 2  # ElfPack v1.x, M*CORE GCC, Rainbow POG, M-CORE M341S.
+	EM2: int = 3  # ElfPack v2.x, M*CORE GCC, Rainbow POG, M-CORE M341S.
+	EG1: int = 4  # ElfPack v1.x, ARM GCC, Neptune, ARMv4T / ARM7TDMI-S.
+	EA1: int = 5  # ElfPack v1.x, ARM ADS or ARM GCC, ArgonLV, ARMv6J / ARM1136JF-S.
+	UNK: int = 6  # Unknown ElfPack version.
 
 
 ElfPacks: TypeAlias = tuple[ElfPack, ElfPack]
