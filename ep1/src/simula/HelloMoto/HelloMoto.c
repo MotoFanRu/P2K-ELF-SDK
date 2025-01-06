@@ -1,14 +1,17 @@
+/*
+ * Project:
+ *   EP1, EG1: ElfPack 1.x by Andy51 for Motorola P2K phones.
+ *
+ * About:
+ *   A simple "Hello, World!" program for Motorola P2K phones with EP1 ElfLoader.
+ *
+ * Author:
+ *   EXL, 05-Jan-2025
+ */
+
 #include <apps.h>
 #include <loader.h>
 #include <utilities.h>
-
-#if defined(__arm)  /* ADS */
-#define     GET_DATA_VALUE_FROM_LIB(x) (x)
-#elif defined(__GNUC__) /* GCC */
-#define     GET_DATA_VALUE_FROM_LIB(x) (&x)
-#else
-#error "Unknown compiler flavor!"
-#endif
 
 typedef enum {
 	APP_STATE_ANY,
@@ -48,7 +51,7 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 	LOG("Hello Moto! %d\n", status);
 
 	LOG("Lib: 0x%X 0x%X\n", Lib, &Lib);
-	LOG("display_source_buffer: 0x%X\n", GET_DATA_VALUE_FROM_LIB(display_source_buffer));
+	LOG("display_source_buffer: 0x%X\n", GET_DATA_FROM_LIB(display_source_buffer));
 	LdrUnloadELF(&Lib);
 
 	return status;

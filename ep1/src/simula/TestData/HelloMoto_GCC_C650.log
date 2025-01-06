@@ -1,0 +1,134 @@
+LdrLoadELF uri: file://a/Elf/HelloMoto_GCC.elf  params:  *** ELFLOADER *** LoadELF  current reserve = 0xA080ElfLdr Load Request file://a/Elf/HelloMoto_GCC.elfElf is loading...
+
+ELF header:
+  e_entry  0x39D
+  e_phoff  0x34
+  e_phnum  5
+  e_type  3
+
+Segment #0:
+  p_type  6
+  p_vaddr  0x34
+  p_memsz  0xA0
+Segment #1:
+  p_type  3
+  p_vaddr  0xD4
+  p_memsz  0x11
+Segment #2:
+  p_type  1
+  p_vaddr  0x0
+  p_memsz  0x4DC
+Segment #3:
+  p_type  1
+  p_vaddr  0x4DC
+  p_memsz  0xD0
+Segment #4:
+  p_type  2
+  p_vaddr  0x4DC
+  p_memsz  0xB0
+
+Finished analysis:
+  Virtual Base  0x0
+  Mem Needed  0x5AC
+  Upper Address  0x5AC
+  Summary Mem  0x70D
+  Summary Size  0x70D
+  Physical Base  0x12074DBC
+
+  Segment #2 loading  0x12074DBC  0x1244
+
+  Segment #3 loading  0x12075298  0x208
+
+Relocation start
+ DT_REL  0x23C
+ DT_RELSZ  80
+ Reloc #0
+  Type  23
+  Off  0x384
+ R_ARM_RABS32
+  Old  0x4A4
+  New  0x12075260
+ Reloc #1
+  Type  23
+  Off  0x388
+ R_ARM_RABS32
+  Old  0x40C
+  New  0x120751C8
+ Reloc #2
+  Type  23
+  Off  0x390
+ R_ARM_RABS32
+  Old  0x424
+  New  0x120751E0
+ Reloc #3
+  Type  23
+  Off  0x398
+ R_ARM_RABS32
+  Old  0x43C
+  New  0x120751F8
+ Reloc #4
+  Type  23
+  Off  0x400
+ R_ARM_RABS32
+  Old  0x4A4
+  New  0x12075260
+ Reloc #5
+  Type  23
+  Off  0x404
+ R_ARM_RABS32
+  Old  0x319
+  New  0x120750D5
+ Reloc #6
+  Type  23
+  Off  0x408
+ R_ARM_RABS32
+  Old  0x460
+  New  0x1207521C
+ Reloc #7
+  Type  23
+  Off  0x4C4
+ R_ARM_RABS32
+  Old  0x4D4
+  New  0x12075290
+ Reloc #8
+  Type  2
+  Off  0x38C
+  Bind Type 1 Str: Lib
+ Reloc #9
+  Type  2
+  Off  0x394
+  Bind Type 1 Str: display_source_buffer
+API Call #9:
+  addr 0x80000
+  old 0x12074DBC
+  new 0x12190FF8
+Req Func: 1, LdrStartApp
+API Call #0:
+  addr 0x0
+  old 0x2B4
+  new 0x109022D1
+Req Func: 1, UtilLogStringData
+API Call #1:
+  addr 0x318
+  old 0x2B4
+  new 0x10901AA1
+Req Func: 1, APP_Register
+API Call #2:
+  addr 0x0
+  old 0x2B4
+  new 0x1011159D
+Req Func: 1, PFprintf
+API Call #3:
+  addr 0x0
+  old 0x2B4
+  new 0x1055C965
+Req Func: 1, LdrUnloadELF
+API Call #4:
+  addr 0x0
+  old 0x2B4
+  new 0x10902355
+ Starting ELF at 0x12075159 with reserve = 0xA080Register:28: Register ELF entry point: 'file://a/Elf/HelloMoto_GCC.elf', args: '', ev_code: '41088'.
+ LdrStartApp 0xA080  status = 0 ELF returned *** ELFLOADER *** LoadELF status = 0ApplicationStart:40: Hello Moto! 0
+ApplicationStart:42: Lib: 0x7F454C46 0x12074DBC
+ApplicationStart:43: display_source_buffer: 0x12190FF8
+ LdrUnloadELF 0x12074DBC  0x3E58 LdrUnloadELF send *** ELFLOADER *** UnloadELF

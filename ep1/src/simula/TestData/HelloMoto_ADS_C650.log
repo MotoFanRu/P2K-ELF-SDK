@@ -1,0 +1,133 @@
+LdrLoadELF uri: file://a/Elf/HelloMoto_ADS.elf  params:  *** ELFLOADER *** LoadELF  current reserve = 0xA0C0ElfLdr Load Request file://a/Elf/HelloMoto_ADS.elfElf is loading...
+
+ELF header:
+  e_entry  0x8000
+  e_phoff  0x954
+  e_phnum  2
+  e_type  2
+
+Segment #0:
+  p_type  1
+  p_vaddr  0x8000
+  p_memsz  0x200
+Segment #1:
+  p_type  2
+  p_vaddr  0x0
+  p_memsz  0x0
+
+Finished analysis:
+  Virtual Base  0x8000
+  Mem Needed  0x200
+  Upper Address  0x8200
+  Summary Mem  0x200
+  Summary Size  0x2C0
+  Physical Base  0x12067E60
+
+  Segment #0 loading  0x12067E60  0x512
+
+Relocation start
+ DT_REL  0x88
+ DT_RELSZ  56
+ Reloc #0
+  Type  255
+  Off  0x0
+ UNK Reloc #0
+  Type  255
+  Off 0x0
+ Reloc #1
+  Type  253
+  Off  0x8018
+ R_ARM_RABS32
+  Old  0x807F
+  New  0x12067EDF
+ Reloc #2
+  Type  253
+  Off  0x80F8
+ R_ARM_RABS32
+  Old  0x8000
+  New  0x12067E60
+ Reloc #3
+  Type  253
+  Off  0x8114
+ R_ARM_RABS32
+  Old  0x81FC
+  New  0x1206805C
+ Reloc #4
+  Type  253
+  Off  0x813C
+ R_ARM_RABS32
+  Old  0x801D
+  New  0x12067E7D
+ Reloc #5
+  Type  253
+  Off  0x8140
+ R_ARM_RABS32
+  Old  0x81A0
+  New  0x12068000
+ Reloc #6
+  Type  253
+  Off  0x81AC
+ R_ARM_RABS32
+  Old  0x81F4
+  New  0x12068054
+Section #0:
+  sh_type 0
+  sh_offset 0x0
+  sh_size  0x0
+Section #1:
+  sh_type 1
+  sh_offset 0x34
+  sh_size  0x200
+Section #2:
+  sh_type 1
+  sh_offset 0x234
+  sh_size  0x8C
+Section #3:
+  sh_type 2
+  sh_offset 0x2C0
+  sh_size  0x360
+Section #4:
+  sh_type 3
+  sh_offset 0x620
+  sh_size  0x10C
+Section #5:
+  sh_type 7
+  sh_offset 0x72C
+  sh_size  0x14
+Section #6:
+  sh_type 1
+  sh_offset 0x740
+  sh_size  0x100
+Section #7:
+  sh_type 3
+  sh_offset 0x900
+  sh_size  0x54
+API Calls Fix Start:  ldrStrTable 0x12082240  ldrSymTable 0x12081C70  ldrNumSymbols 186Possible entry:  i 42  st_name 96  name RegisterPossible entry:  i 43  st_name 105  name APP_RegisterAPI Call #43:
+  addr 0x8150
+  old 0x47780000
+  new 0x1011159D
+Possible entry:  i 44  st_name 118  name APP_Register32Possible entry:  i 45  st_name 133  name LdrStartAppAPI Call #45:
+  addr 0x8160
+  old 0x47780000
+  new 0x109022D1
+Possible entry:  i 46  st_name 145  name LdrStartApp32Possible entry:  i 47  st_name 159  name LdrUnloadELFAPI Call #47:
+  addr 0x8170
+  old 0x47780000
+  new 0x10902355
+Possible entry:  i 48  st_name 172  name LdrUnloadELF32Possible entry:  i 49  st_name 187  name PFprintfAPI Call #49:
+  addr 0x8180
+  old 0x47780000
+  new 0x1055C965
+Possible entry:  i 50  st_name 196  name PFprintf32Possible entry:  i 51  st_name 207  name UtilLogStringDataAPI Call #51:
+  addr 0x8190
+  old 0x47780000
+  new 0x10901AA1
+Possible entry:  i 52  st_name 225  name UtilLogStringData32Possible entry:  i 53  st_name 245  name display_source_bufferAPI Call #53:
+  addr 0x81FC
+  old 0x1008028D
+  new 0x42190FF8
+ Starting ELF at 0x12067E60 with reserve = 0xA0C0Register:28: Register ELF entry point: 'file://a/Elf/HelloMoto_ADS.elf', args: '', ev_code: '41152'.
+ LdrStartApp 0xA0C0  status = 0 ELF returned *** ELFLOADER *** LoadELF status = 0ApplicationStart:40: Hello Moto! 0
+ApplicationStart:42: Lib: 0xE92D4FF0 0x12067E60
+ApplicationStart:43: display_source_buffer: 0x12190FF8
+ LdrUnloadELF 0x12067E60  0x3E58 LdrUnloadELF send *** ELFLOADER *** UnloadELF

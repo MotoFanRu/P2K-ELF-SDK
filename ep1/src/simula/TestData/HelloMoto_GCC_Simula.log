@@ -1,0 +1,130 @@
+ElfLdr Load Request TestData/HelloMoto_GCC.elfElf is loading...
+
+ELF header:
+  e_entry  0x39D
+  e_phoff  0x34
+  e_phnum  5
+  e_type  3
+
+Segment #0:
+  p_type  6
+  p_vaddr  0x34
+  p_memsz  0xA0
+Segment #1:
+  p_type  3
+  p_vaddr  0xD4
+  p_memsz  0x11
+Segment #2:
+  p_type  1
+  p_vaddr  0x0
+  p_memsz  0x4DC
+Segment #3:
+  p_type  1
+  p_vaddr  0x4DC
+  p_memsz  0xD0
+Segment #4:
+  p_type  2
+  p_vaddr  0x4DC
+  p_memsz  0xB0
+
+Finished analysis:
+  Virtual Base  0x0
+  Mem Needed  0x5AC
+  Upper Address  0x5AC
+  Summary Mem  0x70D
+  Summary Size  0x70D
+  Physical Base  0x66E24550
+
+  Segment #2 loading  0x66E24550  0x1244
+
+  Segment #3 loading  0x66E24A2C  0x208
+
+Relocation start
+ DT_REL  0x23C
+ DT_RELSZ  80
+ Reloc #0
+  Type  23
+  Off  0x384
+ R_ARM_RABS32
+  Old  0x4A4
+  New  0x66E249F4
+ Reloc #1
+  Type  23
+  Off  0x388
+ R_ARM_RABS32
+  Old  0x40C
+  New  0x66E2495C
+ Reloc #2
+  Type  23
+  Off  0x390
+ R_ARM_RABS32
+  Old  0x424
+  New  0x66E24974
+ Reloc #3
+  Type  23
+  Off  0x398
+ R_ARM_RABS32
+  Old  0x43C
+  New  0x66E2498C
+ Reloc #4
+  Type  23
+  Off  0x400
+ R_ARM_RABS32
+  Old  0x4A4
+  New  0x66E249F4
+ Reloc #5
+  Type  23
+  Off  0x404
+ R_ARM_RABS32
+  Old  0x319
+  New  0x66E24869
+ Reloc #6
+  Type  23
+  Off  0x408
+ R_ARM_RABS32
+  Old  0x460
+  New  0x66E249B0
+ Reloc #7
+  Type  23
+  Off  0x4C4
+ R_ARM_RABS32
+  Old  0x4D4
+  New  0x66E24924
+ Reloc #8
+  Type  2
+  Off  0x38C
+  Bind Type 1 Str: Lib
+ Reloc #9
+  Type  2
+  Off  0x394
+  Bind Type 1 Str: display_source_buffer
+API Call #9:
+  addr 0x80000
+  old 0x66E24550
+  new 0x12190FF8
+Req Func: 1, LdrStartApp
+API Call #0:
+  addr 0x0
+  old 0x2B4
+  new 0x109020D9
+Req Func: 1, UtilLogStringData
+API Call #1:
+  addr 0x318
+  old 0x2B4
+  new 0x10901AA1
+Req Func: 1, APP_Register
+API Call #2:
+  addr 0x0
+  old 0x2B4
+  new 0x1011159D
+Req Func: 1, PFprintf
+API Call #3:
+  addr 0x0
+  old 0x2B4
+  new 0x1055C965
+Req Func: 1, LdrUnloadELF
+API Call #4:
+  addr 0x0
+  old 0x2B4
+  new 0x1090215D
+ Starting ELF at 0x66E248ED with reserve = 0xDEADBEEF ELF returned
