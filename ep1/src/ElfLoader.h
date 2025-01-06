@@ -14,10 +14,11 @@
 
 #include "elf.h"
 
-#if defined(EP1) || defined(EG1)
-#define DATA_SHIFT_OFFSET              (0x30000000)
-#elif defined(EA1)
+// EXL, 06-Jan-2025: The order is important here. Be careful when editing.
+#if defined(EA1)
 #define DATA_SHIFT_OFFSET              (0xC0000000)
+#elif defined(EP1) || defined(EG1)
+#define DATA_SHIFT_OFFSET              (0x30000000)
 #else
 #error "Unknown ElfPack flavor! Try to set EP1, EG1, or EA1"
 #endif
