@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 0201251
-# Timestamp: 02-Jan-2025 06:59:01
+# Version: 0601251
+# Timestamp: 06-Jan-2025 23:33:43
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
@@ -89,7 +89,9 @@
 0xA123DC42 T rand
 0xA123D2A8 T sprintf
 0xA123E1A8 T strcmp
+0xA123E054 T strcpy
 0xA123E160 T strlen
+0xA123E364 T strtok
 0xA0F9475C T suAcquireSem
 0xA0F957D4 T suAllocMem
 0xA0F94258 T suCreateBSem
