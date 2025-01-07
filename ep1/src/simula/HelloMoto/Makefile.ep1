@@ -9,7 +9,7 @@ CC                = $(shell command -v tcc || echo $(ARM_ADS_LIN_BIN)/tcc)
 LD                = $(shell command -v armlink || echo $(ARM_ADS_LIN_BIN)/armlink)
 
 INCLUDES          = -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
-DEFINES           = -D__P2K__
+DEFINES           = -D__P2K__ -DEP1
 WARNINGS          =
 OPTIMIZATIONS     = -O2
 FEATURES          = -apcs /interwork
@@ -17,7 +17,6 @@ ifeq ($(ARGON), 1)
 	FLAVOR        = -DEA1
 	CPU_FLAGS     = -bigend -cpu 5TEJ
 else
-	FLAVOR        = -DEP1
 	CPU_FLAGS     = -bigend
 endif
 CFLAGS            = $(CPU_FLAGS) $(FEATURES) $(WARNINGS) $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS)

@@ -10,7 +10,7 @@ OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(ARM_GCC_L
 OBJCOPY           = $(shell command -v arm-none-eabi-objcopy || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-objcopy)
 
 INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
-DEFINES           = -D__P2K__
+DEFINES           = -D__P2K__ -DEG1
 WARNINGS          = -Wall -Wextra
 OPTIMIZATIONS     = -O2
 FEATURES          = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
@@ -20,7 +20,6 @@ ifeq ($(ARGON), 1)
 	LD_SCRIPT_TPL = ElfPackArgon.tpl
 	ENTRY_POINT   = 0xA1530B18
 else
-	FLAVOR        = -DEG1
 	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
 	LD_SCRIPT_TPL = ElfPackNeptune.tpl
 	ENTRY_POINT   = 0x10901700
@@ -28,9 +27,9 @@ endif
 CFLAGS            = $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
 CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -Wl,--gc-sections
-LIBS              = -nostdlib -nodefaultlibs -T ElfPack.ld
+LIBS              = -nostdlib -T ElfPack.ld
 
-TARGET            = ElfPackGcc1
+TARGET            = ElfPack1_GCC
 TARGET_ELF        = $(TARGET).elf
 TARGET_BIN        = $(TARGET).bin
 

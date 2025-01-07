@@ -8,7 +8,7 @@ ARM_GCC_LIN_BIN   = $(P2K_ELF_SDK)/tool/compiler/ARM-GCC-LIN/bin
 CC                = $(shell command -v arm-none-eabi-gcc || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-gcc)
 
 INCLUDES          = -nostdinc -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
-DEFINES           = -D__P2K__
+DEFINES           = -D__P2K__ -DEG1
 WARNINGS          = -Wall
 OPTIMIZATIONS     = -O2
 FEATURES          = -ffreestanding -fshort-wchar -fshort-enums -fpack-struct=4 -fno-builtin
@@ -16,13 +16,12 @@ ifeq ($(ARGON), 1)
 	FLAVOR        = -DEA1
 	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -mbe32 -march=armv6j -mtune=arm1136jf-s
 else
-	FLAVOR        = -DEG1
 	CPU_FLAGS     = -mbig-endian -mthumb -mthumb-interwork -march=armv4t -mtune=arm7tdmi-s
 endif
 CFLAGS            = $(INCLUDES) $(DEFINES) $(FLAVOR) $(WARNINGS) $(OPTIMIZATIONS) $(CPU_FLAGS) $(FEATURES)
 CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = $(CFLAGS) -s -pie -Wl,--gc-sections -Wl,-zmax-page-size=4 -Wl,-eRegister
-LIBS              = -nostdlib -nodefaultlibs -L$(P2K_ELF_SDK)/ep1/lib/gcc -leg1_gcc_stub
+LIBS              = -nostdlib -L$(P2K_ELF_SDK)/ep1/lib/gcc -leg1_gcc_stub
 
 TARGET_ELF        = HelloMoto_GCC.elf
 

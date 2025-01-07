@@ -13,7 +13,7 @@ FROMELF           = $(shell command -v fromelf || echo $(ARM_ADS_LIN_BIN)/fromel
 OBJDUMP           = $(shell command -v arm-none-eabi-objdump || echo $(ARM_GCC_LIN_BIN)/arm-none-eabi-objdump)
 
 INCLUDES          = -I$(P2K_ELF_SDK)/sdk  -I$(P2K_ELF_SDK)/ep1/inc
-DEFINES           = -D__P2K__
+DEFINES           = -D__P2K__ -DEP1
 WARNINGS          =
 OPTIMIZATIONS     = -O2
 FEATURES          = -apcs /interwork
@@ -22,7 +22,6 @@ ifeq ($(ARGON), 1)
 	CPU_FLAGS     = -bigend -cpu 5TEJ
 	ENTRY_POINT   = 0xA1530B18
 else
-	FLAVOR        = -DEP1
 	CPU_FLAGS     = -bigend
 	ENTRY_POINT   = 0x10901700
 endif
@@ -32,7 +31,7 @@ CXXFLAGS          = $(CFLAGS)
 LDFLAGS           = -ro-base $(ENTRY_POINT) -entry AutorunMain -nolocals -reloc
 SYMBOLS           = lib_ads.sym
 
-TARGET            = ElfPackAds1
+TARGET            = ElfPack1_ADS
 TARGET_ELF        = $(TARGET).elf
 TARGET_BIN        = $(TARGET).bin
 
