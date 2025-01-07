@@ -228,7 +228,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
-		'opts_all':       ['-DEA1', '-DFTR_K3', '-DUSE_UIS_ALLOCA'],
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
 		'patterns':       None,
