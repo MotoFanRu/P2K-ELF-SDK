@@ -79,7 +79,11 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	UtilLogStringData(" *** ELFLOADER *** UnloadELF");
 
 	// EXL, 22-Dec-2024: A pointer to ELF structures is sent along with the event data.
+#if !defined(USE_UIS_ALLOCA)
 	suFreeMem(*((void **) p_event->data.pad));
+#else
+	uisFreeMemory(*((void **) p_event->data.pad));
+#endif
 
 	APP_ConsumeEv(p_evg, (APPLICATION_T *) p_apd);
 

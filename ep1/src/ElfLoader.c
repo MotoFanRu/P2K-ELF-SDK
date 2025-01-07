@@ -125,7 +125,11 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	}
 
 	// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+#if !defined(USE_UIS_ALLOCA)
 	physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+#else
+	physBase = (Elf32_Addr) uisAllocateMemory(upperAddr - virtBase, NULL);
+#endif
 	memclr((void *) physBase, upperAddr - virtBase);
 
 	UtilLogStringData(

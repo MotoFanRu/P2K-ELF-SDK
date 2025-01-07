@@ -228,7 +228,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
-		'opts_all':       ['-DEA1', '-DFTR_K3'],
+		'opts_all':       ['-DEA1', '-DFTR_K3', '-DUSE_UIS_ALLOCA'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
 		'patterns':       None,
@@ -429,6 +429,9 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			selection.append('u_strcpy')
 		if '-DLOG_TO_FILE' in opts['opts_all']:
 			selection.append('DL_FsWriteFile')
+		if '-DUSE_UIS_ALLOCA' in opts['opts_all']:
+			selection.append('uisAllocateMemory')
+			selection.append('uisFreeMemory')
 		forge.ep1_libgen_chunk_sym(opts['precached'], val_combined_sym, forge.LibrarySort.NAME, selection, opts['pfw'])
 
 	if opts['append_sym']:

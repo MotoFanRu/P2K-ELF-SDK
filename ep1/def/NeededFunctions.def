@@ -11,6 +11,8 @@
 #
 #   The `DL_FsWriteFile()` function is required for saving ElfPack logs to a file.
 #
+#   The `uisAllocateMemory()` and `uisFreeMemory()` functions are useful for big (> 64 KiB) ELFs.
+#
 # Author:
 #   EXL, 28-Dec-2024
 #
@@ -43,3 +45,6 @@
 # 0xFFFFFFFF T AFW_CreateInternalQueuedEvAuxD
 
 # 0xFFFFFFFF T DL_FsWriteFile
+
+# 0xFFFFFFFF T uisAllocateMemory
+# 0xFFFFFFFF T uisFreeMemory
