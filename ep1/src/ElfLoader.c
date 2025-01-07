@@ -151,20 +151,21 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					suFreeMem((void *) physBase);
 					return ELDR_SEEK_FAILED;
 				}
-				if (
-					DL_FsReadFile(
-						(void *) (physBase + elfProgramHeaders[i].p_vaddr - virtBase),
-						elfProgramHeaders[i].p_filesz, 1, file, &read
-					) != RESULT_OK
-				) {
-					suFreeMem((void *) physBase);
-					return ELDR_READ_FAILED;
-				}
 
 				UtilLogStringData(
 					"  Segment #%d loading  0x%X  0x%d\n\n",
 					i, physBase + elfProgramHeaders[i].p_vaddr - virtBase, elfProgramHeaders[i].p_filesz
 				);
+
+				if ((elfProgramHeaders[i].p_filesz > 0) &&
+					(DL_FsReadFile(
+						(void *) (physBase + elfProgramHeaders[i].p_vaddr - virtBase),
+						elfProgramHeaders[i].p_filesz, 1, file, &read
+					) != RESULT_OK)
+				) {
+					suFreeMem((void *) physBase);
+					return ELDR_READ_FAILED;
+				}
 				break;
 			case PT_DYNAMIC:
 				// EXL, 24-Dec-2024: Seek and read dynamic section with tag functions and addresses.
