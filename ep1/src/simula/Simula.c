@@ -46,8 +46,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	FILE            *file;
 #endif
 	Elf32_Ehdr      elfHeader;
-	// EXL, 25-Dec-2024: It's set to 8, but there are only 2 in ELFs compiled with ADS.
-	Elf32_Phdr      elfProgramHeaders[MAX_PROG_HEADERS];
+	// EXL, 25-Dec-2024: It's set to elfProgramHeaders[8], but there are only 2 in ELFs compiled with ADS.
+	// EXL, 07-Jan-2025: Drop hardcoded MAX_PROG_HEADERS=8 array on stack.
+	Elf32_Phdr      *elfProgramHeaders;
 
 	Elf32_Addr      virtBase;           // = NULL;
 	Elf32_Addr      physBase;           // = NULL;
@@ -130,6 +131,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		"Elf is loading...\n\nELF header:\n  e_entry  0x%X\n  e_phoff  0x%X\n  e_phnum  %d\n  e_type  %d\n\n",
 		elfHeader.e_entry, elfHeader.e_phoff, elfHeader.e_phnum, elfHeader.e_type
 	);
+
+	// EXL, 07-Jan-2025: Allocate memory for program headers.
+	elfProgramHeaders = suAllocMem(sizeof(Elf32_Phdr) * elfHeader.e_phnum, NULL);
+	UtilLogStringData("Allocated %d bytes for elfProgramHeaders.\n\n", sizeof(Elf32_Phdr) * elfHeader.e_phnum);
 
 	// EXL, 24-Dec-2024: ~0 is 0xFFFFFFFF.
 	upperAddr =  0;
@@ -328,6 +333,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 				break;
 		}
 	}
+
+	// EXL, 07-Jan-2025: Free memory of allocated program headers.
+	suFreeMem(elfProgramHeaders);
+	UtilLogStringData("\nFreed %d bytes of elfProgramHeaders.\n\n", sizeof(Elf32_Phdr) * elfHeader.e_phnum);
 
 	if (is_ads_elf) {
 		// EXL, 31-Dec-2024: Delete a separate PT_DYNAMIC segment if present.

@@ -34,8 +34,6 @@ typedef struct {
 	UINT32 st_value;
 } Ldr_Sym;
 
-#define MAX_PROG_HEADERS               (8)
-
 enum {
 	ELDR_SUCCESS = 0,
 	ELDR_OPEN_FAILED,
