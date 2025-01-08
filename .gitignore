@@ -16,3 +16,5 @@ tool/compiler/*
 !tool/compiler/ep1_win_ADS.md
 !tool/compiler/ep2_lin_devkitARM.md
 !tool/compiler/ep2_win_devkitARM.md
+
+.idea
