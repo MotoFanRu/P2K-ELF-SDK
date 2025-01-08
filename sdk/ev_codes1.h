@@ -285,4 +285,6 @@
 #define EV_FLIP_CLOSED 0x20BE
 #define EV_FLIP_OPENED 0x20BF
 
+extern int *BEGIN_4A__IN_DB;
+
 #endif // EV_CODES_H
