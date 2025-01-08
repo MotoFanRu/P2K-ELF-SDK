@@ -88,7 +88,7 @@
 0xA123DB10 T qsort
 0xA123DC42 T rand
 0xA123D2A8 T sprintf
-0xA123E1A8 T strcmp
+0xA123E1A8 A strcmp
 0xA123E054 T strcpy
 0xA123E160 T strlen
 0xA123E364 T strtok
