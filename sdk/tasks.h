@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+typedef int SU_TIME;      // MOVE: SUAPI, TIME?
+
 typedef void (*TASK_ENTRY_FN)(void *);
 
 #ifdef __cplusplus

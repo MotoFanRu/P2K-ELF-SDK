@@ -42,7 +42,7 @@ extern "C" {
       ибо если длина строки src больше чем n, то в dst не будет записан символ окончания строки '\0'
 */
 
-size_t strlen(const char *str);               // Длина строки
+UINT32 strlen(const char *str);               // Длина строки
 char *strcat(char *dst, const char *src);     // Конкатенация строк
 char *strchr(const char *str, int s);         // Поиск символа в строке
 int strcmp(const char *s1, const char *s2);   // Сравнение строк
@@ -50,10 +50,10 @@ int stricmp(const char *s1, const char *s2);  // Сравнение строк
 #define strcasecmp stricmp
 char *strcpy(char *dst, const char *src);  // Копирование строк
 
-char *strncat(char *dst, const char *src, size_t n);     // Лимитированая конкатенация
-int strncmp(const char *s1, const char *s2, size_t n);   // Лимит. сравнение
-int strincmp(const char *s1, const char *s2, size_t n);  // Лимит. сравнение
-char *strncpy(char *dst, const char *src, size_t n);     // Лимит. копирование
+char *strncat(char *dst, const char *src, UINT32 n);     // Лимитированая конкатенация
+int strncmp(const char *s1, const char *s2, UINT32 n);   // Лимит. сравнение
+int strincmp(const char *s1, const char *s2, UINT32 n);  // Лимит. сравнение
+char *strncpy(char *dst, const char *src, UINT32 n);     // Лимит. копирование
 
 char *strstr(const char *str, const char *srch);  // Поиск подстроки
 char *strrchr(const char *str, int s);            // Поиск символа в строке (реверс)
@@ -62,17 +62,17 @@ char *strtok(char *, const char *);
 int toupper(int c);  // Символ к верхнему регистру
 int tolower(int c);  // Символ к нижнему регистру
 
-size_t strcspn(
+UINT32 strcspn(
 	const char *str1,
 	const char *str2
 );  // возвращает индекс символа в str1 который совпадает с одним из символов str2
-size_t strspn(const char *str1, const char *str2);  // аналогично, только `НЕ`
+UINT32 strspn(const char *str1, const char *str2);  // аналогично, только `НЕ`
 
 /* ***************************************************
  * Unicode strings routines
  */
 
-size_t u_strlen(const WCHAR *str);
+UINT32 u_strlen(const WCHAR *str);
 
 WCHAR *u_strcat(WCHAR *dst, const WCHAR *str);
 
@@ -82,8 +82,8 @@ WCHAR *u_strncat(WCHAR *dst, const WCHAR *src, UINT32 n);
 INT32 u_strcmp(const WCHAR *s1, const WCHAR *s2);
 WCHAR *u_strcpy(WCHAR *dst, const WCHAR *src);
 
-INT32 u_strncmp(const WCHAR *s1, const WCHAR *s2, size_t count);
-WCHAR *u_strncpy(WCHAR *dst, const WCHAR *src, size_t count);
+INT32 u_strncmp(const WCHAR *s1, const WCHAR *s2, UINT32 count);
+WCHAR *u_strncpy(WCHAR *dst, const WCHAR *src, UINT32 count);
 
 // ищет в str первое вхождение символа chr
 WCHAR *u_strchr(const WCHAR *src, WCHAR chr);
@@ -155,8 +155,8 @@ WCHAR *u_itoh(int value, WCHAR *dst);
  * other functions
  */
 
-void *bsearch(const void *key, const void *buf, size_t num, size_t size, int (*compare)(const void *, const void *));
-void qsort(void *buf, size_t num, size_t size, int (*compare)(const void *, const void *));
+void *bsearch(const void *key, const void *buf, UINT32 num, UINT32 size, int (*compare)(const void *, const void *));
+void qsort(void *buf, UINT32 num, UINT32 size, int (*compare)(const void *, const void *));
 
 int rand(void);
 void srand(unsigned int seed);
@@ -169,9 +169,9 @@ int abs_0(int);
 #ifndef EMUELF
 
 int sprintf(char *str, const char *format, ...);
-int snprintf(char *str, size_t maxlen, const char *format, ...);
+int snprintf(char *str, UINT32 maxlen, const char *format, ...);
 int vsprintf(char *buffer, const char *format, va_list arglist);
-int vsnprintf(char *buffer, size_t maxlen, const char *format, va_list arglist);
+int vsnprintf(char *buffer, UINT32 maxlen, const char *format, va_list arglist);
 
 #ifndef WIN32
 #define printf(format, ...)         PFprintf(format, ##__VA_ARGS__)

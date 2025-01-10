@@ -17,6 +17,9 @@
 #define FILE_HANDLE_INVALID     FS_HANDLE_INVALID
 #define FILE_INVALID            FS_HANDLE_INVALID
 
+//typedef UINT64 DL_FS_MID_T;   // MOVE: DL_FS?
+//typedef UINT16 FILE_HANDLE_T;  // MOVE: DL_FS?
+
 typedef UINT16 FS_HANDLE_T;
 typedef FS_HANDLE_T FILE_HANDLE_T;
 #ifndef WIN32
@@ -220,7 +223,7 @@ BOOL DL_FsIsCardInserted(const WCHAR *vol_uri);
 #define DIRECTORY_FILTER_ATTRIBUTE 0x12
 #define EV_FILE_SEARCH_COMPLETED   0x8213D
 
-typedef W_CHAR *(*FS_URI_FNCT_PTR)(UINT16, W_CHAR *);
+typedef WCHAR *(*FS_URI_FNCT_PTR)(UINT16, WCHAR *);
 
 typedef struct {
 	FS_SEARCH_HANDLE_T search_handle;
@@ -263,7 +266,7 @@ UINT16 DL_FsSearch(
 UINT16 DL_FsISearch(
 	const IFACE_DATA_T *iface,
 	const FS_SEARCH_PARAMS_T params,
-	const W_CHAR *match_names,
+	const WCHAR *match_names,
 	const UINT16 owner_id
 );
 

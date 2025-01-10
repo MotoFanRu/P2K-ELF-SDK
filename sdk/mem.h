@@ -12,9 +12,9 @@ extern "C" {
 // Выделить память
 // Если выделить память не удалось, то в err будет код ошибки
 // Если вторым параметром было NULL то при неудаче выйдет ребут
-void *suAllocMem(size_t size, INT32 *err);
+void *suAllocMem(UINT32 size, INT32 *err);
 #ifdef EP2_INTERNAL
-void *malloc(size_t size);
+void *malloc(UINT32 size);
 #else
 #define malloc(sz) suAllocMem(sz, NULL)
 #endif
@@ -28,39 +28,39 @@ void mfree(void *ptr);
 #endif
 
 // Забивает нулями блок памяти
-void __rt_memclr(void *, size_t);
+void __rt_memclr(void *, UINT32);
 #ifdef EP2_INTERNAL
-void memclr(void *, size_t);
+void memclr(void *, UINT32);
 #else
 #define memclr(m, sz) __rt_memclr(m, sz)
 #endif
 
 // Копирует блоки памяти
-void *__rt_memcpy(void *, const void *, size_t);
+void *__rt_memcpy(void *, const void *, UINT32);
 #ifdef EP2_INTERNAL
-void *memcpy(void *, const void *, size_t);
+void *memcpy(void *, const void *, UINT32);
 #else
-#define memcpy(dst, src, sz) __rt_memcpy((void *) dst, (void *) src, (size_t) sz)
+#define memcpy(dst, src, sz) __rt_memcpy((void *) dst, (void *) src, (UINT32) sz)
 #endif
 
 // Забивает указанным байтом блок памяти
-void *__rt_memset(void *, int, size_t);
+void *__rt_memset(void *, int, UINT32);
 #ifdef EP2_INTERNAL
-void *memset(void *, int, size_t);
+void *memset(void *, int, UINT32);
 #else
-#define memset(m, byte, sz) __rt_memset((void *) m, (int) byte, (size_t) sz)
+#define memset(m, byte, sz) __rt_memset((void *) m, (int) byte, (UINT32) sz)
 #endif
 
 //
-void *__rt_memmove(void *, const void *, size_t);
+void *__rt_memmove(void *, const void *, UINT32);
 #ifdef EP2_INTERNAL
-void *memmove(void *, const void *, size_t);
+void *memmove(void *, const void *, UINT32);
 #else
-#define memmove(dst, src, sz) __rt_memmove((void *) dst, (void *) src, (size_t) sz)
+#define memmove(dst, src, sz) __rt_memmove((void *) dst, (void *) src, (UINT32) sz)
 #endif
 
 // Ява менеджер памяти
-void *AmMemAlloc(size_t size);
+void *AmMemAlloc(UINT32 size);
 void AmMemFree(void *ptr);
 
 // Получше чем su*Mem (но медленный)
@@ -68,7 +68,7 @@ void AmMemFree(void *ptr);
 // Доступно больше памяти
 // После выделения еще и сам чистит память, поэтому медленный
 // При неудаче нет ребута!
-void *device_Alloc_mem(UINT32 count, size_t sz);
+void *device_Alloc_mem(UINT32 count, UINT32 sz);
 void device_Free_mem_fn(void *ptr);
 
 typedef UINT32 UIS_PARTITION_BLOCK_SIZE_T;

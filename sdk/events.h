@@ -1,5 +1,7 @@
 // UTF-8 w/o BOM
 
+//Делить на AFW + Events?
+
 #ifndef EVENTS_H
 #define EVENTS_H
 
@@ -13,6 +15,16 @@
 #else
 #include <ev_codes1.h>
 #endif
+
+typedef UINT32 AFW_ID_T;
+
+// MOVE: App? Afw?
+enum FREE_BUF_FLAG_ENUM {
+	FBF_FREE = 100,  // ОС должна освободить буффер
+	FBF_LEAVE,       // Приложение должно следить за освобождением буффера
+	FBF_INVALID      // Unknown
+};
+typedef UINT8 FREE_BUF_FLAG_T;
 
 #define GET_KEY(ev_st)      ((AFW_GetEv(ev_st))->data.key_pressed)
 
