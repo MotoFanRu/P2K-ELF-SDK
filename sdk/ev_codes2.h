@@ -3,5 +3,4 @@
 #ifndef EV_CODES_H
 #define EV_CODES_H
 
-
-#endif // EV_CODES_H
+#endif  // EV_CODES_H

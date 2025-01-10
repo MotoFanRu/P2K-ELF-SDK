@@ -8,23 +8,21 @@
 
 #include <typedefs.h>
 
-typedef enum
-{
-	MSG_FOLDER_INBOX			  = 0, // Входящие 
-	MSG_FOLDER_OUTBOX			 = 1, // Исходящие 
-	MSG_FOLDER_INFOSRV_INBOX	  = 2,
-	MSG_FOLDER_QUICKNOTE		  = 3,
-	MSG_FOLDER_DRAFTS_FOLDER	  = 4,
-	MSG_FOLDER_EMAIL_INBOX		= 5,
-	MSG_FOLDER_TEMP_FOLDER		= 15,
-	MSG_FOLDER_VOICEMAIL		  = 16,
-	MSG_FOLDER_BROWSER_MSGS	   = 19,
-	MSG_FOLDER_ALL_FOLDERS		= 23,
-	MSG_FOLDER_INVALID			= 255
+typedef enum {
+	MSG_FOLDER_INBOX = 0,   // Входящие
+	MSG_FOLDER_OUTBOX = 1,  // Исходящие
+	MSG_FOLDER_INFOSRV_INBOX = 2,
+	MSG_FOLDER_QUICKNOTE = 3,
+	MSG_FOLDER_DRAFTS_FOLDER = 4,
+	MSG_FOLDER_EMAIL_INBOX = 5,
+	MSG_FOLDER_TEMP_FOLDER = 15,
+	MSG_FOLDER_VOICEMAIL = 16,
+	MSG_FOLDER_BROWSER_MSGS = 19,
+	MSG_FOLDER_ALL_FOLDERS = 23,
+	MSG_FOLDER_INVALID = 255
 } MSG_FOLDER_T;
 
-typedef enum
-{
+typedef enum {
 	MSG_TYPE_DEFAULT = 0,
 	MSG_TYPE_IMMEDIATE,
 	MSG_TYPE_DATE_TIME,
@@ -44,22 +42,19 @@ typedef enum
 	MSG_TYPE_NOT_GIVEN
 } MSG_TYPE_MSG_T;
 
-typedef enum
-{
+typedef enum {
 	MSG_ATTR_READ_FLAG_INVALID = 0x00,
 	MSG_ATTR_READ_FLAG_VALID = 0x01
 } MSG_ATTR_MASK_T;
 
-typedef enum
-{
+typedef enum {
 	MSG_MEM_READ_DELETED,
 	MSG_MEM_STORED_SENT,
 	MSG_MEM_RECEIVED,
 	MSG_MEM_UNSPECIFIED
 } MSG_MEMORY_STORAGE_T;
 
-typedef struct
-{
+typedef struct {
 #if defined(FTR_V600)
 	UINT8 mask;
 #else
@@ -88,12 +83,11 @@ typedef struct
 #endif
 } MSG_ATTR_T;
 
-typedef struct
-{
-	UINT8		pad[0x6c];
-	WCHAR		phone_number[0x22];//  номер 
-	UINT8		pad2[0x1C8];
-	WCHAR		text[0x100]; // текст 
+typedef struct {
+	UINT8 pad[0x6c];
+	WCHAR phone_number[0x22];  //  номер
+	UINT8 pad2[0x1C8];
+	WCHAR text[0x100];  // текст
 } MSG_READ_T;
 
 typedef enum {
@@ -103,11 +97,10 @@ typedef enum {
 	MSG_UNKNOWN
 } MSG_TYPE_T;
 
-typedef struct
-{
-	WCHAR		address[51];
-	UINT8		addr_type; // 0 -SMS, 1 - EMAIL, 2 - No, 3 - Long Msg ??? 
-	WCHAR		contents[512]; // максимальный размер 0x7BFE, только для SMS, думаю, это много
+typedef struct {
+	WCHAR address[51];
+	UINT8 addr_type;  // 0 -SMS, 1 - EMAIL, 2 - No, 3 - Long Msg ???
+	WCHAR contents[512];  // максимальный размер 0x7BFE, только для SMS, думаю, это много
 } SEND_TEXT_MESSAGE_T;
 
 #ifdef __cplusplus
@@ -115,22 +108,25 @@ extern "C" {
 #endif
 
 // прочитать сообщение по id
-// ответ должен придти по ивенту EV_MSG_READ 
-UINT8 DL_DbMessageGenericGetMessage(	IFACE_DATA_T	*iface_data, 
-										MSG_FOLDER_T	msg_folder, 
-										UINT16			msg_id,
-										UINT16			part_num, // 0 or 1
-										UINT8			unk ); // = 0
+// ответ должен придти по ивенту EV_MSG_READ
+UINT8 DL_DbMessageGenericGetMessage(
+	IFACE_DATA_T *iface_data,
+	MSG_FOLDER_T msg_folder,
+	UINT16 msg_id,
+	UINT16 part_num,  // 0 or 1
+	UINT8 unk
+);  // = 0
 
 // получить список id сообщений
-UINT8 DL_DbMessageGenericGetMessageIDList(	MSG_FOLDER_T msg_folder,
-											UINT16		*total_number,
-											UINT16		*msg_id_list, // спиcок id сообщений, максимум 245
-											UINT8		unk ); // = 0
-
+UINT8 DL_DbMessageGenericGetMessageIDList(
+	MSG_FOLDER_T msg_folder,
+	UINT16 *total_number,
+	UINT16 *msg_id_list,  // спиcок id сообщений, максимум 245
+	UINT8 unk
+);  // = 0
 
 // колличество непрочитанных смс
-UINT32 MsgUtilGetUnreadMsgsInAllFolders( UINT16 *msg_total );
+UINT32 MsgUtilGetUnreadMsgsInAllFolders(UINT16 *msg_total);
 UINT32 MsgUtilGetUnreadMsgs(UINT16 *msgs_count, MSG_FOLDER_T folder, MSG_TYPE_MSG_T type);
 UINT32 DL_DbMessageGenericGetTotalMessage(
 	MSG_FOLDER_T folder_id,
@@ -139,12 +135,11 @@ UINT32 DL_DbMessageGenericGetTotalMessage(
 	MSG_MEMORY_STORAGE_T storage
 );
 
-// Отправка сообщений 
-UINT32 DL_SigMsgSendTextMsgReq(	IFACE_DATA_T			*port, 
-								SEND_TEXT_MESSAGE_T		*msg_ptr );
+// Отправка сообщений
+UINT32 DL_SigMsgSendTextMsgReq(IFACE_DATA_T *port, SEND_TEXT_MESSAGE_T *msg_ptr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __SDK_SMS_H__
+#endif  // __SDK_SMS_H__

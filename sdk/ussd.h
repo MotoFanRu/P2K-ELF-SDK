@@ -5,54 +5,43 @@
 
 #include "typedefs.h"
 
-
-#define DL_SIG_CALL_SS_USSD_STRING_MAX_LENGTH   200
-#define DL_SIG_CALL_SS_MAX_BCD_NUM_LEN          20
-#define DL_SIG_CALL_SS_RETURN_RESULT_MAX_LENGTH 256
-#define DL_SIG_CALL_MAX_NUMBER_LENGTH           41 
-#define DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH     ( DL_SIG_CALL_MAX_NUMBER_LENGTH + 1 )
-#define DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE 1
-#define DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_LENGTH          36
-#define DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_ARRAY_LENGTH    ( DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_LENGTH + 2 ) 
-
+#define DL_SIG_CALL_SS_USSD_STRING_MAX_LENGTH             200
+#define DL_SIG_CALL_SS_MAX_BCD_NUM_LEN                    20
+#define DL_SIG_CALL_SS_RETURN_RESULT_MAX_LENGTH           256
+#define DL_SIG_CALL_MAX_NUMBER_LENGTH                     41
+#define DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH               (DL_SIG_CALL_MAX_NUMBER_LENGTH + 1)
+#define DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE             1
+#define DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_LENGTH       36
+#define DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_ARRAY_LENGTH (DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_LENGTH + 2)
 
 typedef UINT16 DL_SIG_CALL_ID_T;
 typedef UINT16 DL_SIG_CALL_SS_ID_T;
 #define DL_SIG_CALL_SS_INVALID_SS_ID 0xFFFF
 
-
-
-enum
-{
+enum {
 	DL_SIG_CALL_TON_INTERNATIONAL,
 	DL_SIG_CALL_TON_UNKNOWN,
 	DL_SIG_CALL_TON_NOT_SPECIFIED = 0xFF
 };
+
 typedef UINT8 DL_SIG_CALL_TYPE_OF_NUMBER_T;
 
-
-
-enum
-{
+enum {
 	DL_SIG_CALL_NUMBER_PLAN_UNKNOWN = 1,
 	DL_SIG_CALL_NUMBER_PLAN_NOT_SPECIFIED = 0xFF
 };
+
 typedef UINT8 DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T;
 
-
-
-enum
-{
+enum {
 	DL_SIG_CALL_STK_TYPE_NORMAL,
 	DL_SIG_CALL_STK_TYPE_CC_MODIFIED,
 	DL_SIG_CALL_STK_TYPE_PROACTIVE
 };
+
 typedef UINT8 DL_SIG_CALL_STK_TYPE_T;
 
-
-
-enum
-{
+enum {
 	DL_SIG_CALL_RESULT_SUCCESS,
 	DL_SIG_CALL_RESULT_FAIL,
 	DL_SIG_CALL_RESULT_PLACED,
@@ -62,11 +51,10 @@ enum
 	DL_SIG_CALL_RESULT_CALL_ANSWERED,
 	DL_SIG_CALL_RESULT_CALL_NOT_ANSWERED
 };
+
 typedef UINT8 DL_SIG_CALL_RESULT_T;
 
-
-enum
-{
+enum {
 	DL_SIG_CALL_CAUSE_NO_CAUSE,
 	DL_SIG_CALL_CAUSE_CC_BUSY,
 	DL_SIG_CALL_CAUSE_NORMAL = 6,
@@ -89,12 +77,10 @@ enum
 	DL_SIG_CALL_CAUSE_USSD_CANCELED = 69,
 	DL_SIG_CALL_CAUSE_POWER_DOWN = 75
 };
-typedef UINT8 DL_SIG_CALL_CAUSE_T; 
 
+typedef UINT8 DL_SIG_CALL_CAUSE_T;
 
-
-enum
-{
+enum {
 	DL_SIG_CALL_SS_OPERATION_REGISTER,
 	DL_SIG_CALL_SS_OPERATION_ERASE,
 	DL_SIG_CALL_SS_OPERATION_ACTIVATE,
@@ -104,59 +90,48 @@ enum
 	DL_SIG_CALL_SS_OPERATION_USSD,
 	DL_SIG_CALL_SS_OPERATION_INVALID = 0xFF
 };
+
 typedef UINT8 DL_SIG_CALL_SS_OPERATION_T;
 
-
-enum
-{
+enum {
 	DL_SIG_CALL_SS_CODE_ALL_SS,
 	DL_SIG_CALL_SS_CODE_INVALID = 0xff
 };
-typedef UINT8 DL_SIG_CALL_SS_CODE_T; 
 
+typedef UINT8 DL_SIG_CALL_SS_CODE_T;
 
 typedef UINT8 DL_SIG_CALL_SS_BASIC_SERVICE_CODE_T;
 
-
-enum
-{ 
+enum {
 	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_NOT_SPECIFIED,
 	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_BEARER,
 	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_TELE,
 	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_ALL_BEARER_TELE
 };
+
 typedef UINT8 DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_T;
 
-
-
-typedef struct
-{
-	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_T		service_type;
-	DL_SIG_CALL_SS_BASIC_SERVICE_CODE_T		service_code;  
+typedef struct {
+	DL_SIG_CALL_SS_BASIC_SERVICE_TYPE_T service_type;
+	DL_SIG_CALL_SS_BASIC_SERVICE_CODE_T service_code;
 } DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T;
-
-
 
 typedef UINT8 DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_T;
 
-#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_DEFAULT 0
-#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_MIN 5
-#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_MAX 30
-#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_NOT_SPECIFIED 0xff 
+#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_DEFAULT       0
+#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_MIN           5
+#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_MAX           30
+#define DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_NOT_SPECIFIED 0xff
 
-
-
-enum
-{
+enum {
 	DL_SIG_CALL_SS_RETURN_DATA_TYPE_NO_DATA = 0,
 	DL_SIG_CALL_SS_RETURN_DATA_TYPE_SS_STATUS = 1,
 	DL_SIG_CALL_SS_RETURN_DATA_TYPE_USSD_STRING = 7
 };
-typedef UINT8 DL_SIG_CALL_SS_RETURN_DATA_TYPE_T; 
 
+typedef UINT8 DL_SIG_CALL_SS_RETURN_DATA_TYPE_T;
 
-enum
-{
+enum {
 	DL_SIG_CALL_SS_STATUS_NOT_SUBSCRIBED,
 	DL_SIG_CALL_SS_STATUS_NOT_ACTIVE,
 	DL_SIG_CALL_SS_STATUS_ACTIVE_CONFLICT,
@@ -164,18 +139,16 @@ enum
 	DL_SIG_CALL_SS_STATUS_ACTIVE_UNKNOWN,
 	DL_SIG_CALL_SS_STATUS_UNKNOWN
 };
-typedef UINT8  DL_SIG_CALL_SS_STATUS_T;
 
+typedef UINT8 DL_SIG_CALL_SS_STATUS_T;
 
-enum
-{
+enum {
 	DL_SIG_CALL_SS_SUB_OPTION_NOT_SPECIFIED = 0
 };
+
 typedef UINT8 DL_SIG_CALL_SS_SUBSCRIPTION_OPTION_T;
 
-
-typedef struct
-{
+typedef struct {
 	BOOL valid;
 	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service;
 	DL_SIG_CALL_SS_STATUS_T ss_status;
@@ -184,123 +157,92 @@ typedef struct
 	DL_SIG_CALL_TYPE_OF_NUMBER_T type_of_number;
 } DL_SIG_CALL_SS_BCD_FORWARDING_INFO_T;
 
-
-typedef struct
-{
+typedef struct {
 	BOOL valid;
 	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service;
-	DL_SIG_CALL_SS_STATUS_T ss_status;  
+	DL_SIG_CALL_SS_STATUS_T ss_status;
 } DL_SIG_CALL_SS_BARRING_INFO_STRUCT_T;
 
-
-typedef struct
-{
-	DL_SIG_CALL_SS_STATUS_T ss_status;          
+typedef struct {
+	DL_SIG_CALL_SS_STATUS_T ss_status;
 	DL_SIG_CALL_SS_SUBSCRIPTION_OPTION_T subscription_option;
 	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service_list[DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
 } DL_SIG_CALL_SS_GENERIC_INFO_STRUCT_T;
 
-
-typedef struct
-{
-	DL_SIG_CALL_TYPE_OF_NUMBER_T           type_of_number;
-	DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T   number_plan_identifier;
-	W_CHAR                                 number[ DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_ARRAY_LENGTH ];
+typedef struct {
+	DL_SIG_CALL_TYPE_OF_NUMBER_T type_of_number;
+	DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T number_plan_identifier;
+	W_CHAR number[DL_SIG_CALL_SS_MAX_FORWARD_TO_NUMBER_ARRAY_LENGTH];
 } DL_SIG_CALL_SS_FORWARD_TO_NUMBER_STRUCT_T;
 
-
-typedef struct
-{
-	W_CHAR string[ DL_SIG_CALL_SS_USSD_STRING_MAX_LENGTH ];
+typedef struct {
+	W_CHAR string[DL_SIG_CALL_SS_USSD_STRING_MAX_LENGTH];
 } DL_SIG_CALL_SS_USSD_STRING_STRUCT_T;
 
-
-
-typedef union
-{
+typedef union {
 	DL_SIG_CALL_SS_STATUS_T ss_status;
-	DL_SIG_CALL_SS_BCD_FORWARDING_INFO_T forwarding_info [DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
-	DL_SIG_CALL_SS_BARRING_INFO_STRUCT_T barring_info [DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
+	DL_SIG_CALL_SS_BCD_FORWARDING_INFO_T forwarding_info[DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
+	DL_SIG_CALL_SS_BARRING_INFO_STRUCT_T barring_info[DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
 	DL_SIG_CALL_SS_GENERIC_INFO_STRUCT_T generic_info;
 	DL_SIG_CALL_SS_FORWARD_TO_NUMBER_STRUCT_T forward_to_number;
-	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service_list [DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
+	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service_list[DL_SIG_CALL_SS_RETURN_DATA_ARRAY_SIZE];
 	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T ussd_string;
-	
+
 } DL_SIG_CALL_SS_RETURN_DATA_T;
 
-
-typedef struct
-{
-	DL_SIG_CALL_TYPE_OF_NUMBER_T           type_of_number;
-	DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T   number_plan_identifier;
-	W_CHAR                                 number[ DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH ];
+typedef struct {
+	DL_SIG_CALL_TYPE_OF_NUMBER_T type_of_number;
+	DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T number_plan_identifier;
+	W_CHAR number[DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH];
 } DL_SIG_CALL_SIM_MODIFIED_INFO_T;
 
-typedef struct
-{
-	DL_SIG_CALL_SS_ID_T                   ss_id;
-	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T   ussd_string;
+typedef struct {
+	DL_SIG_CALL_SS_ID_T ss_id;
+	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T ussd_string;
 
 } DL_SIG_CALL_SS_USSD_REQUEST_IND_T;
 
-
-typedef struct
-{
-	DL_SIG_CALL_SS_ID_T                   ss_id;
-	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T   ussd_string;
+typedef struct {
+	DL_SIG_CALL_SS_ID_T ss_id;
+	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T ussd_string;
 } DL_SIG_CALL_SS_USSD_NOTIFY_IND_T;
 
-
-
-typedef struct
-{
-	DL_SIG_CALL_SS_ID_T                   ss_id;
-	DL_SIG_CALL_RESULT_T                  result;
-	DL_SIG_CALL_CAUSE_T                   cause;
-	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T   ussd_string;
+typedef struct {
+	DL_SIG_CALL_SS_ID_T ss_id;
+	DL_SIG_CALL_RESULT_T result;
+	DL_SIG_CALL_CAUSE_T cause;
+	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T ussd_string;
 } DL_SIG_CALL_SS_USSD_COMPLETE_IND_T;
 
-
-
-typedef struct
-{
+typedef struct {
 	W_CHAR ss_string[DL_SIG_CALL_SS_USSD_STRING_MAX_LENGTH];
 	DL_SIG_CALL_TYPE_OF_NUMBER_T ton;
 	DL_SIG_CALL_NUMBER_PLAN_IDENTIFIER_T npi;
 } DL_SIG_CALL_SS_STRING_STRUCT_T;
 
+typedef struct {
+	DL_SIG_CALL_SS_ID_T ss_id;
+	DL_SIG_CALL_RESULT_T result;
+	DL_SIG_CALL_CAUSE_T cause;
+	DL_SIG_CALL_SS_OPERATION_T operation;
+	DL_SIG_CALL_SS_CODE_T ss_code;
+	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T basic_service;
+	DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_T no_reply_time;
+	DL_SIG_CALL_SS_RETURN_DATA_TYPE_T return_data_type;
+	DL_SIG_CALL_SS_RETURN_DATA_T return_data;
+	UINT8 ss_return_result[DL_SIG_CALL_SS_RETURN_RESULT_MAX_LENGTH];
+	DL_SIG_CALL_SIM_MODIFIED_INFO_T sim_modified_info;
+} DL_SIG_CALL_SS_OPERATION_CNF_T;
 
-
-typedef struct
-{
-	DL_SIG_CALL_SS_ID_T                         ss_id;
-	DL_SIG_CALL_RESULT_T                        result;
-	DL_SIG_CALL_CAUSE_T                         cause;
-	DL_SIG_CALL_SS_OPERATION_T                  operation;  
-	DL_SIG_CALL_SS_CODE_T                       ss_code;        
-	DL_SIG_CALL_SS_BASIC_SERVICE_STRUCT_T       basic_service;     
-	DL_SIG_CALL_SS_FWD_NO_REPLY_TIME_T          no_reply_time;
-	DL_SIG_CALL_SS_RETURN_DATA_TYPE_T           return_data_type;
-	DL_SIG_CALL_SS_RETURN_DATA_T                return_data;
-	UINT8                                       ss_return_result [ DL_SIG_CALL_SS_RETURN_RESULT_MAX_LENGTH ];
-	DL_SIG_CALL_SIM_MODIFIED_INFO_T             sim_modified_info;
-} DL_SIG_CALL_SS_OPERATION_CNF_T; 
-
-
-typedef struct
-{
-	W_CHAR number [ DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH ];
+typedef struct {
+	W_CHAR number[DL_SIG_CALL_MAX_NUMBER_ARRAY_LENGTH];
 } DL_SIG_CALL_NUMBER_STRING_STRUCT_T;
 
-
-
-typedef struct
-{
-	DL_SIG_CALL_SS_ID_T                         ss_id;
-	DL_SIG_CALL_RESULT_T                        result;
-	DL_SIG_CALL_CAUSE_T                         cause;
+typedef struct {
+	DL_SIG_CALL_SS_ID_T ss_id;
+	DL_SIG_CALL_RESULT_T result;
+	DL_SIG_CALL_CAUSE_T cause;
 } DL_SIG_CALL_SS_OPERATION_STATUS_IND_T;
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -312,19 +254,18 @@ extern "C" {
 // Создание USSD-запроса
 */
 DL_SIG_CALL_SS_ID_T
-DL_SigCallSSOperationReq(	IFACE_DATA_T *iface_data,
-							DL_SIG_CALL_SS_STRING_STRUCT_T * ss_string,
-							DL_SIG_CALL_STK_TYPE_T stk_type );
-
+DL_SigCallSSOperationReq(
+	IFACE_DATA_T *iface_data,
+	DL_SIG_CALL_SS_STRING_STRUCT_T *ss_string,
+	DL_SIG_CALL_STK_TYPE_T stk_type
+);
 
 /*
 // DL_SigCallSSAbortUSSDReq
 //
 // Отмена операции ss_id
 */
-void
-DL_SigCallSSAbortUSSDReq( DL_SIG_CALL_SS_ID_T ss_id );
-
+void DL_SigCallSSAbortUSSDReq(DL_SIG_CALL_SS_ID_T ss_id);
 
 /*
 // DL_SigCallSSSendUSSDResponseReq
@@ -332,16 +273,14 @@ DL_SigCallSSAbortUSSDReq( DL_SIG_CALL_SS_ID_T ss_id );
 // Отправка !ответа! на USSD-запрос ss_id
 // Ответ по ивенту DL_SIG_CALL_SS_USSD_COMPLETE_IND_ID
 */
-void
-DL_SigCallSSSendUSSDResponseReq(	IFACE_DATA_T *iface_data,
-									DL_SIG_CALL_SS_ID_T ss_id, 
-									DL_SIG_CALL_SS_USSD_STRING_STRUCT_T *ussd_string );
-
-
-
+void DL_SigCallSSSendUSSDResponseReq(
+	IFACE_DATA_T *iface_data,
+	DL_SIG_CALL_SS_ID_T ss_id,
+	DL_SIG_CALL_SS_USSD_STRING_STRUCT_T *ussd_string
+);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif // __SDK_USSD_H__
+#endif  // __SDK_USSD_H__
