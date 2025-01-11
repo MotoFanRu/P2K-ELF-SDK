@@ -27,7 +27,7 @@
 extern void AutorunMain(void);
 extern void ElfLoaderStart(void);
 
-extern UINT32 ParseString(char *buf, UINT32 *pindex, W_CHAR *uri, W_CHAR *params);
+extern UINT32 ParseString(char *buf, UINT32 *pindex, WCHAR *uri, WCHAR *params);
 extern void SkipLine(char *buf, UINT32 *pindex);
 
 extern void APP_SyncML_MainRegister(void);

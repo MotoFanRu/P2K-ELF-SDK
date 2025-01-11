@@ -71,7 +71,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	char            *ldrStrTable;
 	char            *elfStrTable;       // = NULL;
 	Elf32_Shdr      elfSectionHeader;
-	W_CHAR          wstr[WCHAR_PARAMS_MAX];
+	WCHAR           wstr[WCHAR_PARAMS_MAX];
 
 	virtBase        = NULL;
 	physBase        = NULL;

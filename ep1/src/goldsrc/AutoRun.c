@@ -22,7 +22,7 @@
 #include <utilities.h>
 #include <mem.h>
 
-const W_CHAR autorun_uri[] = L"file://b/Elf/auto.run";
+const WCHAR autorun_uri[] = L"file://b/Elf/auto.run";
 
 // EXL, 22-Dec-2024: This pragma is needed for proper sorting.
 #if !defined(__GNUC__)
@@ -35,8 +35,8 @@ void AutorunMain(void) {
 	char *buffer;
 	UINT32 i;
 	UINT32 result;
-	W_CHAR uri[WCHAR_PARAMS_MAX];
-	W_CHAR params[WCHAR_PARAMS_MAX];
+	WCHAR uri[WCHAR_PARAMS_MAX];
+	WCHAR params[WCHAR_PARAMS_MAX];
 
 	i = 0;
 	result = PARS_SKIP;
@@ -91,7 +91,7 @@ void SkipLine(char *buffer, UINT32 *p_index) {
 }
 
 // EXL, 22-Dec-2024: Parse one line from "auto.run" file.
-UINT32 ParseString(char *buffer, UINT32 *p_index, W_CHAR *uri, W_CHAR *params) {
+UINT32 ParseString(char *buffer, UINT32 *p_index, WCHAR *uri, WCHAR *params) {
 	UINT32 i;
 	UINT32 j;
 

@@ -49,7 +49,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	char            *ldrStrTable;
 	char            *elfStrTable;       // = NULL;
 	Elf32_Shdr      elfSectionHeader;
-	W_CHAR          wstr[WCHAR_PARAMS_MAX];
+	WCHAR           wstr[WCHAR_PARAMS_MAX];
 
 	virtBase        = NULL;
 	physBase        = NULL;
@@ -348,7 +348,7 @@ UINT32 LdrStartApp(EVENT_CODE_T ev_start) {
 }
 
 // EXL, 23-Dec-2024: Create an "EVCODE_LOADELF" event and send it to ElfLoaderApp.c, see Handle_LoadELF() function.
-UINT32 LdrLoadELF(W_CHAR *uri, W_CHAR *params) {
+UINT32 LdrLoadELF(WCHAR *uri, WCHAR *params) {
 	UINT32 status;
 	ADD_EVENT_DATA_T ev_data;
 
@@ -412,7 +412,7 @@ UINT32 namecmp(const char *ansi_str_1, const char *ansi_str_2) {
 }
 
 // EXL, 23-Dec-2024: Convert UTF-16BE string to ANSI string.
-char *u_utoa(const W_CHAR *from_utf16be_str, char *to_ansi_str) {
+char *u_utoa(const WCHAR *from_utf16be_str, char *to_ansi_str) {
 	UINT32 i;
 
 	i = 0;

@@ -175,7 +175,7 @@ UINT32 LoadLibrary(ELFLOADER_INSTANCE_DATA_T *p_app_data) {
 	UINT32 size;
 	FS_COUNT_T read;
 	FS_HANDLE_T file;
-	W_CHAR uri[WCHAR_PARAMS_MAX];
+	WCHAR uri[WCHAR_PARAMS_MAX];
 
 	u_atou((const char *) LIBRARY_URI, (WCHAR *) uri);
 
