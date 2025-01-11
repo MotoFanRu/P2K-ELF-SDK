@@ -152,7 +152,7 @@ void APP_HandleEventPrepost(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_ID_T a
 
 // смена обработчика 	(переход между фоновым и нефоновым режимом)
 
-INT32
+UINT32
 APP_ChangeRoutingStack(
 	APPLICATION_T *p_apd,
 	EVENT_STACK_T *p_evg,
