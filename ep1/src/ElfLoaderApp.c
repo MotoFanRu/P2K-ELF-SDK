@@ -27,9 +27,9 @@ const char app_name_string[APP_NAME_LEN + 1] = "ELF Loader";
 
 const char LIBRARY_URI[] = "file://b/Elf/elfloader.lib";
 
-static const AFW_EVENT_CODE_T event_reg_table[] = { EVCODE_STARTLDR };
+static const EVENT_CODE_T event_reg_table[] = { EVCODE_STARTLDR };
 
-#define NUMBER_OF_STARTUP_EVENTS (sizeof(event_reg_table) / sizeof(AFW_EVENT_CODE_T))
+#define NUMBER_OF_STARTUP_EVENTS (sizeof(event_reg_table) / sizeof(EVENT_CODE_T))
 
 static const EVENT_HANDLER_ENTRY_T state_any_ev_table[] = {
 	{ EVCODE_LOADELF, Handle_LoadELF },
