@@ -164,7 +164,7 @@ static UINT32 Exit(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 
 	status = RESULT_OK;
 
-	status = APP_Exit(p_evg, p_apd, NULL);
+	status = APP_Exit(p_evg, p_apd, 0);
 
 	UtilLogStringData(" *** ELFLOADER *** Exit");
 

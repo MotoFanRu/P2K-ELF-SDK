@@ -50,10 +50,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	// EXL, 07-Jan-2025: Drop hardcoded MAX_PROG_HEADERS=8 array on stack.
 	Elf32_Phdr      *elfProgramHeaders;
 
-	Elf32_Addr      virtBase;           // = NULL;
-	Elf32_Addr      physBase;           // = NULL;
-	Elf32_Addr      upperAddr;          // = NULL;
-	Elf32_Addr      dynSegment;         // = NULL;
+	Elf32_Addr      virtBase;           // = 0;
+	Elf32_Addr      physBase;           // = 0;
+	Elf32_Addr      upperAddr;          // = 0;
+	Elf32_Addr      dynSegment;         // = 0;
 
 	UINT32          sumMem;             // = 0;
 	UINT32          sumSize;            // = 0;
@@ -73,10 +73,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 	Elf32_Shdr      elfSectionHeader;
 	WCHAR           wstr[WCHAR_PARAMS_MAX];
 
-	virtBase        = NULL;
-	physBase        = NULL;
-	upperAddr       = NULL;
-	dynSegment      = NULL;
+	virtBase        = 0;
+	physBase        = 0;
+	upperAddr       = 0;
+	dynSegment      = 0;
 
 	sumMem          = 0;
 	sumSize         = 0;
@@ -340,7 +340,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 
 	if (is_ads_elf) {
 		// EXL, 31-Dec-2024: Delete a separate PT_DYNAMIC segment if present.
-		if ((UINT32 *) dynSegment != NULL) {
+		if (dynSegment) {
 			suFreeMem((void *) dynSegment);
 		}
 
