@@ -281,7 +281,7 @@ UINT32 ElfPackExit( EVENT_STACK_T *ev_st,  APPLICATION_T *app )
 	StopTimer( rtimer_iface.handle );
 	rtimer_iface.handle = 0;
 	
-	status = APP_ExitStateAndApp( ev_st, app, NULL );
+	status = APP_ExitStateAndApp( ev_st, app, 0 );
 	
 	ConsoleDone();
 	

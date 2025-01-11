@@ -263,7 +263,7 @@ UINT32	findSymbol( Ldr_Lib * lib, const char * name )
 			return sym[i].st_value;
 	}
 	
-	return NULL;
+	return LDR_RESULT_OK;
 }
 
 

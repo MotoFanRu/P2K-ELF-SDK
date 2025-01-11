@@ -300,7 +300,7 @@ UINT32 clearElf( Ldr_IElf * pIElf, BOOL full )
 	{
 		dbgf( "free dynSegment=0x%X\n", pIElf->dynSegment );
 		suFreeMem( (void*)pIElf->dynSegment );
-		pIElf->dynSegment = NULL;
+		pIElf->dynSegment = 0;
 	}
 	
 	if ( full )
@@ -311,14 +311,14 @@ UINT32 clearElf( Ldr_IElf * pIElf, BOOL full )
 		{
 			dbgf( "free physBase=0x%X\n", pIElf->physBase );
 			suFreeMem( (void*)pIElf->physBase );
-			pIElf->physBase = NULL;
+			pIElf->physBase = 0;
 		}
 		
 		if ( pIElf->lib ) 
 		{
 			dbgf( "free lib=0x%X\n", pIElf->lib );
 			suFreeMem( (void*)pIElf->lib );
-			pIElf->lib = NULL;
+			pIElf->lib = 0;
 		}
 	}
 	
@@ -515,7 +515,7 @@ UINT32 relocatePLT( Ldr_IElf * pIElf )
 		
 		sym->st_value = findFunction( &pIElf->strTable[ sym->st_name ], 
 				pIElf->needed );
-		if ( sym->st_value == NULL )
+		if ( !sym->st_value )
 		{
 			dbgf( "FAILED to import symbol! '%s'\n", &pIElf->strTable[ sym->st_name ] );
 			cprintf_int( "\x8C""Import failed: %s\n", &pIElf->strTable[sym->st_name] );
