@@ -5,21 +5,21 @@
  * @{
  */
 
-#ifndef P2K_SDK_DL_T_H
-#define P2K_SDK_DL_T_H
+#ifndef P2K_SDK_TIMER_T_H
+#define P2K_SDK_TIMER_T_H
 
-//#include "P2kT.h"
+//#include "P2kTimerT.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct IFACE_DATA_T IFACE_DATA_T;
+typedef struct DL_TIMER_DATA_T DL_TIMER_DATA_T;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* P2K_SDK_DL_T_H */
+#endif  /* P2K_SDK_TIMER_T_H */
 
 /** @} */ /* end of P2K_Types */
