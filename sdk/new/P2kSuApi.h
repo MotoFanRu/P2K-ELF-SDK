@@ -5,10 +5,10 @@
  * @{
  */
 
-#ifndef P2K_SDK_SUAPI_H
-#define P2K_SDK_SUAPI_H
+#ifndef P2K_SDK_SU_API_H
+#define P2K_SDK_SU_API_H
 
-#include "P2kSuapiT.h"
+#include "P2kSuApiT.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +25,6 @@ UINT64 suPalTicksToMsec(UINT64 ticks);
 }
 #endif
 
-#endif  /* P2K_SDK_SUAPI_H */
+#endif  /* P2K_SDK_SU_API_H */
 
 /** @} */ /* end of P2K_Types */

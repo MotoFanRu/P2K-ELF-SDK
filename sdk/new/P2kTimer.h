@@ -10,8 +10,8 @@
 
 #include "P2kT.h"
 #include "P2kTimerT.h"
-#include "P2kAppT.h"
-#include "P2kDlT.h"
+#include "P2kApplicationT.h"
+#include "P2kDeviceLayerT.h"
 
 #ifdef __cplusplus
 extern "C" {

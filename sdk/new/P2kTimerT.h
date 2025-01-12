@@ -8,8 +8,6 @@
 #ifndef P2K_SDK_TIMER_T_H
 #define P2K_SDK_TIMER_T_H
 
-//#include "P2kTimerT.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -5,26 +5,24 @@
  * @{
  */
 
-#ifndef P2K_SDK_DL_H
-#define P2K_SDK_DL_H
+#ifndef P2K_SDK_EVENT_T_H
+#define P2K_SDK_EVENT_T_H
 
 #include "P2kT.h"
-#include "P2kDlT.h"
-#include "P2kSuapiT.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-struct IFACE_DATA_T {
-	SU_PORT_T port;
-	UINT32 handle;
-};
+typedef UINT32                 EVENT_CODE_T; /**< An event code in AFW frawework.      */
+
+typedef struct EVENT_T EVENT_T;
+typedef struct EVENT_STACK_T EVENT_STACK_T;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* P2K_SDK_DL_H */
+#endif  /* P2K_SDK_EVENT_T_H */
 
 /** @} */ /* end of P2K_Types */

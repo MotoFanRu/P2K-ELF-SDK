@@ -8,10 +8,11 @@
 #ifndef P2K_SDK_ALARM_H
 #define P2K_SDK_ALARM_H
 
-#include "P2kAlarmT.h"
+#include "P2kT.h"
 #include "P2kTimeDateT.h"
-#include "P2kDlT.h"
-#include "P2kSuapiT.h"
+#include "P2kDeviceLayerT.h"
+#include "P2kSuApiT.h"
+#include "P2kAlarmT.h"
 
 #include "P2kTimeDate.h"
 

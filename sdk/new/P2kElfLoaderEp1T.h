@@ -1,25 +1,23 @@
 /**
- * @file P2kTypes.h
+ * @file P2kUisTypes.h
  * @brief SDK type definitions for various data types used in the P2K platform.
  * @defgroup P2K_Types P2K Type Definitions
  * @{
  */
 
-#ifndef P2K_SDK_SUAPI_T_H
-#define P2K_SDK_SUAPI_T_H
-
-#include "P2kT.h"
+#ifndef P2K_SDK_ELF_LOADER_EP1_T_H
+#define P2K_SDK_ELF_LOADER_EP1_T_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef UINT32                 SU_PORT_T;    /**< A port route in SUAPI frawework.     */
+#define WCHAR_PARAMS_MAX (64)
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* P2K_SDK_SUAPI_T_H */
+#endif  /* P2K_SDK_ELF_LOADER_EP1_T_H */
 
 /** @} */ /* end of P2K_Types */

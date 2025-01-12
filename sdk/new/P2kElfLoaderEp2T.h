@@ -5,8 +5,8 @@
  * @{
  */
 
-#ifndef P2K_SDK_LDR_EM1_T_H
-#define P2K_SDK_LDR_EM1_T_H
+#ifndef P2K_SDK_ELF_LOADER_EP2_T_H
+#define P2K_SDK_ELF_LOADER_EP2_T_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,6 +18,6 @@ extern "C" {
 }
 #endif
 
-#endif  /* P2K_SDK_LDR_EM1_T_H */
+#endif  /* P2K_SDK_ELF_LOADER_EP2_T_H */
 
 /** @} */ /* end of P2K_Types */
