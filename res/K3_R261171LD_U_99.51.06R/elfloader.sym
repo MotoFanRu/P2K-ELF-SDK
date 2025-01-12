@@ -15,7 +15,8 @@
 0xA123DFB8 A __rt_memclr_w
 0xA123DD5C A __rt_memcpy
 0xA123DEC4 A __rt_memcpy_w
-0xA123DD4C A __rt_memset
+0xA123DE10 A __rt_memmove
+0xA0519888 A __rt_memset
 0xA123E6DC A __rt_sdiv
 0xA124553C A __rt_udiv
 0xA1242C80 A __rt_udiv10
@@ -54,9 +55,19 @@
 0xA0A533CE T APP_UtilStartTimer
 0xA0A56D36 T APP_UtilUISDialogDelete
 0xA0BE1740 T DAL_WriteDisplayRegion
+0xA0BE1E6E T DAL_GetRmHandle
+0xA0BE1E90 T DAL_GetDxHandle
+0xA10309DE T GFRmComponentGet
+# 0xA11497F4 T GxCopyColorBitmap
+0xA11497F4 T GFGxCopyColorBitmap
+0x80380E84 C GxHandle
 0xA0FB29EC T DL_AudPlayTone
+0xA0FB5028 T DL_AudGetVolumeSetting
+0xA0FB4F76 T DL_AudSetVolumeSetting
 0xA0280E34 T DL_ClkGetDate
 0xA0280E72 T DL_ClkGetTime
+0xA02815B8 T DL_ClkStopTimer
+0xA0281594 T DL_ClkStartCyclicalTimer
 0xA0282574 T DL_DbGetFeatureAvailability
 0xA0FBB234 T DL_FsCloseFile
 0xA0FBB6DC T DL_FsDeleteFile
@@ -80,10 +91,11 @@
 0xA0FBCE12 T DL_FsSSearch
 0xA0FBD68A T DL_FsVolumeEnum
 0xA0FBB450 T DL_FsWriteFile
+0xA0282C00 T DL_KeyKjavaGetKeyState
 0xA0FC4B0E T DRM_ClearResource
 0xA0FC4A92 T DRM_CreateResource
 0xA0FC4848 T DRM_SetResource
-0xA0719AB8 D KEYPAD_STATE
+0xA0719AB8 C KEYPAD_STATE
 0xA1531580 T LdrGetFirmwareMajorVersion
 0xA1531588 T LdrGetFirmwareMinorVersion
 0xA1531570 T LdrGetPhoneName
@@ -91,6 +103,7 @@
 0xA15314E0 T LdrLoadELF
 0xA15314BC T LdrStartApp
 0xA1531538 T LdrUnloadELF
+0xA123DD5C A memcpy
 0xA02A2380 T MME_FW_gc_handle_capture_create
 0xA02A30E8 T MME_FW_gc_handle_capture_delete
 0xA02A2AB8 T MME_FW_gc_handle_capture_get_attribute
