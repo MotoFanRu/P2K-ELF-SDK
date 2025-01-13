@@ -24,6 +24,9 @@ struct CLK_TIME_T {
 	UINT8 hour;
 	UINT8 minute;
 	UINT8 second;
+#if defined(EM1) || defined(EM2) || defined(EA1)
+	UINT8 unk;		//??? unk == 0 Probably ZONE?
+#endif
 };
 
 
