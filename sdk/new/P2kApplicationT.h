@@ -5,8 +5,8 @@
  * @{
  */
 
-#ifndef P2K_APP_SDK_T_H
-#define P2K_APP_SDK_T_H
+#ifndef P2K_SDK_APPLICATION_T_H
+#define P2K_SDK_APPLICATION_T_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,6 +18,6 @@ typedef struct APPLICATION_T APPLICATION_T;
 }
 #endif
 
-#endif  /* P2K_APP_SDK_T_H */
+#endif  /* P2K_SDK_APPLICATION_T_H */
 
 /** @} */ /* end of P2K_Types */

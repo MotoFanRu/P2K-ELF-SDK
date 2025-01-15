@@ -19,7 +19,7 @@ typedef UINT32 CLK_CLOCK_T;  // кол-во  секунд с  Jan. 1, 1970, GMT
 typedef struct CLK_DATE_T CLK_DATE_T;
 typedef struct CLK_TIME_T CLK_TIME_T;
 
-typedef enum {
+enum {
 	RESOURCE_UNAVAILABLE = 0,
 	STORE_SUCCESS = 1,
 	READ_SUCCESS = 2,
@@ -29,7 +29,8 @@ typedef enum {
 	TIMER_NOT_FOUND = 7,
 	INVALID_DATE_FORMAT = 8,
 	INVALID_TIME_FORMAT = 9
-} CLK_STATUS_T;
+};
+typedef UINT16 CLK_STATUS_T;
 
 typedef struct CLK_PARSED_CLOCK_T CLK_PARSED_CLOCK_T;
 
