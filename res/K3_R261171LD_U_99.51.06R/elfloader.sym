@@ -159,6 +159,7 @@
 0xA1531538 T LdrUnloadELF
 0xA123DCB6 T memcmp
 0xA123DD5C A memcpy
+0xA0519888 A memset
 0xA02A2380 T MME_FW_gc_handle_capture_create
 0xA02A30E8 T MME_FW_gc_handle_capture_delete
 0xA02A2AB8 T MME_FW_gc_handle_capture_get_attribute
@@ -167,6 +168,7 @@
 0xA02A2C56 T MME_FW_gc_handle_capture_start
 0xA02A2D54 T MME_FW_gc_handle_capture_stop
 0xA02A23A0 T MME_FW_gc_handle_playback_create
+0xA02A3426 T MME_FW_gc_handle_playback_open_audio_play_forget
 0xA1530E58 T namecmp
 0xA105F3C0 T Nsscanf
 0xB578006C T PFprintf
@@ -175,6 +177,7 @@
 0x82972F05 D SKIN_FOLDER
 0xA123D2D4 T snprintf
 0xA123D2A8 T sprintf
+0xA123DC14 T srand
 0xA123E1A8 A strcmp
 0xA123E054 T strcpy
 0xA123E160 T strlen
@@ -242,6 +245,7 @@
 0xA0BDCBE6 T UIS_CanvasDrawTitleBar
 0xA0BDCE8A T UIS_CanvasDrawTitleBarWithIcon
 0xA0BDAEF4 T UIS_CanvasFillRect
+0xA0BD97F4 T UIS_CanvasGetAttributesFromFontID
 0xA0BD9F02 T UIS_CanvasGetBackgroundColor
 0xA0BDB416 T UIS_CanvasGetColor
 0xA0BD9CF6 T UIS_CanvasGetDisplaySize
