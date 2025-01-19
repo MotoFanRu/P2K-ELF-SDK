@@ -11,6 +11,7 @@
 #include "dd.h"
 #include "dbg.h"
 
+#include <new/P2kElfLoaderEp2T.h>
 
 const char PHONE_PLATFORM[] = FTR_PHONE_PLATFORM;
 const char PHONE_NAME[] = FTR_PHONE_NAME;

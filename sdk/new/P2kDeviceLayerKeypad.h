@@ -27,6 +27,8 @@ void DL_KeyInjectKeyPress(KEY_CODES_T keycode, KEY_STATE_T keystate, KEY_DEVICE_
 /*AFW_CreateInternalQueuedEvAux(0x2019, 0x65, 0, NULL); - Эмуляция нажатия левой софт клавиши*/
 
 void DL_KeyUpdateKeypadBacklight(UINT8 backlight_setting);  // 1 - on, 0 - off
+// подсветка клавиатуры
+//void DL_KeyUpdateKeypadBacklight(UINT8 P1);  // P1 = 1 lighting; P2 = 0
 
 KEY_HOOKSWITCH_STATE_T DL_KeyQueryHookswitchState(void);
 

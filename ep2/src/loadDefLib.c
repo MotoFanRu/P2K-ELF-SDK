@@ -12,6 +12,7 @@
 #include "features.h"
 #include "dbg.h"
 
+#include "new/P2kElfLoaderEp2T.h"
 
 extern Ldr_Lib		patchLib;
 

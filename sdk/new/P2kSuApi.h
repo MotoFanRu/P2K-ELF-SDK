@@ -20,6 +20,10 @@ UINT64 suPalReadTime(void);
 // Перевести время из тиков в миллисекунды
 UINT64 suPalTicksToMsec(UINT64 ticks);
 
+UINT32 suDisableAllInt(void);  // отключает прерывания
+void suSetInt(UINT32 mask);  // включает прерывания, в параметрах передаётся то, что вернула suDisableAllInt
+
+void suSleep(UINT32 time, INT32 *result);  // задержка
 
 #ifdef __cplusplus
 }

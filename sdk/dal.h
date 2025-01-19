@@ -116,6 +116,9 @@ BOOL flushWallpaperOnScreen(
 	DISPLAY_TYPE_T display_type
 );
 
+// Буфер дисплея можно копировать сюда, по этому адресу.
+extern UINT32 display_source_buffer;
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

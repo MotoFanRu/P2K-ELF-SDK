@@ -8,8 +8,6 @@
 #ifndef P2K_SDK_ALARM_T_H
 #define P2K_SDK_ALARM_T_H
 
-//#include "P2kT.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
