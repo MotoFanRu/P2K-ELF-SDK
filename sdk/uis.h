@@ -13,6 +13,105 @@
 extern "C" {
 #endif
 
+#define UIS_MAX_EDIT_SOURCES 11
+
+typedef struct {
+	RESOURCE_ID sources_title;                 /* Named string res ID for BROWSE list sub-dialog title. */
+	RESOURCE_ID menu_title;                    /* Named string res ID for action menu sub-dialog title. */
+	RESOURCE_ID title;                         /* Named string res ID for editor title. */
+	UINT32 source_list_size;                   /* Number of entries in the BROWSE list. */
+	RESOURCE_ID sources[UIS_MAX_EDIT_SOURCES]; /* The entries of this array are of type
+	                                            * UIS_CONTENT_T to be presented in a BROWSE list sub-dialog */
+	UINT8 num_decimal_places;
+	RESOURCE_ID primary_icon; /* Icon used in the tab border */
+
+} UIS_EDITOR_RESOURCE_CONTENTS_T;
+
+typedef struct {
+	RESOURCE_ID list_title;                     /* Named string res ID for the list title. */
+	RESOURCE_ID menu_title;                     /* Named string res ID for an action menu sub-dialog. */
+	RESOURCE_ID reorder_title;                  /* Title when reordiing the list. */
+	UINT32 num_marks;                           /* Number of valid entries in marks[]. */
+	RESOURCE_ID marks[2 /*UIS_MAX_NUM_MARKS*/]; /* array of possible marks */
+	BOOL show_marks_at_front;
+	RESOURCE_ID detailed_view_format;
+	RESOURCE_ID primary_icon; /* Icon used in the tab border */
+	BOOL Categorised;         /* Flag for setting a Categorised List */
+
+} UIS_LIST_RESOURCE_CONTENTS_T;
+
+typedef struct {
+	INT32 tag;
+	RESOURCE_ID resource; /* RES_PROMPT, RES_CONTENT or RES_PICTURE_BITMAP */
+
+} UIS_TAGGED_CONTENT_T;
+
+typedef struct {
+	UINT32 num_values;
+	RESOURCE_ID possible_values; /* RES_TAGGED_CONTENT */
+	RESOURCE_ID editor_resource; /* RES_UIS_EDITOR */
+
+} UIS_ENUM_FIELD_RESOURCE_CONTENTS_T;
+
+// взято с LTE (не проверено)
+enum {
+	UIS_FIELD_BINARY_CAP_STRING = 0,
+	UIS_FIELD_BINARY_CURRENCY,
+	UIS_FIELD_BINARY_NUMBER,
+	UIS_FIELD_CAP_STRING,
+	UIS_FIELD_CLEANUP,
+	UIS_FIELD_CURRENCY,
+	UIS_FIELD_DATE,
+	UIS_FIELD_DURATION,
+	UIS_FIELD_ELAPSED_TIME,
+	UIS_FIELD_ENUMERATED,  // 9
+	UIS_FIELD_MESSAGE,
+	UIS_FIELD_METER,
+	UIS_FIELD_NAME,
+	UIS_FIELD_NULL_CAP_STRING,
+	UIS_FIELD_NULL_MESSAGE,
+	UIS_FIELD_NULL_NAME,
+	UIS_FIELD_NULL_NUMBER,
+	UIS_FIELD_NULL_TEXT,
+	UIS_FIELD_NUMBER,
+	UIS_FIELD_PHONE_NUMBER,
+	UIS_FIELD_ZIP_CODE,
+	UIS_FIELD_SPEED_NUM,
+	UIS_FIELD_TEXT,
+	UIS_FIELD_TIME_OF_DAY,
+	UIS_FIELD_VOICE_NAME,
+	UIS_FIELD_SEGMENT,
+	UIS_FIELD_NULL_SEGMENT,
+	UIS_FIELD_NOTES,
+	UIS_FIELD_NULL_PHONE_NUMBER,
+	UIS_FIELD_DATE_DEFINED,
+	UIS_FIELD_NICKNAME,
+	UIS_FIELD_NUMBER_WITHOUT_LEADING_ZERO,
+	UIS_FIELD_NULL_EMAIL,
+	UIS_FIELD_NULL_URL,
+	UIS_FIELD_NULL_PHONE_NUMBER_STORE_SIM,
+	UIS_FIELD_BOGUS_INIT = 99
+};
+
+typedef UINT16 UIS_FIELD_TYPE_T;
+
+typedef struct {
+	UIS_FIELD_TYPE_T type;  // Тип поля
+#if defined(EM1) || defined(EM2) || defined(EA1)
+	RESOURCE_ID label;      // имя "опции"
+#endif
+	BOOL view_olny;
+	BOOL show_value;
+	BOOL secure;
+	UINT32 maxlen;
+	RESOURCE_ID resource;  // res_type = 0x10
+#if defined(EM1) || defined(EM2) || defined(EA1)
+	UINT8 unk2;            //???
+#endif
+	UINT32 auth_event;     // 0xB
+
+} FIELD_DESCR_T, FIELD_DESCR_CONTENT_T, UIS_FIELD_DESCRIPTION_RESOURCE_CONTENTS_T;
+
 enum {
 	ACTION_OP_ADD = 0,
 	ACTION_OP_DELETE,

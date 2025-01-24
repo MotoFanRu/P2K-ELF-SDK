@@ -9,12 +9,12 @@
 #define P2K_SDK_UIS_H
 
 #include "P2kT.h"
+#include "P2kUisT.h"
+#include "P2kEventT.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef UINT32                 UIS_DIALOG_T; /**< A dialog handle in UIS framework.    */
 
 UINT32 UIS_SetBacklight(UINT8 P1);
 
