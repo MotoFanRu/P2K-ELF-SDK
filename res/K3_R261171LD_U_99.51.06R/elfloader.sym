@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 0601251
-# Timestamp: 06-Jan-2025 23:33:43
+# Version: 0102251
+# Timestamp: 01-Feb-2025 23:29:34
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
@@ -64,30 +64,20 @@
 0xA0A536F4 T APP_UtilHistSaveAndChangeState
 0xA0A533CE T APP_UtilStartTimer
 0xA0A56D36 T APP_UtilUISDialogDelete
-0xA0BE1740 T DAL_WriteDisplayRegion
-0xA0BE1E6E T DAL_GetRmHandle
 0xA0BE1E90 T DAL_GetDxHandle
 0xA0BE1E56 T DAL_GetPrimarySurface
-0xA10309DE T GFRmComponentGet
-0xA10B684C T GFRmOSEnterCS
-0xA10B6862 T GFRmOSExitCS
-0xA10B73A0 T GFRmSurfaceAlloc
-0xA10B7536 T GFRmSurfaceFree
-0xA10B79A0 T GFRmSurfaceUpdate
-# 0xA11497F4 T GxCopyColorBitmap
-0xA11497F4 T GFGxCopyColorBitmap
-0xA114B3B8 T GFGxGetProperty
-0x80380E84 C GxHandle
+0xA0BE1E6E T DAL_GetRmHandle
+0xA0BE1740 T DAL_WriteDisplayRegion
 0xA01016BC T DL_AccIsHeadsetAvailable
-0xA0FB29EC T DL_AudPlayTone
 0xA0FB5028 T DL_AudGetVolumeSetting
+0xA0FB29EC T DL_AudPlayTone
 0xA0FB4F76 T DL_AudSetVolumeSetting
 0xA0FB29F0 T DL_AudStopTone
 0xA0104090 T DL_Char_convUTF8toUCS2String
 0xA0280E34 T DL_ClkGetDate
 0xA0280E72 T DL_ClkGetTime
-0xA02815B8 T DL_ClkStopTimer
 0xA0281594 T DL_ClkStartCyclicalTimer
+0xA02815B8 T DL_ClkStopTimer
 0xA0281040 T DL_ClkUnpack
 0xA0282574 T DL_DbGetFeatureAvailability
 0xA0FBB234 T DL_FsCloseFile
@@ -146,10 +136,19 @@
 0xA0FC428A T DRM_GetResource
 0xA0FC44C8 T DRM_GetResourceLength
 0xA0FC4848 T DRM_SetResource
-0xA0788534 C EV_BacklightContinueOn
-0xA07887F8 C EV_BacklightRestore
-0xA14868C4 C EV_BacklightTimeout
-0xA0719AB8 C KEYPAD_STATE
+0xA0788534 A EV_BacklightContinueOn
+0xA07887F8 A EV_BacklightRestore
+0xA14868C4 A EV_BacklightTimeout
+0xA11497F4 T GFGxCopyColorBitmap
+0xA114B3B8 T GFGxGetProperty
+0xA10309DE T GFRmComponentGet
+0xA10B684C T GFRmOSEnterCS
+0xA10B6862 T GFRmOSExitCS
+0xA10B73A0 T GFRmSurfaceAlloc
+0xA10B7536 T GFRmSurfaceFree
+0xA10B79A0 T GFRmSurfaceUpdate
+0x80380E84 A GxHandle
+0xA0719AB8 A KEYPAD_STATE
 0xA1531580 T LdrGetFirmwareMajorVersion
 0xA1531588 T LdrGetFirmwareMinorVersion
 0xA1531570 T LdrGetPhoneName
@@ -174,7 +173,7 @@
 0xB578006C T PFprintf
 0xA123DB10 T qsort
 0xA123DC42 T rand
-0x82972F05 D SKIN_FOLDER
+0xFFFFFFFF D SKIN_FOLDER
 0xA123D2D4 T snprintf
 0xA123D2A8 T sprintf
 0xA123DC14 T srand
@@ -205,12 +204,12 @@
 0xA0F92FA4 T suPalMsecToTicks
 0xA0F92FE8 T suPalReadTime
 0xA0F93084 T suPalTicksToMsec
-0xA0F94638 T suReleaseSem
 0xA0F9332C T suReceiveMessageFromQueue
+0xA0F94638 T suReleaseSem
 0xA0F93824 T suSendMessage
 0xA124F294 A suSetInt
 0xA0F93B72 T suSleep
-0x82983410 C theStatusManager
+0x82983410 A theStatusManager
 0xA0BF303E T u_atol
 0xA0BEF4D8 T u_atou
 0xA0BF2FA0 T u_itoa
@@ -288,8 +287,8 @@
 0xA0BF1054 T UIS_GetCurrentSkinIndex
 0xA0BF01F0 T UIS_GetCurrentStatusValue
 0xA0BF107C T UIS_GetDefaultSkinIndex
-0xA0BF11D4 T UIS_GetSkinName
 0xA0BF1202 T UIS_GetNumSkins
+0xA0BF11D4 T UIS_GetSkinName
 0xA0BEEF1E T UIS_HandleEvent
 0xA0BED8DC T UIS_MakeContentFromString
 0xA0BEF7BC T UIS_Refresh
