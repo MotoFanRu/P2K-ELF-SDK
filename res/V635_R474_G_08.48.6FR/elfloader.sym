@@ -127,6 +127,8 @@
 0x1039075E T DRM_SetResource
 0x104F3424 D EV_DisplayActivity
 0x10285336 T HAPI_ATOD_convert_ambient_light_sensor
+0x10286D18 T HAPI_BATTERY_ROM_get_unique_id
+0x10286C84 T HAPI_BATTERY_ROM_read
 0x102839D8 T hPortWrite
 0x103236F0 A inflate
 0x10323550 A inflateEnd
@@ -156,6 +158,7 @@
 0x000FC154 T strcat
 0x000FC198 A strcmp
 0x000FC280 T strlen
+0x000FC2CC T strncmp
 0x000FC31C T strncpy
 0x000FD0FC T strtol
 0x000FC3EC T strtoul
@@ -172,6 +175,7 @@
 0x10AA8D48 A u_strlen
 0x10AA9310 A u_strmakeupper
 0x10AA8C3C A u_strncmp
+0x10AA8CE8 A u_strncpy
 0x10AA934C A u_strrchr
 0x10A69C98 T u_utoa
 0x10A9FA90 A UIS_CreateConfirmation
