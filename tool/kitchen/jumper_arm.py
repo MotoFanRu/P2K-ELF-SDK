@@ -17,6 +17,47 @@ import capstone
 import argparse
 
 
+def hexdump(data, wide = 0x10, offset = 0):
+	line = bytearray()
+	result = ''
+	index = 0
+	for byte in data:
+		line.append(byte)
+		index += 1
+		if index == wide:
+			result += hexdump_line(offset, line, wide)
+			offset += wide
+			index = 0
+			line = bytearray()
+	if line:
+		result += hexdump_line(offset, line, wide)
+	return result
+
+
+def hexdump_line(offset, bytes_array, wide):
+	line = f'{offset:08X}:  '
+	ascii = ' |'
+	for byte in bytes_array:
+		line += f'{byte:02X} '
+		ascii += chr(byte) if byte in range(32, 127) else '.'
+	if len(bytes_array) < wide:
+		for i in range(wide - len(bytes_array)):
+			line += '   '
+			ascii += ' '
+	ascii += '|'
+	line += ascii
+	line += '\n'
+	return line
+
+
+def view_binary(address, opts):
+	if address:
+		opts['bin-file'].seek(0)
+		opts['bin-file'].seek(address - opts['offset'])
+		file_data = opts['bin-file'].read(0x50)
+		print(f'\n{hexdump(file_data, 0x10, address)}')
+
+
 def is_valid_armv4t_instruction(inst, opts):
 	return inst.mnemonic not in {'blx', 'bxj'} if opts['armv4t'] else True
 
@@ -26,10 +67,10 @@ def nake_address(op_str, opts):
 	if op_str.startswith('#'):
 		try:
 			address = int(op_str[1:], 16)
-			return (address in opts['filter'], f'#0x{address:08X}')
+			return (address in opts['filter'], f'#0x{address:08X}', address)
 		except ValueError:
 			pass
-	return (True, op_str)
+	return (True, op_str, None)
 
 
 def process_i(inst_buff, offset, mode, opts) -> None:
@@ -37,12 +78,15 @@ def process_i(inst_buff, offset, mode, opts) -> None:
 	for inst in md.disasm(inst_buff, offset):
 		if opts['group'] in inst.groups:
 			bytecode = ' '.join([f'{b:02X}' for b in inst.bytes])
-			op_addr, op_str = nake_address(inst.op_str, opts)
+			op_addr, op_str, addr_i = nake_address(inst.op_str, opts)
 			if op_addr and is_valid_armv4t_instruction(inst, opts):
 				print(f'{mode} : 0x{inst.address:08X} : {bytecode:<11} : {inst.mnemonic.upper():<6} {op_str}')
+				if opts['bin-file']:
+					view_binary(addr_i, opts)
 
 
 def read_binary_file(opts):
+	opts['bin-file'] = open(opts['bin'], 'rb') if opts['bin'] else None
 	with open(opts['file'], 'rb') as file:
 		file_offset = 0
 		while True:
@@ -52,6 +96,8 @@ def read_binary_file(opts):
 			process_i(inst_buff, opts['offset'] + file_offset, 'T', opts)
 			process_i(inst_buff, opts['offset'] + file_offset, 'A', opts)
 			file_offset += len(inst_buff)
+	if opts['bin']:
+		opts['bin-file'].close()
 
 
 def set_endian(big_endian):
@@ -90,6 +136,7 @@ def main():
 		'b': 'CPU endianness: Little-Endian or Big-Endian, default LE',
 		'a': 'use ARMv4T instruction set (no BLX, no BXJ), default False',
 		'g': 'instruction group (Jump, Branch, Call), default Jump',
+		'i': 'add additional binary file (FULL FLASH) to hexdump analalyze',
 	}
 	epl = """examples:
 	# Little-Endian, Big-Endian, ARMv4T, and start offset:
@@ -106,6 +153,9 @@ def main():
 	# Filters:
 	python jumper_arm.py -f BOOT_0826.bin -b -r 0x10000000-0x10001000
 	python jumper_arm.py -f BOOT_0826.bin -b -a -g Call -r 0x10080000-0x11500000
+
+	# View-binary:
+	python jumper_arm.py -f BOOT_0826.bin -b -a -g Call -r 0x10DFFFFF-0x11140000 -i 32MB_FULL.bin
 	"""
 	pa = argparse.ArgumentParser(description=hlp['D'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	pa.add_argument('-f', '--file', required=True, metavar='FILE', help=hlp['f'])
@@ -114,6 +164,7 @@ def main():
 	pa.add_argument('-b', '--big-endian', action='store_true', help=hlp['b'])
 	pa.add_argument('-a', '--armv4t', action='store_true', help=hlp['a'])
 	pa.add_argument('-g', '--group', type=str, default='All', metavar='GROUP', help=hlp['g'])
+	pa.add_argument('-i', '--view-bin', metavar='FILE', help=hlp['i'])
 
 	args = pa.parse_args()
 
@@ -123,6 +174,7 @@ def main():
 		'filter'     : args.filter,
 		'big-endian' : args.big_endian,
 		'armv4t'     : args.armv4t,
+		'bin'        : args.view_bin,
 		'group'      : set_group(args.group),
 		'mda'        : capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_ARM   + set_endian(args.big_endian)),
 		'mdt'        : capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_THUMB + set_endian(args.big_endian)),
