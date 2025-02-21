@@ -664,3 +664,6 @@ inflateReset T 2800D00269C12900D102200143C04770
 # EXL, 14-Oct-2024: Add C650 additional DAL functions (just a stubs for R373-like).
 DAL_UpdateDisplayRegion A E92D43F0E24DD014E1A04000E1A06001
 DAL_UpdateRectangleDisplayRegion A E92D43F0E24DD014E1A04000E1A06001
+
+# EXL, 22-Feb-2025: Add private add event function for V600, V635 and other.
+AFW_AddEvPriv T B5FFB0819E0F9F111C05D04A

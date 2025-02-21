@@ -134,6 +134,42 @@ EVENT_CODE_T AFW_GetEvCode(EVENT_STACK_T *ev_st);
 UINT32 AFW_GetEvSeqn(EVENT_STACK_T *ev_st);
 
 // Функции добавления ивента (в различных вариациях данных для ивента)
+
+#if defined(FTR_V635)
+typedef enum{
+	SVC_NONE = 0
+} EV_SVC_TYPE_T;
+
+UINT32 AFW_AddEvPriv(
+	EVENT_STACK_T *evg,
+	UINT32 ev_code,
+	UINT32 ev_seqn,
+	UINT32 ev_rtid,
+	UINT8 ev_catg,
+	BOOL consumed,
+	BOOL first_pass,
+	UINT32 log_id,
+	UINT32 ev_consumer,
+	ADD_EVENT_DATA_T *ev_data,
+	FREE_BUF_FLAG_T ev_bflag,
+	UINT16 ev_bsize,
+	UINT8 *ev_auxd,
+	EV_SVC_TYPE_T svc_req
+);
+
+#define AFW_AddEvAux(evg, ev_code, ev_bflag, ev_bsize, ev_auxd) \
+	AFW_AddEvPriv(evg, ev_code, -1, 36, 0, FALSE, TRUE, 0, 0, NULL, ev_bflag, ev_bsize, ev_auxd, SVC_NONE)
+
+#define AFW_AddEvAuxD(evg, ev_code, ev_data, ev_bflag, ev_bsize, ev_auxd) \
+	AFW_AddEvPriv(evg, ev_code, -1, 36, 0, FALSE, TRUE, 0, 0, ev_data, ev_bflag, ev_bsize, ev_auxd, SVC_NONE)
+
+#define AFW_AddEvNoD(evg, ev_code) \
+	AFW_AddEvPriv(evg, ev_code, -1, 36, 0, FALSE, TRUE, 0, 0, NULL, 101, 0, NULL, SVC_NONE)
+
+#define AFW_AddEvEvD(evg, ev_code, ev_data) \
+	AFW_AddEvPriv(evg, ev_code, -1, 36, 0, FALSE, TRUE, 0, 0, ev_data, 101, 0, NULL, SVC_NONE)
+
+#else
 UINT32 AFW_AddEvNoD(EVENT_STACK_T *ev_st, UINT32 event_code);
 
 UINT32 AFW_AddEvEvD(EVENT_STACK_T *ev_st, UINT32 event_code, ADD_EVENT_DATA_T *data);
@@ -149,6 +185,7 @@ UINT32 AFW_AddEvAuxD(
 	UINT32 att_size,
 	void *attachment
 );
+#endif
 
 // добавляет ивент и передаёт его диалогу
 UINT32 AFW_TranslateEvEvD(EVENT_STACK_T *ev_st, UINT16 event_code, ADD_EVENT_DATA_T *data);
