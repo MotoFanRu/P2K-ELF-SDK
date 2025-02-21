@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V635
 # Firmware: R474_G_08.48.6FR
-# Version: 0902251
-# Timestamp: 09-Feb-2025 03:11:38
+# Version: 2202251
+# Timestamp: 22-Feb-2025 04:31:38
 
 0x000FBF70 T __16__rt_sdiv
 0x000FDC78 T __16__rt_sdiv10
@@ -30,6 +30,7 @@
 0x000FBF5C A _rt_memset
 0x000FB564 T abs_0
 0x103915A6 T AFW_AddAppToRoutingStack
+0x1038EA68 T AFW_AddEvPriv
 0x1038ECEA T AFW_CreateInternalQueuedEvAux
 0x1038ED1A T AFW_CreateInternalQueuedEvAuxD
 0x1038EC60 T AFW_CreateInternalQueuedEvPriv
@@ -89,13 +90,17 @@
 0x1052F03A T APP_Start
 0x105D0090 T APP_SyncML_MainRegister
 0x1052F104 T APP_UtilAddEvChangeListPosition
+0x1052F198 T APP_UtilAddEvUISListChange
+0x1052F1F4 T APP_UtilAddEvUISListData
 0x1052F2A0 T APP_UtilChangeState
 0x1052F316 T APP_UtilStartTimer
+0x1052F3C2 T APP_UtilStopTimer
 0x10A929C0 A DAL_DisableDisplay
 0x10A92A80 A DAL_EnableDisplay
 0x10A9315C A DAL_GetDeviceContext
 0x10A9317C A DAL_GetDrawingSurface
 0x10A92D34 A DAL_WriteDisplayRegion
+0x1235D694 D display_source_buffer
 0x107DA7DE T DL_AccIsHeadsetAvailable
 0x107C7FAC T DL_AudGetVolumeSetting
 0x107C7660 T DL_AudPlayTone
@@ -122,6 +127,8 @@
 0x107C4486 T DL_FsVolumeEnum
 0x107C2644 T DL_FsWriteFile
 0x107D3AC2 T DL_KeyKjavaGetKeyState
+0x107C6AA2 T DL_PwrGetActiveBatteryPercent
+0x107D44AC T DL_SigRegQuerySignalStrength
 0x10390BB2 T DRM_ClearResource
 0x10390B22 T DRM_CreateResource
 0x1039075E T DRM_SetResource
@@ -129,6 +136,8 @@
 0x10285336 T HAPI_ATOD_convert_ambient_light_sensor
 0x10286D18 T HAPI_BATTERY_ROM_get_unique_id
 0x10286C84 T HAPI_BATTERY_ROM_read
+0x1028632A T HAPI_LP393X_disp_backlight_intensity
+0x102863BA T HAPI_LP393X_set_tri_color_led
 0x102839D8 T hPortWrite
 0x103236F0 A inflate
 0x10323550 A inflateEnd
@@ -136,19 +145,19 @@
 0x103234F8 A inflateReset
 0x1024095E D KEYPAD_STATE
 0x2484E000 D kpp
-0x10A69D34 T LdrGetFirmwareMajorVersion
-0x10A69D38 T LdrGetFirmwareMinorVersion
-0x10A69D2C T LdrGetPhoneName
-0x10A69D30 T LdrGetPlatformName
-0x10A69CB0 T LdrLoadELF
-0x10A69C76 T LdrStartApp
-0x10A69CF8 T LdrUnloadELF
+0x10A69DE8 T LdrGetFirmwareMajorVersion
+0x10A69DF0 T LdrGetFirmwareMinorVersion
+0x10A69DD8 T LdrGetPhoneName
+0x10A69DE0 T LdrGetPlatformName
+0x10A69D40 T LdrLoadELF
+0x10A69D18 T LdrStartApp
+0x10A69D9C T LdrUnloadELF
 0x102E89DE T MME_GC_playback_create
 0x102E7DFC T MME_GC_playback_delete
 0x102E925C T MME_GC_playback_open_audio_play_forget
 0x102E8468 T MME_GC_playback_start
 0x102E8EBA T MME_GC_playback_stop
-0x10A69394 T namecmp
+0x10A69464 T namecmp
 0x1099A5D2 T PFprintf
 0x10C3AC34 D product_version
 0x10159028 T qsort
@@ -167,6 +176,7 @@
 0x10173844 T suLogData
 0x102BBC38 T suPalReadTime
 0x0009E0D0 T suPalTicksToMsec
+0x10AA97A4 A u_atol
 0x10AAA260 A u_atou
 0x10AAA1AC A u_ltou
 0x10AA8AD8 A u_strcat
@@ -177,9 +187,12 @@
 0x10AA8C3C A u_strncmp
 0x10AA8CE8 A u_strncpy
 0x10AA934C A u_strrchr
-0x10A69C98 T u_utoa
+0x10A69484 T u_utoa
+0x10A9F9A4 A UIS_CreateCharacterEditor
 0x10A9FA90 A UIS_CreateConfirmation
+0x10AA01A0 A UIS_CreateList
 0x10A9F680 A UIS_CreateNullDialog
+0x10AA129C A UIS_CreateSelectionEditor
 0x10AA0234 A UIS_CreateStaticList
 0x10AA14DC A UIS_CreateTransientNotice
 0x10AA1578 A UIS_CreateViewer
@@ -188,6 +201,6 @@
 0x10AA2428 A UIS_MakeContentFromString
 0x10AB217C A uisAllocateMemory
 0x10AB263C A uisFreeMemory
-0x10A69358 T UtilLogStringData
+0x10A694A0 T UtilLogStringData
 0x101599F0 T vsnprintf
 0x10159A3C T vsprintf
