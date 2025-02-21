@@ -8,14 +8,14 @@
 #define EV_DEVICE_DETACH 0x1001
 
 // анимация
-#if !defined(FTR_V600)
-#define EV_FRAME_COMPLETED     0x20F1  // фрейм выполнен
-#define EV_CYCLE_COMPLETED     0x20F2  // цикл(5 фреймов) выполнен
-#define EV_ANIMATION_COMPLETED 0x20F3  // анимация(15 фреймов) выполнена
-#else
+#if defined(FTR_V600) || defined(FTR_V635)
 #define EV_FRAME_COMPLETED     0x20F0  // фрейм выполнен
 #define EV_CYCLE_COMPLETED     0x20F1  // цикл(5 фреймов) выполнен
 #define EV_ANIMATION_COMPLETED 0x20F2  // анимация(15 фреймов) выполнена
+#else
+#define EV_FRAME_COMPLETED     0x20F1  // фрейм выполнен
+#define EV_CYCLE_COMPLETED     0x20F2  // цикл(5 фреймов) выполнен
+#define EV_ANIMATION_COMPLETED 0x20F3  // анимация(15 фреймов) выполнена
 #endif
 
 #define EV_GRANT_TOKEN         30
@@ -32,38 +32,42 @@
 #define EV_INK_KEY_RELEASE     UIS_EV_INK_KEY_RELEASE
 
 // нажатие на качельку громкости в GUI
-#if !defined(FTR_V600)
-#define EV_VOL_CHANGE_REQUEST 0x20CA
-#else
+#if defined(FTR_V600) || defined(FTR_V635)
 #define EV_VOL_CHANGE_REQUEST 0x20C9
+#else
+#define EV_VOL_CHANGE_REQUEST 0x20CA
 #endif
 
 // Возникает при завершении работы диалога
 #define EV_DIALOG_DONE 0x201C
 // Возникает при нажатии на кнопку "Назад"
 #define EV_DONE        0x2020
-#if !defined(FTR_V600)
-// Возникает при нажатии джойстика вверх/вниз в списке
-#define EV_LIST_NAVIGATE 0x2043  // index
-// Возникает при нажатии джойстика в списке или кнопки "Выбор"
-#define EV_SELECT        0x2058  // index
-#else
+
+#if defined(FTR_V600) || defined(FTR_V635)
 // Возникает при нажатии джойстика вверх/вниз в списке
 #define EV_LIST_NAVIGATE 0x2042  // index
 // Возникает при нажатии джойстика в списке или кнопки "Выбор"
 #define EV_SELECT        0x2057  // index
+#else
+// Возникает при нажатии джойстика вверх/вниз в списке
+#define EV_LIST_NAVIGATE 0x2043  // index
+// Возникает при нажатии джойстика в списке или кнопки "Выбор"
+#define EV_SELECT        0x2058  // index
 #endif
+
 // Посылается списками чтобы запросить очередную порцию данных
 #define EV_REQUEST_LIST_ITEMS 0x202C  // list_items_req
-#if !defined(FTR_V600)
-// Посылается запросами
-#define EV_NO  0x2046
-#define EV_YES 0x2079
-#else
+
+#if defined(FTR_V600) || defined(FTR_V635)
 // Посылается запросами
 #define EV_NO  0x2045
 #define EV_YES 0x2078
+#else
+// Посылается запросами
+#define EV_NO  0x2046
+#define EV_YES 0x2079
 #endif
+
 // Отмена
 #define EV_CANCEL        0x2008
 
@@ -97,7 +101,7 @@
 
 #if defined(FTR_L7E)
 #define EV_CREATE_SHORTCUT 0x20C9  // Зажатие меню
-#elif defined(FTR_V600)
+#elif defined(FTR_V600) || defined(FTR_V635)
 #define EV_CREATE_SHORTCUT 0x20C4  // Зажатие меню
 #else
 #define EV_CREATE_SHORTCUT 0x20C5  // Зажатие меню
@@ -264,7 +268,7 @@ extern const UINT32 *KEYPAD_STATE;
 #define DB_FEATURE_KEYPAD_STATE (*KEYPAD_STATE)
 #endif
 
-#if defined(FTR_V600)
+#if defined(FTR_V600) || defined(FTR_V635)
 #define EV_USER_ACTIVITY_TIMEOUT 0x074F
 #define EV_SCREENSAVER_TIMEOUT   0x0751
 #define EV_DISPLAY_TIMEOUT       0x0752
