@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V635
 # Firmware: R474_G_08.48.6FR
-# Version: 2202251
-# Timestamp: 22-Feb-2025 04:31:38
+# Version: 2402251
+# Timestamp: 24-Feb-2025 05:04:25
 
 0x000FBF70 T __16__rt_sdiv
 0x000FDC78 T __16__rt_sdiv10
@@ -95,6 +95,7 @@
 0x1052F2A0 T APP_UtilChangeState
 0x1052F316 T APP_UtilStartTimer
 0x1052F3C2 T APP_UtilStopTimer
+0x1235D690 D Class_dal
 0x10A929C0 A DAL_DisableDisplay
 0x10A92A80 A DAL_EnableDisplay
 0x10A9315C A DAL_GetDeviceContext
@@ -111,11 +112,13 @@
 0x107CAC20 T DL_ClkStartTimer
 0x107CAC9E T DL_ClkStopTimer
 0x107CAD70 T DL_DbFeatureGetCurrentState
+0x1080EF88 T DL_DbMessageGenericGetTotalMessage
 0x107C247C T DL_FsCloseFile
 0x107C2864 T DL_FsDeleteFile
 0x107C2912 T DL_FsFFileExist
 0x107C26F8 T DL_FsFSeekFile
 0x107C29E4 T DL_FsGetFileSize
+0x107C4D3E T DL_FsGetIDFromURI
 0x107C4248 T DL_FsGetVolumeDescr
 0x107C3C1E T DL_FsISearch
 0x107C23D6 T DL_FsOpenFile
@@ -157,6 +160,7 @@
 0x102E925C T MME_GC_playback_open_audio_play_forget
 0x102E8468 T MME_GC_playback_start
 0x102E8EBA T MME_GC_playback_stop
+0x1067D810 T MsgUtilGetUnreadMsgsInAllFolders
 0x10A69464 T namecmp
 0x1099A5D2 T PFprintf
 0x10C3AC34 D product_version
@@ -188,15 +192,37 @@
 0x10AA8CE8 A u_strncpy
 0x10AA934C A u_strrchr
 0x10A69484 T u_utoa
+0x10A9B4C8 A UIS_CanvasDrawColorSoftkey
+0x10A9A618 A UIS_CanvasDrawColorText
+0x10A9AE70 A UIS_CanvasDrawLine
+0x10A9AFA8 A UIS_CanvasDrawRect
+0x10A9B3D4 A UIS_CanvasDrawRoundRect
+0x10A9CF80 A UIS_CanvasDrawTitleBar
+0x10A9D1A0 A UIS_CanvasDrawTitleBarWithIcon
+0x10A9B060 A UIS_CanvasFillRect
+0x10A9A1B4 A UIS_CanvasGetDisplaySize
+0x10A98F48 A UIS_CanvasGetStringSize
+0x10A9885C A UIS_CanvasGetWorkingArea
+0x10A98834 A UIS_CanvasRefreshDisplayRegion
+0x10A9A290 A UIS_CanvasSetBackgroundColor
+0x10A9A2CC A UIS_CanvasSetFillColor
+0x10A9A078 A UIS_CanvasSetFont
+0x10A9A25C A UIS_CanvasSetForegroundColor
+0x10A9A330 A UIS_CanvasSetLineWidth
 0x10A9F9A4 A UIS_CreateCharacterEditor
+0x10A984A0 A UIS_CreateColorCanvas
+0x10A98638 A UIS_CreateColorCanvasWithWallpaper
 0x10A9FA90 A UIS_CreateConfirmation
 0x10AA01A0 A UIS_CreateList
+0x10AA0AA0 A UIS_CreateNotice
 0x10A9F680 A UIS_CreateNullDialog
 0x10AA129C A UIS_CreateSelectionEditor
 0x10AA0234 A UIS_CreateStaticList
+0x10AA3ACC A UIS_CreateStaticSelectionEditor
 0x10AA14DC A UIS_CreateTransientNotice
 0x10AA1578 A UIS_CreateViewer
 0x10AA18BC A UIS_Delete
+0x10AA1928 A UIS_GetActiveDialogType
 0x10AA1CB0 A UIS_HandleEvent
 0x10AA2428 A UIS_MakeContentFromString
 0x10AB217C A uisAllocateMemory
