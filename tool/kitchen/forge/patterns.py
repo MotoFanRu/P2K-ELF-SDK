@@ -49,7 +49,7 @@ def pat_append(pat_p: Path, name: str, mode: str, pattern: str) -> None:
 		f_o.write(f'{name} {mode} {pattern}')
 
 
-def sym2pat(sym_p: Path, pat_p: Path, fw_p: Path, offset: int, size: int, irom: bool) -> bool:
+def sym2pat(sym_p: Path, pat_p: Path, fw_p: Path, offset: int, size: int, irom: bool, argonlv: bool) -> bool:
 	files_are_here: bool = check_files_if_exists([sym_p, fw_p])
 	sym_extension_is_ok: bool = check_files_extensions([sym_p], ['sym'])
 	fw_extension_is_ok: bool = check_files_extensions([fw_p], ['bin', 'smg'])
@@ -67,7 +67,7 @@ def sym2pat(sym_p: Path, pat_p: Path, fw_p: Path, offset: int, size: int, irom: 
 					symbol: str = combine_sym_str(addr, mode, name)
 					if mode != 'C':
 						address: int = hex2int(addr)
-						mem_reg: MemoryRegion = determine_memory_region(address)
+						mem_reg: MemoryRegion = determine_memory_region(address, argonlv)
 						if (irom and mem_reg == MemoryRegion.IROM) or (not irom and mem_reg == MemoryRegion.ROM):
 							if irom:
 								f_i.seek(address)  # Offset is "0" here.

@@ -37,6 +37,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'use_afw_wraps':  True,        # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
+	'R368_G_0B.A0.0FR': {
+		'opts_all':       ['-DFTR_C390'],
+		'addr_start':     0x10080000,  # Firmware start address.
+		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'C650_R365_G_0B.D3.08R.pts',
+		'firmware':       forge.P2K_DIR_CG / 'C390_R368_G_0B.A0.0FR.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  True,        # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
 	'R373_G_0E.30.49R': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
@@ -787,6 +797,7 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -P C650_R365_G_0B.D3.08R
 	python ep1_portkit.py -P K3_R261171LD_U_99.51.06R -g
 	python ep1_portkit.py -P V635_R474_G_08.48.6FR -g
+	python ep1_portkit.py -P C390_R368_G_0B.A0.0FR -g
 
 	# Find functions and build ElfPack v1.x and libraries for target:
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B

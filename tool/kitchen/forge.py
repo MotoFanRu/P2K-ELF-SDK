@@ -35,7 +35,9 @@ def start_forge_work(mode: Mode,  sort: forge.LibrarySort, args: Namespace) -> b
 	logging.info(f'Start Forge auxiliary utility, mode: "{mode.name}".')
 	if mode == Mode.SYM_TO_PAT:
 		return forge.log_result(
-			forge.sym2pat(args.source, args.output, args.firmware, args.offset, args.size, args.irom)
+			forge.sym2pat(
+				args.source, args.output, args.firmware, args.offset, args.size, args.irom, (args.offset == 0xA0080000)
+			)
 		)
 	elif mode == Mode.SYM_TO_SYM:
 		names: list[str] | None = forge.libgen_names_sym(args.defines, args.elfpack, not args.const)

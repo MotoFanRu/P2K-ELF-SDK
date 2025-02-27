@@ -70,16 +70,28 @@ def is_modern_lte2(phone: str) -> bool:
 	return phone in modern_lte2_phones
 
 
-def determine_memory_region(address: int) -> MemoryRegion:
-	if address < 0x03000000:
-		return MemoryRegion.IROM
-	elif address < 0x10000000:
-		return MemoryRegion.IRAM
-	elif address < 0x12000000:
-		return MemoryRegion.ROM
-	elif address < 0x20000000:
-		return MemoryRegion.RAM
-	elif address < 0x30000000:
-		return MemoryRegion.PERIPHERALS
+def determine_memory_region(address: int, argonlv: bool = False) -> MemoryRegion:
+	if argonlv:
+		if address < 0x10000000:
+			return MemoryRegion.IROM
+		elif address < 0x20000000:
+			return MemoryRegion.IRAM
+		elif address < 0xA0000000:
+			return MemoryRegion.RAM
+		elif address < 0xD0000000:
+			return MemoryRegion.ROM
+		else:
+			return MemoryRegion.UNKNOWN
 	else:
-		return MemoryRegion.UNKNOWN
+		if address < 0x03000000:
+			return MemoryRegion.IROM
+		elif address < 0x10000000:
+			return MemoryRegion.IRAM
+		elif address < 0x12000000:
+			return MemoryRegion.ROM
+		elif address < 0x20000000:
+			return MemoryRegion.RAM
+		elif address < 0x30000000:
+			return MemoryRegion.PERIPHERALS
+		else:
+			return MemoryRegion.UNKNOWN
