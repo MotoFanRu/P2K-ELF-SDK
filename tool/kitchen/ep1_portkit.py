@@ -41,7 +41,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'opts_all':       ['-DFTR_C390'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
-		'patterns':       forge.P2K_DIR_EP1_PAT / 'C650_R365_G_0B.D3.08R.pts',
+		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'C390_R368_G_0B.A0.0FR.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  True,        # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
@@ -243,6 +243,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
 		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'K3_R261171LD_U_99.51.06R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
+	'R26111LD_U_96.A0.0ER': {
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX'],
+		'addr_start':     0xA0080000,  # Firmware start address.
+		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address. # TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
+		'patterns':       None,
+		'firmware':       forge.P2K_DIR_CG / 'V3xx_R26111LD_U_96.A0.0ER.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
