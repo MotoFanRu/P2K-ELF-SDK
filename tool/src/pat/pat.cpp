@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 
 	if(argc == 6)
 	{
-		cgoff = strtol(argv[5], NULL, 16);
+		cgoff = strtoul(argv[5], NULL, 16);
 		
 		/*
 		 * EXL: Allow zero 0x0 address!
