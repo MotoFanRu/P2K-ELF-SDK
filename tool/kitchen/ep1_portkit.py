@@ -248,9 +248,9 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R26111LD_U_96.A0.0ER': {
-		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX'],
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX', '-DDEBUG', '-DLOG_TO_FILE'],
 		'addr_start':     0xA0080000,  # Firmware start address.
-		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address. # TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:
+		'addr_offset':    0x004856D0,  # ElfPack v1.x patch address.
 		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'V3xx_R26111LD_U_96.A0.0ER.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
