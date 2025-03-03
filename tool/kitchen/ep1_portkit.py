@@ -556,6 +556,11 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 			return False
 		forge.ep1_ads_fromelf(val_elfpack_elf, val_elfpack_bin)
 	else:
+		if (opts['address'] % 0x08) != 0:
+			addr_orig: str = forge.int2hex(opts["address"])
+			addr_alig: str = forge.int2hex(forge.arrange(opts["address"], 16))
+			logging.error(f'PATCH address should be aligned to 0x08 for GNU ld: {addr_orig} => {addr_alig}!')
+			return False
 		val_ld_script_tpl = forge.P2K_DIR_EP1_TPL / ('ElfPackArgon.tpl' if opts['argon'] else 'ElfPackNeptune.tpl')
 		val_ld_script_org = opts['output'] / 'ElfPack.ld'
 		forge.patch_text_file_template(
