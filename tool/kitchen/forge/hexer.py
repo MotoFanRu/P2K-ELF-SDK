@@ -43,8 +43,8 @@ def int2hex_r(int_value: int) -> str:
 	return f'{int_value:08X}'
 
 
-def arrange16(value: int) -> int:
-	return (value & (-16)) + 16
+def arrange(value: int, arrange_i: int = 16) -> int:
+	return (value & (-arrange_i)) + arrange_i
 
 
 def is_hex_string(hex_string: str) -> bool:

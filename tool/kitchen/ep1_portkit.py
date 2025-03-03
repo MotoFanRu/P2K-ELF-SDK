@@ -737,7 +737,7 @@ class Args(argparse.ArgumentParser):
 		opts['start'] = args.start if args.start else variants['addr_start']
 		opts['offset'] = args.offset if args.offset else variants['addr_offset']
 		if not opts['offset']:
-			opts['offset'] = forge.arrange16(forge.get_file_size(opts['fw_file']))
+			opts['offset'] = forge.arrange(forge.get_file_size(opts['fw_file']), 16)
 		opts['hook'] = args.hook
 		opts['address'] = opts['start'] + opts['offset']
 		opts['soc'] = forge.determine_soc(opts['start'])

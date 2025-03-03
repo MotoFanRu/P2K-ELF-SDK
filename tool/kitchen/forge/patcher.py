@@ -19,7 +19,7 @@ from pathlib import Path
 from .hexer import int2hex
 from .hexer import int2hex_r
 from .hexer import hex2int_r
-from .hexer import arrange16
+from .hexer import arrange
 from .hexer import is_hex_string
 from .types import PatchDict
 from .types import PatchDictNone
@@ -241,7 +241,7 @@ def apply_fpa_patch(firmware: Path, fpa: Path, backup: bool, validating: bool, r
 					p_size: int = patch_size_of_hex_str(value)
 					if not check_if_address_beyond_file_size(p_addr, file_size, p_size):
 						f_o.seek(file_size)
-						p_pad: int = arrange16(p_addr + p_size) - file_size
+						p_pad: int = arrange(p_addr + p_size, 16) - file_size
 						h_p: str = int2hex(p_pad)
 						h_s: str = int2hex(file_size)
 						logging.info(f'Add FF-bytes filled extra space to "{firmware}", size: "{file_size}".')

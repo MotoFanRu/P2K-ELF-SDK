@@ -17,7 +17,7 @@ from forge import hex2int
 from forge import int2hex
 from forge import hex2int_r
 from forge import int2hex_r
-from forge import arrange16
+from forge import arrange
 from forge import is_hex_string
 from forge import normalize_hex_string
 from forge import normalize_hex_address
@@ -78,24 +78,24 @@ class TestHexer(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			hex2int_r(hex_value)
 
-	def test_arrange16(self) -> None:
-		self.assertEqual(int2hex(arrange16(0x10080000)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080001)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080002)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080004)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080008)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080009)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x1008000A)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x1008000C)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x1008000F)), '0x10080010')
-		self.assertEqual(int2hex(arrange16(0x10080010)), '0x10080020')
-		self.assertEqual(int2hex(arrange16(0x100800FF)), '0x10080100')
-		self.assertEqual(int2hex(arrange16(0x00000000)), '0x00000010')
-		self.assertEqual(int2hex(arrange16(0x00000001)), '0x00000010')
-		self.assertEqual(int2hex(arrange16(0x0000000F)), '0x00000010')
-		self.assertEqual(int2hex(arrange16(0x00000010)), '0x00000020')
-		self.assertEqual(int2hex(arrange16(0x00000011)), '0x00000020')
-		self.assertEqual(int2hex(arrange16(0x000000FF)), '0x00000100')
+	def test_arrange(self) -> None:
+		self.assertEqual(int2hex(arrange(0x10080000, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080001, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080002, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080004, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080008, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080009, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x1008000A, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x1008000C, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x1008000F, 16)), '0x10080010')
+		self.assertEqual(int2hex(arrange(0x10080010, 16)), '0x10080020')
+		self.assertEqual(int2hex(arrange(0x100800FF, 16)), '0x10080100')
+		self.assertEqual(int2hex(arrange(0x00000000, 16)), '0x00000010')
+		self.assertEqual(int2hex(arrange(0x00000001, 16)), '0x00000010')
+		self.assertEqual(int2hex(arrange(0x0000000F, 16)), '0x00000010')
+		self.assertEqual(int2hex(arrange(0x00000010, 16)), '0x00000020')
+		self.assertEqual(int2hex(arrange(0x00000011, 16)), '0x00000020')
+		self.assertEqual(int2hex(arrange(0x000000FF, 16)), '0x00000100')
 
 	def test_int2hex(self) -> None:
 		self.assertEqual(int2hex(0), '0x00000000')

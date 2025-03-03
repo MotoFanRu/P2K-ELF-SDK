@@ -67,7 +67,7 @@ from .hexer import hex2int
 from .hexer import hex2int_r
 from .hexer import int2hex
 from .hexer import int2hex_r
-from .hexer import arrange16
+from .hexer import arrange
 from .hexer import is_hex_string
 from .hexer import normalize_hex_string
 from .hexer import normalize_hex_address
