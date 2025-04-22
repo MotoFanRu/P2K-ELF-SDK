@@ -413,7 +413,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 			(Elf32_Addr *) (
 				physBase + *((Elf32_Word *) (physBase + relTable[0].r_offset - virtBase)) - virtBase
 			)
-		) + 6;
+		);
+		// EXL, 23-Apr-2025: It has 4778E7FD opcode in Thumb after 4 .plt bytes? If yes, just skip it.
+		pltJumpTblPtr += ((*(pltJumpTblPtr + 5)) == 0x4778E7FD) ? 6 : 5;
 
 		// EXL, 25-Dec-2024: Iterate over "R_ARM_JUMP_SLOT" relocations in '.rel.plt' section.
 		for (i = 0; i * sizeof(Elf32_Rel) < dynTags[DT_PLTRELSZ]; ++i) {
@@ -440,9 +442,18 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 					//   This will resolve the launch issues on real ARMv4T, ARM7TDMI-S, and Big-Endian CPUs/MCUs.
 					// E2 8F C6 00 E2 8C CA 00 E5 BC F0 C0 => E5 9F C0 00 E1 2F FF 1C 10 00 00 00
 					{
-						Elf32_Word ARM_ADRL_1 = *(pltJumpTblPtr+0);
-						Elf32_Word ARM_ADRL_2 = *(pltJumpTblPtr+1);
-						Elf32_Word ARM_LDR    = *(pltJumpTblPtr+2);
+						Elf32_Word ARM_ADRL_1;
+						Elf32_Word ARM_ADRL_2;
+						Elf32_Word ARM_LDR;
+
+						// EXL, 23-Apr-2025: It has 4778E7FD opcode in Thumb? If yes, just skip it.
+						if ((*(pltJumpTblPtr)) == 0x4778E7FD) {
+							pltJumpTblPtr += 1;
+						}
+
+						ARM_ADRL_1 = *(pltJumpTblPtr+0);
+						ARM_ADRL_2 = *(pltJumpTblPtr+1);
+						ARM_LDR    = *(pltJumpTblPtr+2);
 
 						// add ip, pc, #0, #12    =>   ldr ip, [pc]
 						// add ip, ip, #0, #20    =>   bx ip
@@ -459,7 +470,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 							*(pltJumpTblPtr+0), *(pltJumpTblPtr+1), *(pltJumpTblPtr+2)
 						);
 
-						pltJumpTblPtr += 4;
+						pltJumpTblPtr += 3;
 					}
 
 					*((Elf32_Word *) (physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
