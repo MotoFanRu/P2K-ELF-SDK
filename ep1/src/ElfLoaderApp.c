@@ -87,6 +87,10 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 
 	// EXL, 07-May-2025: Restore IRAM block from RAM and freed ELF memory.
 	if (p_app_data->iram_elf.iram_mem) {
+		UtilLogStringData(
+			"Restore IRAM block: ERAM: 0x%08X => IRAM: 0x%08X, size: %d\n",
+			p_app_data->iram_elf.eram_mem, p_app_data->iram_elf.iram_mem, p_app_data->iram_elf.size_mem
+		);
 		memcpy(p_app_data->iram_elf.iram_mem, p_app_data->iram_elf.eram_mem, p_app_data->iram_elf.size_mem);
 		free_elf_address = p_app_data->iram_elf.eram_mem;
 	} else {
