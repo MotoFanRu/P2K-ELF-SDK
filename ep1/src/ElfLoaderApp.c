@@ -48,6 +48,9 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 
 	p_event = AFW_GetEv(p_evg);
 	p_app_data = (ELFLOADER_INSTANCE_DATA_T *) p_apd;
+	p_app_data->iram_elf.iram_mem = NULL;
+	p_app_data->iram_elf.eram_mem = NULL;
+	p_app_data->iram_elf.size_mem = 0;
 
 	UtilLogStringData(" *** ELFLOADER *** LoadELF  current reserve = 0x%X", p_app_data->reserve);
 
@@ -55,7 +58,8 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 		p_event->data.start_params.uri,
 		p_event->data.start_params.params,
 		p_app_data->Library,
-		p_app_data->reserve
+		p_app_data->reserve,
+		&p_app_data->iram_elf
 	);
 
 	p_app_data->reserve += EVCODE_RESERVE;
@@ -73,16 +77,27 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 
 static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	EVENT_T *p_event;
+	ELFLOADER_INSTANCE_DATA_T *p_app_data;
+	UINT32 *free_elf_address;
 
 	p_event = AFW_GetEv(p_evg);
+	p_app_data = (ELFLOADER_INSTANCE_DATA_T *) p_apd;
 
 	UtilLogStringData(" *** ELFLOADER *** UnloadELF");
 
+	// EXL, 07-May-2025: Restore IRAM block from RAM and freed ELF memory.
+	if (p_app_data->iram_elf.iram_mem) {
+		memcpy(p_app_data->iram_elf.iram_mem, p_app_data->iram_elf.eram_mem, p_app_data->iram_elf.size_mem);
+		free_elf_address = p_app_data->iram_elf.eram_mem;
+	} else {
+		free_elf_address = (UINT32 *) (*((void **) p_event->data.pad));
+	}
+
 	// EXL, 22-Dec-2024: A pointer to ELF structures is sent along with the event data.
 #if !defined(USE_UIS_ALLOCA)
-	suFreeMem(*((void **) p_event->data.pad));
+	suFreeMem(free_elf_address);
 #else
-	uisFreeMemory(*((void **) p_event->data.pad));
+	uisFreeMemory(free_elf_address);
 #endif
 
 	APP_ConsumeEv(p_evg, (APPLICATION_T *) p_apd);

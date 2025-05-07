@@ -17,7 +17,7 @@
 #include <utilities.h>
 #include <mem.h>
 
-UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
+UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf) {
 	UINT32          i;
 	UINT32          j;
 
@@ -126,12 +126,34 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		sumSize += elfProgramHeaders[i].p_filesz;
 	}
 
-	// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+	if (*((Elf32_Addr *) &elfHeader.e_ident[0x0C])) {
+		// EXL, 07-May-2025: Enable loading small ELFs to IRAM.
+		Elf32_Addr iram = *((Elf32_Addr *) &elfHeader.e_ident[0x0C]);
+		Elf32_Addr eram;
+
 #if !defined(USE_UIS_ALLOCA)
-	physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+		eram = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
 #else
-	physBase = (Elf32_Addr) uisAllocateMemory(upperAddr - virtBase, NULL);
+		eram = (Elf32_Addr) uisAllocateMemory(upperAddr - virtBase, NULL);
 #endif
+
+		UtilLogStringData("Using IRAM for ELF! iram=0x%08X, eram=0x%08X, size=%d\n", iram, eram, upperAddr - virtBase);
+
+		iram_elf->iram_mem = (Elf32_Addr *) iram;
+		iram_elf->eram_mem = (Elf32_Addr *) eram;
+		iram_elf->size_mem = upperAddr - virtBase;
+
+		memcpy((Elf32_Addr *) eram, (Elf32_Addr *) iram, upperAddr - virtBase);
+
+		physBase = iram;
+	} else {
+		// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+#if !defined(USE_UIS_ALLOCA)
+		physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+#else
+		physBase = (Elf32_Addr) uisAllocateMemory(upperAddr - virtBase, NULL);
+#endif
+	}
 	memclr((void *) physBase, upperAddr - virtBase);
 	// EXL, 13-Apr-2025: Fix bug with loading a small GCC ELFs.
 	memclr(dynTags, (DT_BIND_NOW + 1) * sizeof(Elf32_Word));

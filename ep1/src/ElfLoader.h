@@ -42,6 +42,12 @@ enum {
 	ELDR_SEEK_FAILED
 };
 
+typedef struct {
+	UINT32 *iram_mem;
+	UINT32 *eram_mem;
+	UINT32  size_mem;
+} IRAM_ELF_T;
+
 extern const char n_phone[];
 extern const char n_platform[];
 extern const char n_majorfw[];
@@ -49,6 +55,6 @@ extern const char n_minorfw[];
 
 typedef UINT32 (*Entry)(char *, char *, UINT32);
 
-extern UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve);
+extern UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf);
 
 #endif /* ELF_LOADER_H */

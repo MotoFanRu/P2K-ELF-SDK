@@ -18,6 +18,7 @@
 #
 
 0xFFFFFFFF A __rt_memclr
+0xFFFFFFFF A __rt_memcpy
 0xFFFFFFFF T AFW_AddAppToRoutingStack
 0xFFFFFFFF T AFW_GenAppInstanceId
 0xFFFFFFFF T AFW_GetEv

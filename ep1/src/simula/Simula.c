@@ -34,7 +34,7 @@ UINT32 namecmp(const char *ansi_str_1, const char *ansi_str_2) {
 	return FALSE;
 }
 
-UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
+UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf) {
 	UINT32          i;
 	UINT32          j;
 
@@ -182,8 +182,28 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve) {
 		sumSize += elfProgramHeaders[i].p_filesz;
 	}
 
-	// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
-	physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+	if (B32(*((Elf32_Addr *) &elfHeader.e_ident[0x0C]))) {
+		// EXL, 07-May-2025: Enable loading small ELFs to IRAM.
+		Elf32_Addr iram = B32(*((Elf32_Addr *) &elfHeader.e_ident[0x0C]));
+		Elf32_Addr eram = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+
+		UtilLogStringData("Using IRAM for ELF! iram=0x%08X, eram=0x%08X, size=%d\n", iram, eram, upperAddr - virtBase);
+
+#if defined(SIMULA)
+		iram = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+#endif
+
+		iram_elf->iram_mem = (Elf32_Addr *) iram;
+		iram_elf->eram_mem = (Elf32_Addr *) eram;
+		iram_elf->size_mem = upperAddr - virtBase;
+
+		memcpy((Elf32_Addr *) eram, (Elf32_Addr *) iram, upperAddr - virtBase);
+
+		physBase = iram;
+	} else {
+		// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+		physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+	}
 	memclr((void *) physBase, upperAddr - virtBase);
 	// EXL, 13-Apr-2025: Fix bug with loading a small GCC ELFs.
 	memclr(dynTags, (DT_BIND_NOW + 1) * sizeof(Elf32_Word));
@@ -610,5 +630,10 @@ int main(int argc, char *argv[]) {
 	fread(library_data, lib_size, 1, lib);
 	fclose(lib);
 
-	return loadELF(argv[2], NULL, (void *) library_data, argv[3] ? 0xDEADBEEF : 0);
+	IRAM_ELF_T iram_elf;
+	iram_elf.iram_mem = NULL;
+	iram_elf.eram_mem = NULL;
+	iram_elf.size_mem = 0;
+
+	return loadELF(argv[2], NULL, (void *) library_data, argv[3] ? 0xDEADBEEF : 0, &iram_elf);
 }

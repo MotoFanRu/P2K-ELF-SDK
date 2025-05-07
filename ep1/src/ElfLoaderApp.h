@@ -12,6 +12,8 @@
 #ifndef ELF_LOADER_APP_H
 #define ELF_LOADER_APP_H
 
+#include "ElfLoaderApp.h"
+
 #include <apps.h>
 
 typedef enum {
@@ -23,6 +25,7 @@ typedef struct {
 	APPLICATION_T apd;
 	UINT32 reserve;
 	void *Library;
+	IRAM_ELF_T iram_elf;
 } ELFLOADER_INSTANCE_DATA_T;
 
 extern void ElfLoaderStart(void);
