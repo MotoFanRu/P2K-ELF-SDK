@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V3xx
 # Firmware: R26111LD_U_96.A0.0ER
-# Version: 0303251
-# Timestamp: 03-Mar-2025 02:49:42
+# Version: 0905251
+# Timestamp: 09-May-2025 16:01:44
 
 0xA15D48D4 A __rt_memclr
 0xA15D487C A __rt_memclr_w
@@ -59,6 +59,9 @@
 0xA05BCE74 T APP_UtilHistSaveAndChangeState
 0xA05BCB4E T APP_UtilStartTimer
 0xA05C3BDA T APP_UtilUISDialogDelete
+0xA05BC3C4 T DAL_GetPrimarySurface
+0xA05BC3E4 T DAL_GetDxHandle
+0xA05BC3D4 T DAL_GetRmHandle
 0xA03725BA T DL_AudGetVolumeSetting
 0xA044C1AE T DL_AudPlayTone
 0xA037250C T DL_AudSetVolumeSetting
@@ -121,6 +124,16 @@
 0xA0625192 T DRM_CreateResource
 0xA0624F48 T DRM_SetResource
 0xA0A1DC42 T GFGxCopyColorBitmap
+0xA082C01C T GFRmComponentGet
+0xA082C1C6 T GFRmComponentRelease
+0xA0637F64 T GFRmOSEnterCS
+0xA0637F82 T GFRmOSExitCS
+0xA0AFF978 T GFRmSurfaceAlloc
+0xA0AFFBB0 T GFRmSurfaceFree
+0xA0B001D8 T GFRmSurfaceUpdate
+0xA0B12648 T GFRmInterfaceGetAddress
+0xA0B128B0 T GFRmInterfaceGetRead
+0xA0B1269A T GFRmInterfaceGetWrite
 0x80363144 A GxHandle
 0xA15D457A T memcmp
 0xA15D4620 A memcpy
@@ -139,6 +152,7 @@
 0xA055BF78 T suAcquireSem
 0xA055C550 T suAllocMem
 0xA055B258 T suCreateMessage
+0xA147CA44 A suDisableAllInt
 0xA00D7378 A suDisableInt
 0xA055C740 T suFreeMem
 0xA1467D24 A suLogData
@@ -147,6 +161,7 @@
 0xA0AD4DD0 T suPalTicksToMsec
 0xA055B8B8 T suSendMessage
 0xA147CB24 A suSetInt
+0xA04D7416 T suSleep
 0xA15D3796 T tolower
 0xA15D37B4 T toupper
 0xA06236F4 T u_atol
@@ -236,6 +251,7 @@
 0xA0620C26 T UIS_SetNoticeStatus
 0xA0621E52 T UIS_SetSkin
 0xA0620CDA T UIS_SetStatus
+0xA0621448 T UIS_SetSurface
 0xA06212DC T UIS_SetWallpaper
 0xA0D18144 T uisAllocateMemory
 0xA0D18ADE T uisFreeMemory
