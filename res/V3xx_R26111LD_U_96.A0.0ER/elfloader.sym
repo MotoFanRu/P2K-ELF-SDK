@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: V3xx
 # Firmware: R26111LD_U_96.A0.0ER
-# Version: 0905251
-# Timestamp: 09-May-2025 16:01:44
+# Version: 1705251
+# Timestamp: 17-May-2025 16:13:38
 
 0xA15D48D4 A __rt_memclr
 0xA15D487C A __rt_memclr_w
@@ -59,8 +59,8 @@
 0xA05BCE74 T APP_UtilHistSaveAndChangeState
 0xA05BCB4E T APP_UtilStartTimer
 0xA05C3BDA T APP_UtilUISDialogDelete
-0xA05BC3C4 T DAL_GetPrimarySurface
 0xA05BC3E4 T DAL_GetDxHandle
+0xA05BC3C4 T DAL_GetPrimarySurface
 0xA05BC3D4 T DAL_GetRmHandle
 0xA03725BA T DL_AudGetVolumeSetting
 0xA044C1AE T DL_AudPlayTone
@@ -126,14 +126,14 @@
 0xA0A1DC42 T GFGxCopyColorBitmap
 0xA082C01C T GFRmComponentGet
 0xA082C1C6 T GFRmComponentRelease
+0xA0B12648 T GFRmInterfaceGetAddress
+0xA0B128B0 T GFRmInterfaceGetRead
+0xA0B1269A T GFRmInterfaceGetWrite
 0xA0637F64 T GFRmOSEnterCS
 0xA0637F82 T GFRmOSExitCS
 0xA0AFF978 T GFRmSurfaceAlloc
 0xA0AFFBB0 T GFRmSurfaceFree
 0xA0B001D8 T GFRmSurfaceUpdate
-0xA0B12648 T GFRmInterfaceGetAddress
-0xA0B128B0 T GFRmInterfaceGetRead
-0xA0B1269A T GFRmInterfaceGetWrite
 0x80363144 A GxHandle
 0xA15D457A T memcmp
 0xA15D4620 A memcpy

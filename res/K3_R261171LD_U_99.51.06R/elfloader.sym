@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 0905251
-# Timestamp: 09-May-2025 16:01:44
+# Version: 1705251
+# Timestamp: 17-May-2025 16:13:38
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
@@ -89,7 +89,6 @@
 0xA0FBCC1E T DL_FsFMoveFile
 0xA0FBB4FC T DL_FsFSeekFile
 0xA0FBC74A T DL_FsFSetAttr
-0xA0FBCCEC T DL_FsISearch
 0xA0FBC35C T DL_FsGetAttr
 0xA0FBDBBA T DL_FsGetCreateTime
 0xA0FBBB98 T DL_FsGetFileName
@@ -104,6 +103,7 @@
 0xA0FBD478 T DL_FsGetVolumeDescr
 0xA0FBB2B2 T DL_FsICloseFile
 0xA0FBCA42 T DL_FsICopyFile
+0xA0FBCCEC T DL_FsISearch
 0xA0FBE1D8 T DL_FsIWriteFile
 0xA1053FE4 T DL_FsLnkSGetTime
 0xA0FBE4C6 T DL_FsMkDir
@@ -140,9 +140,12 @@
 0xA0788534 A EV_BacklightContinueOn
 0xA07887F8 A EV_BacklightRestore
 0xA14868C4 A EV_BacklightTimeout
+0xA114AF8C T GFGxBlt
 0xA11497F4 T GFGxCopyColorBitmap
 0xA114B3B8 T GFGxGetProperty
 0xA10309DE T GFRmComponentGet
+0xA10B5224 T GFRmInterfaceGetAddress
+0xA10B5268 T GFRmInterfaceGetWrite
 0xA10B684C T GFRmOSEnterCS
 0xA10B6862 T GFRmOSExitCS
 0xA10B73A0 T GFRmSurfaceAlloc
