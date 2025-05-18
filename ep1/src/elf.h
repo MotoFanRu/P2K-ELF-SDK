@@ -105,6 +105,7 @@ typedef struct {
 
 // ARM relocation types.
 #define R_ARM_ABS32                    (2)                 // Direct 32 bit.
+#define R_ARM_GLOB_DAT                 (21)                // Create GOT entry.
 #define R_ARM_RELATIVE                 (23)                // Adjust by program base.
 #define R_ARM_RABS32                   (253)               // Word ?S + A For the address of a location in the target segment.
 

@@ -159,9 +159,9 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 	memclr(dynTags, (DT_BIND_NOW + 1) * sizeof(Elf32_Word));
 
 	UtilLogStringData(
-		"\nFinished analysis:\n  Virtual Base  0x%X\n  Mem Needed  0x%X\n  Upper Address  0x%X\n  "
+		"\nFinished analysis:\n  Virtual Base  0x%X\n  Mem Needed  0x%X (%d)\n  Upper Address  0x%X\n  "
 		"Summary Mem  0x%X\n  Summary Size  0x%X\n  Physical Base  0x%X\n\n",
-		virtBase, upperAddr - virtBase, upperAddr, sumMem, sumSize, physBase
+		virtBase, upperAddr - virtBase, upperAddr - virtBase, upperAddr, sumMem, sumSize, physBase
 	);
 
 	// Andy51, 01-Nov-2007: editing API calls.
@@ -260,7 +260,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 							*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) + physBase - virtBase
 						);
 						*((UINT32 *) (physBase + relTable[j].r_offset - virtBase)) += physBase - virtBase;
-					} else if (relType == R_ARM_ABS32 && !is_ads_elf) {
+					} else if ((relType == R_ARM_ABS32 || relType == R_ARM_GLOB_DAT) && !is_ads_elf) {
 						// EXL, 01-Jan-2025: Add "R_ARM_ABS32" relocations handling for GCC ELFs.
 						UINT32 k;
 						Elf32_Addr elfStrTableAddr = physBase + dynTags[DT_STRTAB] - virtBase;
