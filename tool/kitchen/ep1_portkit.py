@@ -48,7 +48,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.49R': {
-		'opts_all':       ['-DFTR_E1'],
+		'opts_all':       ['-DFTR_E1', '-DUSE_UIS_ALLOCA'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
@@ -70,7 +70,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R373_G_0E.30.DAR_test16': {
 		'opts_all':       ['-DFTR_E1'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x003137B4,  # ElfPack v1.x patch address.
+		'addr_offset':    None,        # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test16.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -78,19 +78,19 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.DAR_test17': {
-		'opts_all':       ['-DFTR_E1'],
+		'opts_all':       ['-DFTR_E1', '-DUSE_UIS_ALLOCA'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x003137B4,  # ElfPack v1.x patch address.
+		'addr_offset':    None,        # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test17.smg',
-		'func_inject':    'APP_SyncML_MainRegister',
+		'func_inject':    'APP_SyncML_MainRegister', # 0x1021088A and 0x1021088E are EP1 and EP2 register opcodes.
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R373_G_0E.30.DAR_test17_v80': {
-		'opts_all':       ['-DFTR_E1'],
+		'opts_all':       ['-DFTR_E1', '-DUSE_UIS_ALLOCA'],
 		'addr_start':     0x10080000,  # Firmware start address.
-		'addr_offset':    0x003137B4,  # ElfPack v1.x patch address.
+		'addr_offset':    None,        # ElfPack v1.x patch address.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'General_P2K_Neptune.pts',
 		'firmware':       forge.P2K_DIR_CG / 'E1_R373_G_0E.30.DAR_test17_v80.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
@@ -297,12 +297,6 @@ def apply_patches(phone: str, firmware: str, lib_sym: Path) -> bool:
 		if firmware == 'R373_G_0E.30.49R':
 			# Pattern: EV_BacklightContinueOn D 00000E10102E
 			patches.append('0x102FC120 D EV_BacklightContinueOn')
-		elif firmware.startswith('R373_G_0E.30.DAR'):
-			patches.append('0x03FEB4E4 T suAllocMem')
-			patches.append('0x03FEB6EA T suFreeMem')
-			patches.append('0x03FEC954 A __rt_memclr')
-			patches.append('0x03FF0E40 A __rt_memset')
-			patches.append('0x03FF0E40 A _rt_memset')
 	elif phone == 'K1':
 		if firmware == 'R452F_G_08.03.08R':
 			# Pattern: [201490002000900190029003+0x01E8]+28
