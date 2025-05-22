@@ -248,7 +248,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'c'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R261171LD_U_99.51.06R': {
-		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_K3', '-DDEBUG', '-DLOG_TO_FILE'],
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_K3'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
 		'patterns':       None,
@@ -258,7 +258,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'R26111LD_U_96.A0.0ER': {
-		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX', '-DDEBUG', '-DLOG_TO_FILE'],
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x004856D0,  # ElfPack v1.x patch address.
 		'patterns':       None,
@@ -278,7 +278,7 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'drive_patch':    'a'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
 	'V2000_U_90.21.21I': {
-		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_M702IG', '-DDEBUG', '-DLOG_TO_FILE'],
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_M702IG'],
 		'addr_start':     0xA0080000,  # Firmware start address.
 		'addr_offset':    0x00F90370,  # ElfPack v1.x patch address.
 		'patterns':       None,
