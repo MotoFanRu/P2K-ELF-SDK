@@ -104,6 +104,11 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	uisFreeMemory(free_elf_address);
 #endif
 
+	// EXL, 23-May-2025: Null these addresses on ELF unloading.
+	p_app_data->iram_elf.iram_mem = NULL;
+	p_app_data->iram_elf.eram_mem = NULL;
+	p_app_data->iram_elf.size_mem = 0;
+
 	APP_ConsumeEv(p_evg, (APPLICATION_T *) p_apd);
 
 	return RESULT_OK;
