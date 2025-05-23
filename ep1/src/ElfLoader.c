@@ -560,7 +560,7 @@ UINT32 LdrUnloadELF(void *elf_ptr) {
 	UINT32 status;
 	ADD_EVENT_DATA_T ev_data;
 
-	UtilLogStringData(" LdrUnloadELF 0x%X  0x%X", elf_ptr);
+	UtilLogStringData(" LdrUnloadELF 0x%X\n", elf_ptr);
 
 	status = RESULT_OK;
 	ev_data.data_tag = 0;
