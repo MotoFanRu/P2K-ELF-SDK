@@ -16,6 +16,8 @@
 
 #include <apps.h>
 
+#define MAX_RUNNING_ELFS               (16)
+
 typedef enum {
 	STATE_ANY,
 	STATE_MAX
@@ -26,6 +28,9 @@ typedef struct {
 	UINT32 reserve;
 	void *Library;
 	IRAM_ELF_T iram_elf;
+	UINT16 running_elfs_event_ids[MAX_RUNNING_ELFS];
+	UINT32 running_elfs_img_addrs[MAX_RUNNING_ELFS];
+	UINT16 current_elf_index;
 } ELFLOADER_INSTANCE_DATA_T;
 
 extern void ElfLoaderStart(void);

@@ -34,7 +34,7 @@ UINT32 namecmp(const char *ansi_str_1, const char *ansi_str_2) {
 	return FALSE;
 }
 
-UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf) {
+UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf, UINT32 *img_addr) {
 	UINT32          i;
 	UINT32          j;
 
@@ -590,7 +590,13 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 	fclose(file);
 #endif
 
-	UtilLogStringData(" Starting ELF at 0x%X with reserve = 0x%X", physBase + elfHeader.e_entry - virtBase, reserve);
+	// EXL, 24-May-2025: Return img addr to the `Handle_LoadELF()` function.
+	*img_addr = (is_ads_elf) ? (physBase + elfHeader.e_entry - virtBase) : (physBase - virtBase);
+
+	UtilLogStringData(
+		" Starting ELF at 0x%08X with reserve = 0x%X, img_addr=0x%08X\n",
+		physBase + elfHeader.e_entry - virtBase, reserve, *img_addr
+	);
 
 	// EXL, 25-Dec-2024: Start ELF from the "e_entry" address, "start" stub which call "Register" ELF entry point.
 #if !defined(SIMULA)
@@ -635,5 +641,6 @@ int main(int argc, char *argv[]) {
 	iram_elf.eram_mem = NULL;
 	iram_elf.size_mem = 0;
 
-	return loadELF(argv[2], NULL, (void *) library_data, argv[3] ? 0xDEADBEEF : 0, &iram_elf);
+	UINT32 img_addr;
+	return loadELF(argv[2], NULL, (void *) library_data, argv[3] ? 0xDEADBEEF : 0, &iram_elf, &img_addr);
 }

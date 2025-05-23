@@ -55,6 +55,8 @@ extern const char n_minorfw[];
 
 typedef UINT32 (*Entry)(char *, char *, UINT32);
 
-extern UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf);
+extern UINT32 loadELF(
+	char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf, UINT32 *img_addr
+);
 
 #endif /* ELF_LOADER_H */

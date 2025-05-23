@@ -17,7 +17,7 @@
 #include <utilities.h>
 #include <mem.h>
 
-UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf) {
+UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM_ELF_T *iram_elf, UINT32 *img_addr) {
 	UINT32          i;
 	UINT32          j;
 
@@ -503,7 +503,13 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 
 	DL_FsCloseFile(file);
 
-	UtilLogStringData(" Starting ELF at 0x%X with reserve = 0x%X", physBase + elfHeader.e_entry - virtBase, reserve);
+	// EXL, 24-May-2025: Return img addr to the `Handle_LoadELF()` function.
+	*img_addr = (is_ads_elf) ? (physBase + elfHeader.e_entry - virtBase) : (physBase - virtBase);
+
+	UtilLogStringData(
+		" Starting ELF at 0x%08X with reserve = 0x%X, img_addr=0x%08X\n",
+		physBase + elfHeader.e_entry - virtBase, reserve, *img_addr
+	);
 
 	// EXL, 25-Dec-2024: Start ELF from the "e_entry" address, "start" stub which call "Register" ELF entry point.
 	((Entry) (physBase + elfHeader.e_entry - virtBase))(file_uri, params, reserve);

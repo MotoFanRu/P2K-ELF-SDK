@@ -41,8 +41,19 @@ static const STATE_HANDLERS_ENTRY_T state_trans_table[] = {
 	{ STATE_ANY, NULL, NULL, state_any_ev_table }
 };
 
+static UINT16 CheckSum16(const char *data) {
+	UINT16 sum;
+	for (sum = 0; *data != '\0'; ++data) {
+		sum += (unsigned char) (*data);
+	}
+	return (sum != 0) ? sum : 0x0001;
+}
+
 static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
+	UINT32 i;
+	UINT16 chk16;
 	UINT32 status;
+	UINT32 img_addr;
 	EVENT_T *p_event;
 	ELFLOADER_INSTANCE_DATA_T *p_app_data;
 
@@ -52,6 +63,19 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	p_app_data->iram_elf.eram_mem = NULL;
 	p_app_data->iram_elf.size_mem = 0;
 
+	// EXL, 23-May-2025: Use CheckSum16 for ELF URI. This will fix double ELF-application launching.
+	chk16 = CheckSum16(p_event->data.start_params.uri);
+	for (i = 0; i < MAX_RUNNING_ELFS; ++i) {
+		if (p_app_data->running_elfs_event_ids[i] == chk16) {
+			UtilLogStringData(
+				" *** ELFLOADER *** Error: '%s' 0x%04X is already running.\n",
+				p_event->data.start_params.uri, chk16
+			);
+			APP_ConsumeEv(p_evg, (APPLICATION_T *) p_apd);
+			return RESULT_OK;
+		}
+	}
+
 	UtilLogStringData(" *** ELFLOADER *** LoadELF  current reserve = 0x%X", p_app_data->reserve);
 
 	status = loadELF(
@@ -59,8 +83,21 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 		p_event->data.start_params.params,
 		p_app_data->Library,
 		p_app_data->reserve,
-		&p_app_data->iram_elf
+		&p_app_data->iram_elf,
+		&img_addr
 	);
+
+	// EXL, 24-May-2025: Fill running ELFs tables witch checksums and addresses.
+	UtilLogStringData(
+		"\nAdd '%s' 0x%04X ELF on 0x%08X addr to running ELFs tables (size %d)\n",
+		p_event->data.start_params.uri, chk16, img_addr, MAX_RUNNING_ELFS
+	);
+	p_app_data->running_elfs_event_ids[p_app_data->current_elf_index] = chk16;
+	p_app_data->running_elfs_img_addrs[p_app_data->current_elf_index] = img_addr;
+	p_app_data->current_elf_index++;
+	if (p_app_data->current_elf_index >= MAX_RUNNING_ELFS) {
+		p_app_data->current_elf_index = 0;
+	}
 
 	p_app_data->reserve += EVCODE_RESERVE;
 
@@ -76,6 +113,7 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 }
 
 static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
+	UINT32 i;
 	EVENT_T *p_event;
 	ELFLOADER_INSTANCE_DATA_T *p_app_data;
 	UINT32 *free_elf_address;
@@ -104,6 +142,16 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	uisFreeMemory(free_elf_address);
 #endif
 
+	// EXL, 24-May-2025: Drop ELF from running table.
+	for (i = 0; i < MAX_RUNNING_ELFS; ++i) {
+		if (p_app_data->running_elfs_img_addrs[i] == (UINT32) (*((void **) p_event->data.pad))) {
+			UtilLogStringData(" *** ELFLOADER *** Dropped ELF 0x%08X from running table.\n", free_elf_address);
+			p_app_data->running_elfs_event_ids[i] = 0;
+			p_app_data->running_elfs_img_addrs[i] = 0;
+			break;
+		}
+	}
+
 	// EXL, 23-May-2025: Null these addresses on ELF unloading.
 	p_app_data->iram_elf.iram_mem = NULL;
 	p_app_data->iram_elf.eram_mem = NULL;
@@ -114,8 +162,9 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	return RESULT_OK;
 }
 
-// EXL, 22-Dec-2024: This function is called by AFW on start/run/launch event after registration of application.
+// EXL, 22-Dec-2024: This function is called by AFW on start/run/launch event after registration of ElfLoader app.
 static UINT32 Start(EVENT_STACK_T *p_evg, REG_ID_T reg_id, void *reg_hdl) {
+	UINT32 i;
 	UINT32 status;
 	APP_ID_T app_id;
 	ELFLOADER_INSTANCE_DATA_T *p_app_data;
@@ -161,6 +210,11 @@ static UINT32 Start(EVENT_STACK_T *p_evg, REG_ID_T reg_id, void *reg_hdl) {
 			p_app_data->apd.state_names = NULL;
 
 			p_app_data->reserve = EVCODE_BASE + EVCODE_RESERVE;
+			p_app_data->current_elf_index = 0;
+			for (i = 0; i < MAX_RUNNING_ELFS; ++i) {
+				p_app_data->running_elfs_event_ids[i] = 0;
+				p_app_data->running_elfs_img_addrs[i] = 0;
+			}
 
 			// EXL, 22-Dec-2024: Load EP1 library!
 			LoadLibrary(p_app_data);
