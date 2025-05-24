@@ -257,6 +257,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
+	'R261171MLD_U_99.51.06R': {
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_K3M'],
+		'addr_start':     0xA0080000,  # Firmware start address.
+		'addr_offset':    0x014B0B18,  # ElfPack v1.x patch address.
+		'patterns':       None,
+		'firmware':       forge.P2K_DIR_CG / 'K3m_R261171MLD_U_99.51.06R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
 	'R26111LD_U_96.A0.0ER': {
 		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_V3XX'],
 		'addr_start':     0xA0080000,  # Firmware start address.
@@ -283,6 +293,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'addr_offset':    0x00F90370,  # ElfPack v1.x patch address.
 		'patterns':       None,
 		'firmware':       forge.P2K_DIR_CG / 'M702iG_V2000_U_90.21.21I.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
+	'V2000_U_90.21.0C.C2I': {
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_M702IS'],
+		'addr_start':     0xA0080000,  # Firmware start address.
+		'addr_offset':    0x00F95F48,  # ElfPack v1.x patch address.
+		'patterns':       None,
+		'firmware':       forge.P2K_DIR_CG / 'M702iS_V2000_U_90.21.0C.C2I.smg',
 		'func_inject':    'APP_SyncML_MainRegister',
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
