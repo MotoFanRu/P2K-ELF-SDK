@@ -23,6 +23,10 @@
 #error "Unknown ElfPack flavor! Try to set EP1, EG1, or EA1"
 #endif
 
+#define ELF_EP1_ADS                    (0x00)
+#define ELF_EP1_GCC                    (0x01)
+#define ELF_EP1_IRAM_SEG               (0x02)
+
 #define EVCODE_RESERVE                 (0x40)
 #define EVCODE_BASE                    (0xA000)
 #define EVCODE_STARTLDR                (EVCODE_BASE)
@@ -46,6 +50,7 @@ typedef struct {
 	UINT32 *iram_mem;
 	UINT32 *eram_mem;
 	UINT32  size_mem;
+	BOOL    iram_seg;
 } IRAM_ELF_T;
 
 extern const char n_phone[];

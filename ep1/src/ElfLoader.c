@@ -22,6 +22,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 	UINT32          j;
 
 	BOOL            is_ads_elf;
+	BOOL            is_alloc_mem_needed;
 
 	FS_HANDLE_T     file;
 	FS_COUNT_T      read;
@@ -67,6 +68,8 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 
 	elfSymTable     = NULL;
 	elfStrTable     = NULL;
+
+	is_alloc_mem_needed = TRUE;
 
 	UtilLogStringData("ElfLdr Load Request %s", file_uri);
 
@@ -126,28 +129,62 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 		sumSize += elfProgramHeaders[i].p_filesz;
 	}
 
+	// EXL, 07-May-2025: Enable loading small ELFs to IRAM.
 	if (*((Elf32_Addr *) &elfHeader.e_ident[0x0C])) {
-		// EXL, 07-May-2025: Enable loading small ELFs to IRAM.
-		Elf32_Addr iram = *((Elf32_Addr *) &elfHeader.e_ident[0x0C]);
+		Elf32_Word load_size;
 		Elf32_Addr eram;
+		Elf32_Addr iram = *((Elf32_Addr *) &elfHeader.e_ident[0x0C]);
+
+		// EXL, 24-May-2025: Enable additional ELF payload chunk deployed to IRAM.
+		if (elfHeader.e_ident[0x0B] == ELF_EP1_IRAM_SEG) {
+			Elf32_Addr load_addr;
+
+			if (DL_FsFSeekFile(file, iram, SEEK_WHENCE_SET) != RESULT_OK) {
+				return ELDR_SEEK_FAILED;
+			}
+			if (DL_FsReadFile((void *) &iram, sizeof(Elf32_Addr), 1, file, &read) != RESULT_OK) {
+				return ELDR_READ_FAILED;
+			}
+			if (DL_FsReadFile((void *) &load_size, sizeof(Elf32_Word), 1, file, &read) != RESULT_OK) {
+				return ELDR_READ_FAILED;
+			}
+		} else {
+			is_alloc_mem_needed = FALSE;
+			load_size = upperAddr - virtBase;
+		}
 
 #if !defined(USE_UIS_ALLOCA)
-		eram = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
+		eram = (Elf32_Addr) suAllocMem(load_size, NULL);
 #else
-		eram = (Elf32_Addr) uisAllocateMemory(upperAddr - virtBase, NULL);
+		eram = (Elf32_Addr) uisAllocateMemory(load_size, NULL);
 #endif
 
-		UtilLogStringData("Using IRAM for ELF! iram=0x%08X, eram=0x%08X, size=%d\n", iram, eram, upperAddr - virtBase);
+		UtilLogStringData("Using IRAM for ELF! iram=0x%08X, eram=0x%08X, size=%d\n", iram, eram, load_size);
 
 		iram_elf->iram_mem = (Elf32_Addr *) iram;
 		iram_elf->eram_mem = (Elf32_Addr *) eram;
-		iram_elf->size_mem = upperAddr - virtBase;
+		iram_elf->size_mem = load_size;
 
-		memcpy((Elf32_Addr *) eram, (Elf32_Addr *) iram, upperAddr - virtBase);
+		if (elfHeader.e_ident[0x0B] == ELF_EP1_IRAM_SEG) {
+			UtilLogStringData("Will use IRAM segmentation! off=0x%08X\n", *((Elf32_Addr *) &elfHeader.e_ident[0x0C]));
+			if (DL_FsReadFile((void *) iram, load_size, 1, file, &read) != RESULT_OK) {
+#if !defined(USE_UIS_ALLOCA)
+				suFreeMem((void *) eram);
+#else
+				uisFreeMemory((void *) eram);
+#endif
+				return ELDR_READ_FAILED;
+			}
+			iram_elf->iram_seg = TRUE;
+		} else {
+			physBase = iram;
+		}
 
-		physBase = iram;
-	} else {
-		// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+		memcpy((Elf32_Addr *) eram, (Elf32_Addr *) iram, load_size);
+	}
+
+	// EXL, 24-Dec-2024: Allocate RAM memory for program segments then clear its.
+	if (is_alloc_mem_needed) {
 #if !defined(USE_UIS_ALLOCA)
 		physBase = (Elf32_Addr) suAllocMem(upperAddr - virtBase, NULL);
 #else

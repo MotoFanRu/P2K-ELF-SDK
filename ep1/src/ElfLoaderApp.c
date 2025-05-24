@@ -51,6 +51,7 @@ static UINT32 Handle_LoadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	p_app_data->iram_elf.iram_mem = NULL;
 	p_app_data->iram_elf.eram_mem = NULL;
 	p_app_data->iram_elf.size_mem = 0;
+	p_app_data->iram_elf.iram_seg = FALSE;
 
 	UtilLogStringData(" *** ELFLOADER *** LoadELF  current reserve = 0x%X", p_app_data->reserve);
 
@@ -104,10 +105,22 @@ static UINT32 Handle_UnloadELF(EVENT_STACK_T *p_evg, APPLICATION_T *p_apd) {
 	uisFreeMemory(free_elf_address);
 #endif
 
+	// EXL, 24-May-2025: Free memory of ELF when IRAM segment is used.
+	if (p_app_data->iram_elf.iram_seg) {
+		UINT32 *free_ptr = (UINT32 *) (*((void **) p_event->data.pad));
+		UtilLogStringData("Freed ELF image memory from addr=0x%08X\n", free_ptr);
+#if !defined(USE_UIS_ALLOCA)
+		suFreeMem(free_ptr);
+#else
+		uisFreeMemory(free_ptr);
+#endif
+	}
+
 	// EXL, 23-May-2025: Null these addresses on ELF unloading.
 	p_app_data->iram_elf.iram_mem = NULL;
 	p_app_data->iram_elf.eram_mem = NULL;
 	p_app_data->iram_elf.size_mem = 0;
+	p_app_data->iram_elf.iram_seg = FALSE;
 
 	APP_ConsumeEv(p_evg, (APPLICATION_T *) p_apd);
 

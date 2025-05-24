@@ -43,7 +43,7 @@ typedef UINT8                          Elf32_Byte;         // Unsigned char 8-bi
 #define EI_NIDENT                      (16)
 
 typedef struct {
-	UINT8                              e_ident[EI_NIDENT]; // Magic number and other info.
+	Elf32_Byte                         e_ident[EI_NIDENT]; // Magic number and other info.
 	Elf32_Half                         e_type;             // Object file type.
 	Elf32_Half                         e_machine;          // Architecture.
 	Elf32_Word                         e_version;          // Object file version.
