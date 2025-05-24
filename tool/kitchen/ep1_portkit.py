@@ -783,7 +783,7 @@ class Args(argparse.ArgumentParser):
 		opts['phone'] = phone
 		opts['fw_name'] = firmware
 		opts['pfw'] = args.phone_fw
-		opts['argon'] = phone in forge.P2K_ARGONLV_PHONES
+		opts['argon'] = phone in forge.P2K_ARGON_PHONES
 
 		opts['inject'] = variants['func_inject']
 

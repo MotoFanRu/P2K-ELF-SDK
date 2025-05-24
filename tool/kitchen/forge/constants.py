@@ -93,4 +93,5 @@ ADS_SYM_FILE_HEADER: str = '#<SYMDEFS>#symdef-file'
 
 MAX_BINARY_CHUNK_READ: int = 4096
 
-P2K_ARGONLV_PHONES: list[str] = ['V3xx', 'V6', 'K3', 'K3m', 'Z9', 'V9', 'M702iG', 'M702iS']
+# Motorola phones based on Argon+, ArgonLV, ArgonLVLT, and similar SoCs.
+P2K_ARGON_PHONES: list[str] = ['V3xx', 'V6', 'K3', 'K3m', 'Z9', 'V9', 'M702iG', 'M702iS']

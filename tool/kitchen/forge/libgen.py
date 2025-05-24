@@ -24,7 +24,7 @@ from .constants import P2K_EP2_API_DEF
 from .constants import P2K_SDK_CONSTS_H
 from .constants import P2K_TOOL_POSTLINK
 from .constants import P2K_DIR_TOOL_KITCHEN
-from .constants import P2K_ARGONLV_PHONES
+from .constants import P2K_ARGON_PHONES
 from .hexer import int2hex
 from .hexer import hex2int
 from .hexer import hex2hex
@@ -311,7 +311,7 @@ def ep1_libgen_symbols(p_lib: Path, p_sym: Path, sort: LibrarySort, phone: str, 
 				logging.info(f'Library is valid, "cnt={cnt}", "len_e={len_e}", "len_n={len_n}" are equal.')
 				model: LibraryModel = []
 				for i in range(0, cnt):
-					mode, address = ep1_normalize_address(ent[i][1], phone in P2K_ARGONLV_PHONES)  # Second is address.
+					mode, address = ep1_normalize_address(ent[i][1], phone in P2K_ARGON_PHONES)  # Second is address.
 					entry: tuple[str, str, str] = (int2hex(address), mode, ent_names[i])
 					if address == 0xFFFFFFFF:
 						logging.warning(f'Overflowed value on "{entry}" entry.')
@@ -656,7 +656,7 @@ def libgen_regenerator(sort: LibrarySort, e: ElfPack) -> bool:
 					if e == ElfPack.EP1:
 						functions, library_model = ep1_libgen_model(sym_file, sort)
 						if functions and library_model:
-							if not ep1_libgen_library(lib_file, library_model, functions, phone in P2K_ARGONLV_PHONES):
+							if not ep1_libgen_library(lib_file, library_model, functions, phone in P2K_ARGON_PHONES):
 								return False
 						else:
 							return False
