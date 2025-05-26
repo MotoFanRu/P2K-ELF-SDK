@@ -87,7 +87,7 @@ def main(firmware_path, base_offset, output_file=None):
 		print(f'Error: File \'{firmware_path}\' not found.')
 		return
 
-	string_pattern = rb'\nUIS_[A-Za-z0-9_]+ enter\x00'
+	string_pattern = rb'\nUIS_[A-Za-z0-9_]+ enter'
 	matches = list(re.finditer(string_pattern, data))
 
 	if not matches:
