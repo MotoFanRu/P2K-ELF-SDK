@@ -60,6 +60,7 @@ def determine_soc(start_firmware_address: int) -> str:
 		0x10080000: 'LTE',
 		0x10092000: 'LTE2',
 		0x100A0000: 'LTE2',
+		0x10152000: 'LTE2',
 		0xA0080000: 'ArgonLV',
 	}
 	return soc_map.get(start_firmware_address, 'Unknown')
