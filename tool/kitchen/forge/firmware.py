@@ -67,7 +67,7 @@ def determine_soc(start_firmware_address: int) -> str:
 
 
 def is_modern_lte2(phone: str) -> bool:
-	modern_lte2_phones: set[str] = {'L7e', 'K1', 'Z3', 'L9', 'L71', 'L72', 'W490', 'W510', 'V3re', 'V3ie', 'U3'}
+	modern_lte2_phones: set[str] = {'L7e', 'K1', 'K1s', 'Z3', 'L9', 'L71', 'L72', 'W490', 'W510', 'V3re', 'V3ie', 'U3'}
 	return phone in modern_lte2_phones
 
 
