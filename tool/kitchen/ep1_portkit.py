@@ -857,7 +857,12 @@ def parse_arguments() -> dict[str, any]:
 	python ep1_portkit.py -P C650_R365_G_0B.D3.08R
 	python ep1_portkit.py -P K3_R261171LD_U_99.51.06R -g
 	python ep1_portkit.py -P V635_R474_G_08.48.6FR -g
-	python ep1_portkit.py -P C390_R368_G_0B.A0.0FR -g
+	python ep1_portkit.py -P C390_R368_G_0B.A0.0FR
+	python ep1_portkit.py -P V3xx_R26111LD_U_96.A0.0ER -g
+	python ep1_portkit.py -P M702iG_V2000_U_90.21.21I -g
+	python ep1_portkit.py -P M702iS_V2000_U_90.21.0C.C2I -g
+	python ep1_portkit.py -P K3m_R261171MLD_U_99.51.06R -g
+	python ep1_portkit.py -P K1s_R47121_G_08.01.11R -g -t
 
 	# Find functions and build ElfPack v1.x and libraries for target:
 	python ep1_portkit.py -P E1_R373_G_0E.30.49R -B
