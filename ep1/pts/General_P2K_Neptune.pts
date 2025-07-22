@@ -667,3 +667,6 @@ DAL_UpdateRectangleDisplayRegion A E92D43F0E24DD014E1A04000E1A06001
 
 # EXL, 22-Feb-2025: Add private add event function for V600, V635 and other.
 AFW_AddEvPriv T B5FFB0819E0F9F111C05D04A
+
+# EXL, 22-Jul-2025: Add memchr function for DOOM ports.
+memchr T 060B0E1B2A00D00A1882780130014290

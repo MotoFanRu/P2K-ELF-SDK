@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 0102251
-# Timestamp: 01-Feb-2025 23:29:34
+# Version: 2207251
+# Timestamp: 22-Jul-2025 23:41:53
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
@@ -394,6 +394,7 @@
 0x10C1DF70 T LdrStartApp
 0x10C1DFF2 T LdrUnloadELF
 0x100998F8 T localtime
+0x100981DC T memchr
 0x10C1ACCC T memcpy
 0x10098214 T memset
 0x1097743E T MME_GC_capture_create
