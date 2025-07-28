@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 2207251
-# Timestamp: 22-Jul-2025 23:41:53
+# Version: 2807251
+# Timestamp: 28-Jul-2025 22:06:24
 
 0x10097C0C T __16__rt_divtest
 0x10BD231C T __16__rt_sdiv
@@ -173,6 +173,8 @@
 0x105E8254 A DAL_GetDrawingSurface
 0x105E8610 A DAL_PrepareForRecovery
 0x105E77C4 A DAL_Refresh
+0x105E7C5C A DAL_UpdateDisplayRegion
+0x105E7C5C A DAL_UpdateRectangleDisplayRegion
 0x105E7C5C A DAL_WriteDisplayRegion
 0x105128DC D DATEBOOK_REMINDER
 0x103963C0 D db_state_KP_LOCK_OFFSET

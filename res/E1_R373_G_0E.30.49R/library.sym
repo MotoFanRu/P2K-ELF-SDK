@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: E1
 # Firmware: R373_G_0E.30.49R
-# Version: 2207251
-# Timestamp: 22-Jul-2025 23:41:58
+# Version: 2807251
+# Timestamp: 28-Jul-2025 22:06:27
 
 0x00000069 C AUDIO_STATUS
 0x00000582 C BEGIN_4A__IN_DB
@@ -265,6 +265,8 @@
 0x105E8254 A DAL_GetDrawingSurface
 0x105E8610 A DAL_PrepareForRecovery
 0x105E77C4 A DAL_Refresh
+0x105E7C5C A DAL_UpdateDisplayRegion
+0x105E7C5C A DAL_UpdateRectangleDisplayRegion
 0x105E7C5C A DAL_WriteDisplayRegion
 0x102AAEC4 T device_Get_SoftwareVersion
 0x1232D71C D display_source_buffer
