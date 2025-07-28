@@ -692,7 +692,8 @@ def start_ep1_portkit_work(opts: dict[str, any]) -> bool:
 		)
 	else:
 		generate_lib_sym(
-			forge.ep1_libgen_get_library_sym(opts['pfw']), val_elfpack_sym, val_library_sym,
+			val_combined_sym if opts['gcc_lib'] else forge.ep1_libgen_get_library_sym(opts['pfw']),
+			val_elfpack_sym, val_library_sym,
 			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'],
 			['Ldr', 'UtilLogStringData', 'namecmp', 'u_utoa', '_ll_cmpu'],
 			True
@@ -758,6 +759,9 @@ class Args(argparse.ArgumentParser):
 		opts['skip_platform'] = args.skip_platform
 		opts['compile'] = not args.objects
 		opts['gcc'] = args.gcc
+		opts['gcc_lib'] = args.gcc_lib
+		if opts['gcc_lib'] and not opts['gcc']:
+			self.error('cannot use "-G" flag (Generate GCC library for SDK) without "-g" flag (Compile using GCC)')
 		if opts['gcc'] and not opts['compile']:
 			self.error('cannot use "-g" flag (Compile using GCC) with "-j" flag (Use Precompiled Object Files)')
 		opts['goldsrc'] = args.goldsrc
@@ -815,6 +819,7 @@ def parse_arguments() -> dict[str, any]:
 		'D': 'A PortKit Utility for building ElfPack v1.x for Motorola phones on P2K platform, 01-Jan-2025',
 		'P': 'set phone and firmware, e.g., "E1_R373_G_0E.30.49R"',
 		'g': 'use ARM GCC for compilation (default is ARM ADS)',
+		'G': 'generate proper pure ARM GCC libraries for SDK',
 		'd': 'use original source code without modifications',
 		'B': 'search for binary function patterns in firmware file',
 		'm': 'do not resolve precached IRAM function addresses while searching',
@@ -874,6 +879,7 @@ def parse_arguments() -> dict[str, any]:
 	p_args: Args = Args(description=hlp['D'], epilog=epl, formatter_class=argparse.RawDescriptionHelpFormatter)
 	p_args.add_argument('-P', '--phone-fw', required=True, type=forge.at_pfw, metavar='PHONE_FW', help=hlp['P'])
 	p_args.add_argument('-g', '--gcc', required=False, action='store_true', help=hlp['g'])
+	p_args.add_argument('-G', '--gcc-lib', required=False, action='store_true', help=hlp['G'])
 	p_args.add_argument('-d', '--goldsrc', required=False, action='store_true', help=hlp['d'])
 	p_args.add_argument('-B', '--search', required=False, action='store_true', help=hlp['B'])
 	p_args.add_argument('-m', '--no-ram-trans', required=False, action='store_true', help=hlp['m'])
