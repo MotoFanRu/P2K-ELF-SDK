@@ -482,6 +482,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 			char *sym_str = (char *) (elfStrTableAddr + elfSymTable[sym_idx].st_name);
 			Elf32_Sym *sym = &elfSymTable[sym_idx];
 			INT32 func_bind = ELF32_ST_BIND(sym->st_info);
+			BOOL function_found_in_library = FALSE;
 
 			UtilLogStringData("Req Func: %d, %s\n", func_bind, sym_str);
 
@@ -490,6 +491,7 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 				UINT32 ldr_st_name = ldrSymTable[j].st_name;
 				UINT32 ldr_st_addr = ldrSymTable[j].st_value;
 				if (namecmp(sym_str, &ldrStrTable[ldr_st_name]) == TRUE) {
+					function_found_in_library = TRUE;
 					UtilLogStringData(
 						"API Call #%d:\n  addr 0x%lX\n  old 0x%X\n  new 0x%X\n",
 						i, elfSymTable[i].st_value,
@@ -534,6 +536,10 @@ UINT32 loadELF(char *file_uri, char *params, void *Library, UINT32 reserve, IRAM
 
 					*((Elf32_Word *) (physBase + relTable[i].r_offset - virtBase)) = ldr_st_addr;
 				}
+			}
+
+			if (!function_found_in_library) {
+				UtilLogStringData("WARNING! No '%s' func in Lib!\nELF can start/execute not correctly!\n", sym_str);
 			}
 		}
 	}
