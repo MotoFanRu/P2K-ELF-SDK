@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
-# Version: 2807251
-# Timestamp: 28-Jul-2025 22:06:24
+# Version: 2907251
+# Timestamp: 29-Jul-2025 07:10:29
 
 0x03FEB6B0 T __16__rt_memclr
 0x03FEB87C T __16__rt_memset
@@ -114,6 +114,7 @@
 0x10867248 T memchr
 0x03FEB644 T memcmp
 0x03FEB758 A memcpy
+0x03FEB880 A memset
 0x1072D10C T MME_GC_playback_open_audio_play_forget
 0x10901994 T namecmp
 0x1055C964 T PFprintf
@@ -123,6 +124,7 @@
 0x10867384 T sprintf
 0x104D4158 T srand
 0x106A14B8 A strcmp
+0x104D43FC T strcpy
 0x10867408 T strlen
 0x104D4478 T strncat
 0x104D44A8 T strncmp
@@ -135,6 +137,8 @@
 0x103C1144 T suPalReadTime
 0x105CB69C T suPalTicksToMsec
 0x1055C734 T suSleep
+0x108674E8 T tolower
+0x104D4668 T toupper
 0x103C34B4 T u_atol
 0x103C3AE0 T u_atou
 0x103C347A T u_isDigit

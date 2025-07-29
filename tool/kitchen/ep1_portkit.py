@@ -28,7 +28,7 @@ FUNC_AUTORUN: str = 'AutorunMain'
 
 EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 	'R365_G_0B.D3.08R': {
-		'opts_all':       ['-DFTR_C650'],
+		'opts_all':       ['-DFTR_V600', '-DFTR_C650', '-DUSE_UIS_ALLOCA'],
 		'addr_start':     0x10080000,  # Firmware start address.
 		'addr_offset':    None,        # ElfPack v1.x patch address, will be calculated.
 		'patterns':       forge.P2K_DIR_EP1_PAT / 'C650_R365_G_0B.D3.08R.pts',
