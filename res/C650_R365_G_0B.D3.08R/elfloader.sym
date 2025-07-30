@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: C650
 # Firmware: R365_G_0B.D3.08R
-# Version: 2907251
-# Timestamp: 29-Jul-2025 07:10:29
+# Version: 3107251
+# Timestamp: 31-Jul-2025 03:44:22
 
 0x03FEB6B0 T __16__rt_memclr
 0x03FEB87C T __16__rt_memset
@@ -128,6 +128,7 @@
 0x10867408 T strlen
 0x104D4478 T strncat
 0x104D44A8 T strncmp
+0x10867454 T strncpy
 0x104D44F8 T strstr
 0x1056D494 T suAllocMem
 0x1056D642 T suFreeMem
