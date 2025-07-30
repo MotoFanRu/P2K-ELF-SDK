@@ -6,8 +6,8 @@
 # ElfPack: EP2
 # Phone: E1
 # Firmware: R373_G_0E.30.DAR
-# Version: 0201251
-# Timestamp: 02-Jan-2025 06:57:55
+# Version: 3107251
+# Timestamp: 31-Jul-2025 02:57:04
 
 0x00000069 C AUDIO_STATUS
 0x00000582 C BEGIN_4A__IN_DB
@@ -447,6 +447,7 @@
 0x127354C0 D jsapi_marquee_text
 0x2484E000 D kpp
 0x10A5FDA0 T localtime
+0x03FEC8F8 T memcmp
 0x10B9A3C8 T memcpy
 0x10A5EDF8 T memset
 0x10AF006A T MME_GC_capture_create
