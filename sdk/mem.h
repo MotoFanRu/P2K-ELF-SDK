@@ -88,7 +88,7 @@ void *uisReAllocMemory(void *address, UIS_PARTITION_BLOCK_SIZE_T new_size, UIS_A
 void *AmMemAllocPointer(int size);
 void AmMemFreePointer(void *ptr);
 
-void *memcmp(void *src, const void *dst, UINT32 bytes);
+void *memcmp(const void *src, const void *dst, UINT32 bytes);
 void *memchr(const void *ptr, int ch, UINT32 count);
 
 #ifdef __cplusplus
