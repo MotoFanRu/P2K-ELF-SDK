@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: K3
 # Firmware: R261171LD_U_99.51.06R
-# Version: 1705251
-# Timestamp: 17-May-2025 16:13:38
+# Version: 0908251
+# Timestamp: 09-Aug-2025 16:13:38
 
 0xA123D158 T __c89vsprintf
 0xA123E9CC A __ll_mullu
@@ -160,6 +160,7 @@
 0xA15314E0 T LdrLoadELF
 0xA15314BC T LdrStartApp
 0xA1531538 T LdrUnloadELF
+0xA123E384 T memchr
 0xA123DCB6 T memcmp
 0xA123DD5C A memcpy
 0xA0519888 A memset
