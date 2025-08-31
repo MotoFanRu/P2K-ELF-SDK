@@ -6,8 +6,8 @@
 # ElfPack: EP1
 # Phone: M702iG
 # Firmware: V2000_U_90.21.21I
-# Version: 1805251
-# Timestamp: 18-May-2025 21:07:29
+# Version: 3108251
+# Timestamp: 31-Aug-2025 04:03:29
 
 0xA17AC068 A __rt_memclr
 0xA17AC010 A __rt_memclr_w
@@ -45,6 +45,7 @@
 0xA0702344 T APP_UtilUISDialogDelete
 0xA0838192 T DAL_GetRmHandle
 0xA0837AE6 T DAL_WriteDisplayRegion
+0x80FF6BC4 A display_source_buffer
 0xA085F922 T DL_AccIsHeadsetAvailable
 0xA08668C0 T DL_AudGetVolumeSetting
 0xA0867A82 T DL_AudPlayTone
@@ -74,9 +75,11 @@
 0xA0902EEE T DRM_ClearResource
 0xA0902E4C T DRM_CreateResource
 0xA0902A8C T DRM_SetResource
+0xA17734FC T GFGxCopyColorBitmap
 0xA1716E5C T GFRmOSEnterCS
 0xA1716E7A T GFRmOSExitCS
 0x800A64E4 A GxHandle
+0xA17AC2F4 T memchr
 0xA17ABD1E T memcmp
 0xA17ABDB4 A memcpy
 0xA00D05C4 T PFprintf
