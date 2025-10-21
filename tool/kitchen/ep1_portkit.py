@@ -327,6 +327,16 @@ EP1_PFW_VARIANTS: dict[str, dict[str, any]] = {
 		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
 		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
 	},
+	'R263312_U_9E.00.A8R': {
+		'opts_all':       ['-DEA1', '-DUSE_UIS_ALLOCA', '-DFTR_Z9'],
+		'addr_start':     0xA0080000,  # Firmware start address.
+		'addr_offset':    0x019B0000,  # ElfPack v1.x patch address.
+		'patterns':       None,
+		'firmware':       forge.P2K_DIR_CG / 'Z9_R263312_U_9E.00.A8R.smg',
+		'func_inject':    'APP_SyncML_MainRegister',
+		'use_afw_wraps':  False,       # Use AFW_CreateInternalQueuedEvPriv() for AFW_CreateInternalQueuedEvAux* funcs.
+		'drive_patch':    'b'          # Patch "/b/Elf/elfloader.lib" and "/b/Elf/auto.run" disk with this letter.
+	},
 }
 
 
