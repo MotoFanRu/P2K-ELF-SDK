@@ -73,7 +73,17 @@ def find_function_start(data, adr_addr, max_search=1024, arm_mode=False):
 		if instruction is None:
 			break
 		if is_push_instruction(instruction, arm_mode):
-			return current_addr, arm_mode
+			function_start = current_addr
+			while True:
+				prev_addr = current_addr - step
+				if prev_addr < 0 or (adr_addr - prev_addr) > max_search:
+					break
+				prev_instruction = decode_instruction(data, prev_addr, arm_mode)
+				if prev_instruction is None or not is_push_instruction(prev_instruction, arm_mode):
+					break
+				current_addr = prev_addr
+				function_start = current_addr
+			return function_start, arm_mode
 		current_addr -= step
 	return None, arm_mode
 
